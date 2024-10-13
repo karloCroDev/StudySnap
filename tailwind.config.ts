@@ -35,10 +35,13 @@ const config: Config = {
         },
         grayscale: {
           // fix: add more grayscales (because figmas rgba doesn't work same as css on normal elements I think - they will be transparent)
-          100: '#F9F7F',
+          100: '#F9F7F7',
           500: '#',
           900: '#000',
         },
+      },
+      zIndex: {
+        max: '999',
       },
     },
   },
