@@ -6,6 +6,12 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    {
+      pattern: /w-column-(1|2|3|4|5|6|7|8|9|10|11|12)/,
+      variants: ['sm', 'md', 'lg', 'xl'],
+    },
+  ],
   theme: {
     extend: {
       fontSize: {

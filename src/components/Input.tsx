@@ -28,8 +28,10 @@ export const Input: React.FC<
   inputProps,
   fieldErrorProps,
   className,
+  ...rest
 }) => (
   <TextField
+    {...rest}
     className={twMerge(
       'col-r flex w-full text-base outline-none',
       isVertical
@@ -38,10 +40,20 @@ export const Input: React.FC<
       className
     )}
   >
+    {/* note: Order is flipped because of peer attribute*/}
+    <FieldError
+      {...fieldErrorProps}
+      className={twMerge(
+        'text-2xs peer w-full text-red-700',
+        typeof fieldErrorProps?.className === 'string'
+          ? fieldErrorProps.className
+          : undefined
+      )}
+    />
     <AriaInput
       {...inputProps}
       className={twMerge(
-        'border-grayscale-400 placeholder:text-grayscale-400 peer h-14 w-full border outline-none transition-colors focus:border-blue-400 data-[invalid]:border-red-700',
+        'border-grayscale-400 placeholder:text-grayscale-400 peer- peer h-14 w-full border outline-none transition-colors focus:border-blue-400 data-[invalid]:border-red-700',
         size === 'sm' && 'p-3',
         size === 'lg' && 'p-2',
         inputProps?.className
@@ -49,22 +61,12 @@ export const Input: React.FC<
     />
     <Label
       className={twJoin(
-        'transition-colors peer-focus:text-blue-400',
+        'transition-colors peer-focus:text-blue-400 peer-data-[invalid]:text-red-700',
         size === 'sm' && 'text-md',
         size === 'lg' && 'text-lg font-semibold'
       )}
     >
       {label}
     </Label>
-
-    <FieldError
-      {...fieldErrorProps}
-      className={twMerge(
-        'text-2xs w-full text-red-700',
-        typeof fieldErrorProps?.className === 'string'
-          ? fieldErrorProps.className
-          : undefined
-      )}
-    />
   </TextField>
 );
