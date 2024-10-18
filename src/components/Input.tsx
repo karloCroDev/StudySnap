@@ -1,25 +1,18 @@
 'use client'; // fix: Remove this because, when I use button I use by default the use client in that component
 
 // External packages
-import {
-  TextField,
-  TextFieldProps,
-  Input as AriaInput,
-  InputProps,
-  Label,
-  FieldError,
-  FieldErrorProps,
-} from 'react-aria-components';
+import * as AriaInput from 'react-aria-components'; // note: same reason as Radix library
 import { twMerge, twJoin } from 'tailwind-merge';
 
 export const Input: React.FC<
   React.ComponentPropsWithoutRef<'div'> &
-    TextFieldProps & {
+    AriaInput.TextFieldProps & {
       label: string;
       size?: 'sm' | 'lg';
       isVertical?: boolean;
-      inputProps?: React.ComponentPropsWithoutRef<'input'> & InputProps;
-      fieldErrorProps?: FieldErrorProps;
+      inputProps?: React.ComponentPropsWithoutRef<'input'> &
+        AriaInput.InputProps;
+      fieldErrorProps?: AriaInput.FieldErrorProps;
     }
 > = ({
   label,
@@ -30,7 +23,7 @@ export const Input: React.FC<
   className,
   ...rest
 }) => (
-  <TextField
+  <AriaInput.TextField
     {...rest}
     className={twMerge(
       'col-r flex w-full text-base outline-none',
@@ -41,7 +34,7 @@ export const Input: React.FC<
     )}
   >
     {/* note: Order is flipped because of peer attribute*/}
-    <FieldError
+    <AriaInput.FieldError
       {...fieldErrorProps}
       className={twMerge(
         'text-2xs peer w-full text-red-700',
@@ -50,16 +43,16 @@ export const Input: React.FC<
           : undefined
       )}
     />
-    <AriaInput
+    <AriaInput.Input
       {...inputProps}
       className={twMerge(
-        'border-grayscale-400 placeholder:text-grayscale-400 peer- peer h-14 w-full border outline-none transition-colors focus:border-blue-400 data-[invalid]:border-red-700',
+        'peer- peer h-14 w-full border border-grayscale-400 outline-none transition-colors placeholder:text-grayscale-400 focus:border-blue-400 data-[invalid]:border-red-700',
         size === 'sm' && 'p-3',
         size === 'lg' && 'p-2',
         inputProps?.className
       )}
     />
-    <Label
+    <AriaInput.Label
       className={twJoin(
         'transition-colors peer-focus:text-blue-400 peer-data-[invalid]:text-red-700',
         size === 'sm' && 'text-md',
@@ -67,6 +60,6 @@ export const Input: React.FC<
       )}
     >
       {label}
-    </Label>
-  </TextField>
+    </AriaInput.Label>
+  </AriaInput.TextField>
 );

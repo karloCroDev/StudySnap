@@ -3,6 +3,7 @@
 'use client';
 // External packages
 import { Form } from 'react-aria-components';
+import { DialogClose } from '@radix-ui/react-dialog';
 
 // Components
 import { Logo } from '@/components/Logo';
@@ -41,7 +42,21 @@ export default function Home() {
       <Button variant="outline" size="lg">
         a
       </Button>
-      <Dialog title="Hello world">Hello world</Dialog>
+      <Dialog
+        triggerProps={{
+          children: <Button>Hello world</Button>,
+          asChild: true,
+        }}
+        title="Hello world"
+        footer={
+          // fix: Currently created like this, but will need the better way of handling the request that will be sended to server
+          <DialogClose asChild>
+            <Button className="self-start">Close</Button>
+          </DialogClose>
+        }
+      >
+        <h3>Hello world</h3>
+      </Dialog>
     </>
   );
 }

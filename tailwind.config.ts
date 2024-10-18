@@ -51,6 +51,52 @@ const config: Config = {
       zIndex: {
         max: '999',
       },
+      keyframes: {
+        // Dialog keyframes
+        'content-open': {
+          from: {
+            opacity: '0',
+            top: 'calc(50% + 500px)',
+          },
+          to: {
+            opacity: '1',
+            top: '50%',
+          },
+        },
+        'content-closed': {
+          from: {
+            opacity: '1',
+            top: '50%',
+          },
+          to: {
+            opacity: '0',
+            top: 'calc(50% - 500px)',
+          },
+        },
+        'overlay-open': {
+          from: {
+            opacity: '0',
+          },
+          to: {
+            opacity: '0.6',
+          },
+        },
+        'overlay-closed': {
+          from: {
+            opacity: '0.6',
+          },
+          to: {
+            opacity: '0',
+          },
+        },
+      },
+      animation: {
+        // Dialog animation
+        'content-open': 'content-open 500ms ease-in-out',
+        'content-closed': 'content-closed 500ms ease-in-out',
+        'overlay-open': 'overlay-open 250ms linear',
+        'overlay-closed': 'overlay-closed 250ms linear',
+      },
     },
   },
   plugins: [],
