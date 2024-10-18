@@ -27,7 +27,9 @@ const config: Config = {
         // note: Add more sizes if you think we need them
         '9xl': '60px',
       },
-
+      spacing: {
+        'desktop-dialog': '550px',
+      },
       colors: {
         blue: {
           400: '#3F72AF', // figma: light blue

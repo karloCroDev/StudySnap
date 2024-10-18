@@ -9,6 +9,7 @@ import { Logo } from '@/components/Logo';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { Layout, LayoutColumn, LayoutRow } from '@/components/Layout';
+import { Dialog } from '@/components/Dialog';
 
 export default function Home() {
   return (
@@ -40,7 +41,7 @@ export default function Home() {
       <Button variant="outline" size="lg">
         a
       </Button>
-      <div></div>
+      <Dialog title="Hello world">Hello world</Dialog>
     </>
   );
 }

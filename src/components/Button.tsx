@@ -41,7 +41,7 @@ export const getButtonClassNames = ({
       (colorScheme === 'light-blue'
         ? 'border border-blue-400 text-blue-400 hover:brightness-90'
         : colorScheme === 'dark-blue'
-          ? 'border border-blue-700 text-blue-700 hover:brightness-90'
+          ? 'border border-blue-900 text-blue-900 hover:brightness-90'
           : colorScheme === 'black' &&
             'border border-grayscale-900 text-grayscale-900 hover:brightness-90'),
 
@@ -50,7 +50,7 @@ export const getButtonClassNames = ({
       (colorScheme === 'light-blue'
         ? 'bg-blue-400 text-grayscale-100 transition-[filter] duration-200 hover:brightness-90'
         : colorScheme === 'dark-blue'
-          ? 'bg-blue-700 text-grayscale-100 transition-[filter] duration-200 hover:brightness-90'
+          ? 'bg-blue-900 text-grayscale-100 transition-[filter] duration-200 hover:brightness-90'
           : colorScheme === 'black'
             ? 'bg-grayscale-900 text-grayscale-100 transition-[filter] duration-200 hover:brightness-90'
             : colorScheme === 'white' &&
