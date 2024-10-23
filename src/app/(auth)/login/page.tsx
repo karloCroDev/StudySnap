@@ -2,15 +2,12 @@
 
 // Components
 import { Layout, LayoutColumn, LayoutRow } from '@/components/Layout';
+import { Toast } from '@/components/Toast';
 
 export default function Login() {
   return (
-    <Layout>
-      <LayoutRow>
-        <LayoutColumn md={10}>
-          <div className="h-20 w-full bg-black"></div>
-        </LayoutColumn>
-      </LayoutRow>
-    </Layout>
+    <div className="h-full w-full px-2">
+      <Toast title="Hello world" content="Whattt"></Toast>
+    </div>
   );
 }

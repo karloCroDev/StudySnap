@@ -130,8 +130,8 @@ const config: Config = {
         'overlay-closed': 'overlay-closed 250ms linear',
 
         // Toast animation
-        'slide-in': 'slide-in 200ms linear',
-        'slide-out': 'slide-out 100ms linear',
+        'slide-in': 'slide-in 250ms linear',
+        'slide-out': 'slide-out 150ms linear',
       },
     },
   },
