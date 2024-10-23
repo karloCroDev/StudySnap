@@ -36,23 +36,37 @@ const config: Config = {
           900: '#112D4E', // figma: dark blue
         },
         red: {
-          400: '#EF5A6F',
+          400: '#C62E2E',
         },
         green: {
           400: '#72BF78',
         },
         grayscale: {
-          // fix: add more grayscales (because figmas rgba doesn't work same as css on normal elements I think - they will be transparent)
-          100: '#F9F7F7',
+          100: '#F9F7F7', // figma: white
+          200: '#D0D0D2',
+          300: '#A1A1A4', // figma: light white
           400: '#898A8D',
-          900: '#000',
+          500: '#6F6F72',
+          600: '#545457',
+          700: '#3A3A3B',
+          800: '#1F1F20',
+          900: '#000', // figma: black
         },
       },
       zIndex: {
         max: '999',
       },
       keyframes: {
-        // Dialog keyframes
+        // Universal
+        hide: {
+          from: {
+            opacity: '1',
+          },
+          to: {
+            opacity: '0',
+          },
+        },
+        // Dialog
         'content-open': {
           from: {
             opacity: '0',
@@ -89,6 +103,24 @@ const config: Config = {
             opacity: '0',
           },
         },
+
+        // Toast
+        'slide-in': {
+          from: {
+            transform: 'translateX(-100%)',
+          },
+          to: {
+            transform: 'translateX(var(--radix-toast-swipe-end-x))',
+          },
+        },
+        'slide-out': {
+          from: {
+            transform: 'translateX(calc(var(--radix-toast-swipe-end-x)))',
+          },
+          to: {
+            transform: 'translateX(-100%)',
+          },
+        },
       },
       animation: {
         // Dialog animation
@@ -96,6 +128,10 @@ const config: Config = {
         'content-closed': 'content-closed 500ms ease-in-out',
         'overlay-open': 'overlay-open 250ms linear',
         'overlay-closed': 'overlay-closed 250ms linear',
+
+        // Toast animation
+        'slide-in': 'slide-in 200ms linear',
+        'slide-out': 'slide-out 100ms linear',
       },
     },
   },

@@ -6,16 +6,16 @@ import { Form } from 'react-aria-components';
 import { DialogClose } from '@radix-ui/react-dialog';
 
 // Components
+import { Layout, LayoutColumn, LayoutRow } from '@/components/Layout';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
-import { Layout, LayoutColumn, LayoutRow } from '@/components/Layout';
 import { Dialog } from '@/components/Dialog';
 import { Toast } from '@/components/Toast';
 
 export default function Home() {
   return (
-    <>
+    <Layout>
       <div className="flex flex-col gap-4 p-6">
         <Logo />
         <Button variant="outline" colorScheme="black" className="flex-grow-[1]">
@@ -58,9 +58,7 @@ export default function Home() {
         <h3>Hello world</h3>
       </Dialog>
 
-      <Toast title="What">
-        <Button>What</Button>
-      </Toast>
-    </>
+      <Toast title="What" content="Awesome news"></Toast>
+    </Layout>
   );
 }
