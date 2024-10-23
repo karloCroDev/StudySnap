@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-toast": "^1.2.2",
     "material-icons": "^1.13.12",
     "next": "14.2.15",
     "react": "^18",

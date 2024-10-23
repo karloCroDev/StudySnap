@@ -11,6 +11,7 @@ import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { Layout, LayoutColumn, LayoutRow } from '@/components/Layout';
 import { Dialog } from '@/components/Dialog';
+import { Toast } from '@/components/Toast';
 
 export default function Home() {
   return (
@@ -23,7 +24,6 @@ export default function Home() {
         <Button variant="outline" className="min-w-[6rem] flex-grow-0">
           A
         </Button>
-
         <Form className="flex flex-col gap-5">
           <Input
             isRequired
@@ -57,6 +57,10 @@ export default function Home() {
       >
         <h3>Hello world</h3>
       </Dialog>
+
+      <Toast title="What">
+        <Button>What</Button>
+      </Toast>
     </>
   );
 }
