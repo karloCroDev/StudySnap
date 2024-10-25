@@ -11,7 +11,6 @@ import { Logo } from '@/components/Logo';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { Dialog } from '@/components/Dialog';
-import { Toast } from '@/components/Toast';
 
 export default function Home() {
   return (
@@ -57,8 +56,6 @@ export default function Home() {
       >
         <h3>Hello world</h3>
       </Dialog>
-
-      <Toast title="What" content="Awesome news"></Toast>
     </Layout>
   );
 }
