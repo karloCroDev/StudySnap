@@ -14,10 +14,10 @@ import { Dialog } from '@/components/Dialog';
 // import { Toast } from '@/components/Toast';
 
 // Store
-import { toastStore } from '@/store/useToastStore';
+import { useToastStore } from '@/store/useToastStore';
 
 export default function Home() {
-  const toast = toastStore((state) => state.setToast);
+  const toast = useToastStore((state) => state.setToast);
   return (
     <Layout>
       <div className="flex flex-col gap-4 p-6">
@@ -62,7 +62,15 @@ export default function Home() {
         <h3>Hello world</h3>
       </Dialog>
 
-      <Button onClick={() => toast({ content: 'Slow cheetah', title: 'Test' })}>
+      <Button
+        onClick={() =>
+          toast({
+            title: 'Test',
+            content: 'Please restart  moments',
+            type: 'error',
+          })
+        }
+      >
         Click me
       </Button>
     </Layout>

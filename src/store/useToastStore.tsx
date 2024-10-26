@@ -3,15 +3,15 @@ import { create } from 'zustand';
 
 interface ToastStoreProps {
   isOpen: boolean;
+  setIsOpen: (val: boolean) => void;
   title: string;
   content: string;
   iconRight: React.ReactNode | null;
-  type: 'success' | 'error' | 'pending';
+  type: 'success' | 'error' | 'information';
 }
 
-export const toastStore = create<
+export const useToastStore = create<
   ToastStoreProps & {
-    setIsOpen: (val: boolean) => void;
     setToast: ({
       title,
       content,

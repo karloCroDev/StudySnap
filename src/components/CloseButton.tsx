@@ -12,8 +12,8 @@ export const CloseButton: React.FC<
     {...rest}
     className={twMerge(
       'absolute h-8 w-8 cursor-pointer',
-      positionTopPadding === 'sm' && 'right-2 top-2',
-      positionTopPadding === 'md' && 'right-5 top-3',
+      positionTopPadding === 'sm' && 'right-1.5 top-1.5',
+      positionTopPadding === 'md' && 'right-4 top-3',
       positionTopPadding === 'lg' && 'right-6 top-4',
       className
     )}
