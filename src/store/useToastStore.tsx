@@ -1,28 +1,44 @@
 // External packages
 import { create } from 'zustand';
 
-export const toastStore = create<{
+interface ToastStoreProps {
   isOpen: boolean;
-  setIsOpen: (val: boolean) => void;
   title: string;
-  setTitle: (val: string) => void;
   content: string;
-  setContent: (val: string) => void;
-  iconRight: React.ReactNode;
-  setIconRight: (val: React.ReactNode) => void;
+  iconRight: React.ReactNode | null;
   type: 'success' | 'error' | 'pending';
-  setType: (val: 'success' | 'error' | 'pending') => void;
-}>((set) => ({
+}
+
+export const toastStore = create<
+  ToastStoreProps & {
+    setIsOpen: (val: boolean) => void;
+    setToast: ({
+      title,
+      content,
+      iconRight,
+      type,
+    }: {
+      title: ToastStoreProps['title'];
+      content: ToastStoreProps['content'];
+      iconRight?: ToastStoreProps['iconRight'];
+      type?: ToastStoreProps['type'];
+    }) => void;
+  }
+>((set) => ({
   isOpen: false,
-  setIsOpen: (val) => set({ isOpen: val }),
   title: '',
-  setTitle: (val) => set({ title: val }),
   content: '',
-  setContent: (val) => set({ content: val }),
   iconRight: '',
-  setIconRight: (val) => set({ iconRight: val }),
   type: 'success',
-  setType: (val) => set({ type: val }),
+  setIsOpen: (val) => set({ isOpen: val }),
+  setToast: ({ title, content, iconRight, type = 'success' }) =>
+    set({
+      isOpen: true,
+      title,
+      content,
+      iconRight,
+      type,
+    }),
 }));
 
 // note: I can't use radix props, because I want to create toast component in the root of an application (like how other lbaries implmented). Props were meant for creating a toast in certain component, since a lot of components will use toast component this approach with global state managment in my opinion seems

@@ -11,22 +11,14 @@ import { CloseButton } from '@/components/CloseButton';
 // Store
 import { toastStore } from '@/store/useToastStore';
 
-export const Toast: React.FC<
-  React.ComponentPropsWithoutRef<typeof RadixToast.Root>
-> = ({ children }) => {
-  const { setIsOpen, isOpen, title, content, type, iconRight } = toastStore(
-    (state) => ({
-      setIsOpen: state.setIsOpen,
-      isOpen: state.isOpen,
-      title: state.title,
-      content: state.content,
-      type: state.type,
-      iconRight: state.iconRight,
-    })
+export const Toast = () => {
+  // todo: This is not the best practice to get states like this with => state
+  const { isOpen, setIsOpen, title, content, type, iconRight } = toastStore(
+    (state) => state
   );
+
   return (
     <RadixToast.Provider swipeDirection="left" duration={4000}>
-      {children}
       <RadixToast.Root
         onOpenChange={setIsOpen}
         open={isOpen}
@@ -42,15 +34,15 @@ export const Toast: React.FC<
           <RadixToast.Title className="text-md font-semibold">
             {title}
           </RadixToast.Title>
-          <RadixToast.Description className="mt-2 text-xs text-grayscale-300 md:text-sm">
+          <RadixToast.Description className="mt-2 text-xs text-grayscale-200 md:text-sm">
             {content}
           </RadixToast.Description>
         </div>
         {iconRight}
-        <RadixToast.Close onClick={() => setIsOpen(false)}>
+        <RadixToast.Close>
           <CloseButton
             positionTopPadding="sm"
-            className="text-grayscale-300 transition-[opacity] duration-300 md:pointer-events-none md:opacity-0 md:group-hover:pointer-events-auto md:group-hover:opacity-100"
+            className="text-grayscale-200 transition-[opacity] duration-300 md:pointer-events-none md:opacity-0 md:group-hover:pointer-events-auto md:group-hover:opacity-100"
           />
         </RadixToast.Close>
       </RadixToast.Root>

@@ -43,8 +43,8 @@ const config: Config = {
         },
         grayscale: {
           100: '#F9F7F7', // figma: white
-          200: '#D0D0D2',
-          300: '#A1A1A4', // figma: light white
+          200: '#D0D0D2', // figma: light white
+          300: '#A1A1A4',
           400: '#898A8D',
           500: '#6F6F72',
           600: '#545457',

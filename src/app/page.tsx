@@ -11,8 +11,13 @@ import { Logo } from '@/components/Logo';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { Dialog } from '@/components/Dialog';
+// import { Toast } from '@/components/Toast';
+
+// Store
+import { toastStore } from '@/store/useToastStore';
 
 export default function Home() {
+  const toast = toastStore((state) => state.setToast);
   return (
     <Layout>
       <div className="flex flex-col gap-4 p-6">
@@ -56,6 +61,10 @@ export default function Home() {
       >
         <h3>Hello world</h3>
       </Dialog>
+
+      <Button onClick={() => toast({ content: 'Slow cheetah', title: 'Test' })}>
+        Click me
+      </Button>
     </Layout>
   );
 }
