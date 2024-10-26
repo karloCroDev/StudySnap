@@ -30,7 +30,7 @@ export const getButtonClassNames = ({
   rounded: AdditionalButtonProps['rounded'];
 }): string =>
   twJoin(
-    'flex min-w-24 items-center justify-around outline-none',
+    'flex min-w-24 items-center justify-center gap-4 outline-none',
     size === 'sm' ? 'px-4 py-2 text-md' : 'px-6 py-3 text-lg',
     rounded === 'md' && 'rounded',
     rounded === 'none' && 'rounded-none',
@@ -42,7 +42,7 @@ export const getButtonClassNames = ({
         ? 'border border-blue-400 text-blue-400 hover:brightness-90'
         : colorScheme === 'dark-blue'
           ? 'border border-blue-900 text-blue-900 hover:brightness-90'
-          : colorScheme === 'black' &&
+          : (colorScheme === 'black' || colorScheme === 'white') &&
             'border border-grayscale-900 text-grayscale-900 hover:brightness-90'),
 
     // Solid styles
