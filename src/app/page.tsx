@@ -6,11 +6,11 @@ import { Form } from 'react-aria-components';
 import { DialogClose } from '@radix-ui/react-dialog';
 
 // Components
-import { Layout, LayoutColumn, LayoutRow } from '@/components/Layout';
-import { Logo } from '@/components/Logo';
-import { Button } from '@/components/Button';
-import { Input } from '@/components/Input';
-import { Dialog } from '@/components/Dialog';
+import { Layout, LayoutColumn, LayoutRow } from '@/components/global/Layout';
+import { Logo } from '@/components/global/Logo';
+import { Button } from '@/components/global/Button';
+import { Input } from '@/components/global/Input';
+import { Dialog } from '@/components/global/Dialog';
 // import { Toast } from '@/components/Toast';
 
 // Store
@@ -48,7 +48,7 @@ export default function Home() {
       </Button>
       <Dialog
         triggerProps={{
-          children: <Button>Hello world</Button>,
+          children: <Button>H</Button>,
           asChild: true,
         }}
         title="Hello world"
@@ -59,7 +59,7 @@ export default function Home() {
           </DialogClose>
         }
       >
-        <h3>Hello world</h3>
+        <h3>Dialog</h3>
       </Dialog>
 
       <Button
@@ -67,7 +67,7 @@ export default function Home() {
           toast({
             title: 'Test',
             content: 'Please restart  moments',
-            type: 'error',
+            type: 'information',
           })
         }
       >

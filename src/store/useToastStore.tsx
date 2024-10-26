@@ -6,8 +6,7 @@ interface ToastStoreProps {
   setIsOpen: (val: boolean) => void;
   title: string;
   content: string;
-  iconRight: React.ReactNode | null;
-  type: 'success' | 'error' | 'information';
+  variant: 'success' | 'error' | 'information';
 }
 
 export const useToastStore = create<
@@ -15,13 +14,11 @@ export const useToastStore = create<
     setToast: ({
       title,
       content,
-      iconRight,
-      type,
+      variant,
     }: {
       title: ToastStoreProps['title'];
       content: ToastStoreProps['content'];
-      iconRight?: ToastStoreProps['iconRight'];
-      type?: ToastStoreProps['type'];
+      variant?: ToastStoreProps['variant'];
     }) => void;
   }
 >((set) => ({
@@ -29,15 +26,14 @@ export const useToastStore = create<
   title: '',
   content: '',
   iconRight: '',
-  type: 'success',
+  variant: 'success',
   setIsOpen: (val) => set({ isOpen: val }),
-  setToast: ({ title, content, iconRight, type = 'success' }) =>
+  setToast: ({ title, content, variant = 'success' }) =>
     set({
       isOpen: true,
       title,
       content,
-      iconRight,
-      type,
+      variant,
     }),
 }));
 

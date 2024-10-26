@@ -2,7 +2,7 @@
 import * as RadixDialog from '@radix-ui/react-dialog'; // Importing as everything because of readabilty
 
 // Components
-import { CloseButton } from '@/components/CloseButton';
+import { CloseButton } from '@/components/global/CloseButton';
 
 export const Dialog: React.FC<
   React.ComponentPropsWithoutRef<'button'> &

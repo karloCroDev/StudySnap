@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
 export const Logo = () => (
   <p
     className={twMerge(
-      'text-5xl font-semibold !italic',
+      'text-2xl font-semibold !italic',
       plus_jakarta_sans.className
     )}
   >

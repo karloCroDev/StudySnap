@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 import './globals.css';
 
 // Components
-import { Toast } from '@/components/Toast';
+import { Toast } from '@/components/global/Toast';
 
 export default function RootLayout({
   children,
