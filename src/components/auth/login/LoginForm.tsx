@@ -17,6 +17,8 @@ export const LoginForm = () => {
   return (
     <AriaForm className="mt-4 flex flex-col gap-y-8 md:gap-y-6 2xl:mt-8">
       <Input
+        isRequired
+        type="email"
         label="Email"
         size="lg"
         inputProps={{
@@ -25,6 +27,7 @@ export const LoginForm = () => {
         }}
       />
       <Input
+        isRequired
         label="Password"
         size="lg"
         type="password"
@@ -33,7 +36,7 @@ export const LoginForm = () => {
           onChange: (e) => setPassword(e.target.value),
         }}
       />
-      <Button colorScheme="light-blue" rounded="none" size="lg">
+      <Button colorScheme="light-blue" rounded="none" size="lg" type="submit">
         Log in
       </Button>
       {/* <Divider />

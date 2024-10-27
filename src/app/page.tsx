@@ -67,7 +67,7 @@ export default function Home() {
           toast({
             title: 'Test',
             content: 'Please restart  moments',
-            type: 'information',
+            variant: 'information',
           })
         }
       >

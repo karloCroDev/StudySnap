@@ -6,7 +6,7 @@ import Link from 'next/link';
 // Components
 import { Logo } from '@/components/global/Logo';
 import { Layout, LayoutColumn, LayoutRow } from '@/components/global/Layout';
-import { LoginForm } from '@/components/auth/login/LoginForm';
+import { SignupForm } from '@/components/auth/sign-up/SignupForm';
 // Images
 import ImageLogin from '@/public/images/login-image.png';
 
@@ -27,22 +27,22 @@ export default function Signup() {
           lg={4}
           className="flex flex-1 items-center"
         >
-          <div className="pb-6">
+          <div className="mt-12 pb-6 2xl:mt-0">
             <h1 className="text-2xl font-bold sm:text-3xl xl:text-4xl">
-              Welcome back!
+              Let's get started!
             </h1>
             <p className="mt-4 text-sm text-grayscale-400 md:text-base">
               The faster you fill up, the closer you will be to a revolutionary
               way of handling studies
             </p>
-            <LoginForm />
+            <SignupForm />
             <p className="mt-4 text-grayscale-400 xl:mt-12">
               Already have an account?{' '}
               <Link
                 href="/login"
                 className="font-semibold text-grayscale-900 underline"
               >
-                Sign up
+                Log in
               </Link>
             </p>
           </div>
