@@ -31,7 +31,8 @@ export const getButtonClassNames = ({
 }): string =>
   twJoin(
     'flex min-w-24 items-center justify-center gap-4 outline-none',
-    size === 'sm' ? 'px-4 py-2 text-md' : 'px-6 py-3 text-lg',
+    size === 'sm' && 'px-4 h-10 text-md',
+    size === 'lg' && 'px-6  h-16 text-lg',
     rounded === 'md' && 'rounded',
     rounded === 'none' && 'rounded-none',
     rounded === 'full' && 'rounded-full',

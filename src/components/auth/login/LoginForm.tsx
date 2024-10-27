@@ -15,7 +15,7 @@ export const LoginForm = () => {
   const [password, setPassword] = React.useState('');
   console.log(email, password);
   return (
-    <AriaForm className="mt-8 flex flex-col gap-y-8">
+    <AriaForm className="mt-4 flex flex-col gap-y-8 md:gap-y-6 2xl:mt-8">
       <Input
         label="Email"
         size="lg"
@@ -27,6 +27,7 @@ export const LoginForm = () => {
       <Input
         label="Password"
         size="lg"
+        type="password"
         inputProps={{
           placeholder: '********',
           onChange: (e) => setPassword(e.target.value),
@@ -35,7 +36,7 @@ export const LoginForm = () => {
       <Button colorScheme="light-blue" rounded="none" size="lg">
         Log in
       </Button>
-      <Divider />
+      {/* <Divider />
       <Button
         variant="outline"
         rounded="none"
@@ -44,7 +45,7 @@ export const LoginForm = () => {
         iconLeft={<FaGoogle className="text-blue-900" />}
       >
         Log in with Google
-      </Button>
+      </Button> */}
     </AriaForm>
   );
 };
