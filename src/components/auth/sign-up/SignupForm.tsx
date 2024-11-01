@@ -47,7 +47,7 @@ export const SignupForm = () => {
           onChange: (e) => setPassword(e.target.value),
         }}
       />
-      <Button colorScheme="light-blue" rounded="none" type="submit" size="lg">
+      <Button rounded="none" type="submit" size="lg">
         Sign up
       </Button>
       {/* <Divider />

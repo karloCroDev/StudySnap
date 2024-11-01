@@ -1,7 +1,7 @@
 'use client'; // fix: Remove this because, when I use button I use by default the use client in that component
 
 // External packages
-import * as AriaInput from 'react-aria-components'; // note: same reason as Radix library
+import * as AriaInput from 'react-aria-components'; // note: more readable
 import { twMerge, twJoin } from 'tailwind-merge';
 
 export const Input: React.FC<

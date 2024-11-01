@@ -11,6 +11,7 @@ import { Logo } from '@/components/global/Logo';
 import { Button } from '@/components/global/Button';
 import { Input } from '@/components/global/Input';
 import { Dialog } from '@/components/global/Dialog';
+import { Search } from '@/components/global/Search';
 // import { Toast } from '@/components/Toast';
 
 // Store
@@ -73,6 +74,7 @@ export default function Home() {
       >
         Click me
       </Button>
+      <Search label="Search" className="mt-10" />
     </Layout>
   );
 }

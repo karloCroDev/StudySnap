@@ -1,6 +1,6 @@
 // External packages
 import type { Metadata } from 'next';
-
+import { twJoin } from 'tailwind-merge';
 // Fonts
 import { poppins } from '@/libs/fonts';
 
@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
+      <body className={twJoin(poppins.className, 'bg-grayscale-10')}>
         {children}
         <Toast />
       </body>

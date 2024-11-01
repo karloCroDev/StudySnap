@@ -8,12 +8,12 @@ import { Logo } from '@/components/global/Logo';
 import { Layout, LayoutColumn, LayoutRow } from '@/components/global/Layout';
 import { SignupForm } from '@/components/auth/sign-up/SignupForm';
 // Images
-import ImageLogin from '@/public/images/login-image.png';
+import ImageSignup from '@/public/images/sign-up-image.png';
 
 export const metadata: Metadata = {
-  title: 'Log in',
+  title: 'Sign up',
   description:
-    'Quick, log in to StudySnap! The faster you fill up, the closer you will be to a revolutionary way of handling studies',
+    'Welcome to StudySnap! The faster you fill up, the closer you will be to a revolutionary way of handling studies',
 };
 
 export default function Signup() {
@@ -31,7 +31,7 @@ export default function Signup() {
             <h1 className="text-2xl font-bold sm:text-3xl xl:text-4xl">
               Let's get started!
             </h1>
-            <p className="mt-4 text-sm text-grayscale-400 md:text-base">
+            <p className="mt-4 text-sm text-grayscale-400 xl:text-base">
               The faster you fill up, the closer you will be to a revolutionary
               way of handling studies
             </p>
@@ -49,7 +49,7 @@ export default function Signup() {
         </LayoutColumn>
         {/* note: Hacky way of doing this, but want to pursue the layout in the app */}
         <Image
-          src={ImageLogin}
+          src={ImageSignup}
           alt="Login thumbnail"
           className="absolute bottom-0 right-0 hidden h-screen w-1/2 object-cover lg:block"
         />

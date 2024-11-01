@@ -31,7 +31,7 @@ export default function Login() {
             <h1 className="text-2xl font-bold sm:text-3xl xl:text-4xl">
               Welcome back!
             </h1>
-            <p className="mt-4 text-sm text-grayscale-400 md:text-base">
+            <p className="mt-4 text-sm text-grayscale-400 xl:text-base">
               The faster you fill up, the closer you will be to a revolutionary
               way of handling studies
             </p>
