@@ -74,7 +74,9 @@ export default function Home() {
       >
         Click me
       </Button>
-      <Search label="Search" className="mt-10" />
+      <Search placeholderLabel="Search" className="mt-10" />
+
+      <div></div>
     </Layout>
   );
 }

@@ -27,7 +27,7 @@ export default function Login() {
           lg={4}
           className="flex flex-1 items-center"
         >
-          <div className="pb-6">
+          <div className="w-full pb-6">
             <h1 className="text-2xl font-bold sm:text-3xl xl:text-4xl">
               Welcome back!
             </h1>

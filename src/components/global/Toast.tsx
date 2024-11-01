@@ -5,8 +5,11 @@ import * as React from 'react';
 import * as RadixToast from '@radix-ui/react-toast';
 import { twJoin } from 'tailwind-merge';
 import { useShallow } from 'zustand/shallow';
-import { MdAccessTime, MdErrorOutline } from 'react-icons/md';
-import { IoIosCheckmarkCircleOutline } from 'react-icons/io';
+import {
+  CheckCircledIcon,
+  ClockIcon,
+  ExclamationTriangleIcon,
+} from '@radix-ui/react-icons';
 
 // Components
 import { CloseButton } from '@/components/global/CloseButton';
@@ -49,11 +52,13 @@ export const Toast = () => {
           </RadixToast.Description>
         </div>
         {variant === 'information' && (
-          <MdAccessTime className={sharedIconStyles} />
+          <ClockIcon className={sharedIconStyles} />
         )}
-        {variant === 'error' && <MdErrorOutline className={sharedIconStyles} />}
+        {variant === 'error' && (
+          <ExclamationTriangleIcon className={sharedIconStyles} />
+        )}
         {variant === 'success' && (
-          <IoIosCheckmarkCircleOutline className={sharedIconStyles} />
+          <CheckCircledIcon className={sharedIconStyles} />
         )}
         <RadixToast.Close asChild>
           <CloseButton

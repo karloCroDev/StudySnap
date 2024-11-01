@@ -27,7 +27,7 @@ export default function Signup() {
           lg={4}
           className="flex flex-1 items-center"
         >
-          <div className="mt-12 pb-6 2xl:mt-0">
+          <div className="mt-12 w-full pb-6 2xl:mt-0">
             <h1 className="text-2xl font-bold sm:text-3xl xl:text-4xl">
               Let's get started!
             </h1>

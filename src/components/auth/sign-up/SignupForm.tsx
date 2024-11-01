@@ -3,12 +3,10 @@
 // External packages
 import * as React from 'react';
 import { Form as AriaForm } from 'react-aria-components';
-import { FaGoogle } from 'react-icons/fa';
 
 // Components
 import { Input } from '@/components/global/Input';
 import { Button } from '@/components/global/Button';
-import { Divider } from '@/components/global/Divider';
 
 export const SignupForm = () => {
   const [username, setUsername] = React.useState('');
@@ -50,13 +48,18 @@ export const SignupForm = () => {
       <Button rounded="none" type="submit" size="lg">
         Sign up
       </Button>
-      {/* <Divider />
+      {/* 
+       <div className="flex items-center gap-6">
+      <hr className="h-px w-full border-0 bg-grayscale-900" />
+      <p className="text-sm font-semibold">or</p>
+      <hr className="h-px w-full border-0 bg-grayscale-900" />
+    </div>
       <Button
         variant="outline"
         rounded="none"
         colorScheme="black"
         size="lg"
-        iconLeft={<FaGoogle className="text-blue-900" />}
+        iconLeft={<FaGoogle className="text-blue-900" /> // Add image rather than icon}
       >
         Sign up with Google
       </Button> */}
