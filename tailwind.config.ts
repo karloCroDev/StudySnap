@@ -34,6 +34,9 @@ const config: Config = {
       spacing: {
         'desktop-dialog': '550px',
       },
+      lineHeight: {
+        12: '48px',
+      },
       colors: {
         blue: {
           400: '#3F72AF', // figma: light blue
@@ -63,6 +66,15 @@ const config: Config = {
       keyframes: {
         // Universal
         hide: {
+          from: {
+            opacity: '1',
+          },
+          to: {
+            opacity: '0',
+          },
+        },
+
+        show: {
           from: {
             opacity: '1',
           },
@@ -125,6 +137,29 @@ const config: Config = {
             transform: 'translateX(-100%)',
           },
         },
+
+        // Menu
+        'menu-open': {
+          from: {
+            opacity: '0',
+            transform: 'translateY(100px)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
+        },
+
+        'menu-closed': {
+          from: {
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
+          to: {
+            opacity: '0',
+            transform: 'translateY(100px)',
+          },
+        },
       },
       animation: {
         // Dialog animation
@@ -136,6 +171,10 @@ const config: Config = {
         // Toast animation
         'slide-in': 'slide-in 250ms linear',
         'slide-out': 'slide-out 150ms linear',
+
+        // Menu animation
+        'menu-open': 'menu-open 300ms ease-in-out',
+        'menu-closed': 'menu-closed 300ms ease-in-out',
       },
     },
   },

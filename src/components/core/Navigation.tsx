@@ -8,7 +8,6 @@ import { LinkAsButton } from '@/components/global/LinkAsButton';
 
 export const Navigation = () => {
   const pathname = usePathname();
-
   return (
     <>
       <LinkAsButton

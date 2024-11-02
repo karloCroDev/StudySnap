@@ -1,7 +1,8 @@
 // Components
-import { Layout, LayoutRow } from '@/components/global/Layout';
+import { Layout } from '@/components/global/Layout';
 import { Logo } from '@/components/global/Logo';
 import { Navigation } from '@/components/core/Navigation';
+import { Menu } from '@/components/core/Menu';
 
 export default function CoreLayout({
   children,
@@ -21,15 +22,13 @@ export default function CoreLayout({
                 <Navigation />
               </li>
               <li>
-                <div className="w-10 rounded-full bg-grayscale-400 text-center leading-10 text-white">
-                  AH
-                </div>
+                <Menu />
               </li>
             </ul>
           </nav>
         </Layout>
       </div>
-      <div className="mt-24">{children}</div>
+      <Layout className="mt-24">{children}</Layout>
     </>
   );
 }
