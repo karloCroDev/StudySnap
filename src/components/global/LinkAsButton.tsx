@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge';
 import {
   getButtonClassNames,
   AdditionalButtonProps,
-} from '@/components/Button';
+} from '@/components/global/Button';
 
 export const LinkAsButton: React.FC<
   React.ComponentPropsWithoutRef<'a'> & LinkProps & AdditionalButtonProps

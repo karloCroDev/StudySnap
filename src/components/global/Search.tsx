@@ -23,16 +23,16 @@ export const Search: React.FC<
       )}
     >
       <div className="flex w-fit items-center rounded bg-blue-900 px-3">
-        <label htmlFor="searchId">
-          <MagnifyingGlassIcon className="size-6 cursor-pointer" />
-        </label>
+        <AriaInput.Label>
+          <MagnifyingGlassIcon className="size-6" />
+        </AriaInput.Label>
         <div className="relative">
-          <AriaInput.Label
+          <p
             ref={placeholderLabelRef}
             className="peer absolute left-3 top-1/2 origin-left -translate-y-1/2 transition-transform data-[label-floating=true]:-translate-y-[22px] data-[label-floating=true]:scale-75"
           >
             {placeholderLabel}
-          </AriaInput.Label>
+          </p>
 
           <AriaInput.Input
             {...inputProps}

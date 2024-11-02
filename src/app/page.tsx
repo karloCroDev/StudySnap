@@ -4,6 +4,7 @@
 // External packages
 import { Form } from 'react-aria-components';
 import { DialogClose } from '@radix-ui/react-dialog';
+import * as React from 'react';
 
 // Components
 import { Layout, LayoutColumn, LayoutRow } from '@/components/global/Layout';
@@ -19,6 +20,8 @@ import { useToastStore } from '@/store/useToastStore';
 
 export default function Home() {
   const toast = useToastStore((state) => state.setToast);
+
+  const [isOpen, setIsOpen] = React.useState(false);
   return (
     <Layout>
       <div className="flex flex-col gap-4 p-6">
@@ -68,7 +71,7 @@ export default function Home() {
           toast({
             title: 'Test',
             content: 'Please restart  moments',
-            variant: 'information',
+            variant: 'error',
           })
         }
       >
@@ -76,7 +79,33 @@ export default function Home() {
       </Button>
       <Search placeholderLabel="Search" className="mt-10" />
 
-      <div></div>
+      <Dialog
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        triggerProps={{
+          children: <Button className="mt-10">Open modal</Button>,
+        }}
+        title="Cool man"
+      >
+        <div>
+          <Input
+            isMdHorizontal
+            label="Username"
+            inputProps={{
+              placeholder: 'Hello world',
+            }}
+          />
+          <Input
+            className="mt-6"
+            label="Details (optional)"
+            isMdHorizontal
+            inputProps={{
+              placeholder: 'Live like and subscribe',
+            }}
+          />
+        </div>
+        <Button onClick={() => setIsOpen(false)}>Finish the task </Button>
+      </Dialog>
     </Layout>
   );
 }

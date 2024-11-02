@@ -29,7 +29,6 @@ export const Toast = () => {
     }))
   );
 
-  const sharedIconStyles = React.useMemo(() => 'w-12 h-12', []);
   return (
     <RadixToast.Provider swipeDirection="left" duration={3000}>
       <RadixToast.Root
@@ -51,15 +50,11 @@ export const Toast = () => {
             {content}
           </RadixToast.Description>
         </div>
-        {variant === 'information' && (
-          <ClockIcon className={sharedIconStyles} />
-        )}
+        {variant === 'information' && <ClockIcon className="h-12 w-12" />}
         {variant === 'error' && (
-          <ExclamationTriangleIcon className={sharedIconStyles} />
+          <ExclamationTriangleIcon className="h-12 w-12" />
         )}
-        {variant === 'success' && (
-          <CheckCircledIcon className={sharedIconStyles} />
-        )}
+        {variant === 'success' && <CheckCircledIcon className="h-12 w-12" />}
         <RadixToast.Close asChild>
           <CloseButton
             positionTopPadding="sm"

@@ -9,7 +9,7 @@ export const Input: React.FC<
     AriaInput.TextFieldProps & {
       label: string;
       size?: 'sm' | 'lg';
-      isVertical?: boolean;
+      isMdHorizontal?: boolean;
       inputProps?: React.ComponentPropsWithoutRef<'input'> &
         AriaInput.InputProps;
       fieldErrorProps?: AriaInput.FieldErrorProps;
@@ -17,7 +17,7 @@ export const Input: React.FC<
 > = ({
   label,
   size = 'sm',
-  isVertical = true,
+  isMdHorizontal = false,
   inputProps,
   fieldErrorProps,
   className,
@@ -26,10 +26,8 @@ export const Input: React.FC<
   <AriaInput.TextField
     {...rest}
     className={twMerge(
-      'col-r flex w-full text-base outline-none',
-      isVertical
-        ? 'flex-col-reverse gap-y-2'
-        : 'flex-row-reverse items-center gap-x-6',
+      'flex w-full flex-col-reverse gap-y-2 text-base outline-none',
+      isMdHorizontal && 'md:flex-row-reverse md:items-center md:gap-x-6',
       className
     )}
   >
@@ -46,9 +44,10 @@ export const Input: React.FC<
     <AriaInput.Input
       {...inputProps}
       className={twMerge(
-        'peer w-full border border-grayscale-400 outline-none transition-colors placeholder:text-grayscale-400 focus:border-blue-400 data-[invalid]:border-red-700',
+        'peer w-full border border-grayscale-400 bg-inherit outline-none transition-colors placeholder:text-grayscale-400 focus:border-blue-400 data-[invalid]:border-red-700',
         size === 'sm' && 'h-12 p-3',
         size === 'lg' && 'h-14 p-4',
+        isMdHorizontal && 'md:max-w-72',
         inputProps?.className
       )}
     />
@@ -59,7 +58,7 @@ export const Input: React.FC<
         size === 'lg' && 'text-lg font-semibold'
       )}
     >
-      {label}
+      <p>{label}</p>
     </AriaInput.Label>
   </AriaInput.TextField>
 );
