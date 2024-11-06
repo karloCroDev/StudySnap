@@ -57,7 +57,6 @@ export default function Home() {
         }}
         title="Hello world"
         footer={
-          // fix: Currently created like this, but will need the better way of handling the request that will be sended to server
           <DialogClose asChild>
             <Button className="self-start">Close</Button>
           </DialogClose>
