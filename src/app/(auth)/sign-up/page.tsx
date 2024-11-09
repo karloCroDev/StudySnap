@@ -4,8 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 // Components
-import { Logo } from '@/components/global/Logo';
-import { Layout, LayoutColumn, LayoutRow } from '@/components/global/Layout';
+import { Logo } from '@/components/ui/Logo';
+import { Layout, LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { SignupForm } from '@/components/auth/sign-up/SignupForm';
 // Images
 import ImageSignup from '@/public/images/sign-up-image.png';

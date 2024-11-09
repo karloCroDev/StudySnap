@@ -5,8 +5,8 @@ import * as React from 'react';
 import { Form as AriaForm } from 'react-aria-components';
 
 // Components
-import { Input } from '@/components/global/Input';
-import { Button } from '@/components/global/Button';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
 
 export const SignupForm = () => {
   const [username, setUsername] = React.useState('');

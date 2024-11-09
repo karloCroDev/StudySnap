@@ -1,13 +1,8 @@
-'use client'; // fix: Remove this because, when I use button I use by default the use client in that component
-
-// External pcakages
-import {
-  Button as AriaButton,
-  ButtonProps as AriaProps,
-} from 'react-aria-components';
+// Extenral packages
+import Link, { LinkProps as LinkProps } from 'next/link';
 import { twMerge, twJoin } from 'tailwind-merge';
 
-// explanation: Shared styles and types between Button.tsx component and LinkAsButtton.tsx component
+// Explanation: Shared styles and types between Button.tsx component and LinkAsButtton.tsx component
 
 export interface AdditionalButtonProps {
   variant?: 'solid' | 'outline';
@@ -58,9 +53,8 @@ export const getButtonClassNames = ({
               'bg-grayscale-100 text-grayscale-900 transition-[filter] duration-200 hover:brightness-90')
   );
 
-// Button.tsx component
-export const Button: React.FC<
-  React.ComponentPropsWithoutRef<'button'> & AriaProps & AdditionalButtonProps
+export const LinkAsButton: React.FC<
+  React.ComponentPropsWithoutRef<'a'> & LinkProps & AdditionalButtonProps
 > = ({
   colorScheme = 'dark-blue',
   variant = 'solid',
@@ -72,15 +66,15 @@ export const Button: React.FC<
   className,
   ...rest
 }) => (
-  <AriaButton
+  <Link
     {...rest}
     className={twMerge(
-      getButtonClassNames({ size, colorScheme, rounded, variant }),
+      getButtonClassNames({ colorScheme, rounded, size, variant }),
       className
     )}
   >
     {iconLeft}
     {children}
     {iconRight}
-  </AriaButton>
+  </Link>
 );

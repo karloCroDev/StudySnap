@@ -4,9 +4,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 // Components
-import { Logo } from '@/components/global/Logo';
-import { Layout, LayoutColumn, LayoutRow } from '@/components/global/Layout';
+import { Logo } from '@/components/ui/Logo';
+import { Layout, LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { LoginForm } from '@/components/auth/login/LoginForm';
+
 // Images
 import ImageLogin from '@/public/images/login-image.png';
 

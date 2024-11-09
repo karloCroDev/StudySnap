@@ -7,12 +7,12 @@ import { DialogClose } from '@radix-ui/react-dialog';
 import * as React from 'react';
 
 // Components
-import { Layout, LayoutColumn, LayoutRow } from '@/components/global/Layout';
-import { Logo } from '@/components/global/Logo';
-import { Button } from '@/components/global/Button';
-import { Input } from '@/components/global/Input';
-import { Dialog } from '@/components/global/Dialog';
-import { Search } from '@/components/global/Search';
+import { Layout, LayoutColumn, LayoutRow } from '@/components/ui/Layout';
+import { Logo } from '@/components/ui/Logo';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Dialog } from '@/components/ui/Dialog';
+import { Search } from '@/components/ui/Search';
 // import { Toast } from '@/components/Toast';
 
 // Store

@@ -11,7 +11,7 @@ import {
 import { PersonIcon, ExitIcon, GearIcon } from '@radix-ui/react-icons';
 
 // Components
-import { Button } from '@/components/global/Button';
+import { Button } from '@/components/ui/Button';
 
 export const Menu = () => (
   <MenuTrigger>
@@ -19,14 +19,14 @@ export const Menu = () => (
       colorScheme="white"
       size="lg"
       iconLeft={
-        <div className="leading-12 w-12 rounded-full bg-grayscale-400 text-center text-md text-white">
+        <div className="w-12 rounded-full bg-grayscale-400 text-center text-md leading-12 text-white">
           AH
         </div>
       }
     >
       <p className="text-lg font-semibold 2xl:text-xl">Ivan Horvat</p>
     </Button>
-    <Popover className="data-[entering]:animate-menu-open data-[exiting]:animate-menu-closed z-max w-[var(--trigger-width)] outline-none data-[exiting]:pointer-events-none data-[entering]:pointer-events-auto">
+    <Popover className="z-max w-[var(--trigger-width)] outline-none data-[exiting]:pointer-events-none data-[entering]:pointer-events-auto data-[entering]:animate-menu-open data-[exiting]:animate-menu-closed">
       <AriaMenu className="overflow-hidden rounded-md border border-grayscale-900">
         <MenuItem className="flex cursor-pointer items-center gap-2 border-b border-grayscale-900 bg-grayscale-100 p-2 outline-none hover:brightness-90">
           <GearIcon />

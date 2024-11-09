@@ -1,10 +1,16 @@
+'use client';
+
 // External packages
 import Image from 'next/image';
 import {
   PlusIcon,
   ArrowRightIcon,
   DoubleArrowRightIcon,
+  MagnifyingGlassIcon,
 } from '@radix-ui/react-icons';
+
+// Components
+import { Button } from '@/components/ui/Button';
 
 // Images
 import ImageExample from '@/public/images/login-image.png';
@@ -14,6 +20,9 @@ import ImageExample from '@/public/images/login-image.png';
 export default function Subjects() {
   return (
     <div className="mt-32">
+      <Button className="min-w-0" size="lg">
+        <MagnifyingGlassIcon className="h-8 w-8" />
+      </Button>
       <div className="h-[270px] w-[300px] cursor-pointer rounded-2xl border-2 border-blue-400">
         <div className="flex h-[70%] items-center justify-center">
           <PlusIcon className="h-24 w-24 text-blue-900" />

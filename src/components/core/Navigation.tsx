@@ -4,7 +4,7 @@
 import { usePathname } from 'next/navigation';
 
 // Components
-import { LinkAsButton } from '@/components/global/LinkAsButton';
+import { LinkAsButton } from '@/components/ui/LinkAsButton';
 
 export const Navigation = () => {
   const pathname = usePathname();

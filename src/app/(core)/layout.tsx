@@ -1,6 +1,6 @@
 // Components
-import { Layout } from '@/components/global/Layout';
-import { Logo } from '@/components/global/Logo';
+import { Layout } from '@/components/ui/Layout';
+import { Logo } from '@/components/ui/Logo';
 import { Navigation } from '@/components/core/Navigation';
 import { Menu } from '@/components/core/Menu';
 

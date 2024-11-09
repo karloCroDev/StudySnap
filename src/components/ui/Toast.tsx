@@ -12,7 +12,7 @@ import {
 } from '@radix-ui/react-icons';
 
 // Components
-import { CloseButton } from '@/components/global/CloseButton';
+import { CloseButton } from '@/components/ui/CloseButton';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
