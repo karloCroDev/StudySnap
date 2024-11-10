@@ -39,8 +39,8 @@ const config: Config = {
       },
       colors: {
         blue: {
-          400: '#3F72AF', // figma: light blue
-          900: '#112D4E', // figma: dark blue
+          400: '#3F72AF',
+          900: '#112D4E',
         },
         red: {
           400: '#C62E2E',
@@ -48,9 +48,9 @@ const config: Config = {
         green: {
           400: '#72BF78',
         },
-        grayscale: {
+        gray: {
           100: '#F9F7F7', // figma: white
-          200: '#D0D0D2', // figma: light white
+          200: '#D0D0D2',
           300: '#A1A1A4',
           400: '#898A8D',
           500: '#6F6F72',

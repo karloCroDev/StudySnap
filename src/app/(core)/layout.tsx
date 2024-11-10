@@ -11,7 +11,7 @@ export default function CoreLayout({
 }>) {
   return (
     <>
-      <div className="fixed left-0 top-0 h-24 w-full border-b border-grayscale-900">
+      <div className="fixed left-0 top-0 h-24 w-full border-b border-gray-900">
         <Layout className="h-full">
           <nav className="h-full">
             <ul className="flex h-full items-center justify-between">

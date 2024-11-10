@@ -17,10 +17,7 @@ export const Search: React.FC<
 
   return (
     <AriaInput.TextField
-      className={twMerge(
-        'text-base text-grayscale-100 outline-none',
-        className
-      )}
+      className={twMerge('text-base text-gray-100 outline-none', className)}
     >
       <div className="flex w-fit items-center rounded bg-blue-900 px-3">
         <AriaInput.Label>
@@ -38,7 +35,7 @@ export const Search: React.FC<
             {...inputProps}
             id="searchId"
             className={twMerge(
-              'h-14 w-full rounded border-grayscale-200 bg-blue-900 px-3 outline-none peer-data-[label-floating=true]:pt-3',
+              'h-14 w-full rounded border-gray-200 bg-blue-900 px-3 outline-none peer-data-[label-floating=true]:pt-3',
               inputProps?.className
             )}
             onChange={(event) => {

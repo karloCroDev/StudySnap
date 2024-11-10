@@ -44,7 +44,7 @@ export const Input: React.FC<
     <AriaInput.Input
       {...inputProps}
       className={twMerge(
-        'peer w-full border border-grayscale-400 bg-inherit outline-none transition-colors placeholder:text-grayscale-400 focus:border-blue-400 data-[invalid]:border-red-700',
+        'peer w-full border border-gray-400 bg-inherit outline-none transition-colors placeholder:text-gray-400 focus:border-blue-400 data-[invalid]:border-red-700',
         size === 'sm' && 'h-12 p-3',
         size === 'lg' && 'h-14 p-4',
         isMdHorizontal && 'md:max-w-72',

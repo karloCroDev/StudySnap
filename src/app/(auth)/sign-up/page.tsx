@@ -31,16 +31,16 @@ export default function Signup() {
             <h1 className="text-2xl font-bold sm:text-3xl xl:text-4xl">
               Let's get started!
             </h1>
-            <p className="mt-4 text-sm text-grayscale-400 xl:text-base">
+            <p className="mt-4 text-sm text-gray-400 xl:text-base">
               The faster you fill up, the closer you will be to a revolutionary
               way of handling studies
             </p>
             <SignupForm />
-            <p className="mt-4 text-grayscale-400 xl:mt-12">
+            <p className="mt-4 text-gray-400 xl:mt-12">
               Already have an account?{' '}
               <Link
                 href="/login"
-                className="font-semibold text-grayscale-900 underline"
+                className="font-semibold text-gray-900 underline"
               >
                 Log in
               </Link>

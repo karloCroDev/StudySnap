@@ -50,9 +50,9 @@ export const SignupForm = () => {
       </Button>
       {/* 
        <div className="flex items-center gap-6">
-      <hr className="h-px w-full border-0 bg-grayscale-900" />
+      <hr className="h-px w-full border-0 bg-gray-900" />
       <p className="text-sm font-semibold">or</p>
-      <hr className="h-px w-full border-0 bg-grayscale-900" />
+      <hr className="h-px w-full border-0 bg-gray-900" />
     </div>
       <Button
         variant="outline"

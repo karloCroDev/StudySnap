@@ -32,16 +32,16 @@ export default function Login() {
             <h1 className="text-2xl font-bold sm:text-3xl xl:text-4xl">
               Welcome back!
             </h1>
-            <p className="mt-4 text-sm text-grayscale-400 xl:text-base">
+            <p className="mt-4 text-sm text-gray-400 xl:text-base">
               The faster you fill up, the closer you will be to a revolutionary
               way of handling studies
             </p>
             <LoginForm />
-            <p className="mt-4 text-grayscale-400 xl:mt-12">
+            <p className="mt-4 text-gray-400 xl:mt-12">
               Don't have an account?{' '}
               <Link
                 href="/sign-up"
-                className="font-semibold text-grayscale-900 underline"
+                className="font-semibold text-gray-900 underline"
               >
                 Sign up
               </Link>

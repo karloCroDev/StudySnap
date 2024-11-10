@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={twJoin(poppins.className, 'bg-grayscale-100')}>
+      <body className={twJoin(poppins.className, 'bg-gray-100')}>
         {children}
         <Toast />
       </body>

@@ -39,7 +39,7 @@ export default function Home() {
             name="email"
             label="Username"
             size="lg"
-            className="mt-20 w-[500px]"
+            className="mt-20"
             inputProps={{
               placeholder: 'Enter your username',
             }}

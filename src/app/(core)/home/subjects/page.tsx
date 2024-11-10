@@ -38,7 +38,7 @@ export default function Subjects() {
 
       <div className="mt-20"></div>
 
-      <div className="relative h-[270px] w-[300px] cursor-pointer overflow-hidden rounded-xl border-2 border-blue-400 p-6 pb-4 text-grayscale-100">
+      <div className="relative h-[270px] w-[300px] cursor-pointer overflow-hidden rounded-xl border-2 border-blue-400 p-6 pb-4 text-gray-100">
         <Image
           src={ImageExample}
           alt="Informative image about subject"
@@ -46,7 +46,7 @@ export default function Subjects() {
         />
         <div className="flex h-full flex-col">
           <h3 className="text-2xl font-semibold">Biology</h3>
-          <h6 className="text-xs font-medium text-grayscale-200">
+          <h6 className="text-xs font-medium text-gray-200">
             Lorem ipsum dolorem
           </h6>
           <div className="mt-auto flex items-center justify-between">

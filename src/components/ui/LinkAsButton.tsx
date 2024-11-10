@@ -39,18 +39,18 @@ export const getButtonClassNames = ({
         : colorScheme === 'dark-blue'
           ? 'border border-blue-900 text-blue-900 hover:brightness-90'
           : (colorScheme === 'black' || colorScheme === 'white') &&
-            'border border-grayscale-900 text-grayscale-900 hover:brightness-90'),
+            'border border-gray-900 text-gray-900 hover:brightness-90'),
 
     // Solid styles
     variant === 'solid' &&
       (colorScheme === 'light-blue'
-        ? 'bg-blue-400 text-grayscale-100 transition-[filter] duration-200 hover:brightness-90'
+        ? 'bg-blue-400 text-gray-100 transition-[filter] duration-200 hover:brightness-90'
         : colorScheme === 'dark-blue'
-          ? 'bg-blue-900 text-grayscale-100 transition-[filter] duration-200 hover:brightness-90'
+          ? 'bg-blue-900 text-gray-100 transition-[filter] duration-200 hover:brightness-90'
           : colorScheme === 'black'
-            ? 'bg-grayscale-900 text-grayscale-100 transition-[filter] duration-200 hover:brightness-90'
+            ? 'bg-gray-900 text-gray-100 transition-[filter] duration-200 hover:brightness-90'
             : colorScheme === 'white' &&
-              'bg-grayscale-100 text-grayscale-900 transition-[filter] duration-200 hover:brightness-90')
+              'bg-gray-100 text-gray-900 transition-[filter] duration-200 hover:brightness-90')
   );
 
 export const LinkAsButton: React.FC<

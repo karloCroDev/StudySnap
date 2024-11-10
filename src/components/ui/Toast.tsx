@@ -9,10 +9,8 @@ import {
   CheckCircledIcon,
   ClockIcon,
   ExclamationTriangleIcon,
+  Cross2Icon,
 } from '@radix-ui/react-icons';
-
-// Components
-import { CloseButton } from '@/components/ui/CloseButton';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
@@ -38,7 +36,7 @@ export const Toast = () => {
           variant === 'success' && 'bg-blue-900',
           variant === 'information' && 'bg-blue-400',
           variant === 'error' && 'bg-red-400',
-          'group relative flex w-full items-center justify-between rounded-lg px-4 py-5 text-grayscale-100',
+          'group relative flex w-full items-center justify-between rounded-lg px-4 py-5 text-gray-100',
           'data-[swipe=cancel]:-translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:-translate-x-[15%] data-[state=closed]:animate-slide-out data-[state=open]:animate-slide-in data-[swipe=end]:animate-slide-out data-[swipe=cancel]:transition-transform data-[swipe=move]:duration-100'
         )}
       >
@@ -46,7 +44,7 @@ export const Toast = () => {
           <RadixToast.Title className="text-lg font-semibold md:text-xl">
             {title}
           </RadixToast.Title>
-          <RadixToast.Description className="text text-sm text-grayscale-200">
+          <RadixToast.Description className="text text-sm text-gray-200">
             {content}
           </RadixToast.Description>
         </div>
@@ -56,10 +54,7 @@ export const Toast = () => {
         )}
         {variant === 'success' && <CheckCircledIcon className="h-12 w-12" />}
         <RadixToast.Close asChild>
-          <CloseButton
-            positionTopPadding="sm"
-            className="text-grayscale-200 opacity-0 transition-[opacity] duration-300 group-hover:pointer-events-auto md:pointer-events-none md:group-hover:opacity-100"
-          />
+          <Cross2Icon className="w absolute right-2 top-2 h-5 w-5 cursor-pointer text-gray-100 opacity-0 transition-[opacity] duration-300 group-hover:pointer-events-auto md:pointer-events-none md:group-hover:opacity-100" />
         </RadixToast.Close>
       </RadixToast.Root>
       {/* todo: Decide padding on mobile */}
