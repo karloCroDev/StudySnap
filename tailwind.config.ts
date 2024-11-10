@@ -33,9 +33,13 @@ const config: Config = {
       },
       spacing: {
         'desktop-dialog': '550px',
+        42: '168px',
       },
       lineHeight: {
         12: '48px',
+      },
+      textUnderlineOffset: {
+        12: '12px',
       },
       colors: {
         blue: {

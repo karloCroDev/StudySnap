@@ -1,4 +1,4 @@
-// Libs (fonts)
+// Libs
 import { plus_jakarta_sans } from '@/libs/fonts';
 import { twMerge } from 'tailwind-merge';
 

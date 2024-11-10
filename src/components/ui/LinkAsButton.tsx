@@ -25,7 +25,7 @@ export const getButtonClassNames = ({
   rounded: AdditionalButtonProps['rounded'];
 }): string =>
   twJoin(
-    'flex min-w-24 items-center justify-center gap-4 outline-none',
+    'flex items-center justify-center gap-4 outline-none',
     size === 'sm' && 'px-4 h-10 text-md',
     size === 'lg' && 'px-6  h-16 text-lg',
     rounded === 'md' && 'rounded',

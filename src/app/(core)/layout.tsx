@@ -28,7 +28,7 @@ export default function CoreLayout({
           </nav>
         </Layout>
       </div>
-      <Layout className="mt-24">{children}</Layout>
+      <Layout className="mt-42">{children}</Layout>
     </>
   );
 }
