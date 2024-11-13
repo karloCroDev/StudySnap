@@ -9,8 +9,7 @@ export const Search: React.FC<
   React.ComponentPropsWithoutRef<'div'> &
     AriaInput.TextFieldProps & {
       placeholderLabel: string; // Custom placehloder that converts to label when user starts typing
-      inputProps?: React.ComponentPropsWithoutRef<'input'> &
-        AriaInput.InputProps;
+      inputProps?: React.ComponentProps<'input'> & AriaInput.InputProps;
     }
 > = ({ placeholderLabel, inputProps, className }) => {
   const placeholderLabelRef = React.useRef(null);
