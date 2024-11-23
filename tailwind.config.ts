@@ -217,6 +217,25 @@ const config: Config = {
             transform: 'translateY(-100px)',
           },
         },
+
+        // Drawer
+        'drawer-slide-open': {
+          from: {
+            opacity: '0',
+            transform: 'translateX(-83.33%)',
+          },
+          to: { opacity: '1', transform: 'translateX(0)' },
+        },
+        'drawer-slide-closed': {
+          from: {
+            opacity: '1',
+            transform: 'translateX(0)',
+          },
+          to: {
+            opacity: '0',
+            transform: 'translateX(-83.33%)',
+          },
+        },
       },
       animation: {
         // Dialog animation
@@ -234,12 +253,16 @@ const config: Config = {
         'menu-closed': 'menu-closed 300ms ease-in-out',
 
         // Search animation
-        // 'search-desktop-initial-open':
-        //   'search-desktop-initial-open 300ms ease-in',
         'search-open': 'search-open 300ms ease-in',
         'search-closed': 'search-closed 300ms ease-in',
+        // 'search-desktop-initial-open':
+        //   'search-desktop-initial-open 300ms ease-in',
         'heading-open': 'heading-open 300ms ease-in-out',
         'heading-closed': 'heading-closed 300ms ease-in-out',
+
+        // Drawer animation
+        'drawer-slide-open': 'drawer-slide-open 400ms ease-in',
+        'drawer-slide-closed': 'drawer-slide-closed 400ms ease-in',
       },
     },
   },

@@ -33,7 +33,7 @@ export const Search: React.FC<
         <div className="relative">
           <p
             ref={placeholderLabelRef}
-            className="peer absolute left-3 top-1/2 origin-left -translate-y-1/2 transition-transform data-[label-floating]:-translate-y-[22px] data-[label-floating]:scale-75"
+            className="peer pointer-events-none absolute left-3 top-1/2 origin-left -translate-y-1/2 transition-transform data-[label-floating]:-translate-y-[22px] data-[label-floating]:scale-75"
           >
             {placeholderLabel}
           </p>
