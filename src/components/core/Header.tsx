@@ -1,6 +1,9 @@
 'use client';
 
 // External packages
+import * as React from 'react';
+import * as RadixDialog from '@radix-ui/react-dialog';
+import { GearIcon, PersonIcon, ExitIcon } from '@radix-ui/react-icons';
 import {
   Menu as AriaMenu,
   MenuTrigger,
@@ -8,13 +11,45 @@ import {
   Popover,
   // Button as AriaButton,
 } from 'react-aria-components';
-import { PersonIcon, ExitIcon, GearIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 
-// Components
-import { Button } from '@/components/ui/Button';
+import { usePathname } from 'next/navigation';
 
-export const Menu = () => (
+// Components
+import { LinkAsButton } from '@/components/ui/LinkAsButton';
+import { Button } from '@/components/ui/Button';
+import { Layout } from '@/components/ui/Layout';
+import { Logo } from '@/components/ui/Logo';
+import { Drawer } from '@/components/core/Drawer';
+
+export const Header = () => {
+  return (
+    <>
+      <div className="fixed left-0 top-0 z-max h-24 w-full border-b border-gray-900">
+        <Layout className="h-full">
+          <nav className="h-full">
+            <ul className="flex h-full items-center justify-between">
+              <li>
+                <Logo />
+              </li>
+              <li className="hidden gap-4 lg:flex">
+                <Navigation />
+              </li>
+              <li className="hidden lg:block">
+                <Menu />
+              </li>
+              <li className="lg:hidden">
+                <Drawer />
+              </li>
+            </ul>
+          </nav>
+        </Layout>
+      </div>
+    </>
+  );
+};
+
+const Menu = () => (
   <MenuTrigger>
     <Button
       colorScheme="white"
@@ -50,3 +85,23 @@ export const Menu = () => (
     </Popover>
   </MenuTrigger>
 );
+
+const Navigation = () => {
+  const pathname = usePathname();
+  return (
+    <>
+      <LinkAsButton
+        href="/home/subjects"
+        colorScheme={pathname.includes('/home') ? 'dark-blue' : 'white'}
+      >
+        Home
+      </LinkAsButton>
+      <LinkAsButton
+        href="/discover"
+        colorScheme={pathname.includes('/discover') ? 'dark-blue' : 'white'}
+      >
+        Discover
+      </LinkAsButton>
+    </>
+  );
+};
