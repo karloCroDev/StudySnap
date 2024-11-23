@@ -165,6 +165,58 @@ const config: Config = {
             transform: 'translateY(100px)',
           },
         },
+
+        // Search
+        // 'search-desktop-initial-open': {
+        //   from: {
+        //     opacity: '0',
+        //     transform: 'translateX(200px)',
+        //   },
+        //   to: {
+        //     opacity: '1',
+        //     transform: 'translateX(0px)',
+        //   },
+        // },
+        'search-open': {
+          from: {
+            opacity: '0',
+            transform: 'translateX(-200px)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'translateX(0px)',
+          },
+        },
+        'search-closed': {
+          from: {
+            opacity: '1',
+            transform: 'translateX(0px)',
+          },
+          to: {
+            opacity: '0',
+            transform: 'translateX(-200px)',
+          },
+        },
+        'heading-open': {
+          from: {
+            opacity: '0',
+            transform: 'translateY(-100px)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'translateX(0px)',
+          },
+        },
+        'heading-closed': {
+          from: {
+            opacity: '1',
+            transform: 'translateY(0px)',
+          },
+          to: {
+            opacity: '0',
+            transform: 'translateY(-100px)',
+          },
+        },
       },
       animation: {
         // Dialog animation
@@ -180,6 +232,14 @@ const config: Config = {
         // Menu animation
         'menu-open': 'menu-open 300ms ease-in-out',
         'menu-closed': 'menu-closed 300ms ease-in-out',
+
+        // Search animation
+        // 'search-desktop-initial-open':
+        //   'search-desktop-initial-open 300ms ease-in',
+        'search-open': 'search-open 300ms ease-in',
+        'search-closed': 'search-closed 300ms ease-in',
+        'heading-open': 'heading-open 300ms ease-in-out',
+        'heading-closed': 'heading-closed 300ms ease-in-out',
       },
     },
   },
