@@ -37,6 +37,7 @@ const config: Config = {
       },
       lineHeight: {
         12: '48px',
+        14: '56px',
       },
       textUnderlineOffset: {
         12: '12px',

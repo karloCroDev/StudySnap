@@ -66,7 +66,7 @@ export default function Home() {
       </Dialog>
 
       <Button
-        onClick={() =>
+        onPress={() =>
           toast({
             title: 'Test',
             content: 'Please restart  moments',
