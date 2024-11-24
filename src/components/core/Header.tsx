@@ -25,7 +25,7 @@ import { Drawer } from '@/components/core/Drawer';
 export const Header = () => {
   return (
     <>
-      <div className="fixed left-0 top-0 z-max h-24 w-full border-b border-gray-900">
+      <div className="fixed left-0 top-0 z-max h-24 w-full border-b border-gray-900 bg-gray-100">
         <Layout className="h-full">
           <nav className="h-full">
             <ul className="flex h-full items-center justify-between">
@@ -60,7 +60,7 @@ const Menu = () => (
         </div>
       }
     >
-      <p className="text-lg font-semibold 2xl:text-xl">Ivan Horvat</p>
+      <p className="text-lg font-medium 2xl:text-xl">Ivan Horvat</p>
     </Button>
     <Popover className="z-max w-[var(--trigger-width)] outline-none data-[exiting]:pointer-events-none data-[entering]:pointer-events-auto data-[entering]:animate-menu-open data-[exiting]:animate-menu-closed">
       <AriaMenu className="overflow-hidden rounded-md border border-gray-900">

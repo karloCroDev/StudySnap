@@ -9,11 +9,11 @@ const config: Config = {
   safelist: [
     {
       pattern: /w-column-(1|2|3|4|5|6|7|8|9|10|11|12)/,
-      variants: ['sm', 'md', 'lg', 'xl'],
+      variants: ['sm', 'md', 'lg', 'xl', '2xl', 'xl2'],
     },
     {
       pattern: /offset-(1|2|3|4|5|6|7|8|9|10|11)/,
-      variants: ['sm', 'md', 'lg', 'xl'],
+      variants: ['sm', 'md', 'lg', 'xl', '2xl', 'xl2'],
     },
   ],
   theme: {
@@ -34,6 +34,8 @@ const config: Config = {
       spacing: {
         'desktop-dialog': '550px',
         42: '168px',
+        68: '272px',
+        76: '304px',
       },
       lineHeight: {
         12: '48px',
@@ -236,6 +238,24 @@ const config: Config = {
             transform: 'translateX(-83.33%)',
           },
         },
+        'card-options-hover': {
+          from: {
+            opacity: '0',
+            transform: 'translateY(-50px)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
+        },
+        'card-options-unhovered': {
+          from: {
+            transform: 'translateY(0)',
+          },
+          to: {
+            transform: 'translateY(-50px)',
+          },
+        },
       },
       animation: {
         // Dialog animation
@@ -263,6 +283,10 @@ const config: Config = {
         // Drawer animation
         'drawer-slide-open': 'drawer-slide-open 400ms ease-in',
         'drawer-slide-closed': 'drawer-slide-closed 400ms ease-in',
+
+        // Card animation
+        'card-options-hover': 'card-options-hover 200ms ease-in',
+        'card-options-unhovered': 'card-options-unhovered 200ms ease-in',
       },
     },
   },

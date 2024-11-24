@@ -199,7 +199,43 @@
     width: 100%;
   }
 
-  /* Offsets */
+  /* xl2 */
+  .\32xl\:w-column-1 {
+    width: calc((1 / 12) * 100%);
+  }
+  .\32xl\:w-column-2 {
+    width: calc((2 / 12) * 100%);
+  }
+  .\32xl\:w-column-3 {
+    width: calc((3 / 12) * 100%);
+  }
+  .\32xl\:w-column-4 {
+    width: calc((4 / 12) * 100%);
+  }
+  .\32xl\:w-column-5 {
+    width: calc((5 / 12) * 100%);
+  }
+  .\32xl\:w-column-6 {
+    width: calc((6 / 12) * 100%);
+  }
+  .\32xl\:w-column-7 {
+    width: calc((7 / 12) * 100%);
+  }
+  .\32xl\:w-column-8 {
+    width: calc((8 / 12) * 100%);
+  }
+  .\32xl\:w-column-9 {
+    width: calc((9 / 12) * 100%);
+  }
+  .\32xl\:w-column-10 {
+    width: calc((10 / 12) * 100%);
+  }
+  .\32xl\:w-column-11 {
+    width: calc((11 / 12) * 100%);
+  }
+  .\32xl\:w-column-12 {
+    width: 100%;
+  }
 
   /* xs */
   .offset-1 {
@@ -373,6 +409,41 @@
     margin-left: calc((10 / 12) * 100%);
   }
   .xl\:offset-11 {
+    margin-left: calc((11 / 12) * 100%);
+  }
+
+  /* xl2 */
+  .\32xl\:offset-1 {
+    margin-left: calc((1 / 12) * 100%);
+  }
+  .\32xl\:offset-2 {
+    margin-left: calc((2 / 12) * 100%);
+  }
+  .\32xl\:offset-3 {
+    margin-left: calc((3 / 12) * 100%);
+  }
+  .\32xl\:offset-4 {
+    margin-left: calc((4 / 12) * 100%);
+  }
+  .\32xl\:offset-5 {
+    margin-left: calc((5 / 12) * 100%);
+  }
+  .\32xl\:offset-6 {
+    margin-left: calc((6 / 12) * 100%);
+  }
+  .\32xl\:offset-7 {
+    margin-left: calc((7 / 12) * 100%);
+  }
+  .\32xl\:offset-8 {
+    margin-left: calc((8 / 12) * 100%);
+  }
+  .\32xl\:offset-9 {
+    margin-left: calc((9 / 12) * 100%);
+  }
+  .\32xl\:offset-10 {
+    margin-left: calc((10 / 12) * 100%);
+  }
+  .\32xl\:offset-11 {
     margin-left: calc((11 / 12) * 100%);
   }
 }

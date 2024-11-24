@@ -28,23 +28,27 @@ export const LayoutColumn: React.FC<
     md?: number;
     lg?: number;
     xl?: number;
+    xl2?: number;
     xsOffset?: number;
     smOffset?: number;
     mdOffset?: number;
     lgOffset?: number;
     xlOffset?: number;
+    xl2Offset?: number;
   }
 > = ({
-  xs = 11,
+  xs = 12,
   sm,
   md,
   lg,
   xl,
+  xl2,
   xsOffset,
   smOffset,
   mdOffset,
   lgOffset,
   xlOffset,
+  xl2Offset,
   className,
   children,
 }) => (
@@ -56,13 +60,14 @@ export const LayoutColumn: React.FC<
       md && `md:w-column-${md}`,
       lg && `lg:w-column-${lg}`,
       xl && `xl:w-column-${xl}`,
-
+      xl2 && `2xl:w-column-${xl2}`,
       // Offset classes
       xsOffset && `offset-${xsOffset}`,
       smOffset && `sm:offset-${smOffset}`,
       mdOffset && `md:offset-${mdOffset}`,
       lgOffset && `lg:offset-${lgOffset}`,
       xlOffset && `xl:offset-${xlOffset}`,
+      xl2Offset && `2xl:offset-${xl2Offset}`,
       className
     )}
   >

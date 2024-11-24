@@ -21,12 +21,7 @@ export default function Signup() {
     <Layout>
       <LayoutRow className="h-screen flex-col flex-nowrap">
         <Logo className="mt-5 2xl:mt-10" />
-        <LayoutColumn
-          xs={12}
-          lgOffset={1}
-          lg={4}
-          className="flex flex-1 items-center"
-        >
+        <LayoutColumn lgOffset={1} lg={4} className="flex flex-1 items-center">
           <div className="mt-12 w-full pb-6 2xl:mt-0">
             <h1 className="text-2xl font-bold sm:text-3xl xl:text-4xl">
               Let's get started!

@@ -29,8 +29,7 @@ export const SearchableHeader: React.FC<{
   };
   return (
     <LayoutRow className="mt-32 justify-center lg:mt-42">
-      {/* Seperate component */}
-      <LayoutColumn xs={12} lg={10}>
+      <LayoutColumn lg={10}>
         <div ref={infoHeader} className="group flex justify-between">
           <h1
             className={twJoin(
