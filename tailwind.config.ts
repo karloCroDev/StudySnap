@@ -219,6 +219,26 @@ const config: Config = {
             transform: 'translateY(-100px)',
           },
         },
+        'search-initial-apperance': {
+          from: {
+            opacity: '0',
+            transform: 'translateX(200px)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'translateY(0px)',
+          },
+        },
+        'title-initial-apperance': {
+          from: {
+            opacity: '0',
+            transform: 'translateX(-200px)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'translateY(0px)',
+          },
+        },
 
         // Drawer
         'drawer-slide-open': {
@@ -238,6 +258,8 @@ const config: Config = {
             transform: 'translateX(-83.33%)',
           },
         },
+
+        // Card
         'card-options-hover': {
           from: {
             opacity: '0',
@@ -254,6 +276,16 @@ const config: Config = {
           },
           to: {
             transform: 'translateY(-50px)',
+          },
+        },
+        'card-initial-apperance': {
+          from: {
+            opacity: '0',
+            transform: 'translateY(400px)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'translateY(0)',
           },
         },
       },
@@ -275,18 +307,19 @@ const config: Config = {
         // Search animation
         'search-open': 'search-open 300ms ease-in',
         'search-closed': 'search-closed 300ms ease-in',
-        // 'search-desktop-initial-open':
-        //   'search-desktop-initial-open 300ms ease-in',
-        'heading-open': 'heading-open 300ms ease-in-out',
-        'heading-closed': 'heading-closed 300ms ease-in-out',
+        'title-open': 'title-open 300ms ease-in-out',
+        'title-closed': 'title-closed 300ms ease-in-out',
+        'search-initial-apperance': 'search-initial-apperance 500ms ease-in',
+        'title-initial-apperance': 'title-initial-apperance 500ms ease-in',
 
         // Drawer animation
         'drawer-slide-open': 'drawer-slide-open 400ms ease-in',
         'drawer-slide-closed': 'drawer-slide-closed 400ms ease-in',
 
         // Card animation
-        'card-options-hover': 'card-options-hover 200ms ease-in',
-        'card-options-unhovered': 'card-options-unhovered 200ms ease-in',
+        'card-options-hover': 'card-options-hover 200ms linear',
+        'card-options-unhovered': 'card-options-unhovered 200ms linear',
+        'card-initial-apperance': 'card-initial-apperance 500ms ease-in',
       },
     },
   },

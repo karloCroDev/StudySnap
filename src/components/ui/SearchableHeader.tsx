@@ -33,7 +33,7 @@ export const SearchableHeader: React.FC<{
         <div ref={infoHeader} className="group flex justify-between">
           <h1
             className={twJoin(
-              '-z-10 w-full text-2xl font-bold !italic underline decoration-2 underline-offset-12 group-data-[search-visible=true]:pointer-events-none group-data-[search-visible=false]:pointer-events-auto group-data-[search-visible=true]:fixed group-data-[search-visible=false]:animate-heading-open group-data-[search-visible=true]:animate-heading-closed group-data-[search-visible=false]:opacity-100 group-data-[search-visible=true]:opacity-0 md:text-4xl 2xl:text-5xl',
+              'group-data-[search-visible=false]:animate-title-open group-data-[search-visible=true]:animate-title-closed animate-title-initial-apperance -z-10 w-full text-2xl font-bold !italic underline decoration-2 underline-offset-12 group-data-[search-visible=true]:pointer-events-none group-data-[search-visible=false]:pointer-events-auto group-data-[search-visible=true]:fixed group-data-[search-visible=false]:opacity-100 group-data-[search-visible=true]:opacity-0 md:text-4xl 2xl:text-5xl',
               plus_jakarta_sans.className
             )}
           >
@@ -42,7 +42,7 @@ export const SearchableHeader: React.FC<{
 
           <Search
             placeholderLabel="Search"
-            className="fixed opacity-0 group-data-[search-visible=true]:pointer-events-auto group-data-[search-visible=true]:relative group-data-[search-visible=false]:animate-search-closed group-data-[search-visible=true]:animate-search-open group-data-[search-visible=true]:opacity-100 sm:pointer-events-auto sm:relative sm:opacity-100"
+            className="animate-search-initial-apperance fixed opacity-0 group-data-[search-visible=true]:pointer-events-auto group-data-[search-visible=true]:relative group-data-[search-visible=false]:animate-search-closed group-data-[search-visible=true]:animate-search-open group-data-[search-visible=true]:opacity-100 sm:pointer-events-auto sm:relative sm:opacity-100"
             // data-search-visible="true"
           />
           <AriaButton
