@@ -83,12 +83,24 @@ const config: Config = {
 
         show: {
           from: {
-            opacity: '1',
-          },
-          to: {
             opacity: '0',
           },
+          to: {
+            opacity: '1',
+          },
         },
+        // auth
+        'auth-page': {
+          from: {
+            opacity: '0',
+            transform: 'translateY(50%)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
+        },
+
         // Dialog
         'content-open': {
           from: {
@@ -168,17 +180,6 @@ const config: Config = {
           },
         },
 
-        // Search
-        // 'search-desktop-initial-open': {
-        //   from: {
-        //     opacity: '0',
-        //     transform: 'translateX(200px)',
-        //   },
-        //   to: {
-        //     opacity: '1',
-        //     transform: 'translateX(0px)',
-        //   },
-        // },
         'search-open': {
           from: {
             opacity: '0',
@@ -199,7 +200,7 @@ const config: Config = {
             transform: 'translateX(-200px)',
           },
         },
-        'heading-open': {
+        'title-open': {
           from: {
             opacity: '0',
             transform: 'translateY(-100px)',
@@ -209,7 +210,7 @@ const config: Config = {
             transform: 'translateX(0px)',
           },
         },
-        'heading-closed': {
+        'title-closed': {
           from: {
             opacity: '1',
             transform: 'translateY(0px)',
@@ -290,6 +291,13 @@ const config: Config = {
         },
       },
       animation: {
+        // General animation
+        show: 'show 500ms ease-in-out',
+        hide: 'hide 500ms ease-in-out',
+
+        // Auth animation
+        'auth-page': 'auth-page 500ms ease-in-out',
+
         // Dialog animation
         'content-open': 'content-open 500ms ease-in-out',
         'content-closed': 'content-closed 500ms ease-in-out',
