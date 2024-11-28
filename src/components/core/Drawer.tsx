@@ -44,7 +44,7 @@ export const Drawer = () => {
           <li>
             <RadixDialog.Close asChild>
               <LinkAsButton
-                href="/home"
+                href="/home/subjects"
                 size="lg"
                 colorScheme={pathname.includes('/home') ? 'dark-blue' : 'white'}
                 iconLeft={<HomeIcon className="size-6" />}

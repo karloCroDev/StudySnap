@@ -25,7 +25,7 @@ import { Drawer } from '@/components/core/Drawer';
 export const Header = () => {
   return (
     <>
-      <div className="fixed left-0 top-0 z-max h-24 w-full border-b border-gray-900 bg-gray-100">
+      <div className="fixed left-0 top-0 z-20 h-24 w-full border-b border-gray-900 bg-gray-100">
         <Layout className="h-full">
           <nav className="h-full">
             <ul className="flex h-full items-center justify-between">

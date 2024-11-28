@@ -10,7 +10,7 @@ export const CreateCard: React.FC<{
         <PlusIcon className="h-24 w-24 text-blue-900 transition-colors duration-200 group-hover:text-blue-400" />
       </div>
       <div className="flex flex-1 items-center justify-between px-4">
-        <h4 className="text-base font-medium md:text-md">Create new {type}</h4>
+        <h4 className="text-md">Create new {type}</h4>
         <ArrowRightIcon className="size-10 text-blue-400 transition-transform duration-200 group-hover:translate-x-3" />
       </div>
     </div>

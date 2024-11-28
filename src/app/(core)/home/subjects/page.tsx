@@ -15,15 +15,15 @@ export default function Subjects() {
     <>
       <SearchableHeader title="Subjects" />
       <LayoutRow className="mt-8 animate-card-initial-apperance justify-center sm:mt-12 lg:mt-16">
-        <LayoutColumn xs={10}>
+        <LayoutColumn lg={10}>
           <LayoutRow className="sm:-pr-4 pr-0">
-            <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 pr-4">
+            <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
               <CreateCard type="subject" />
             </LayoutColumn>
             {[...Array(7)].map((_, i) => {
               if ((i + 1) % 2) {
                 return (
-                  <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 pr-4">
+                  <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
                     <MetaCard
                       title="Biology"
                       description="Lorem ipsum dolorem"
@@ -42,7 +42,7 @@ export default function Subjects() {
                 );
               } else {
                 return (
-                  <LayoutColumn sm={6} lg={4} xl2={3} className="pb-8 pr-4">
+                  <LayoutColumn sm={6} lg={4} xl2={3} className="pb-8 sm:pr-4">
                     <MetaCard
                       title="Biology"
                       description="Lorem ipsum dolorem"

@@ -57,7 +57,7 @@ export default function Home() {
         }}
         title="Hello world"
         footer={
-          <DialogClose asChild>
+          <DialogClose>
             <Button className="self-start">Close</Button>
           </DialogClose>
         }
@@ -69,7 +69,7 @@ export default function Home() {
         onPress={() =>
           toast({
             title: 'Test',
-            content: 'Please restart  moments',
+            content: 'Please restart moments',
             variant: 'error',
           })
         }
@@ -83,6 +83,7 @@ export default function Home() {
         onOpenChange={setIsOpen}
         triggerProps={{
           children: <Button className="mt-10">Open modal</Button>,
+          asChild: true,
         }}
         title="Cool man"
       >
@@ -103,7 +104,7 @@ export default function Home() {
             }}
           />
         </div>
-        <Button onClick={() => setIsOpen(false)}>Finish the task </Button>
+        <Button onPress={() => setIsOpen(false)}>Finish the task </Button>
       </Dialog>
     </Layout>
   );
