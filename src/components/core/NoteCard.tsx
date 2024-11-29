@@ -1,6 +1,7 @@
 // External packages
 import {
-  DoubleArrowRightIcon,
+  HeartIcon,
+  HeartFilledIcon,
   TrashIcon,
   Pencil1Icon,
 } from '@radix-ui/react-icons';
@@ -10,12 +11,13 @@ import { twJoin } from 'tailwind-merge';
 // Components
 import { DeleteDialog } from '@/components/core/subjects/DeleteDialog';
 
-export const MetaCard: React.FC<{
-  type: string;
+export const NoteCard: React.FC<{
   title: string;
   description?: string;
-  image?: React.ReactNode;
-}> = ({ type, title, description, image }) => {
+  author: string;
+  likes: number;
+  image?: React.ReactNode; // note: set this to pro feature if we have time to implement
+}> = ({ title, description, image, author, likes }) => {
   return (
     <div
       className={twJoin(
@@ -39,8 +41,13 @@ export const MetaCard: React.FC<{
           )}
         </div>
         <div className="mt-auto flex items-center justify-between">
-          <p className="font-medium">Check out your {type}</p>
-          <DoubleArrowRightIcon className="size-6 transition-transform duration-200 group-hover:translate-x-3" />
+          {/* Add pfp */}
+          <p className="font-medium">{author}</p>
+          <div className="gap'4 flex items-center gap-2">
+            {likes}
+            <HeartFilledIcon className="size-6" />
+          </div>
+          {/* <HeartFilledIcon /> */}
         </div>
       </Link>
 

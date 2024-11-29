@@ -24,7 +24,7 @@ export default function Signup() {
         <LayoutColumn
           lgOffset={1}
           lg={4}
-          className="animate-auth-page flex flex-1 items-center"
+          className="flex flex-1 animate-auth-page items-center"
         >
           <div className="mt-12 w-full pb-6 2xl:mt-0">
             <h1 className="text-2xl font-bold sm:text-3xl xl:text-4xl">

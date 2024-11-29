@@ -3,9 +3,10 @@ import Image from 'next/image';
 
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
-import { MetaCard } from '@/components/ui/MetaCard';
+import { NoteCard } from '@/components/core/NoteCard';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { CreateCard } from '@/components/ui/CreateCard';
+import { SubjectCard } from '@/components/core/subjects/SubjectCard';
 
 // Images
 import ImageExample from '@/public/images/login-image.png';
@@ -24,10 +25,20 @@ export default function Subjects() {
               if ((i + 1) % 2) {
                 return (
                   <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
-                    <MetaCard
+                    <NoteCard
                       title="Biology"
                       description="Lorem ipsum dolorem"
-                      type="sujbects"
+                      likes={100}
+                      author="Ivan Horvat"
+                      key={i}
+                    />
+                  </LayoutColumn>
+                );
+              } else {
+                return (
+                  <LayoutColumn sm={6} lg={4} xl2={3} className="pb-8 sm:pr-4">
+                    <SubjectCard
+                      title="Biology"
                       image={
                         <div className="absolute left-0 top-0 -z-10 h-full w-full">
                           <Image
@@ -37,16 +48,6 @@ export default function Subjects() {
                           />
                         </div>
                       }
-                    />
-                  </LayoutColumn>
-                );
-              } else {
-                return (
-                  <LayoutColumn sm={6} lg={4} xl2={3} className="pb-8 sm:pr-4">
-                    <MetaCard
-                      title="Biology"
-                      description="Lorem ipsum dolorem"
-                      type="notes"
                     />
                   </LayoutColumn>
                 );
