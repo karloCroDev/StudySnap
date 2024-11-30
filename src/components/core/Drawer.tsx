@@ -29,7 +29,7 @@ export const Drawer = () => {
       <RadixDialog.Trigger asChild className="cursor-pointer">
         <HamburgerMenuIcon className="size-7" />
       </RadixDialog.Trigger>
-      <RadixDialog.Overlay className="fixed left-0 top-0 h-screen w-screen bg-gray-900 opacity-60 data-[state=closed]:animate-overlay-closed data-[state=open]:animate-overlay-open" />
+      <RadixDialog.Overlay className="fixed left-0 top-0 z-max h-screen w-screen bg-gray-900 opacity-60 data-[state=closed]:animate-overlay-closed data-[state=open]:animate-overlay-open" />
       <RadixDialog.Content className="text-grayscale-10 fixed left-0 top-0 z-max flex h-full w-3/4 flex-col overflow-scroll overflow-x-hidden rounded-r-xl bg-gray-100 px-3 py-6 outline-none data-[state=closed]:animate-drawer-slide-closed data-[state=open]:animate-drawer-slide-open">
         <div className="flex flex-col items-center">
           <Image

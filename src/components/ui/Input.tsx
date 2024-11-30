@@ -1,4 +1,4 @@
-'use client'; // fix: Remove this because, when I use button I use by default the use client in that component
+'use client';
 
 // External packages
 import * as AriaInput from 'react-aria-components'; // note: more readable

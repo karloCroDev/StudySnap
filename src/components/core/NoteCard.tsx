@@ -11,6 +11,9 @@ import { twJoin } from 'tailwind-merge';
 // Components
 import { DeleteDialog } from '@/components/core/subjects/DeleteDialog';
 
+// Libs
+import { plus_jakarta_sans } from '@/libs/fonts';
+
 export const NoteCard: React.FC<{
   title: string;
   description?: string;
@@ -21,11 +24,11 @@ export const NoteCard: React.FC<{
   return (
     <div
       className={twJoin(
-        'group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400 p-6 pb-4',
+        'group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400',
         image ? 'text-gray-100' : 'text-blue-900'
       )}
     >
-      <Link href="/" passHref={false} className="flex aspect-square flex-col">
+      <Link href="/" className="flex aspect-square flex-col p-6 pb-4">
         {image}
         <div>
           <h3 className="text-2xl font-semibold">{title}</h3>
@@ -44,19 +47,26 @@ export const NoteCard: React.FC<{
           {/* Add pfp */}
           <p className="font-medium">{author}</p>
           <div className="gap'4 flex items-center gap-2">
-            {likes}
-            <HeartFilledIcon className="size-6" />
+            <p
+              className={twJoin(
+                'font-semibold !italic',
+                plus_jakarta_sans.className
+              )}
+            >
+              {likes}
+            </p>
+            <HeartFilledIcon className="size-6 text-red-400" />
           </div>
           {/* <HeartFilledIcon /> */}
         </div>
       </Link>
 
-      <ul className="absolute right-5 top-8 z-20 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
+      <ul className="absolute right-5 top-8 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
         <li>
           <DeleteDialog>
             <Pencil1Icon
               className={twJoin(
-                'z-max size-9 transition-colors lg:size-7',
+                'size-9 transition-colors lg:size-7',
                 image ? 'hover:text-gray-200' : 'hover:text-blue-400'
               )}
             />
@@ -65,7 +75,7 @@ export const NoteCard: React.FC<{
         <li>
           <TrashIcon
             className={twJoin(
-              'z-max size-9 transition-colors lg:size-7',
+              'size-9 transition-colors lg:size-7',
               image ? 'hover:text-gray-200' : 'hover:text-blue-400'
             )}
           />

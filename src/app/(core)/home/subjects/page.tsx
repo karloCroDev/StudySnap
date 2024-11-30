@@ -36,7 +36,7 @@ export default function Subjects() {
                 );
               } else {
                 return (
-                  <LayoutColumn sm={6} lg={4} xl2={3} className="pb-8 sm:pr-4">
+                  <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
                     <SubjectCard
                       title="Biology"
                       image={

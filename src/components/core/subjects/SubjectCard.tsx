@@ -9,6 +9,7 @@ import { twJoin } from 'tailwind-merge';
 
 // Components
 import { DeleteDialog } from '@/components/core/subjects/DeleteDialog';
+import { ChangeDetailsDialog } from '@/components/core/subjects/ChangeDetailsDialog';
 
 export const SubjectCard: React.FC<{
   title: string;
@@ -18,11 +19,11 @@ export const SubjectCard: React.FC<{
   return (
     <div
       className={twJoin(
-        'group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400 p-6 pb-4',
+        'group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400',
         image ? 'text-gray-100' : 'text-blue-900'
       )}
     >
-      <Link href="/" passHref={false} className="flex aspect-square flex-col">
+      <Link href="/" className="flex aspect-square flex-col p-6 pb-4">
         {image}
         <div>
           <h3 className="text-2xl font-semibold">{title}</h3>
@@ -43,24 +44,26 @@ export const SubjectCard: React.FC<{
         </div>
       </Link>
 
-      <ul className="absolute right-5 top-8 z-20 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
+      <ul className="absolute right-5 top-8 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
         <li>
-          <DeleteDialog>
+          <ChangeDetailsDialog>
             <Pencil1Icon
               className={twJoin(
-                'z-max size-9 transition-colors lg:size-7',
+                'size-9 transition-colors lg:size-7',
+                image ? 'hover:text-gray-200' : 'hover:text-blue-400'
+              )}
+            />
+          </ChangeDetailsDialog>
+        </li>
+        <li>
+          <DeleteDialog>
+            <TrashIcon
+              className={twJoin(
+                'size-9 transition-colors lg:size-7',
                 image ? 'hover:text-gray-200' : 'hover:text-blue-400'
               )}
             />
           </DeleteDialog>
-        </li>
-        <li>
-          <TrashIcon
-            className={twJoin(
-              'z-max size-9 transition-colors lg:size-7',
-              image ? 'hover:text-gray-200' : 'hover:text-blue-400'
-            )}
-          />
         </li>
       </ul>
     </div>
