@@ -8,7 +8,7 @@ export default function PublicProfile() {
   return (
     <>
       <div className="animate-public-profile-initial-apperance mb-12 lg:mb-16">
-        <Avatar size="lg" className="mx-auto mb-8">
+        <Avatar size="xl" className="mx-auto mb-8">
           Ivan Horvat
         </Avatar>
         <h1 className="mb-12 text-center text-4xl font-semibold lg:mb-16">

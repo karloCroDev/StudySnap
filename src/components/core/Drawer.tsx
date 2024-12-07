@@ -17,6 +17,7 @@ import { usePathname } from 'next/navigation';
 // Components
 import { LinkAsButton } from '@/components/ui/LinkAsButton';
 import { Button } from '@/components/ui/Button';
+import { DialogEditProfile } from '@/components/profile/DialogEditProfile';
 
 // Images
 import example from '@/public/images/login-image.png';
@@ -74,25 +75,26 @@ export const Drawer = () => {
 
         <ul className="mt-6 flex flex-col gap-4">
           <li>
-            {/* Dialog treba ubaciti */}
-            <LinkAsButton
-              href="/discover"
-              colorScheme="white"
-              iconLeft={<PersonIcon className="size-6" />}
-              className="justify-start"
-            >
-              Edit profile
-            </LinkAsButton>
+            <DialogEditProfile>
+              <LinkAsButton
+                href="/discover"
+                colorScheme="white"
+                iconLeft={<GearIcon className="size-6" />}
+                className="justify-start"
+              >
+                Edit profile
+              </LinkAsButton>
+            </DialogEditProfile>
           </li>
           <li>
             <RadixDialog.Close asChild>
               <LinkAsButton
                 href="/public-profile"
                 colorScheme="white"
-                iconLeft={<GearIcon className="size-6" />}
+                iconLeft={<PersonIcon className="size-6" />}
                 className="justify-start"
               >
-                Public settings
+                Public profile
               </LinkAsButton>
             </RadixDialog.Close>
           </li>

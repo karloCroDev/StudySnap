@@ -22,6 +22,7 @@ import { Layout } from '@/components/ui/Layout';
 import { Logo } from '@/components/ui/Logo';
 import { Drawer } from '@/components/core/Drawer';
 import { Avatar } from '@/components/ui/Avatar';
+import { DialogEditProfile } from '@/components/profile/DialogEditProfile';
 
 export const Header = () => {
   return (
@@ -50,37 +51,47 @@ export const Header = () => {
   );
 };
 
-const Menu = () => (
-  <MenuTrigger>
-    <Button
-      colorScheme="white"
-      size="lg"
-      iconLeft={<Avatar size="md">IH</Avatar>}
-    >
-      <p className="text-lg font-medium 2xl:text-xl">Ivan Horvat</p>
-    </Button>
-    <Popover className="z-max w-[var(--trigger-width)] outline-none data-[exiting]:pointer-events-none data-[entering]:pointer-events-auto data-[entering]:animate-menu-open data-[exiting]:animate-menu-closed">
-      <AriaMenu className="overflow-hidden rounded-md border border-gray-900">
-        <MenuItem className="flex cursor-pointer items-center gap-2 border-b border-gray-900 bg-gray-100 p-2 outline-none hover:brightness-90">
-          {/* fix: Add Modal after I create it for editing profile */}
-          <GearIcon />
-          Edit profile
-        </MenuItem>
-        <MenuItem className="cursor-pointer border-b border-gray-900 bg-gray-100 p-2 outline-none hover:brightness-90">
-          <Link href="/public-profile" className="flex items-center gap-2">
-            <PersonIcon /> Public profile
-          </Link>
-        </MenuItem>
-        <MenuItem
-          className="flex cursor-pointer items-center gap-2 bg-red-400 p-2 text-gray-100 outline-none hover:brightness-90"
-          onAction={() => console.log('Log out user')}
-        >
-          <ExitIcon /> Log out
-        </MenuItem>
-      </AriaMenu>
-    </Popover>
-  </MenuTrigger>
-);
+const Menu = () => {
+  const [isOpen, setIsOpen] = React.useState(true);
+
+  return (
+    <MenuTrigger isOpen={isOpen}>
+      <Button
+        colorScheme="white"
+        size="lg"
+        iconLeft={<Avatar size="md">Ivan Horvat</Avatar>}
+      >
+        <p className="text-lg font-medium 2xl:text-xl">Ivan Horvat</p>
+      </Button>
+      <Popover className="!z-20 w-[var(--trigger-width)] outline-none data-[exiting]:pointer-events-none data-[entering]:pointer-events-auto data-[entering]:animate-menu-open data-[exiting]:animate-menu-closed">
+        <AriaMenu className="overflow-hidden rounded-md border border-gray-900">
+          <MenuItem
+            onAction={() => setIsOpen(true)}
+            className="flex cursor-pointer items-center gap-2 border-b border-gray-900 bg-gray-100 p-2 outline-none hover:brightness-90"
+          >
+            <DialogEditProfile>
+              <div className="flex items-center gap-2">
+                <GearIcon />
+                Edit profile
+              </div>
+            </DialogEditProfile>
+          </MenuItem>
+          <MenuItem className="cursor-pointer border-b border-gray-900 bg-gray-100 p-2 outline-none hover:brightness-90">
+            <Link href="/public-profile" className="flex items-center gap-2">
+              <PersonIcon /> Public profile
+            </Link>
+          </MenuItem>
+          <MenuItem
+            className="flex cursor-pointer items-center gap-2 bg-red-400 p-2 text-gray-100 outline-none hover:brightness-90"
+            onAction={() => console.log('Log out user')}
+          >
+            <ExitIcon /> Log out
+          </MenuItem>
+        </AriaMenu>
+      </Popover>
+    </MenuTrigger>
+  );
+};
 
 const Navigation = () => {
   const pathname = usePathname();
