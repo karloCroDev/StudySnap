@@ -13,6 +13,9 @@ import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails'
 import { DialogDelete } from '@/components/core/note/DialogDelete';
 import { Avatar } from '@/components/ui/Avatar';
 
+// Images
+import ImageExample from '@/public/images/login-image.png';
+
 // Libs
 import { plus_jakarta_sans } from '@/libs/fonts';
 
@@ -32,7 +35,7 @@ export const NoteCard: React.FC<{
         </div>
         <div className="z-10 mt-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {userImage || <Avatar>ah</Avatar>}
+            {<Avatar>{userImage || 'Ana Horvat'}</Avatar>}
 
             <Link
               href="/public-profile"

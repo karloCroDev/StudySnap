@@ -14,7 +14,7 @@ export default function Disover() {
     <>
       <SearchableHeader title="Discover" />
       <LayoutRow className="mt-8 animate-card-initial-apperance justify-center sm:mt-12 lg:mt-16">
-        <LayoutColumn lg={10}>
+        <LayoutColumn xs={11} lg={10}>
           <LayoutRow className="sm:-mr-4">
             {[...Array(8)].map((_, i) => (
               <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
@@ -24,13 +24,11 @@ export default function Disover() {
                   likes={100}
                   author="Ivan Horvat"
                   userImage={
-                    <div className="size-8">
-                      <Image
-                        src={ImageExample}
-                        alt="Add alt"
-                        className="wfull h-full rounded-full object-cover"
-                      />
-                    </div>
+                    <Image
+                      src={ImageExample}
+                      alt="Add alt"
+                      className="size-full rounded-full object-cover"
+                    />
                   }
                   key={i}
                 />

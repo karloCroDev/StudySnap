@@ -10,14 +10,22 @@ export const Avatar: React.FC<
     <div
       {...rest}
       className={twMerge(
-        'rounded-full bg-gray-400 text-center uppercase text-gray-100',
-        size === 'sm' && 'w-8 text-sm leading-8',
-        size === 'md' && 'w-12 text-md font-medium leading-12',
-        size === 'lg' && 'leading-64 w-64 text-9xl font-bold',
+        'flex items-center justify-center rounded-full bg-gray-400 text-center uppercase text-gray-100',
+        size === 'sm' && 'size-8 text-sm',
+        size === 'md' && 'size-12 text-md font-medium',
+        size === 'lg' && 'size-64 text-9xl font-bold',
         className
       )}
     >
-      {children}
+      {typeof children === 'string'
+        ? children
+            .toString()
+            .split(' ')
+            .map((letter) => letter[0])
+            .join('')
+        : children}
     </div>
   );
 };
+
+// 'todo: check out to make image better'

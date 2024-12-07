@@ -67,8 +67,7 @@ const Menu = () => (
           Edit profile
         </MenuItem>
         <MenuItem className="cursor-pointer border-b border-gray-900 bg-gray-100 p-2 outline-none hover:brightness-90">
-          <Link href="/home-user" className="flex items-center gap-2">
-            {/* fix: user -> users username */}
+          <Link href="/public-profile" className="flex items-center gap-2">
             <PersonIcon /> Public profile
           </Link>
         </MenuItem>

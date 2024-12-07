@@ -87,7 +87,7 @@ export const Drawer = () => {
           <li>
             <RadixDialog.Close asChild>
               <LinkAsButton
-                href="/discover"
+                href="/public-profile"
                 colorScheme="white"
                 iconLeft={<GearIcon className="size-6" />}
                 className="justify-start"
