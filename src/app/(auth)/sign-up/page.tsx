@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Logo } from '@/components/ui/Logo';
 import { Layout, LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { SignupForm } from '@/components/auth/sign-up/SignupForm';
+
 // Images
 import ImageSignup from '@/public/images/sign-up-image.png';
 
@@ -47,11 +48,13 @@ export default function Signup() {
           </div>
         </LayoutColumn>
         {/* note: Hacky way of doing this, but want to pursue the layout in the app */}
-        <Image
-          src={ImageSignup}
-          alt="Login thumbnail"
-          className="absolute bottom-0 right-0 hidden h-screen w-1/2 object-cover lg:block"
-        />
+        <div className="absolute bottom-0 right-0 hidden h-screen w-1/2 lg:block">
+          <Image
+            src={ImageSignup}
+            alt="Login thumbnail"
+            className="h-full w-full object-cover"
+          />
+        </div>
       </LayoutRow>
     </Layout>
   );

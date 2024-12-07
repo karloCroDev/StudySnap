@@ -58,14 +58,14 @@ export const DialogChangeDetails: React.FC<{
               className="group flex cursor-pointer items-center gap-2 text-md"
             >
               Yes
-              <div className="size-8 rounded-full bg-green-400 transition-[border] duration-300 group-data-[selected]:border-[8px] group-data-[selected]:border-gray-900"></div>
+              <div className="size-8 rounded-full bg-green-400 transition-[border] duration-200 group-data-[selected]:border-[8px] group-data-[selected]:border-gray-900"></div>
             </Radio>
             <Radio
               value="false"
               className="group flex cursor-pointer items-center gap-2 text-md"
             >
               No
-              <div className="size-8 rounded-full bg-red-400 transition-[border] duration-300 group-data-[selected]:border-[8px] group-data-[selected]:border-gray-900"></div>
+              <div className="size-8 rounded-full bg-red-400 transition-[border] duration-200 group-data-[selected]:border-[8px] group-data-[selected]:border-gray-900"></div>
             </Radio>
           </RadioGroup>
         </div>

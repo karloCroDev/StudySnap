@@ -25,7 +25,7 @@ export default function Login() {
         <LayoutColumn
           lgOffset={1}
           lg={4}
-          className="animate-auth-page flex flex-1 items-center"
+          className="flex flex-1 animate-auth-page items-center"
         >
           <div className="w-full pb-6">
             <h1 className="text-2xl font-bold sm:text-3xl xl:text-4xl">
@@ -48,11 +48,13 @@ export default function Login() {
           </div>
         </LayoutColumn>
         {/* note: Hacky way of doing this, but want to pursue the layout in the app */}
-        <Image
-          src={ImageLogin}
-          alt="Login thumbnail"
-          className="absolute bottom-0 right-0 hidden h-screen w-1/2 object-cover lg:block"
-        />
+        <div className="absolute bottom-0 right-0 hidden h-screen w-1/2 lg:block">
+          <Image
+            src={ImageLogin}
+            alt="Login thumbnail"
+            className="h-full w-full object-cover"
+          />
+        </div>
       </LayoutRow>
     </Layout>
   );

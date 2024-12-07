@@ -1,6 +1,7 @@
 // External packages
 import type { Metadata } from 'next';
 import { twJoin } from 'tailwind-merge';
+
 // Fonts
 import { poppins } from '@/libs/fonts';
 

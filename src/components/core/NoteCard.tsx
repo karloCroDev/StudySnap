@@ -7,7 +7,6 @@ import {
 } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { twJoin } from 'tailwind-merge';
-import Image, { ImageProps } from 'next/image';
 
 // Components
 import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';
@@ -21,17 +20,17 @@ export const NoteCard: React.FC<{
   title: string;
   description?: string;
   author: string;
-  likes: number;
   userImage?: React.ReactNode;
+  likes: number;
 }> = ({ title, description, userImage, author, likes }) => {
   return (
-    <div className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400">
-      <Link href="/" className="flex aspect-square flex-col p-6 pb-4">
+    <div className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400 text-blue-900">
+      <div className="flex aspect-square flex-col p-6 pb-4">
         <div>
           <h3 className="text-2xl font-semibold">{title}</h3>
           {description && <p className="text-xs font-medium">{description}</p>}
         </div>
-        <div className="mt-auto flex items-center justify-between">
+        <div className="z-10 mt-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
             {userImage || <Avatar>ah</Avatar>}
 
@@ -55,9 +54,9 @@ export const NoteCard: React.FC<{
           </div>
           {/* <HeartFilledIcon /> */}
         </div>
-      </Link>
+      </div>
 
-      <ul className="absolute right-5 top-8 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
+      <ul className="absolute right-5 top-8 z-10 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
         <li>
           <DialogChangeDetails>
             <Pencil1Icon
@@ -77,6 +76,8 @@ export const NoteCard: React.FC<{
           </DialogDelete>
         </li>
       </ul>
+      {/* Need to prevent the hydraton error (can't nest links) */}
+      <Link href="/" className="absolute inset-0" />
     </div>
   );
 };

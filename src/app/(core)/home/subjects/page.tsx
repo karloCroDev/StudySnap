@@ -17,7 +17,7 @@ export default function Subjects() {
       <SearchableHeader title="Subjects" />
       <LayoutRow className="mt-8 animate-card-initial-apperance justify-center sm:mt-12 lg:mt-16">
         <LayoutColumn lg={10}>
-          <LayoutRow className="sm:-pr-4 pr-0">
+          <LayoutRow className="pr-0 sm:-mr-4">
             <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
               <CreateSubjectCard />
             </LayoutColumn>
