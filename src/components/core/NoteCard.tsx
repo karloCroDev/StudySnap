@@ -7,10 +7,12 @@ import {
 } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { twJoin } from 'tailwind-merge';
+import Image, { ImageProps } from 'next/image';
 
 // Components
 import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';
 import { DialogDelete } from '@/components/core/note/DialogDelete';
+import { Avatar } from '@/components/ui/Avatar';
 
 // Libs
 import { plus_jakarta_sans } from '@/libs/fonts';
@@ -20,33 +22,26 @@ export const NoteCard: React.FC<{
   description?: string;
   author: string;
   likes: number;
-  image?: React.ReactNode; // note: set this to pro feature if we have time to implement
-}> = ({ title, description, image, author, likes }) => {
+  userImage?: React.ReactNode;
+}> = ({ title, description, userImage, author, likes }) => {
   return (
-    <div
-      className={twJoin(
-        'group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400',
-        image ? 'text-gray-100' : 'text-blue-900'
-      )}
-    >
+    <div className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400">
       <Link href="/" className="flex aspect-square flex-col p-6 pb-4">
-        {image}
         <div>
           <h3 className="text-2xl font-semibold">{title}</h3>
-          {description && (
-            <p
-              className={twJoin(
-                'text-xs font-medium',
-                image ? 'text-gray-200' : 'text-gray-400'
-              )}
-            >
-              {description}
-            </p>
-          )}
+          {description && <p className="text-xs font-medium">{description}</p>}
         </div>
         <div className="mt-auto flex items-center justify-between">
-          {/* Add pfp */}
-          <p className="font-medium">{author}</p>
+          <div className="flex items-center gap-2">
+            {userImage || <Avatar>ah</Avatar>}
+
+            <Link
+              href="/public-profile"
+              className="font-medium underline-offset-2 hover:underline"
+            >
+              {author}
+            </Link>
+          </div>
           <div className="gap'4 flex items-center gap-2">
             <p
               className={twJoin(
@@ -67,8 +62,7 @@ export const NoteCard: React.FC<{
           <DialogChangeDetails>
             <Pencil1Icon
               className={twJoin(
-                'size-9 transition-colors lg:size-7',
-                image ? 'hover:text-gray-200' : 'hover:text-blue-400'
+                'size-9 transition-colors hover:text-blue-400 lg:size-7'
               )}
             />
           </DialogChangeDetails>
@@ -77,8 +71,7 @@ export const NoteCard: React.FC<{
           <DialogDelete>
             <TrashIcon
               className={twJoin(
-                'size-9 transition-colors lg:size-7',
-                image ? 'hover:text-gray-200' : 'hover:text-blue-400'
+                'size-9 transition-colors hover:text-blue-400 lg:size-7'
               )}
             />
           </DialogDelete>

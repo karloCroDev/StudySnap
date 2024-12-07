@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/Button';
 import { Layout } from '@/components/ui/Layout';
 import { Logo } from '@/components/ui/Logo';
 import { Drawer } from '@/components/core/Drawer';
+import { Avatar } from '@/components/ui/Avatar';
 
 export const Header = () => {
   return (
@@ -54,11 +55,7 @@ const Menu = () => (
     <Button
       colorScheme="white"
       size="lg"
-      iconLeft={
-        <div className="w-12 rounded-full bg-gray-400 text-center text-md leading-12 text-white">
-          AH
-        </div>
-      }
+      iconLeft={<Avatar size="md">IH</Avatar>}
     >
       <p className="text-lg font-medium 2xl:text-xl">Ivan Horvat</p>
     </Button>
