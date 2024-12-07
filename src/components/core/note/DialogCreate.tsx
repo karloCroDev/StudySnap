@@ -2,7 +2,7 @@
 
 // External packages
 import * as React from 'react';
-import { RadioGroup, Label, Radio, Form } from 'react-aria-components';
+import { RadioGroup, Radio, Form } from 'react-aria-components';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
@@ -12,11 +12,10 @@ import { Input } from '@/components/ui/Input';
 export const DialogCreate: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const [isOpen, setIsOpen] = React.useState(false); // Bit ce slanje podataka paaaaa msm da ne treba close
-  const [image, setImage] = React.useState<File | null>(null);
-  const imageNameArray = image?.name.split('.');
-  console.log(imageNameArray);
+  const [isOpen, setIsOpen] = React.useState(false);
 
+  const [isPublic, setIsPublic] = React.useState(false);
+  console.log(isPublic);
   return (
     <Dialog
       open={isOpen}
@@ -50,6 +49,9 @@ export const DialogCreate: React.FC<{
           <RadioGroup
             className="flex flex-[2] justify-center gap-6"
             defaultValue="false"
+            onChange={(val) =>
+              val === 'false' ? setIsPublic(false) : setIsPublic(true)
+            }
           >
             <Radio
               value="true"
@@ -68,7 +70,7 @@ export const DialogCreate: React.FC<{
           </RadioGroup>
         </div>
         <Button className="self-end" onClick={() => setIsOpen(false)}>
-          Add new subject
+          Add new note
         </Button>
       </Form>
     </Dialog>

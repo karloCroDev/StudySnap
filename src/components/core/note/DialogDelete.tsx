@@ -14,7 +14,7 @@ export const DialogDelete: React.FC<{
     <Dialog
       open={isOpen}
       onOpenChange={setIsOpen}
-      title="Delete subject"
+      title="Delete note"
       triggerProps={{
         asChild: true,
         children,
@@ -22,7 +22,7 @@ export const DialogDelete: React.FC<{
     >
       <div className="flex flex-col items-center">
         <h4 className="text-center text-base md:text-md">
-          Are you sure you want to delete your subject
+          Are you sure you want to delete your note
         </h4>
         <div className="mt-6 flex gap-6">
           <Button className="uppercase" onPress={() => setIsOpen(false)}>

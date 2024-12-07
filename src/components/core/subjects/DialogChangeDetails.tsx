@@ -43,7 +43,7 @@ export const DialogChangeDetails: React.FC<{
           label="Details"
           isMdHorizontal
           inputProps={{
-            placeholder: 'Enter new subject name',
+            placeholder: 'Enter new subject details',
           }}
         />
         {/* note: Ako stignemo i sliku bi bilo super */}
@@ -68,7 +68,7 @@ export const DialogChangeDetails: React.FC<{
           </div>
         </FileTrigger> */}
         <Button className="self-end" onClick={() => setIsOpen(false)}>
-          Change Details
+          Change subject
         </Button>
       </Form>
     </Dialog>

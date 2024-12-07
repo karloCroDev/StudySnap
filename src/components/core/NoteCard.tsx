@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { twJoin } from 'tailwind-merge';
 
 // Components
+import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';
 import { DialogDelete } from '@/components/core/note/DialogDelete';
 
 // Libs
@@ -63,22 +64,24 @@ export const NoteCard: React.FC<{
 
       <ul className="absolute right-5 top-8 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
         <li>
-          <DialogDelete>
+          <DialogChangeDetails>
             <Pencil1Icon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',
                 image ? 'hover:text-gray-200' : 'hover:text-blue-400'
               )}
             />
-          </DialogDelete>
+          </DialogChangeDetails>
         </li>
         <li>
-          <TrashIcon
-            className={twJoin(
-              'size-9 transition-colors lg:size-7',
-              image ? 'hover:text-gray-200' : 'hover:text-blue-400'
-            )}
-          />
+          <DialogDelete>
+            <TrashIcon
+              className={twJoin(
+                'size-9 transition-colors lg:size-7',
+                image ? 'hover:text-gray-200' : 'hover:text-blue-400'
+              )}
+            />
+          </DialogDelete>
         </li>
       </ul>
     </div>
