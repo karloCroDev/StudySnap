@@ -3,12 +3,13 @@
 import * as React from 'react';
 import { FileTrigger, Form } from 'react-aria-components';
 import { ImageIcon } from '@radix-ui/react-icons';
+
 // Components
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
-export const ChangeDetailsDialog: React.FC<{
+export const DialogChangeDetails: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [isOpen, setIsOpen] = React.useState(false); // Bit ce slanje podataka paaaaa msm da ne treba close
@@ -20,7 +21,7 @@ export const ChangeDetailsDialog: React.FC<{
     <Dialog
       open={isOpen}
       onOpenChange={setIsOpen}
-      title="Create subject"
+      title="Change subject's details"
       triggerProps={{
         asChild: true,
         children,
@@ -31,12 +32,22 @@ export const ChangeDetailsDialog: React.FC<{
           isRequired
           type="text"
           label="Subject name"
+          isMdHorizontal
           inputProps={{
-            placeholder: 'Enter subject name',
+            placeholder: 'Enter new subject name',
           }}
         />
-
-        <FileTrigger
+        <Input
+          isRequired
+          type="text"
+          label="Details"
+          isMdHorizontal
+          inputProps={{
+            placeholder: 'Enter new subject name',
+          }}
+        />
+        {/* note: Ako stignemo i sliku bi bilo super */}
+        {/* <FileTrigger
           acceptedFileTypes={['.jpg,', '.jpeg', '.png']}
           onSelect={(event) => setImage(event && Array.from(event)[0])}
         >
@@ -55,8 +66,10 @@ export const ChangeDetailsDialog: React.FC<{
               </p>
             )}
           </div>
-        </FileTrigger>
-        <Button className="self-end">Add new subject</Button>
+        </FileTrigger> */}
+        <Button className="self-end" onClick={() => setIsOpen(false)}>
+          Change Details
+        </Button>
       </Form>
     </Dialog>
   );

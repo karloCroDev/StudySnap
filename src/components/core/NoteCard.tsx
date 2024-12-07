@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { twJoin } from 'tailwind-merge';
 
 // Components
-import { DeleteDialog } from '@/components/core/subjects/DeleteDialog';
+import { DialogDelete } from '@/components/core/note/DialogDelete';
 
 // Libs
 import { plus_jakarta_sans } from '@/libs/fonts';
@@ -63,14 +63,14 @@ export const NoteCard: React.FC<{
 
       <ul className="absolute right-5 top-8 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
         <li>
-          <DeleteDialog>
+          <DialogDelete>
             <Pencil1Icon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',
                 image ? 'hover:text-gray-200' : 'hover:text-blue-400'
               )}
             />
-          </DeleteDialog>
+          </DialogDelete>
         </li>
         <li>
           <TrashIcon

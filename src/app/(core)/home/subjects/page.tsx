@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { NoteCard } from '@/components/core/NoteCard';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
-import { CreateCard } from '@/components/ui/CreateCard';
+import { CreateSubjectCard } from '@/components/core/subjects/CreateSubjectCard';
 import { SubjectCard } from '@/components/core/subjects/SubjectCard';
 
 // Images
@@ -19,7 +19,7 @@ export default function Subjects() {
         <LayoutColumn lg={10}>
           <LayoutRow className="sm:-pr-4 pr-0">
             <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
-              <CreateCard type="subject" />
+              <CreateSubjectCard />
             </LayoutColumn>
             {[...Array(7)].map((_, i) => {
               if ((i + 1) % 2) {

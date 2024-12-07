@@ -8,8 +8,8 @@ import Link from 'next/link';
 import { twJoin } from 'tailwind-merge';
 
 // Components
-import { DeleteDialog } from '@/components/core/subjects/DeleteDialog';
-import { ChangeDetailsDialog } from '@/components/core/subjects/ChangeDetailsDialog';
+import { DialogDelete } from '@/components/core/subjects/DialogDelete';
+import { DialogChangeDetails } from '@/components/core/subjects/DialogChangeDetails';
 
 export const SubjectCard: React.FC<{
   title: string;
@@ -46,24 +46,24 @@ export const SubjectCard: React.FC<{
 
       <ul className="absolute right-5 top-8 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
         <li>
-          <ChangeDetailsDialog>
+          <DialogChangeDetails>
             <Pencil1Icon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',
                 image ? 'hover:text-gray-200' : 'hover:text-blue-400'
               )}
             />
-          </ChangeDetailsDialog>
+          </DialogChangeDetails>
         </li>
         <li>
-          <DeleteDialog>
+          <DialogDelete>
             <TrashIcon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',
                 image ? 'hover:text-gray-200' : 'hover:text-blue-400'
               )}
             />
-          </DeleteDialog>
+          </DialogDelete>
         </li>
       </ul>
     </div>

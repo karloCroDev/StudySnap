@@ -8,7 +8,7 @@ import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
-export const ChangeDetailsDialog: React.FC<{
+export const DialogCreate: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [isOpen, setIsOpen] = React.useState(false); // Bit ce slanje podataka paaaaa msm da ne treba close
@@ -22,8 +22,8 @@ export const ChangeDetailsDialog: React.FC<{
       onOpenChange={setIsOpen}
       title="Create subject"
       triggerProps={{
-        asChild: true,
         children,
+        asChild: true,
       }}
     >
       <Form className="flex flex-col gap-5">
@@ -31,11 +31,19 @@ export const ChangeDetailsDialog: React.FC<{
           isRequired
           type="text"
           label="Subject name"
+          isMdHorizontal
           inputProps={{
             placeholder: 'Enter subject name',
           }}
         />
-
+        <Input
+          type="text"
+          label="Details (optional)"
+          isMdHorizontal
+          inputProps={{
+            placeholder: 'Enter your subject’s details (optional)',
+          }}
+        />
         <FileTrigger
           acceptedFileTypes={['.jpg,', '.jpeg', '.png']}
           onSelect={(event) => setImage(event && Array.from(event)[0])}
@@ -56,7 +64,9 @@ export const ChangeDetailsDialog: React.FC<{
             )}
           </div>
         </FileTrigger>
-        <Button className="self-end">Add new subject</Button>
+        <Button className="self-end" onClick={() => setIsOpen(false)}>
+          Add new subject
+        </Button>
       </Form>
     </Dialog>
   );
