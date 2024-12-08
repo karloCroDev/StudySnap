@@ -9,6 +9,9 @@ import { Avatar } from '@/components/ui/Avatar';
 import Link from 'next/link';
 import { Form } from 'react-aria-components';
 
+// Images
+import ImageExample from '@/public/images/login-image.png';
+
 export const DialogEditProfile: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
@@ -26,7 +29,15 @@ export const DialogEditProfile: React.FC<{
       }}
     >
       <div className="flex flex-col items-center">
-        <Avatar size="lg">Ivan Horvat</Avatar>
+        <Avatar
+          size="lg"
+          imageProps={{
+            src: ImageExample.src,
+            alt: '',
+          }}
+        >
+          Ivan Horvat
+        </Avatar>
         <h2 className="mt-4 text-lg font-semibold">Ivan Horvat</h2>
       </div>
       <hr className="h-px w-full border-0 bg-gray-900" />

@@ -4,11 +4,21 @@ import { Avatar } from '@/components/ui/Avatar';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { NoteCard } from '@/components/core/NoteCard';
 
+// Images
+import ImageExample from '@/public/images/login-image.png';
+
 export default function PublicProfile() {
   return (
     <>
-      <div className="animate-public-profile-initial-apperance mb-12 lg:mb-16">
-        <Avatar size="xl" className="mx-auto mb-8">
+      <div className="mb-12 animate-public-profile-initial-apperance lg:mb-16">
+        <Avatar
+          imageProps={{
+            src: '',
+            alt: '',
+          }}
+          size="xl"
+          className="mx-auto mb-8"
+        >
           Ivan Horvat
         </Avatar>
         <h1 className="mb-12 text-center text-4xl font-semibold lg:mb-16">

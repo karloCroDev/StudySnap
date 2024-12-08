@@ -7,6 +7,7 @@ import {
 } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { twJoin } from 'tailwind-merge';
+import { StaticImageData } from 'next/image';
 
 // Components
 import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';
@@ -23,7 +24,7 @@ export const NoteCard: React.FC<{
   title: string;
   description?: string;
   author: string;
-  userImage?: React.ReactNode;
+  userImage?: StaticImageData;
   likes: number;
 }> = ({ title, description, userImage, author, likes }) => {
   return (
@@ -35,7 +36,14 @@ export const NoteCard: React.FC<{
         </div>
         <div className="z-10 mt-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {<Avatar>{userImage || 'Ana Horvat'}</Avatar>}
+            <Avatar
+              imageProps={{
+                src: userImage?.src,
+                alt: '',
+              }}
+            >
+              Ana Horvat
+            </Avatar>
 
             <Link
               href="/public-profile"

@@ -1,13 +1,16 @@
 // External packaegs
 import { twMerge } from 'tailwind-merge';
+import * as RadixAvatar from '@radix-ui/react-avatar';
 
 export const Avatar: React.FC<
-  React.ComponentPropsWithoutRef<'div'> & {
-    size?: 'sm' | 'md' | 'lg' | 'xl';
-  }
-> = ({ size = 'sm', children, className, ...rest }) => {
+  React.ComponentPropsWithoutRef<'div'> &
+    RadixAvatar.AvatarProps & {
+      size?: 'sm' | 'md' | 'lg' | 'xl';
+      imageProps: RadixAvatar.AvatarImageProps;
+    }
+> = ({ imageProps, size = 'sm', children, className, ...rest }) => {
   return (
-    <div
+    <RadixAvatar.Root
       {...rest}
       className={twMerge(
         'flex items-center justify-center rounded-full bg-gray-400 text-center uppercase text-gray-100',
@@ -18,14 +21,19 @@ export const Avatar: React.FC<
         className
       )}
     >
-      {typeof children === 'string'
-        ? children
+      <RadixAvatar.Image
+        {...imageProps}
+        className="size-full rounded-full object-cover"
+      />
+      <RadixAvatar.Fallback>
+        {typeof children === 'string' &&
+          children
             .toString()
             .split(' ')
             .map((letter) => letter[0])
-            .join('')
-        : children}
-    </div>
+            .join('')}
+      </RadixAvatar.Fallback>
+    </RadixAvatar.Root>
   );
 };
 

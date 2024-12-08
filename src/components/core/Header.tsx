@@ -24,6 +24,9 @@ import { Drawer } from '@/components/core/Drawer';
 import { Avatar } from '@/components/ui/Avatar';
 import { DialogEditProfile } from '@/components/profile/DialogEditProfile';
 
+// Images
+import ImageExample from '@/public/images/login-image.png';
+
 export const Header = () => {
   return (
     <>
@@ -31,13 +34,13 @@ export const Header = () => {
         <Layout className="h-full">
           <nav className="h-full">
             <ul className="flex h-full items-center justify-between">
-              <li>
+              <li className="flex-1">
                 <Logo />
               </li>
-              <li className="hidden gap-4 lg:flex">
+              <li className="hidden flex-1 justify-center gap-4 lg:flex">
                 <Navigation />
               </li>
-              <li className="hidden lg:block">
+              <li className="hidden flex-1 justify-end lg:flex">
                 <Menu />
               </li>
               <li className="lg:hidden">
@@ -52,23 +55,28 @@ export const Header = () => {
 };
 
 const Menu = () => {
-  const [isOpen, setIsOpen] = React.useState(true);
-
   return (
-    <MenuTrigger isOpen={isOpen}>
+    <MenuTrigger>
       <Button
         colorScheme="white"
         size="lg"
-        iconLeft={<Avatar size="md">Ivan Horvat</Avatar>}
+        iconLeft={
+          <Avatar
+            imageProps={{
+              src: ImageExample.src,
+              alt: '',
+            }}
+            size="md"
+          >
+            Ivan Horvat
+          </Avatar>
+        }
       >
         <p className="text-lg font-medium 2xl:text-xl">Ivan Horvat</p>
       </Button>
       <Popover className="!z-20 w-[var(--trigger-width)] outline-none data-[exiting]:pointer-events-none data-[entering]:pointer-events-auto data-[entering]:animate-menu-open data-[exiting]:animate-menu-closed">
         <AriaMenu className="overflow-hidden rounded-md border border-gray-900">
-          <MenuItem
-            onAction={() => setIsOpen(true)}
-            className="flex cursor-pointer items-center gap-2 border-b border-gray-900 bg-gray-100 p-2 outline-none hover:brightness-90"
-          >
+          <MenuItem className="flex cursor-pointer items-center gap-2 border-b border-gray-900 bg-gray-100 p-2 outline-none hover:brightness-90">
             <DialogEditProfile>
               <div className="flex items-center gap-2">
                 <GearIcon />

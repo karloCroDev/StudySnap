@@ -23,13 +23,7 @@ export default function Disover() {
                   description="Lorem ipsum dolorem"
                   likes={100}
                   author="Ivan Horvat"
-                  userImage={
-                    <Image
-                      src={ImageExample}
-                      alt="Add alt"
-                      className="size-full rounded-full object-cover"
-                    />
-                  }
+                  userImage={ImageExample}
                   key={i}
                 />
               </LayoutColumn>
