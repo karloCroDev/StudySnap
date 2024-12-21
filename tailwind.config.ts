@@ -16,6 +16,8 @@ const config: Config = {
       variants: ['sm', 'md', 'lg', 'xl', '2xl', 'xl2'],
     },
   ],
+  plugins: [require('@tailwindcss/typography')],
+
   theme: {
     extend: {
       fontSize: {
@@ -348,6 +350,5 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
 };
 export default config;
