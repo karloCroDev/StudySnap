@@ -25,32 +25,34 @@ export const getButtonClassNames = ({
   rounded: AdditionalButtonProps['rounded'];
 }): string =>
   twJoin(
-    'flex items-center justify-center gap-4 outline-none min-w-24', // note: vidi za justify center
+    'flex items-center justify-center gap-4 outline-none min-w-24 hover:brightness-90', // note: vidi za justify center
     size === 'sm' && 'px-4 h-10 text-md',
     size === 'lg' && 'px-6  h-16 text-lg',
     rounded === 'md' && 'rounded',
     rounded === 'none' && 'rounded-none',
     rounded === 'full' && 'rounded-full',
+    variant === 'outline' && 'bg-gray-100 border',
+    variant === 'solid' && 'bg-gray-100  transition-[filter] duration-200',
 
-    // Outline styles
+    // Outline styles transition-[filter] duration-200
+
     variant === 'outline' &&
       (colorScheme === 'light-blue'
-        ? 'border border-blue-400 text-blue-400 hover:brightness-90'
+        ? 'border-blue-400 text-blue-400'
         : colorScheme === 'dark-blue'
-          ? 'border border-blue-900 text-blue-900 hover:brightness-90'
+          ? 'border-blue-900 text-blue-900 '
           : (colorScheme === 'black' || colorScheme === 'white') &&
-            'border border-gray-900 text-gray-900 hover:brightness-90'),
+            'border-gray-900 text-gray-900 '),
 
     // Solid styles
     variant === 'solid' &&
       (colorScheme === 'light-blue'
-        ? 'bg-blue-400 text-gray-100 transition-[filter] duration-200 hover:brightness-90'
+        ? 'bg-blue-400 text-gray-100 '
         : colorScheme === 'dark-blue'
-          ? 'bg-blue-900 text-gray-100 transition-[filter] duration-200 hover:brightness-90'
+          ? 'bg-blue-900 text-gray-100 '
           : colorScheme === 'black'
-            ? 'bg-gray-900 text-gray-100 transition-[filter] duration-200 hover:brightness-90'
-            : colorScheme === 'white' &&
-              'bg-gray-100 text-gray-900 transition-[filter] duration-200 hover:brightness-90')
+            ? 'bg-gray-900 text-gray-100 '
+            : colorScheme === 'white' && 'bg-gray-100 text-gray-900 ')
   );
 
 export const LinkAsButton: React.FC<

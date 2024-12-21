@@ -2,7 +2,7 @@
 
 // Eternal packagess
 import * as React from 'react';
-import { HeartIcon, HeartFilledIcon } from '@radix-ui/react-icons';
+import { HeartIcon, HeartFilledIcon, Pencil2Icon } from '@radix-ui/react-icons';
 import { twMerge } from 'tailwind-merge';
 
 // Components
@@ -13,7 +13,17 @@ import { plus_jakarta_sans } from '@/libs/fonts';
 
 export const TipTapEditor = () => {
   return (
-    <div className="mt-8 flex h-full flex-col overflow-hidden rounded-3xl border border-blue-900 p-8">
+    <div className="relative mt-8 flex h-full flex-col overflow-hidden rounded-3xl border border-blue-900 p-8">
+      <div className="absolute right-6 top-6 rounded-lg bg-gray-100 p-2">
+        <Button
+          colorScheme="light-blue"
+          variant="solid"
+          iconRight={<Pencil2Icon className="size-5" />}
+          className="font-medium"
+        >
+          Edit
+        </Button>
+      </div>
       <div className="prose h-full !max-w-none !overflow-scroll scroll-smooth">
         <h1>Hello world</h1>
         <p>
@@ -134,7 +144,7 @@ export const TipTapEditor = () => {
             200
           </p>
         </div>
-        <Button rounded="full" colorScheme="light-blue">
+        <Button rounded="full" colorScheme="black" variant="outline">
           🪄 Quizz yourself
         </Button>
       </div>
