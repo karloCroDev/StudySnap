@@ -2,9 +2,10 @@
 
 // External packages
 import * as React from 'react';
-import { Button } from 'react-aria-components';
-import Link from 'next/link';
+
+import { Button as ReactAriaButton } from 'react-aria-components';
 import { Editor as EditorType } from '@tiptap/react';
+import Link from 'next/link';
 
 // Had to use other icons becase the original ones are not available
 import { LuHeading1, LuStrikethrough } from 'react-icons/lu';
@@ -27,6 +28,10 @@ import { LuCodeXml } from 'react-icons/lu';
 import { ImQuotesLeft } from 'react-icons/im';
 import { RxDividerHorizontal } from 'react-icons/rx';
 
+import {
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+} from '@radix-ui/react-icons';
 // Components
 import { DialogURL } from '@/components/core/note-editor/DialogURL';
 
@@ -36,6 +41,8 @@ import { plus_jakarta_sans } from '@/libs/fonts';
 export const HeaderEditText: React.FC<{
   editor: EditorType;
 }> = ({ editor }) => {
+  React.useEffect(() => {}, []);
+
   if (editor === null) return null;
   return (
     <div className="flex h-24 items-center gap-8 rounded-2xl border border-blue-900 px-6 py-5">
@@ -46,11 +53,16 @@ export const HeaderEditText: React.FC<{
           plus_jakarta_sans.className
         )}
       >
-        History/WWII
+        <p>History/WWII</p>
       </Link>
+
       <hr className="h-full w-px rounded-full border-0 bg-blue-900" />
-      <div className="flex h-full flex-1 items-center gap-3 overflow-x-scroll scroll-smooth">
-        <Button
+
+      <ReactAriaButton className="text-blue-400 outline-none transition-transform duration-75 active:scale-75">
+        <DoubleArrowLeftIcon className="size-8" />
+      </ReactAriaButton>
+      <div className="flex h-full flex-1 items-center gap-3 overflow-scroll">
+        <ReactAriaButton
           onPress={() =>
             editor.chain().focus().toggleHeading({ level: 1 }).run()
           }
@@ -61,8 +73,8 @@ export const HeaderEditText: React.FC<{
           }
         >
           <LuHeading1 className="size-8" />
-        </Button>
-        <Button
+        </ReactAriaButton>
+        <ReactAriaButton
           onPress={() =>
             editor.chain().focus().toggleHeading({ level: 2 }).run()
           }
@@ -73,8 +85,8 @@ export const HeaderEditText: React.FC<{
           }
         >
           <LuHeading2 className="size-8" />
-        </Button>
-        <Button
+        </ReactAriaButton>
+        <ReactAriaButton
           onPress={() =>
             editor.chain().focus().toggleHeading({ level: 3 }).run()
           }
@@ -85,8 +97,8 @@ export const HeaderEditText: React.FC<{
           }
         >
           <LuHeading3 className="size-8" />
-        </Button>
-        <Button
+        </ReactAriaButton>
+        <ReactAriaButton
           onPress={() => editor.chain().focus().setParagraph().run()}
           className={
             editor.isActive('paragraph')
@@ -95,8 +107,8 @@ export const HeaderEditText: React.FC<{
           }
         >
           <BsParagraph className="size-8" />
-        </Button>
-        <Button
+        </ReactAriaButton>
+        <ReactAriaButton
           onPress={() => editor.chain().focus().toggleBold().run()}
           className={
             editor.isActive('bold')
@@ -105,8 +117,8 @@ export const HeaderEditText: React.FC<{
           }
         >
           <LuBold className="size-8" />
-        </Button>
-        <Button
+        </ReactAriaButton>
+        <ReactAriaButton
           onPress={() => editor.chain().focus().toggleItalic().run()}
           className={
             editor.isActive('italic')
@@ -115,9 +127,9 @@ export const HeaderEditText: React.FC<{
           }
         >
           <LuItalic className="size-8" />
-        </Button>
+        </ReactAriaButton>
 
-        <Button
+        <ReactAriaButton
           onPress={() => editor.chain().focus().toggleUnderline().run()}
           className={
             editor.isActive('underline')
@@ -126,8 +138,8 @@ export const HeaderEditText: React.FC<{
           }
         >
           <LuUnderline className="size-8" />
-        </Button>
-        <Button
+        </ReactAriaButton>
+        <ReactAriaButton
           onPress={() => editor.chain().focus().toggleStrike().run()}
           className={
             editor.isActive('strike')
@@ -136,12 +148,12 @@ export const HeaderEditText: React.FC<{
           }
         >
           <LuStrikethrough className="size-8" />
-        </Button>
+        </ReactAriaButton>
         <DialogURL editor={editor}>
           <LuImage className="size-8" />
         </DialogURL>
 
-        <Button
+        <ReactAriaButton
           onPress={() => editor.chain().focus().toggleBulletList().run()}
           className={
             editor.isActive('bulletList')
@@ -150,8 +162,8 @@ export const HeaderEditText: React.FC<{
           }
         >
           <MdFormatListBulleted className="size-8" />
-        </Button>
-        <Button
+        </ReactAriaButton>
+        <ReactAriaButton
           onPress={() => editor.chain().focus().toggleOrderedList().run()}
           className={
             editor.isActive('orderedList')
@@ -160,9 +172,9 @@ export const HeaderEditText: React.FC<{
           }
         >
           <MdFormatListNumbered className="size-8" />
-        </Button>
+        </ReactAriaButton>
 
-        <Button
+        <ReactAriaButton
           onPress={() => editor.chain().focus().setTextAlign('left').run()}
           className={
             editor.isActive({ textAlign: 'left' })
@@ -171,8 +183,8 @@ export const HeaderEditText: React.FC<{
           }
         >
           <LuAlignLeft className="size-8" />
-        </Button>
-        <Button
+        </ReactAriaButton>
+        <ReactAriaButton
           onPress={() => editor.chain().focus().setTextAlign('center').run()}
           className={
             editor.isActive({ textAlign: 'center' })
@@ -181,8 +193,8 @@ export const HeaderEditText: React.FC<{
           }
         >
           <LuAlignCenter className="size-8" />
-        </Button>
-        <Button
+        </ReactAriaButton>
+        <ReactAriaButton
           onPress={() => editor.chain().focus().setTextAlign('right').run()}
           className={
             editor.isActive({ textAlign: 'right' })
@@ -191,13 +203,13 @@ export const HeaderEditText: React.FC<{
           }
         >
           <LuAlignRight className="size-8" />
-        </Button>
-        <Button
+        </ReactAriaButton>
+        <ReactAriaButton
           onPress={() => editor.chain().focus().setHorizontalRule().run()}
         >
           <RxDividerHorizontal className="size-8" />
-        </Button>
-        <Button
+        </ReactAriaButton>
+        <ReactAriaButton
           onPress={() => editor.chain().focus().toggleCodeBlock().run()}
           className={
             editor.isActive('codeBlock')
@@ -206,8 +218,8 @@ export const HeaderEditText: React.FC<{
           }
         >
           <LuCodeXml className="size-8" />
-        </Button>
-        <Button
+        </ReactAriaButton>
+        <ReactAriaButton
           onPress={() => editor.chain().focus().toggleBlockquote().run()}
           className={
             editor.isActive('blockquote')
@@ -216,24 +228,28 @@ export const HeaderEditText: React.FC<{
           }
         >
           <ImQuotesLeft className="size-8" />
-        </Button>
+        </ReactAriaButton>
       </div>
+      <ReactAriaButton className="text-blue-400 outline-none transition-transform duration-75 active:scale-75">
+        <DoubleArrowRightIcon className="size-8" />
+      </ReactAriaButton>
+
       <hr className="h-full w-px rounded-full border-0 bg-blue-900" />
       <div className="flex gap-4">
-        <Button
+        <ReactAriaButton
           onPress={() => editor.chain().focus().undo().run()}
           isDisabled={!editor.can().chain().focus().undo().run()}
           className="default-button outline-none disabled:cursor-not-allowed disabled:text-gray-500"
         >
           <LuUndo2 className="size-8" />
-        </Button>
-        <Button
+        </ReactAriaButton>
+        <ReactAriaButton
           onPress={() => editor.chain().focus().redo().run()}
           isDisabled={!editor.can().chain().focus().redo().run()}
           className="default-button outline-none disabled:cursor-not-allowed disabled:text-gray-500"
         >
           <LuRedo2 className="size-8" />
-        </Button>
+        </ReactAriaButton>
       </div>
     </div>
   );

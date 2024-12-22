@@ -9,18 +9,26 @@ import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import Image from '@tiptap/extension-image';
-import { HeartIcon, HeartFilledIcon, Pencil2Icon } from '@radix-ui/react-icons';
+import {
+  HeartIcon,
+  HeartFilledIcon,
+  Pencil2Icon,
+  FileTextIcon,
+} from '@radix-ui/react-icons';
+import { Button as ReactAriaButton } from 'react-aria-components';
 import { twJoin, twMerge } from 'tailwind-merge';
 
 // Components
 import { Button } from '@/components/ui/Button';
 import { HeaderEditText } from '@/components/core/note-editor/HeaderEditText';
+import { DialogQuizz } from '@/components/core/note-editor/DialogQuizz';
 
 // Libs
 import { plus_jakarta_sans } from '@/libs/fonts';
 
 export const TipTapEditor = () => {
   const [isEditing, setIsEditing] = React.useState(false);
+  const [isLiked, setIsLiked] = React.useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -110,21 +118,47 @@ export const TipTapEditor = () => {
           />
         </div>
         <div className="flex items-center justify-between pt-4">
-          {!isEditing && (
+          {!isEditing ? (
             <>
-              <div className="flex cursor-pointer items-center gap-2">
-                <HeartIcon className="size-8" />
+              <div className="flex items-center gap-2">
+                <ReactAriaButton
+                  className="size-8 outline-none transition-transform duration-75 active:scale-75"
+                  onPress={() => setIsLiked(!isLiked)}
+                >
+                  {isLiked ? (
+                    <HeartFilledIcon className="size-8 text-red-400" />
+                  ) : (
+                    <HeartIcon className="size-8" />
+                  )}
+                </ReactAriaButton>
                 <p
                   className={twMerge(
                     'text-md font-bold !italic',
                     plus_jakarta_sans.className
                   )}
                 >
-                  200
+                  {200 + (isLiked ? 1 : 0)}
                 </p>
               </div>
-              <Button rounded="full" colorScheme="black" variant="outline">
-                🪄 Quizz yourself
+              <DialogQuizz>
+                <Button rounded="full" colorScheme="black" variant="outline">
+                  🪄 Quizz yourself
+                </Button>
+              </DialogQuizz>
+            </>
+          ) : (
+            <>
+              <Button rounded="full">📸 Get notes from image</Button>
+              <p>Autocomplete: ctrl + /</p>
+
+              <Button
+                variant="outline"
+                rounded="full"
+                colorScheme="white"
+                iconLeft={<FileTextIcon className="size-5" />}
+                onPress={() => setIsEditing(false)}
+              >
+                Save
               </Button>
             </>
           )}
