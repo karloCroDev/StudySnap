@@ -25,16 +25,15 @@ export const getButtonClassNames = ({
   rounded: AdditionalButtonProps['rounded'];
 }): string =>
   twJoin(
-    'flex items-center justify-center gap-4 outline-none min-w-24 hover:brightness-90', // note: vidi za justify center
+    'flex items-center justify-center gap-4 outline-none min-w-24 hover:brightness-90 transition-[filter] duration-200', // note: vidi za justify center
     size === 'sm' && 'px-4 h-10 text-md',
     size === 'lg' && 'px-6  h-16 text-lg',
     rounded === 'md' && 'rounded',
     rounded === 'none' && 'rounded-none',
     rounded === 'full' && 'rounded-full',
     variant === 'outline' && 'bg-gray-100 border',
-    variant === 'solid' && 'bg-gray-100  transition-[filter] duration-200',
 
-    // Outline styles transition-[filter] duration-200
+    // Outline styles
 
     variant === 'outline' &&
       (colorScheme === 'light-blue'
