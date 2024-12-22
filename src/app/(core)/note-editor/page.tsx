@@ -5,7 +5,7 @@ import { twJoin } from 'tailwind-merge';
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { Button } from '@/components/ui/Button';
 import { TipTapEditor } from '@/components/core/note-editor/TipTapEditor';
-
+import { HeaderEditText } from '@/components/core/note-editor/HeaderEditText';
 // Libs
 import { plus_jakarta_sans } from '@/libs/fonts';
 
@@ -13,7 +13,7 @@ export default function Note() {
   return (
     <LayoutRow className="h-[calc(100vh-132px-32px)] justify-center overflow-hidden lg:h-[calc(100vh-168px-32px)]">
       <LayoutColumn lg={10} className="flex h-full flex-col">
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <h1
             className={twJoin(
               'text-3xl font-bold !italic underline underline-offset-4',
@@ -23,7 +23,8 @@ export default function Note() {
             WWII
           </h1>
           <p className="text-md font-semibold text-gray-500">by: You</p>
-        </div>
+        </div> */}
+
         <TipTapEditor />
       </LayoutColumn>
     </LayoutRow>

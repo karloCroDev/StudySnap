@@ -447,3 +447,7 @@
     margin-left: calc((11 / 12) * 100%);
   }
 }
+
+.text-editor > div {
+  outline: none;
+}
