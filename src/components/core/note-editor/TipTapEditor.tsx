@@ -8,8 +8,9 @@ import StarterKit from '@tiptap/starter-kit';
 import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
+import Image from '@tiptap/extension-image';
 import { HeartIcon, HeartFilledIcon, Pencil2Icon } from '@radix-ui/react-icons';
-import { twMerge } from 'tailwind-merge';
+import { twJoin, twMerge } from 'tailwind-merge';
 
 // Components
 import { Button } from '@/components/ui/Button';
@@ -24,6 +25,7 @@ export const TipTapEditor = () => {
       Underline,
       CodeBlock,
       HorizontalRule,
+      Image,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
     content: `
@@ -56,6 +58,7 @@ export const TipTapEditor = () => {
     — Mom
   </blockquote>
 `,
+    // editable: false,
   });
 
   console.log(editor?.getJSON());
@@ -63,6 +66,17 @@ export const TipTapEditor = () => {
   if (editor === null) return null;
   return (
     <>
+      <div className="flex items-center justify-between">
+        <h1
+          className={twJoin(
+            'text-3xl font-bold !italic underline underline-offset-4',
+            plus_jakarta_sans.className
+          )}
+        >
+          WWII
+        </h1>
+        <p className="text-md font-semibold text-gray-500">by: You</p>
+      </div>
       <HeaderEditText editor={editor} />
       <div className="relative mt-8 flex h-full flex-col overflow-hidden rounded-3xl border border-blue-900 p-8">
         <div className="absolute right-6 top-6 rounded-lg bg-gray-100 p-2">
@@ -76,7 +90,11 @@ export const TipTapEditor = () => {
           </Button>
         </div>
         <div className="prose h-full !max-w-none !overflow-scroll scroll-smooth">
-          <EditorContent editor={editor} className="text-editor" />
+          <EditorContent
+            editor={editor}
+            disabled={true}
+            className="text-editor"
+          />
         </div>
         <div className="flex items-center justify-between pt-4">
           <div className="flex cursor-pointer items-center gap-2">

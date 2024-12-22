@@ -22,9 +22,13 @@ import { twMerge } from 'tailwind-merge';
 import { LuAlignLeft } from 'react-icons/lu';
 import { LuAlignCenter } from 'react-icons/lu';
 import { LuAlignRight } from 'react-icons/lu';
+import { LuImage } from 'react-icons/lu';
 import { LuCodeXml } from 'react-icons/lu';
 import { ImQuotesLeft } from 'react-icons/im';
 import { RxDividerHorizontal } from 'react-icons/rx';
+
+// Components
+import { DialogURL } from '@/components/core/note-editor/DialogURL';
 
 // Libs
 import { plus_jakarta_sans } from '@/libs/fonts';
@@ -46,6 +50,11 @@ export const HeaderEditText: React.FC<{
       </Link>
       <hr className="h-full w-px rounded-full border-0 bg-blue-900" />
       <div className="flex h-full flex-1 items-center gap-3 overflow-x-scroll scroll-smooth">
+        <DialogURL editor={editor}>
+          <Button>
+            <LuImage className="size-8" />
+          </Button>
+        </DialogURL>
         <Button
           onPress={() =>
             editor.chain().focus().toggleHeading({ level: 1 }).run()
@@ -190,6 +199,7 @@ export const HeaderEditText: React.FC<{
         >
           <LuAlignRight className="size-8" />
         </Button>
+
         <Button
           onPress={() => editor.chain().focus().toggleCodeBlock().run()}
           className={

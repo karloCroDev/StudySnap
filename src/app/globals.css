@@ -452,6 +452,9 @@
   outline: none;
 }
 
+.text-editor img {
+  @apply !rounded-2xl;
+}
 .is-given-option-active {
   @apply rounded bg-gray-200 p-1.5;
 }

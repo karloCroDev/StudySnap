@@ -12,7 +12,7 @@ export default function CoreLayout({
   return (
     <>
       <Header />
-      <Layout className="mt-32 lg:mt-42">{children}</Layout>
+      <Layout className="mt-32 xl:mt-36">{children}</Layout>
     </>
   );
 }
