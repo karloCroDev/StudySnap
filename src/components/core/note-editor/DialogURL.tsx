@@ -22,7 +22,6 @@ export const DialogURL: React.FC<{
       onOpenChange={setIsOpen}
       title="Add image to document"
       triggerProps={{
-        asChild: true,
         children,
       }}
     >

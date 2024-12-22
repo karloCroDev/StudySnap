@@ -15,10 +15,13 @@ import { twJoin, twMerge } from 'tailwind-merge';
 // Components
 import { Button } from '@/components/ui/Button';
 import { HeaderEditText } from '@/components/core/note-editor/HeaderEditText';
+
 // Libs
 import { plus_jakarta_sans } from '@/libs/fonts';
 
 export const TipTapEditor = () => {
+  const [isEditing, setIsEditing] = React.useState(false);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -58,37 +61,47 @@ export const TipTapEditor = () => {
     — Mom
   </blockquote>
 `,
-    // editable: false,
+    editable: isEditing,
   });
-
-  console.log(editor?.getJSON());
+  React.useEffect(() => {
+    if (editor) {
+      editor.setEditable(isEditing);
+    }
+  }, [isEditing, editor]);
 
   if (editor === null) return null;
   return (
     <>
-      <div className="flex items-center justify-between">
-        <h1
-          className={twJoin(
-            'text-3xl font-bold !italic underline underline-offset-4',
-            plus_jakarta_sans.className
-          )}
-        >
-          WWII
-        </h1>
-        <p className="text-md font-semibold text-gray-500">by: You</p>
-      </div>
-      <HeaderEditText editor={editor} />
-      <div className="relative mt-8 flex h-full flex-col overflow-hidden rounded-3xl border border-blue-900 p-8">
-        <div className="absolute right-6 top-6 rounded-lg bg-gray-100 p-2">
-          <Button
-            colorScheme="light-blue"
-            variant="solid"
-            iconRight={<Pencil2Icon className="size-5" />}
-            className="font-medium"
+      {isEditing ? (
+        <HeaderEditText editor={editor} />
+      ) : (
+        <div className="flex items-center justify-between">
+          <h1
+            className={twJoin(
+              'text-3xl font-bold !italic underline underline-offset-4',
+              plus_jakarta_sans.className
+            )}
           >
-            Edit
-          </Button>
+            WWII
+          </h1>
+          <p className="text-md font-semibold text-gray-500">by: You</p>
         </div>
+      )}
+
+      <div className="relative mt-8 flex h-full flex-col overflow-hidden rounded-3xl border border-blue-900 p-8">
+        {!isEditing && (
+          <div className="absolute right-6 top-6 z-10 rounded-lg bg-gray-100 p-2">
+            <Button
+              colorScheme="light-blue"
+              variant="solid"
+              iconRight={<Pencil2Icon className="size-5" />}
+              onPress={() => setIsEditing(true)}
+              className="font-medium"
+            >
+              Edit
+            </Button>
+          </div>
+        )}
         <div className="prose h-full !max-w-none !overflow-scroll scroll-smooth">
           <EditorContent
             editor={editor}
@@ -97,20 +110,24 @@ export const TipTapEditor = () => {
           />
         </div>
         <div className="flex items-center justify-between pt-4">
-          <div className="flex cursor-pointer items-center gap-2">
-            <HeartIcon className="size-8" />
-            <p
-              className={twMerge(
-                'text-md font-bold !italic',
-                plus_jakarta_sans.className
-              )}
-            >
-              200
-            </p>
-          </div>
-          <Button rounded="full" colorScheme="black" variant="outline">
-            🪄 Quizz yourself
-          </Button>
+          {!isEditing && (
+            <>
+              <div className="flex cursor-pointer items-center gap-2">
+                <HeartIcon className="size-8" />
+                <p
+                  className={twMerge(
+                    'text-md font-bold !italic',
+                    plus_jakarta_sans.className
+                  )}
+                >
+                  200
+                </p>
+              </div>
+              <Button rounded="full" colorScheme="black" variant="outline">
+                🪄 Quizz yourself
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </>

@@ -50,11 +50,6 @@ export const HeaderEditText: React.FC<{
       </Link>
       <hr className="h-full w-px rounded-full border-0 bg-blue-900" />
       <div className="flex h-full flex-1 items-center gap-3 overflow-x-scroll scroll-smooth">
-        <DialogURL editor={editor}>
-          <Button>
-            <LuImage className="size-8" />
-          </Button>
-        </DialogURL>
         <Button
           onPress={() =>
             editor.chain().focus().toggleHeading({ level: 1 }).run()
@@ -142,11 +137,9 @@ export const HeaderEditText: React.FC<{
         >
           <LuStrikethrough className="size-8" />
         </Button>
-        <Button
-          onPress={() => editor.chain().focus().setHorizontalRule().run()}
-        >
-          <RxDividerHorizontal className="size-8" />
-        </Button>
+        <DialogURL editor={editor}>
+          <LuImage className="size-8" />
+        </DialogURL>
 
         <Button
           onPress={() => editor.chain().focus().toggleBulletList().run()}
@@ -199,7 +192,11 @@ export const HeaderEditText: React.FC<{
         >
           <LuAlignRight className="size-8" />
         </Button>
-
+        <Button
+          onPress={() => editor.chain().focus().setHorizontalRule().run()}
+        >
+          <RxDividerHorizontal className="size-8" />
+        </Button>
         <Button
           onPress={() => editor.chain().focus().toggleCodeBlock().run()}
           className={
