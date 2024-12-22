@@ -451,3 +451,10 @@
 .text-editor > div {
   outline: none;
 }
+
+.is-given-option-active {
+  @apply rounded bg-gray-200 p-1.5;
+}
+.default-button {
+  @apply rounded bg-gray-100 p-1.5 outline-none transition-[filter] hover:brightness-95;
+}

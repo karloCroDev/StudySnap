@@ -2,13 +2,12 @@
 
 // Eternal packagess
 import * as React from 'react';
-import {
-  EditorContent,
-  EditorProvider,
-  useCurrentEditor,
-  useEditor,
-} from '@tiptap/react';
+import { EditorContent, useEditor } from '@tiptap/react';
+import CodeBlock from '@tiptap/extension-code-block';
 import StarterKit from '@tiptap/starter-kit';
+import TextAlign from '@tiptap/extension-text-align';
+import Underline from '@tiptap/extension-underline';
+import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import { HeartIcon, HeartFilledIcon, Pencil2Icon } from '@radix-ui/react-icons';
 import { twMerge } from 'tailwind-merge';
 
@@ -19,7 +18,15 @@ import { HeaderEditText } from '@/components/core/note-editor/HeaderEditText';
 import { plus_jakarta_sans } from '@/libs/fonts';
 
 export const TipTapEditor = () => {
-  const content = `
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Underline,
+      CodeBlock,
+      HorizontalRule,
+      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+    ],
+    content: `
   <h1>
     Hi there,
   </h1>
@@ -37,7 +44,7 @@ export const TipTapEditor = () => {
   <p>
     Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
   </p>
-  <pre><code class="language-css">body {
+  <pre><code>body {
     display: none;
   }</code></pre>
   <p>
@@ -48,10 +55,7 @@ export const TipTapEditor = () => {
     <br />
     — Mom
   </blockquote>
-`;
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content: content,
+`,
   });
 
   console.log(editor?.getJSON());
