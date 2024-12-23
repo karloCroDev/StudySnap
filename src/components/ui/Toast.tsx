@@ -16,7 +16,6 @@ import {
 import { useToastStore } from '@/store/useToastStore';
 
 export const Toast = () => {
-  // todo: This is not the best practice to get states like this with => state
   const { isOpen, setIsOpen, title, content, variant } = useToastStore(
     useShallow((state) => ({
       isOpen: state.isOpen,

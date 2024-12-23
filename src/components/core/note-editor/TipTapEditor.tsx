@@ -22,11 +22,14 @@ import { twJoin, twMerge } from 'tailwind-merge';
 import { Button } from '@/components/ui/Button';
 import { HeaderEditText } from '@/components/core/note-editor/HeaderEditText';
 import { DialogQuizz } from '@/components/core/note-editor/DialogQuizz';
+import { useToastStore } from '@/store/useToastStore';
 
 // Libs
 import { plus_jakarta_sans } from '@/libs/fonts';
 
 export const TipTapEditor = () => {
+  const toast = useToastStore((state) => state.setToast);
+
   const [isEditing, setIsEditing] = React.useState(false);
   const [isLiked, setIsLiked] = React.useState(false);
 
@@ -71,6 +74,7 @@ export const TipTapEditor = () => {
 `,
     editable: isEditing,
   });
+
   React.useEffect(() => {
     if (editor) {
       editor.setEditable(isEditing);
@@ -83,7 +87,7 @@ export const TipTapEditor = () => {
       {isEditing ? (
         <HeaderEditText editor={editor} />
       ) : (
-        <div className="flex items-center justify-between">
+        <div className="animate-header-initial-apperance flex items-center justify-between">
           <h1
             className={twJoin(
               'text-3xl font-bold !italic underline underline-offset-4',
@@ -96,14 +100,28 @@ export const TipTapEditor = () => {
         </div>
       )}
 
-      <div className="relative mt-8 flex h-full flex-col overflow-hidden rounded-3xl border border-blue-900 p-8 pb-6">
+      <div
+        className={twJoin(
+          'relative mt-8 flex h-full min-h-20 flex-col overflow-hidden rounded-3xl border border-blue-900 p-8 pb-6',
+          isEditing
+            ? 'animate-text-editor-editing'
+            : 'animate-text-editor-initial-apperance'
+        )}
+      >
         {!isEditing && (
           <div className="absolute right-6 top-6 z-10 rounded-lg bg-gray-100 p-2">
             <Button
               colorScheme="light-blue"
               variant="solid"
               iconRight={<Pencil2Icon className="size-5" />}
-              onPress={() => setIsEditing(true)}
+              onPress={() => {
+                toast({
+                  title: 'Editing 🤔',
+                  content: 'Your have entered editing mode',
+                  variant: 'information',
+                });
+                setIsEditing(true);
+              }}
               className="font-medium"
             >
               Edit
@@ -160,7 +178,14 @@ export const TipTapEditor = () => {
                 rounded="full"
                 colorScheme="white"
                 iconLeft={<FileTextIcon className="size-5" />}
-                onPress={() => setIsEditing(false)}
+                onPress={() => {
+                  toast({
+                    title: 'Saved 🥳',
+                    content: 'Your notes have been saved',
+                    variant: 'success',
+                  });
+                  setIsEditing(false);
+                }}
                 className="min-w-fit"
               >
                 Save

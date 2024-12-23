@@ -1,5 +1,7 @@
 import type { Config } from 'tailwindcss';
 
+// todo: fix the animations, because I use too many of them, they need to have more general names
+
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -164,7 +166,7 @@ const config: Config = {
         'menu-open': {
           from: {
             opacity: '0',
-            transform: 'translateY(100px)',
+            transform: 'translateY(50%)',
           },
           to: {
             opacity: '1',
@@ -179,7 +181,7 @@ const config: Config = {
           },
           to: {
             opacity: '0',
-            transform: 'translateY(100px)',
+            transform: 'translateY(50%)',
           },
         },
 
@@ -304,6 +306,36 @@ const config: Config = {
             transform: 'translateY(0)',
           },
         },
+
+        // Note-editor
+        'header-initial-apperance': {
+          from: {
+            transform: 'translateY(-150px)',
+          },
+          to: {
+            transform: 'translateY(0)',
+          },
+        },
+        'text-editor-initial-apperance': {
+          from: {
+            opacity: '0',
+            transform: 'translateY(150px)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
+        },
+        'text-editor-editing': {
+          from: {
+            opacity: '0',
+            transform: 'scale(80%)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'scale(100%)',
+          },
+        },
       },
       animation: {
         // General animation
@@ -347,6 +379,12 @@ const config: Config = {
         // Public-profile
         'public-profile-initial-apperance':
           'public-profile-initial-apperance 500ms ease-in',
+
+        // Note-editor
+        'header-initial-apperance': 'header-initial-apperance 500ms ease-in',
+        'text-editor-initial-apperance':
+          'text-editor-initial-apperance 500ms linear',
+        'text-editor-editing': 'text-editor-editing 500ms linear',
       },
     },
   },

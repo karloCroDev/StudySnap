@@ -6,6 +6,10 @@ import * as React from 'react';
 import { Button as ReactAriaButton } from 'react-aria-components';
 import { Editor as EditorType } from '@tiptap/react';
 import Link from 'next/link';
+import {
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+} from '@radix-ui/react-icons';
 
 // Had to use other icons becase the original ones are not available
 import { LuHeading1, LuStrikethrough } from 'react-icons/lu';
@@ -28,10 +32,6 @@ import { LuCodeXml } from 'react-icons/lu';
 import { ImQuotesLeft } from 'react-icons/im';
 import { RxDividerHorizontal } from 'react-icons/rx';
 
-import {
-  DoubleArrowLeftIcon,
-  DoubleArrowRightIcon,
-} from '@radix-ui/react-icons';
 // Components
 import { DialogURL } from '@/components/core/note-editor/DialogURL';
 
@@ -53,9 +53,10 @@ export const HeaderEditText: React.FC<{
       }
     }
   };
+
   if (editor === null) return null;
   return (
-    <div className="flex h-24 items-center gap-4 rounded-2xl border border-blue-900 p-4 md:gap-6 lg:px-6 lg:py-5 xl:gap-8">
+    <div className="animate-header-initial-apperance flex h-24 items-center gap-4 rounded-2xl border border-blue-900 p-4 md:gap-6 lg:px-6 lg:py-5 xl:gap-8">
       <Link
         href="/home/notes"
         className={twMerge(
