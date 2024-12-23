@@ -26,25 +26,25 @@ export const DialogQuizz: React.FC<{
       }}
     >
       <div className="flex flex-col items-center gap-4">
-        <h4 className="text-md font-medium">Who started WWII?</h4>
+        <h4 className="text-lg font-medium">Who started WWII?</h4>
         <LayoutRow className="w-full justify-center">
           <LayoutColumn xs={12} md={6} className="p-2">
-            <ReactAriaButton className="h-16 w-full rounded border border-blue-400 text-blue-900 outline-none">
+            <ReactAriaButton className="h-16 w-full rounded border border-blue-400 text-md text-blue-900 outline-none">
               Stalin
             </ReactAriaButton>
           </LayoutColumn>
           <LayoutColumn xs={12} md={6} className="p-2">
-            <ReactAriaButton className="h-16 w-full rounded border border-blue-400 text-blue-900 outline-none">
+            <ReactAriaButton className="h-16 w-full rounded border border-blue-400 text-md text-blue-900 outline-none">
               Stalin
             </ReactAriaButton>
           </LayoutColumn>
           <LayoutColumn xs={12} md={6} className="p-2">
-            <ReactAriaButton className="h-16 w-full rounded border border-blue-400 text-blue-900 outline-none">
+            <ReactAriaButton className="h-16 w-full rounded border border-blue-400 text-md text-blue-900 outline-none">
               Stalin
             </ReactAriaButton>
           </LayoutColumn>
           <LayoutColumn xs={12} md={6} className="p-2">
-            <ReactAriaButton className="h-16 w-full rounded border border-blue-400 text-blue-900 outline-none">
+            <ReactAriaButton className="h-16 w-full rounded border border-blue-400 text-md text-blue-900 outline-none">
               Stalin
             </ReactAriaButton>
           </LayoutColumn>

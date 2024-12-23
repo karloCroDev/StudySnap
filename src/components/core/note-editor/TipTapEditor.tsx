@@ -96,7 +96,7 @@ export const TipTapEditor = () => {
         </div>
       )}
 
-      <div className="relative mt-8 flex h-full flex-col overflow-hidden rounded-3xl border border-blue-900 p-8">
+      <div className="relative mt-8 flex h-full flex-col overflow-hidden rounded-3xl border border-blue-900 p-8 pb-6">
         {!isEditing && (
           <div className="absolute right-6 top-6 z-10 rounded-lg bg-gray-100 p-2">
             <Button
@@ -117,7 +117,7 @@ export const TipTapEditor = () => {
             className="text-editor"
           />
         </div>
-        <div className="flex items-center justify-between pt-4">
+        <div className="flex items-center justify-between gap-4 overflow-scroll py-2">
           {!isEditing ? (
             <>
               <div className="flex items-center gap-2">
@@ -148,8 +148,12 @@ export const TipTapEditor = () => {
             </>
           ) : (
             <>
-              <Button rounded="full">📸 Get notes from image</Button>
-              <p>Autocomplete: ctrl + /</p>
+              <Button rounded="full" className="min-w-fit">
+                📸 Get notes from image
+              </Button>
+              <p className="hidden text-md text-gray-500 lg:block">
+                Autocomplete: ctrl + /
+              </p>
 
               <Button
                 variant="outline"
@@ -157,6 +161,7 @@ export const TipTapEditor = () => {
                 colorScheme="white"
                 iconLeft={<FileTextIcon className="size-5" />}
                 onPress={() => setIsEditing(false)}
+                className="min-w-fit"
               >
                 Save
               </Button>

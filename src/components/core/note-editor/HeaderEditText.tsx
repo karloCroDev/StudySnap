@@ -41,27 +41,43 @@ import { plus_jakarta_sans } from '@/libs/fonts';
 export const HeaderEditText: React.FC<{
   editor: EditorType;
 }> = ({ editor }) => {
-  React.useEffect(() => {}, []);
+  const toolsHorizontalContainer = React.useRef<HTMLDivElement | null>(null);
 
+  const scrollWithButtonsFn = (direction: 'left' | 'right') => {
+    const element = toolsHorizontalContainer.current;
+    if (element) {
+      if (direction === 'left') {
+        element.scrollLeft -= 80;
+      } else {
+        element.scrollLeft += 80;
+      }
+    }
+  };
   if (editor === null) return null;
   return (
-    <div className="flex h-24 items-center gap-8 rounded-2xl border border-blue-900 px-6 py-5">
+    <div className="flex h-24 items-center gap-4 rounded-2xl border border-blue-900 p-4 md:gap-6 lg:px-6 lg:py-5 xl:gap-8">
       <Link
         href="/home/notes"
         className={twMerge(
-          'text-lg font-semibold !italic underline-offset-2 hover:underline',
+          'hidden text-lg font-semibold !italic underline-offset-2 hover:underline md:block',
           plus_jakarta_sans.className
         )}
       >
         <p>History/WWII</p>
       </Link>
 
-      <hr className="h-full w-px rounded-full border-0 bg-blue-900" />
+      <hr className="hidden h-full w-px rounded-full border-0 bg-blue-900 md:block" />
 
-      <ReactAriaButton className="text-blue-400 outline-none transition-transform duration-75 active:scale-75">
+      <ReactAriaButton
+        className="hidden text-blue-400 outline-none transition-transform duration-75 active:scale-75 md:block"
+        onPress={() => scrollWithButtonsFn('left')}
+      >
         <DoubleArrowLeftIcon className="size-8" />
       </ReactAriaButton>
-      <div className="flex h-full flex-1 items-center gap-3 overflow-scroll">
+      <div
+        className="flex h-full flex-1 snap-x snap-mandatory snap-start items-center gap-2 overflow-scroll scroll-smooth md:gap-3"
+        ref={toolsHorizontalContainer}
+      >
         <ReactAriaButton
           onPress={() =>
             editor.chain().focus().toggleHeading({ level: 1 }).run()
@@ -128,7 +144,6 @@ export const HeaderEditText: React.FC<{
         >
           <LuItalic className="size-8" />
         </ReactAriaButton>
-
         <ReactAriaButton
           onPress={() => editor.chain().focus().toggleUnderline().run()}
           className={
@@ -152,7 +167,6 @@ export const HeaderEditText: React.FC<{
         <DialogURL editor={editor}>
           <LuImage className="size-8" />
         </DialogURL>
-
         <ReactAriaButton
           onPress={() => editor.chain().focus().toggleBulletList().run()}
           className={
@@ -230,12 +244,15 @@ export const HeaderEditText: React.FC<{
           <ImQuotesLeft className="size-8" />
         </ReactAriaButton>
       </div>
-      <ReactAriaButton className="text-blue-400 outline-none transition-transform duration-75 active:scale-75">
+      <ReactAriaButton
+        className="hidden text-blue-400 outline-none transition-transform duration-75 active:scale-75 md:block"
+        onPress={() => scrollWithButtonsFn('right')}
+      >
         <DoubleArrowRightIcon className="size-8" />
       </ReactAriaButton>
 
       <hr className="h-full w-px rounded-full border-0 bg-blue-900" />
-      <div className="flex gap-4">
+      <div className="flex gap-2 md:gap-4">
         <ReactAriaButton
           onPress={() => editor.chain().focus().undo().run()}
           isDisabled={!editor.can().chain().focus().undo().run()}
