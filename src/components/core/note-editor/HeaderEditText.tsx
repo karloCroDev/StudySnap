@@ -43,7 +43,7 @@ export const HeaderEditText: React.FC<{
 }> = ({ editor }) => {
   const toolsHorizontalContainer = React.useRef<HTMLDivElement | null>(null);
 
-  const scrollWithButtonsFn = (direction: 'left' | 'right') => {
+  const scrollWithButtons = (direction: 'left' | 'right') => {
     const element = toolsHorizontalContainer.current;
     if (element) {
       if (direction === 'left') {
@@ -56,7 +56,7 @@ export const HeaderEditText: React.FC<{
 
   if (editor === null) return null;
   return (
-    <div className="animate-header-initial-apperance flex h-24 items-center gap-4 rounded-2xl border border-blue-900 p-4 md:gap-6 lg:px-6 lg:py-5 xl:gap-8">
+    <div className="flex h-24 animate-header-initial-apperance items-center gap-4 rounded-2xl border border-blue-900 p-4 md:gap-6 lg:px-6 lg:py-5 xl:gap-8">
       <Link
         href="/home/notes"
         className={twMerge(
@@ -71,7 +71,7 @@ export const HeaderEditText: React.FC<{
 
       <ReactAriaButton
         className="hidden text-blue-400 outline-none transition-transform duration-75 active:scale-75 md:block"
-        onPress={() => scrollWithButtonsFn('left')}
+        onPress={() => scrollWithButtons('left')}
       >
         <DoubleArrowLeftIcon className="size-8" />
       </ReactAriaButton>
@@ -247,7 +247,7 @@ export const HeaderEditText: React.FC<{
       </div>
       <ReactAriaButton
         className="hidden text-blue-400 outline-none transition-transform duration-75 active:scale-75 md:block"
-        onPress={() => scrollWithButtonsFn('right')}
+        onPress={() => scrollWithButtons('right')}
       >
         <DoubleArrowRightIcon className="size-8" />
       </ReactAriaButton>

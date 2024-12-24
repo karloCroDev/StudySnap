@@ -18,13 +18,13 @@ export const SearchableHeader: React.FC<{
 }> = ({ title }) => {
   const infoHeader = React.useRef<HTMLDivElement | null>(null);
 
-  const toggleSearchFn = () => {
+  const toggleSearch = () => {
     const searchElement = infoHeader.current;
 
     if (searchElement) {
       const currentValue = searchElement.getAttribute('data-search-visible');
       const newValue = currentValue === 'true' ? 'false' : 'true';
-      searchElement.setAttribute('data-search-visible', newValue); //note: Nisam htio toggleati attribute zbog konflikta pocetnih animaticja koje ne bi trebale biti!
+      searchElement.setAttribute('data-search-visible', newValue); //note: Nisam htio toggleati attribute zbog konflikta pocetnih animacija koje ne bi trebale biti!
     }
   };
   return (
@@ -47,7 +47,7 @@ export const SearchableHeader: React.FC<{
           />
           <AriaButton
             className="rounded-full bg-blue-400 p-3 text-center text-gray-100 outline-none transition-colors duration-300 group-data-[search-visible=true]:bg-red-400 md:hidden"
-            onPress={toggleSearchFn}
+            onPress={toggleSearch}
           >
             <MagnifyingGlassIcon className="h-8 w-8 group-data-[search-visible=true]:hidden" />
             <Cross2Icon className="hidden h-8 w-8 group-data-[search-visible=true]:block" />

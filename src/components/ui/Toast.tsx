@@ -40,7 +40,7 @@ export const Toast = () => {
         )}
       >
         <div className="flex-1">
-          <RadixToast.Title className="text-lg font-semibold md:text-xl">
+          <RadixToast.Title className="text-md font-semibold md:text-lg">
             {title}
           </RadixToast.Title>
           <RadixToast.Description className="text text-sm text-gray-200">
@@ -53,7 +53,7 @@ export const Toast = () => {
         )}
         {variant === 'success' && <CheckCircledIcon className="h-12 w-12" />}
         <RadixToast.Close asChild>
-          <Cross2Icon className="w absolute right-2 top-2 h-5 w-5 cursor-pointer text-gray-100 opacity-0 transition-[opacity] duration-300 group-hover:pointer-events-auto md:pointer-events-none md:group-hover:opacity-100" />
+          <Cross2Icon className="absolute right-2 top-2 h-4 w-4 cursor-pointer text-gray-100 transition-[opacity] duration-300 group-hover:pointer-events-auto md:pointer-events-none md:opacity-0 md:group-hover:opacity-100" />
         </RadixToast.Close>
       </RadixToast.Root>
       {/* todo: Decide padding on mobile */}
