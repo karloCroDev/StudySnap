@@ -13,6 +13,7 @@ import { StaticImageData } from 'next/image';
 import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';
 import { DialogDelete } from '@/components/core/note/DialogDelete';
 import { Avatar } from '@/components/ui/Avatar';
+import { LikeComponent } from '@/components/ui/LikeComponent';
 
 // Images
 import ImageExample from '@/public/images/login-image.png';
@@ -27,6 +28,10 @@ export const NoteCard: React.FC<{
   userImage?: StaticImageData;
   likes: number;
 }> = ({ title, description, userImage, author, likes }) => {
+  const likeAction = async () => {
+    'use server';
+    console.log('What the actual ***');
+  };
   return (
     <div className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400 text-blue-900">
       <div className="flex aspect-square flex-col p-6 pb-4">
@@ -52,18 +57,13 @@ export const NoteCard: React.FC<{
               {author}
             </Link>
           </div>
-          <div className="gap'4 flex items-center gap-2">
-            <p
-              className={twJoin(
-                'font-semibold !italic',
-                plus_jakarta_sans.className
-              )}
-            >
-              {likes}
-            </p>
-            <HeartFilledIcon className="size-6 text-red-400" />
-          </div>
-          {/* <HeartFilledIcon /> */}
+
+          <LikeComponent
+            hasBeenLiked
+            isOrderReversed
+            numberOfLikes={likes}
+            action={likeAction}
+          />
         </div>
       </div>
 
@@ -87,8 +87,8 @@ export const NoteCard: React.FC<{
           </DialogDelete>
         </li>
       </ul>
-      {/* Need to prevent the hydraton error (can't nest links) */}
-      <Link href="/" className="absolute inset-0" />
+
+      <Link href="/note-editor" className="absolute inset-0" />
     </div>
   );
 };

@@ -21,38 +21,17 @@ export default function Notes() {
             <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
               <CreateNoteCard />
             </LayoutColumn>
-            {[...Array(7)].map((_, i) => {
-              if ((i + 1) % 2) {
-                return (
-                  <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
-                    <NoteCard
-                      title="Biology"
-                      description="Lorem ipsum dolorem"
-                      likes={100}
-                      author="Ivan Horvat"
-                      key={i}
-                    />
-                  </LayoutColumn>
-                );
-              } else {
-                return (
-                  <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
-                    <SubjectCard
-                      title="Biology"
-                      image={
-                        <div className="absolute left-0 top-0 -z-10 h-full w-full">
-                          <Image
-                            src={ImageExample}
-                            alt="Informative image about subject"
-                            className="h-full object-cover brightness-50"
-                          />
-                        </div>
-                      }
-                    />
-                  </LayoutColumn>
-                );
-              }
-            })}
+            {[...Array(7)].map((_, i) => (
+              <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
+                <NoteCard
+                  title="Biology"
+                  description="Lorem ipsum dolorem"
+                  likes={100}
+                  author="Ivan Horvat"
+                  key={i}
+                />
+              </LayoutColumn>
+            ))}
           </LayoutRow>
         </LayoutColumn>
         <LayoutColumn lg={8}></LayoutColumn>

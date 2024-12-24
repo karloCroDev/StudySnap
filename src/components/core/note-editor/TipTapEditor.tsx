@@ -9,13 +9,7 @@ import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import Image from '@tiptap/extension-image';
-import {
-  HeartIcon,
-  HeartFilledIcon,
-  Pencil2Icon,
-  FileTextIcon,
-} from '@radix-ui/react-icons';
-import { Button as ReactAriaButton } from 'react-aria-components';
+import { Pencil2Icon, FileTextIcon } from '@radix-ui/react-icons';
 import { twJoin, twMerge } from 'tailwind-merge';
 
 // Components
@@ -28,12 +22,12 @@ import { useToastStore } from '@/store/useToastStore';
 
 // Libs
 import { plus_jakarta_sans } from '@/libs/fonts';
+import { LikeComponent } from '@/components/ui/LikeComponent';
 
 export const TipTapEditor = () => {
   const toast = useToastStore((state) => state.setToast);
 
   const [isEditing, setIsEditing] = React.useState(false);
-  const [isLiked, setIsLiked] = React.useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -140,26 +134,15 @@ export const TipTapEditor = () => {
         <div className="flex items-center justify-between gap-4 overflow-scroll py-2">
           {!isEditing ? (
             <>
-              <div className="flex items-center gap-2">
-                <ReactAriaButton
-                  className="size-8 outline-none transition-transform duration-75 active:scale-75"
-                  onPress={() => setIsLiked(!isLiked)}
-                >
-                  {isLiked ? (
-                    <HeartFilledIcon className="size-8 text-red-400" />
-                  ) : (
-                    <HeartIcon className="size-8" />
-                  )}
-                </ReactAriaButton>
-                <p
-                  className={twMerge(
-                    'text-md font-bold !italic',
-                    plus_jakarta_sans.className
-                  )}
-                >
-                  {200 + (isLiked ? 1 : 0)}
-                </p>
-              </div>
+              <LikeComponent
+                hasBeenLiked={false}
+                numberOfLikes={330}
+                size="lg"
+                action={() => {
+                  console.log('Liked');
+                }}
+              />
+
               <DialogQuizz>
                 <Button rounded="full" colorScheme="black" variant="outline">
                   🪄 Quizz yourself

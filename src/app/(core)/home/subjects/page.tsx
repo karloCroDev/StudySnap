@@ -25,11 +25,9 @@ export default function Subjects() {
               if ((i + 1) % 2) {
                 return (
                   <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
-                    <NoteCard
+                    <SubjectCard
                       title="Biology"
                       description="Lorem ipsum dolorem"
-                      likes={100}
-                      author="Ivan Horvat"
                       key={i}
                     />
                   </LayoutColumn>
