@@ -12,7 +12,7 @@ export const CreateSubjectCard = () => {
           <PlusIcon className="h-24 w-24 text-blue-900 transition-colors duration-200 group-hover:text-blue-400" />
         </div>
         <div className="flex flex-1 items-center justify-between px-4">
-          <h4 className="lg:text-md">Create new subject</h4>
+          <h4 className="text-md">Create subject</h4>
           <DoubleArrowRightIcon className="size-10 text-blue-400 transition-transform duration-200 group-hover:translate-x-3" />
         </div>
       </div>

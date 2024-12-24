@@ -13,10 +13,14 @@ import { Form } from 'react-aria-components';
 import ImageExample from '@/public/images/login-image.png';
 
 export const DialogEditProfile: React.FC<{
+  setIsDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   children: React.ReactNode;
-}> = ({ children }) => {
+}> = ({ setIsDialogOpen, children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [isPublic, setIsPublic] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsDialogOpen && setIsDialogOpen(isOpen);
+  }, [isOpen]);
 
   return (
     <Dialog

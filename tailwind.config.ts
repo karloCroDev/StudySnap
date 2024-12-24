@@ -381,10 +381,10 @@ const config: Config = {
           'public-profile-initial-apperance 500ms ease-in',
 
         // Note-editor
-        'header-initial-apperance': 'header-initial-apperance 500ms ease-in',
+        'header-initial-apperance': 'header-initial-apperance 300ms linear',
         'text-editor-initial-apperance':
-          'text-editor-initial-apperance 500ms linear',
-        'text-editor-editing': 'text-editor-editing 500ms linear',
+          'text-editor-initial-apperance 300ms linear',
+        'text-editor-editing': 'text-editor-editing 300ms linear',
       },
     },
   },

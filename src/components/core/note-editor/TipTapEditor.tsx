@@ -22,6 +22,8 @@ import { twJoin, twMerge } from 'tailwind-merge';
 import { Button } from '@/components/ui/Button';
 import { HeaderEditText } from '@/components/core/note-editor/HeaderEditText';
 import { DialogQuizz } from '@/components/core/note-editor/DialogQuizz';
+
+// Store
 import { useToastStore } from '@/store/useToastStore';
 
 // Libs
@@ -87,7 +89,7 @@ export const TipTapEditor = () => {
       {isEditing ? (
         <HeaderEditText editor={editor} />
       ) : (
-        <div className="animate-header-initial-apperance flex items-center justify-between">
+        <div className="flex animate-header-initial-apperance items-center justify-between">
           <h1
             className={twJoin(
               'text-3xl font-bold !italic underline underline-offset-4',
