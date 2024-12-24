@@ -48,8 +48,8 @@ export const LoginForm = () => {
         size="lg"
         inputProps={{
           placeholder: 'Enter your email',
-          onChange: (e) => setEmail(e.target.value), // note: Could pass directly but it is getting in conflict with div
         }}
+        onChange={(val) => setEmail(val.toString())}
       />
       <Input
         isRequired
@@ -58,8 +58,8 @@ export const LoginForm = () => {
         type="password"
         inputProps={{
           placeholder: '********',
-          onChange: (e) => setPassword(e.target.value),
         }}
+        onChange={(val) => setPassword(val.toString())}
       />
       <Button colorScheme="light-blue" rounded="none" size="lg" type="submit">
         Log in

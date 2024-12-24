@@ -8,8 +8,11 @@ import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Avatar } from '@/components/ui/Avatar';
-import Link from 'next/link';
 import { Form } from 'react-aria-components';
+import Link from 'next/link';
+
+// Store
+import { useToastStore } from '@/store/useToastStore';
 
 // Images
 import ImageExample from '@/public/images/login-image.png';
@@ -18,12 +21,30 @@ export const DialogEditProfile: React.FC<{
   setIsDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   children: React.ReactNode;
 }> = ({ setIsDialogOpen, children }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const toast = useToastStore((state) => state.setToast);
 
+  const [isOpen, setIsOpen] = React.useState(false);
   React.useEffect(() => {
     setIsDialogOpen && setIsDialogOpen(isOpen);
   }, [isOpen]);
 
+  const saveChanges = () => {
+    toast({
+      // title: 'Deleted',
+      // content: 'You have succesfully delete your note',
+      // variant: 'success',
+      title: 'Profile updated!',
+      content:
+        'You have successfuly updated your profile, please refresh to see your changes',
+      variant: 'success',
+    });
+    setIsOpen(false);
+    // toast({
+    //   title: 'Oooposies',
+    //   content: 'Something went wrong, please try again ',
+    //   variant: 'error',
+    // });
+  };
   return (
     <Dialog
       open={isOpen}
@@ -81,7 +102,7 @@ export const DialogEditProfile: React.FC<{
             href="/public-profile"
             className="text-gray-600 underline-offset-2 hover:underline"
           ></Link>
-          <Button onClick={() => setIsOpen(false)}>Save changes</Button>
+          <Button onPress={saveChanges}>Save changes</Button>
         </div>
       </Form>
     </Dialog>

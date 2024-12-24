@@ -1,4 +1,5 @@
 'use client';
+
 // External packages
 import * as React from 'react';
 import { FileTrigger, Form } from 'react-aria-components';
@@ -9,13 +10,33 @@ import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
+// Store
+import { useToastStore } from '@/store/useToastStore';
+
 export const DialogChangeDetails: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const [isOpen, setIsOpen] = React.useState(false); // Bit ce slanje podataka paaaaa msm da ne treba close
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [subjectName, setSubjectName] = React.useState('');
+  const [details, setDetails] = React.useState('');
+
   const [image, setImage] = React.useState<File | null>(null);
   const imageNameArray = image?.name.split('.');
+
   console.log(imageNameArray);
+
+  const toast = useToastStore((state) => state.setToast);
+
+  const createNote = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    toast({
+      title: `${subjectName} note created`,
+      content: `You have succesfully created ${subjectName}`,
+      variant: 'success',
+    });
+
+    setIsOpen(false);
+  };
 
   return (
     <Dialog
@@ -27,9 +48,8 @@ export const DialogChangeDetails: React.FC<{
         children,
       }}
     >
-      <Form className="flex flex-col gap-5">
+      <Form className="flex flex-col gap-5" onSubmit={createNote}>
         <Input
-          isRequired
           type="text"
           label="Subject name"
           isMdHorizontal
@@ -38,7 +58,6 @@ export const DialogChangeDetails: React.FC<{
           }}
         />
         <Input
-          isRequired
           type="text"
           label="Details"
           isMdHorizontal
@@ -67,7 +86,7 @@ export const DialogChangeDetails: React.FC<{
             )}
           </div>
         </FileTrigger> */}
-        <Button className="self-end" onClick={() => setIsOpen(false)}>
+        <Button className="self-end" type="submit">
           Change subject
         </Button>
       </Form>

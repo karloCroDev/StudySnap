@@ -49,8 +49,8 @@ export const SignupForm = () => {
         size="lg"
         inputProps={{
           placeholder: 'Enter your username',
-          onChange: (e) => setEmail(e.target.value), // note: Could pass directly but it is getting in conflict with div
         }}
+        onChange={(val) => setUsername(val.toString())}
       />
       <Input
         isRequired
@@ -59,8 +59,8 @@ export const SignupForm = () => {
         size="lg"
         inputProps={{
           placeholder: 'Enter your email',
-          onChange: (e) => setEmail(e.target.value), // note: Could pass directly but it is getting in conflict with div
         }}
+        onChange={(val) => setEmail(val.toString())}
       />
       <Input
         isRequired
@@ -69,8 +69,8 @@ export const SignupForm = () => {
         type="password"
         inputProps={{
           placeholder: '********',
-          onChange: (e) => setPassword(e.target.value),
         }}
+        onChange={(val) => setPassword(val.toString())}
       />
       <Button rounded="none" size="lg" type="submit">
         Sign up

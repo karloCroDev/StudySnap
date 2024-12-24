@@ -1,4 +1,5 @@
 'use client';
+
 // External packages
 import * as React from 'react';
 
@@ -6,10 +7,24 @@ import * as React from 'react';
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 
+// Store
+import { useToastStore } from '@/store/useToastStore';
+
 export const DialogDelete: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const [isOpen, setIsOpen] = React.useState(false); // Bit ce slanje podataka paaaaa msm da ne treba close
+  const [isOpen, setIsOpen] = React.useState(false);
+  const toast = useToastStore((state) => state.setToast);
+
+  const deleteDialog = () => {
+    toast({
+      title: 'Subject delted',
+      content: 'You have succesfully delete your subject',
+      variant: 'success',
+    });
+
+    setIsOpen(false);
+  };
   return (
     <Dialog
       open={isOpen}
@@ -25,11 +40,11 @@ export const DialogDelete: React.FC<{
           Are you sure you want to delete your subject
         </h4>
         <div className="mt-6 flex gap-6">
-          <Button className="uppercase" onPress={() => setIsOpen(false)}>
+          <Button className="uppercase" onPress={deleteDialog}>
             yes
           </Button>
           <Button
-            onPressStart={() => setIsOpen(false)}
+            onPress={() => setIsOpen(false)}
             variant="outline"
             colorScheme="light-blue"
             className="uppercase"

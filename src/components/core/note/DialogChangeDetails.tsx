@@ -8,46 +8,64 @@ import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
+// Store
+import { useToastStore } from '@/store/useToastStore';
+
 export const DialogChangeDetails: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isPublic, setIsPublic] = React.useState(false);
 
+  const [noteName, setNoteName] = React.useState('');
+  const [details, setDetails] = React.useState('');
+
+  const toast = useToastStore((state) => state.setToast);
+
+  const changeDetails = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    toast({
+      title: `${noteName} subject created`,
+      content: `You have succesfully updated ${noteName}`,
+      variant: 'success',
+    });
+
+    setIsOpen(false);
+  };
   return (
     <Dialog
       open={isOpen}
       onOpenChange={setIsOpen}
-      title="Change subject's details"
+      title="Change note's details"
       triggerProps={{
         asChild: true,
         children,
       }}
     >
-      <Form className="flex flex-col gap-5">
+      <Form className="flex flex-col gap-5" onSubmit={changeDetails}>
         <Input
-          isRequired
           type="text"
           label="Note name"
           isMdHorizontal
           inputProps={{
-            placeholder: 'Enter new note name',
+            placeholder: 'Enter note name',
+            // onChange: (e) => setNoteName(e.target.value),
           }}
+          onChange={(val) => setNoteName(val.toString())}
         />
         <Input
-          isRequired
           type="text"
-          label="Details"
+          label="Details "
           isMdHorizontal
           inputProps={{
-            placeholder: 'Enter new note details',
+            placeholder: "Enter your note's details ",
           }}
+          onChange={(val) => setDetails(val.toString())}
         />
-
-        <div className="flex items-center">
-          <p className="flex-1 text-end text-md">Make it public</p>
+        <div className="flex flex-col items-start gap-2 md:flex-row md:items-center md:gap-0">
+          <p className="text-end text-md md:flex-1">Make it public</p>
           <RadioGroup
-            className="flex flex-[2] justify-center gap-6"
+            className="flex justify-center gap-6 self-center md:flex-[2] md:self-auto"
             defaultValue="false"
             onChange={(val) =>
               val === 'false' ? setIsPublic(false) : setIsPublic(true)
@@ -69,7 +87,7 @@ export const DialogChangeDetails: React.FC<{
             </Radio>
           </RadioGroup>
         </div>
-        <Button className="self-end" onClick={() => setIsOpen(false)}>
+        <Button className="self-end" type="submit">
           Change note
         </Button>
       </Form>
