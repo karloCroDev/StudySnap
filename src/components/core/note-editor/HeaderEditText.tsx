@@ -58,7 +58,8 @@ export const HeaderEditText: React.FC<{
   return (
     <div className="flex h-24 animate-header-initial-apperance items-center gap-4 rounded-2xl border border-blue-900 p-4 md:gap-6 lg:px-6 lg:py-5 xl:gap-8">
       <Link
-        href="/home/notes"
+        href="/home/subjects"
+        //Here is the deal, when I make discover notes, and notes from user then I will need to change this link
         className={twMerge(
           'hidden text-lg font-semibold !italic underline-offset-2 hover:underline md:block',
           plus_jakarta_sans.className

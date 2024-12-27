@@ -25,7 +25,7 @@ export default function Notes() {
               <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
                 <NoteCard
                   title="Biology"
-                  description="Lorem ipsum dolorem"
+                  description="Lorem ipsum do lorem"
                   likes={100}
                   author="Ivan Horvat"
                   key={i}

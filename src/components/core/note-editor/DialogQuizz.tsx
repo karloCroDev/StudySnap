@@ -52,7 +52,7 @@ export const DialogQuizz: React.FC<{
         <p className="text-gray-500"> 1/10 questions passed</p> */}
 
         <CheckCircledIcon className="size-32 text-green-400" />
-        <p className="text-md font-medium">
+        <p className="text-center text-md font-medium">
           You have answered 9/10 questions correctly
         </p>
         <Button rounded="full" onPress={() => setIsOpen(false)}>
