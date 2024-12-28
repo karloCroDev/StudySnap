@@ -67,6 +67,11 @@ export const TipTapEditor = () => {
       editor?.commands.insertContent(data);
     } catch (error) {
       console.error('Upload failed:', error);
+      toast({
+        title: 'Failed to get notes',
+        content: 'Please try again later, problem with server',
+        variant: 'error',
+      });
     }
   };
 
