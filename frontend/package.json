@@ -28,6 +28,7 @@
     "react-dom": "^18",
     "react-icons": "^5.4.0",
     "tailwind-merge": "^2.5.3",
+    "tiptap-markdown": "^0.8.10",
     "zustand": "^5.0.0"
   },
   "devDependencies": {

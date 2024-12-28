@@ -11,6 +11,8 @@ import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import Image from '@tiptap/extension-image';
 import { Pencil2Icon, FileTextIcon } from '@radix-ui/react-icons';
 import { twJoin, twMerge } from 'tailwind-merge';
+import { FileTrigger } from 'react-aria-components';
+import { Markdown } from 'tiptap-markdown';
 
 // Components
 import { Button } from '@/components/ui/Button';
@@ -36,41 +38,33 @@ export const TipTapEditor = () => {
       CodeBlock,
       HorizontalRule,
       Image,
+      Markdown,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
-    content: `
-  <h1>
-    Hi there,
-  </h1>
-  <p>
-    this is a <em>basic</em> example of <strong>Tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
-  </p>
-  <ul>
-    <li>
-      That’s a bullet list with one …
-    </li>
-    <li>
-      … or two list items.
-    </li>
-  </ul>
-  <p>
-    Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
-  </p>
-  <pre><code>body {
-    display: none;
-  }</code></pre>
-  <p>
-    I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
-  </p>
-  <blockquote>
-    Wow, that’s amazing. Good work, boy! 👏
-    <br />
-    — Mom
-  </blockquote>
-`,
     editable: isEditing,
+    content: '<h1>Hello world<h1/>',
   });
 
+  // Getting notes
+  const getNotes = async (image: File) => {
+    const formData = new FormData();
+    formData.append('file', image);
+    console.log(formData);
+    try {
+      const res = await fetch('http://localhost:4000/add-image', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+      console.log(data);
+      editor?.commands.insertContent(data);
+    } catch (error) {
+      console.error('Upload failed:', error);
+    }
+  };
+
+  // Setting the editor to be editable
   React.useEffect(() => {
     if (editor) {
       editor.setEditable(isEditing);
@@ -151,9 +145,16 @@ export const TipTapEditor = () => {
             </>
           ) : (
             <>
-              <Button rounded="full" className="min-w-fit">
-                📸 Get notes from image
-              </Button>
+              <FileTrigger
+                // acceptedFileTypes={['.jpg,', '.jpeg', '.png']}
+                onSelect={(event) => {
+                  event && getNotes(Array.from(event)[0]);
+                }}
+              >
+                <Button rounded="full" className="min-w-fit">
+                  📸 Get notes from image
+                </Button>
+              </FileTrigger>
               <p className="hidden text-md text-gray-500 lg:block">
                 Autocomplete: ctrl + /
               </p>

@@ -40,8 +40,8 @@ router.post('/add-image', upload.single('file'), (req, res) => __awaiter(void 0,
                 mimeType: 'image/jpeg',
             },
         },
-        'Tell me exactly what is written in this image. Please use native language to the image that is writtren',
+        'Please analyze the image and generate concise summary notes based on the text it contains. If the image does not include any text, provide a brief and accurate description of its content instead. Please ensure that the notes are relevant and informative and that they use MARKDOWN FORMAT.',
     ]);
     fs_1.default.unlinkSync(path); // Deleting the image, saving rescources because it is not needed anymore after the AI has processed it
-    res.json(result.response.text());
+    res.json(path);
 }));
