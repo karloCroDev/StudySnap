@@ -2,7 +2,7 @@
 
 // External packages
 import * as React from 'react';
-import { TextField, FieldError, TextArea, Label } from 'react-aria-components';
+import { TextField, FieldError, TextArea } from 'react-aria-components';
 import { Form } from 'react-aria-components';
 import { Editor as EditorType } from '@tiptap/react';
 import { MagicWandIcon } from '@radix-ui/react-icons';
@@ -11,7 +11,7 @@ import { MagicWandIcon } from '@radix-ui/react-icons';
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { useToastStore } from '@/store/useToastStore';
-// import { Input } from '@/components/ui/Input';
+import { Spinner } from '@/components/ui/Spinner';
 
 export const DialogGenerateContent: React.FC<{
   children: React.ReactNode;
@@ -22,11 +22,13 @@ export const DialogGenerateContent: React.FC<{
   const [isOpen, setIsOpen] = React.useState(false);
 
   const [prompt, setPrompt] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
   const generateText = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const context = editor?.getText();
     try {
+      setLoading(true);
+      const context = editor?.getText();
       const response = await fetch('http://localhost:4000/completion-context', {
         method: 'POST',
         body: JSON.stringify({ prompt, context }),
@@ -49,6 +51,7 @@ export const DialogGenerateContent: React.FC<{
         variant: 'success',
       });
     } finally {
+      setLoading(false);
       setIsOpen(false);
     }
   };
@@ -77,6 +80,7 @@ export const DialogGenerateContent: React.FC<{
         <Button
           type="submit"
           iconLeft={<MagicWandIcon className="size-5" />}
+          iconRight={loading && <Spinner />}
           className="mt-2 self-end"
         >
           Generate

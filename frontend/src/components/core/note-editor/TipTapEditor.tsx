@@ -24,6 +24,7 @@ import { Button } from '@/components/ui/Button';
 import { HeaderEditText } from '@/components/core/note-editor/HeaderEditText';
 import { DialogQuizz } from '@/components/core/note-editor/DialogQuizz';
 import { DialogGenerateContent } from './DialogGenerateContent';
+import { Spinner } from '@/components/ui/Spinner';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
@@ -51,12 +52,14 @@ export const TipTapEditor = () => {
     content: '<h1>Hello world<h1/>',
   });
 
+  const [loading, setLoading] = React.useState(false);
+
   // Getting notes
   const getNotes = async (image: File) => {
-    const formData = new FormData();
-    formData.append('file', image);
-    console.log(formData);
     try {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append('file', image);
       const res = await fetch('http://localhost:4000/image-note', {
         method: 'POST',
         body: formData,
@@ -65,6 +68,11 @@ export const TipTapEditor = () => {
       const data = await res.json();
       console.log(data);
       editor?.commands.insertContent(data);
+      toast({
+        title: 'Notes genearted',
+        content: 'Notes generated successfully from your image',
+        variant: 'error',
+      });
     } catch (error) {
       console.error('Upload failed:', error);
       toast({
@@ -72,6 +80,8 @@ export const TipTapEditor = () => {
         content: 'Please try again later, problem with server',
         variant: 'error',
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -227,6 +237,7 @@ export const TipTapEditor = () => {
                   rounded="full"
                   className="min-w-fit"
                   iconLeft={<CameraIcon className="size-5" />}
+                  iconRight={loading && <Spinner />}
                 >
                   Get notes from image
                 </Button>

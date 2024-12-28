@@ -11,8 +11,8 @@ export const Spinner: React.FC<
     className={twMerge(
       'animate-spin',
       size === 'sm' && 'size-4',
-      size === 'md' && 'size-6',
-      size === 'lg' && 'size-8',
+      size === 'md' && 'size-8',
+      size === 'lg' && 'size-12',
       className
     )}
   />
