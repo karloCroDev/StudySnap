@@ -26,7 +26,7 @@ const storage = multer_1.default.diskStorage({
     filename: (req, file, cb) => cb(null, Date.now() + file.originalname),
 });
 const upload = (0, multer_1.default)({ storage });
-router.post('/add-image', upload.single('file'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post('/image-note', upload.single('file'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const path = (_a = req.file) === null || _a === void 0 ? void 0 : _a.path;
     if (path === undefined) {
@@ -40,8 +40,8 @@ router.post('/add-image', upload.single('file'), (req, res) => __awaiter(void 0,
                 mimeType: 'image/jpeg',
             },
         },
-        'Please analyze the image and generate concise summary notes based on the text it contains. If the image does not include any text, provide a brief and accurate description of its content instead. Please ensure that the notes are relevant and informative and that they use MARKDOWN FORMAT.',
+        'Please analyze the image and generate concise summary notes based on the text it contains. If the image does not include any text, provide a brief and accurate description of its content instead. Please ensure that the notes are relevant and informative and that they use MARKDOWN FORMAT and NATIVE LANGUAGE of the text.',
     ]);
     fs_1.default.unlinkSync(path); // Deleting the image, saving rescources because it is not needed anymore after the AI has processed it
-    res.json(path);
+    res.json(result.response.text());
 }));

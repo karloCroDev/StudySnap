@@ -42,7 +42,7 @@ export const Input: React.FC<
     />
     <div
       className={twJoin(
-        'flex flex-col-reverse gap-y-2',
+        'flex w-full flex-col-reverse gap-y-2',
         isMdHorizontal && 'md:flex-row-reverse md:items-center md:gap-x-6'
       )}
     >

@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post('/add-image', upload.single('file'), async (req, res) => {
+router.post('/image-note', upload.single('file'), async (req, res) => {
   const path = req.file?.path;
   if (path === undefined) {
     res.json('Please enter a valid image');
@@ -29,10 +29,10 @@ router.post('/add-image', upload.single('file'), async (req, res) => {
         mimeType: 'image/jpeg',
       },
     },
-    'Please analyze the image and generate concise summary notes based on the text it contains. If the image does not include any text, provide a brief and accurate description of its content instead. Please ensure that the notes are relevant and informative and that they use MARKDOWN FORMAT.',
+    'Please analyze the image and generate concise summary notes based on the text it contains. If the image does not include any text, provide a brief and accurate description of its content instead. Please ensure that the notes are relevant and informative and that they use MARKDOWN FORMAT and NATIVE LANGUAGE of the text.',
   ]);
   fs.unlinkSync(path); // Deleting the image, saving rescources because it is not needed anymore after the AI has processed it
-  res.json(path);
+  res.json(result.response.text());
 });
 
 export { router as imageNoteResponse };

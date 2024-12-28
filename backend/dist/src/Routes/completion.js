@@ -20,8 +20,8 @@ const config_1 = require("../Config/config");
 const router = express_1.default.Router();
 exports.completion = router;
 router.post('/completion', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { sentence } = req.body;
-    console.log(sentence);
-    const completedSentence = yield config_1.modelFlash.generateContent(`You are given a context of the document with text, and your task is to complete last sentence, or write one sentence if there isn't any sentence started (NOT more than one sentence!). Also big note don't repeat sentence, just write it like you would continue (don't write whole sentence)! Here is the given part: ${sentence}`);
+    const { context } = req.body;
+    const completedSentence = yield config_1.modelFlash.generateContent(`You are given a context of the document with text, and your task is to complete last sentence, and write one more. Also big note don't repeat alreday exisiting part of sentence, just write it like you would continue (don't write whole sentence)!
+    Here is the given part: ${context}`);
     res.json(completedSentence.response.text());
 }));

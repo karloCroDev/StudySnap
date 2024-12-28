@@ -9,8 +9,13 @@ import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import Image from '@tiptap/extension-image';
-import { Pencil2Icon, FileTextIcon } from '@radix-ui/react-icons';
-import { twJoin, twMerge } from 'tailwind-merge';
+import {
+  Pencil2Icon,
+  FileTextIcon,
+  MagicWandIcon,
+  CameraIcon,
+} from '@radix-ui/react-icons';
+import { twJoin } from 'tailwind-merge';
 import { FileTrigger } from 'react-aria-components';
 import { Markdown } from 'tiptap-markdown';
 
@@ -51,7 +56,7 @@ export const TipTapEditor = () => {
     formData.append('file', image);
     console.log(formData);
     try {
-      const res = await fetch('http://localhost:4000/add-image', {
+      const res = await fetch('http://localhost:4000/image-note', {
         method: 'POST',
         body: formData,
       });
@@ -63,6 +68,41 @@ export const TipTapEditor = () => {
       console.error('Upload failed:', error);
     }
   };
+
+  // Sentence completion
+  const completeSentence = async () => {
+    const context = editor?.getText();
+
+    try {
+      const response = await fetch('http://localhost:4000/completion', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ context }),
+      });
+
+      const data = await response.json();
+      editor?.commands.insertContent(data);
+    } catch (error) {
+      console.error('Failed to complete sentence:', error);
+    }
+  };
+
+  React.useEffect(() => {
+    const handleKeyDown = async (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === '/') {
+        e.preventDefault();
+        await completeSentence();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [editor]);
 
   // Setting the editor to be editable
   React.useEffect(() => {
@@ -98,8 +138,8 @@ export const TipTapEditor = () => {
             : 'animate-text-editor-initial-apperance'
         )}
       >
-        {!isEditing && (
-          <div className="absolute right-6 top-6 z-10 rounded-lg bg-gray-100 p-2">
+        <div className="absolute right-6 top-6 z-10 rounded-lg bg-gray-100 p-2">
+          {!isEditing ? (
             <Button
               colorScheme="light-blue"
               variant="solid"
@@ -116,8 +156,26 @@ export const TipTapEditor = () => {
             >
               Edit
             </Button>
-          </div>
-        )}
+          ) : (
+            <Button
+              variant="solid"
+              rounded="full"
+              iconLeft={<MagicWandIcon className="size-5" />}
+              className="font-medium"
+              onPress={() => {
+                toast({
+                  title: 'Editing 🤔',
+                  content: 'Your have entered editing mode',
+                  variant: 'information',
+                });
+                setIsEditing(true);
+              }}
+            >
+              Generate content
+            </Button>
+          )}
+        </div>
+
         <div className="prose h-full !max-w-none !overflow-scroll scroll-smooth">
           <EditorContent
             editor={editor}
@@ -146,17 +204,22 @@ export const TipTapEditor = () => {
           ) : (
             <>
               <FileTrigger
-                // acceptedFileTypes={['.jpg,', '.jpeg', '.png']}
+                acceptedFileTypes={['.jpg,', '.jpeg', '.png']}
                 onSelect={(event) => {
                   event && getNotes(Array.from(event)[0]);
                 }}
               >
-                <Button rounded="full" className="min-w-fit">
-                  📸 Get notes from image
+                <Button
+                  colorScheme="light-blue"
+                  rounded="full"
+                  className="min-w-fit"
+                  iconLeft={<CameraIcon className="size-5" />}
+                >
+                  Get notes from image
                 </Button>
               </FileTrigger>
               <p className="hidden text-md text-gray-500 lg:block">
-                Autocomplete: ctrl + /
+                Quick sentence complete : ctrl + /
               </p>
 
               <Button
