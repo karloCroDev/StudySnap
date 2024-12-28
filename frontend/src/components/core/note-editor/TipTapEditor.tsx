@@ -23,6 +23,7 @@ import { Markdown } from 'tiptap-markdown';
 import { Button } from '@/components/ui/Button';
 import { HeaderEditText } from '@/components/core/note-editor/HeaderEditText';
 import { DialogQuizz } from '@/components/core/note-editor/DialogQuizz';
+import { DialogGenerateContent } from './DialogGenerateContent';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
@@ -158,20 +159,20 @@ export const TipTapEditor = () => {
             </Button>
           ) : (
             <Button
-              variant="solid"
-              rounded="full"
-              iconLeft={<MagicWandIcon className="size-5" />}
-              className="font-medium"
+              variant="outline"
+              colorScheme="white"
+              iconLeft={<FileTextIcon className="size-5" />}
               onPress={() => {
                 toast({
-                  title: 'Editing 🤔',
-                  content: 'Your have entered editing mode',
-                  variant: 'information',
+                  title: 'Saved 🥳',
+                  content: 'Your notes have been saved',
+                  variant: 'success',
                 });
-                setIsEditing(true);
+                setIsEditing(false);
               }}
+              className="min-w-fit"
             >
-              Generate content
+              Save
             </Button>
           )}
         </div>
@@ -195,9 +196,16 @@ export const TipTapEditor = () => {
                 }}
               />
 
-              <DialogQuizz>
-                <Button rounded="full" colorScheme="black" variant="outline">
-                  🪄 Quizz yourself
+              <DialogQuizz editor={editor}>
+                <Button
+                  rounded="full"
+                  colorScheme="black"
+                  variant="outline"
+                  iconLeft={<MagicWandIcon className="size-5" />}
+                  className="min-w-fit"
+                  onPressStart={(e) => e.continuePropagation()}
+                >
+                  Quizz yourself
                 </Button>
               </DialogQuizz>
             </>
@@ -219,26 +227,18 @@ export const TipTapEditor = () => {
                 </Button>
               </FileTrigger>
               <p className="hidden text-md text-gray-500 lg:block">
-                Quick sentence complete : ctrl + /
+                Sentence complete : ctrl + /
               </p>
-
-              <Button
-                variant="outline"
-                rounded="full"
-                colorScheme="white"
-                iconLeft={<FileTextIcon className="size-5" />}
-                onPress={() => {
-                  toast({
-                    title: 'Saved 🥳',
-                    content: 'Your notes have been saved',
-                    variant: 'success',
-                  });
-                  setIsEditing(false);
-                }}
-                className="min-w-fit"
-              >
-                Save
-              </Button>
+              <DialogGenerateContent editor={editor}>
+                <Button
+                  variant="solid"
+                  rounded="full"
+                  iconLeft={<MagicWandIcon className="size-5" />}
+                  className="min-w-fit"
+                >
+                  Generate content
+                </Button>
+              </DialogGenerateContent>
             </>
           )}
         </div>

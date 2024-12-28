@@ -36,7 +36,7 @@ export const DialogURL: React.FC<{
             placeholder: 'Enter image URL',
           }}
           onChange={(val) => setImageUrl(val.toString())}
-          className="!w-full items-center"
+          className="justify-start"
         />
         <Button
           onPress={() => {

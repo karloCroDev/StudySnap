@@ -19,10 +19,10 @@ const express_1 = __importDefault(require("express"));
 const config_1 = require("../Config/config");
 const router = express_1.default.Router();
 exports.completionWithContext = router;
-router.post('/completion-users-request', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { context, usersResponse } = req.body;
-    const completedSentence = yield config_1.modelFlash.generateContent(`Your given a context of the document with text, and users reponse about how he wants his text to be generated. If there is no context of document, but instead only the question of user how he wants his text to be generated, then you should generate text based on that. If there is text then you should make continuation of the text based on that, please don't write already exisitng text but just a continuination. 
-    Here is the context of the document: ${context}
-    Here is the users response: ${usersResponse}`);
+router.post('/completion-context', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { prompt, context } = req.body;
+    const completedSentence = yield config_1.modelFlash.generateContent(`Your given a context of the document with text, and users reponse about how he wants his text to be generated. Return him the whole text with context based on his response. Generate me text in a MARKDOWN format 
+    Here is the users response: ${prompt}
+    Here is the context of the document: ${context}`);
     res.json(completedSentence.response.text());
 }));

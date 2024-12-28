@@ -1,4 +1,5 @@
 'use client';
+
 // External packages
 import * as RadixDialog from '@radix-ui/react-dialog'; // Importing as everything because of readabilty
 import { Cross2Icon } from '@radix-ui/react-icons';
@@ -12,7 +13,7 @@ export const Dialog: React.FC<
 > = ({ triggerProps, children, title, footer, ...rest }) => (
   <RadixDialog.Root {...rest}>
     <RadixDialog.Trigger {...triggerProps}>
-      {triggerProps?.children}
+      {triggerProps!.children}
     </RadixDialog.Trigger>
     <RadixDialog.Portal>
       <RadixDialog.Overlay className="fixed left-0 top-0 z-max h-screen w-screen bg-gray-900 opacity-60 data-[state=closed]:animate-overlay-closed data-[state=open]:animate-overlay-open" />

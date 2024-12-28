@@ -16,8 +16,6 @@ exports.quizz = void 0;
 // External packages
 const express_1 = __importDefault(require("express"));
 const generative_ai_1 = require("@google/generative-ai");
-// Addtionals
-const specification_1 = require("../../specification");
 const router = express_1.default.Router();
 exports.quizz = router;
 const schema = {
@@ -48,7 +46,7 @@ const schema = {
         required: ['question'],
     },
 };
-const genAi = new generative_ai_1.GoogleGenerativeAI(specification_1.geminiApiKey);
+const genAi = new generative_ai_1.GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAi.getGenerativeModel({
     model: 'gemini-1.5-flash',
     generationConfig: {
@@ -59,5 +57,5 @@ const model = genAi.getGenerativeModel({
 router.post('/quizz', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { context } = req.body;
     const quizzData = yield model.generateContent(`Create me a quizz simmilar to the show who wants to be a millionaire. I will give you the context, and based on that context generate me a quizz with miniumum of 3 questions and maximum of 5 questions. Please recoginze the language and then give in the same language, also follow the schema you have been given. Here is the context: ${context}.`);
-    res.json(quizzData);
+    res.json(quizzData.response.text());
 }));

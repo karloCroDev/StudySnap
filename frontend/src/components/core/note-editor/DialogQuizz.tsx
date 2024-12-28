@@ -2,6 +2,7 @@
 
 // External packages
 import * as React from 'react';
+import { Editor as EditorType } from '@tiptap/react';
 import { Button as ReactAriaButton } from 'react-aria-components';
 import { CheckCircledIcon } from '@radix-ui/react-icons';
 
@@ -12,17 +13,40 @@ import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 
 export const DialogQuizz: React.FC<{
   children: React.ReactNode;
-}> = ({ children }) => {
+  editor: EditorType;
+}> = ({ editor, children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
+  // React.useEffect(() => {
+  //   const generateQuizzData = async () => {
+  //     try {
+  //       const response = await fetch('http://localhost:4000/quizz', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({
+  //           context: editor?.getText(),
+  //         }),
+  //       });
+  //       const data = await response.json();
+  //       const dataJSON = JSON.parse(data);
+  //       console.log(dataJSON);
+  //     } catch (error) {
+  //       console.error('Failed to generate quizz:', error);
+  //     }
+  //   };
+
+  //   if (isOpen) generateQuizzData();
+  // }, []);
   return (
     <Dialog
       open={isOpen}
       onOpenChange={setIsOpen}
       title="WWII Quizz"
       triggerProps={{
-        children,
         asChild: true,
+        children: children,
       }}
     >
       <div className="flex flex-col items-center gap-4">
