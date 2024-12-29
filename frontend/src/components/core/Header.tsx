@@ -23,6 +23,7 @@ import { DialogEditProfile } from '@/components/profile/DialogEditProfile';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
+import { useGeneralInfo } from '@/store/useGeneralInfo';
 
 // Images
 import ImageExample from '@/public/images/login-image.png';
@@ -31,7 +32,8 @@ export const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const toast = useToastStore((state) => state.setToast);
-
+  const user = useGeneralInfo((state) => state.user);
+  console.log(user);
   return (
     <MenuTrigger isOpen={isMenuOpen}>
       <Button

@@ -51,6 +51,8 @@ app.use('', routes.completion);
 app.use('', routes.completionWithContext);
 app.use('', routes.imageNoteResponse);
 app.use('', routes.quizz);
+app.use('', routes.logIn);
+app.use('', routes.signUp);
 app.listen(4000, () => {
     console.log(`Server is running on 4000 ${4000}`);
 });

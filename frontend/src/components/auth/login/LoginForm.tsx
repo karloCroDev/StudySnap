@@ -11,35 +11,53 @@ import { Button } from '@/components/ui/Button';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
+import { useGeneralInfo } from '@/store/useGeneralInfo';
 
 export const LoginForm = () => {
+  const setUser = useGeneralInfo((state) => state.setUser);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-
+  console.log(email, password);
   const toast = useToastStore((state) => state.setToast);
   const router = useRouter();
 
-  const loginUser = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    toast({
-      title: 'Logged in',
-      content: 'You have successfully logged in 😃',
-      variant: 'success',
-    });
-    router.push('/home/subjects');
+  const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    try {
+      const response = await fetch('http://localhost:4000/log-in', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+      setUser(data);
+
+      toast({
+        title: 'Logged in',
+        content: 'You have successfully logged in 😃',
+        variant: 'success',
+      });
+      router.push('/home/subjects');
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Uhoh, something went wrong',
+        content:
+          'Please make sure you have entered all the credentials correctly and try again 😢',
+        variant: 'error',
+      });
+    }
   };
-  //Catch
-  // toast({
-  //   title: 'Uhoh, something went wrong',
-  //   content:
-  //     'Please make sure you have entered all the credentials correctly and try again 😢',
-  //   variant: 'error',
-  // });
 
   return (
     <AriaForm
       className="mt-4 flex flex-col gap-y-8 md:gap-y-6 2xl:mt-8"
-      onSubmit={loginUser}
+      onSubmit={async (e) => {
+        e.preventDefault();
+        await loginUser(e);
+      }}
     >
       <Input
         isRequired

@@ -26,7 +26,7 @@ export const Input: React.FC<
   <AriaInput.TextField
     {...rest}
     className={twMerge(
-      'flex w-full flex-col-reverse gap-y-2 text-base outline-none',
+      'flex flex-col-reverse gap-y-2 text-base outline-none',
       className
     )}
   >
@@ -52,7 +52,7 @@ export const Input: React.FC<
           'peer w-full border border-gray-400 bg-inherit outline-none transition-colors placeholder:text-gray-400 focus:border-blue-400 data-[invalid]:border-red-700',
           size === 'sm' && 'h-12 p-3',
           size === 'lg' && 'h-14 p-4',
-          isMdHorizontal && 'md:max-w-76',
+          isMdHorizontal && 'md:max-w-72',
           inputProps?.className
         )}
       />
