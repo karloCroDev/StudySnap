@@ -14,9 +14,8 @@ import { useToastStore } from '@/store/useToastStore';
 import { Spinner } from '@/components/ui/Spinner';
 
 export const DialogGenerateContent: React.FC<{
-  children: React.ReactNode;
   editor: EditorType;
-}> = ({ editor, children }) => {
+}> = ({ editor }) => {
   const toast = useToastStore((state) => state.setToast);
 
   const [isOpen, setIsOpen] = React.useState(false);
@@ -61,7 +60,17 @@ export const DialogGenerateContent: React.FC<{
       onOpenChange={setIsOpen}
       title="Generate content"
       triggerProps={{
-        children,
+        children: (
+          <Button
+            variant="solid"
+            rounded="full"
+            iconLeft={<MagicWandIcon className="size-5" />}
+            className="min-w-fit"
+            onPressStart={() => setIsOpen(true)}
+          >
+            Generate content
+          </Button>
+        ),
         asChild: true,
       }}
     >

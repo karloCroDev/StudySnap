@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { Editor as EditorType } from '@tiptap/react';
 import { Button as ReactAriaButton } from 'react-aria-components';
-import { CheckCircledIcon } from '@radix-ui/react-icons';
+import { CheckCircledIcon, MagicWandIcon } from '@radix-ui/react-icons';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
@@ -16,9 +16,8 @@ import { Spinner } from '@/components/ui/Spinner';
 import { useToastStore } from '@/store/useToastStore';
 
 export const DialogQuizz: React.FC<{
-  children: React.ReactNode;
   editor: EditorType;
-}> = ({ editor, children }) => {
+}> = ({ editor }) => {
   const toast = useToastStore((state) => state.setToast);
 
   const [isOpen, setIsOpen] = React.useState(false);
@@ -76,7 +75,19 @@ export const DialogQuizz: React.FC<{
       title="WWII Quizz"
       triggerProps={{
         asChild: true,
-        children: children,
+        children: (
+          <Button
+            rounded="full"
+            colorScheme="black"
+            variant="outline"
+            iconLeft={<MagicWandIcon className="size-5" />}
+            className="min-w-fit"
+            onPressStart={() => setIsOpen(true)}
+          >
+            Quizz yourself
+          </Button>
+          // Some problems when passing buttons from react aria components (because of the onPressStart, so I only passed children directly)
+        ),
       }}
     >
       {isLoading ? (

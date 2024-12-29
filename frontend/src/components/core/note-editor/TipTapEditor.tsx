@@ -133,7 +133,7 @@ export const TipTapEditor = () => {
       {isEditing ? (
         <HeaderEditText editor={editor} />
       ) : (
-        <div className="flex animate-header-initial-apperance items-center justify-between">
+        <div className="flex animate-header-initial-apperance items-center justify-between px-2">
           <h1
             className={twJoin(
               'text-3xl font-bold !italic underline underline-offset-4',
@@ -168,7 +168,7 @@ export const TipTapEditor = () => {
                 });
                 setIsEditing(true);
               }}
-              className="font-medium"
+              className="hidden md:flex"
             >
               Edit
             </Button>
@@ -185,7 +185,7 @@ export const TipTapEditor = () => {
                 });
                 setIsEditing(false);
               }}
-              className="min-w-fit"
+              className="hidden font-medium md:flex"
             >
               Save
             </Button>
@@ -210,22 +210,44 @@ export const TipTapEditor = () => {
                   console.log('Liked');
                 }}
               />
-
-              <DialogQuizz editor={editor}>
-                <Button
-                  rounded="full"
-                  colorScheme="black"
-                  variant="outline"
-                  iconLeft={<MagicWandIcon className="size-5" />}
-                  className="min-w-fit"
-                  onPressStart={(e) => e.continuePropagation()}
-                >
-                  Quizz yourself
-                </Button>
-              </DialogQuizz>
+              <Button
+                colorScheme="light-blue"
+                variant="solid"
+                iconRight={<Pencil2Icon className="size-5" />}
+                rounded="full"
+                onPress={() => {
+                  toast({
+                    title: 'Editing 🤔',
+                    content: 'Your have entered editing mode',
+                    variant: 'information',
+                  });
+                  setIsEditing(true);
+                }}
+                className="min-w-fit md:hidden"
+              >
+                Edit
+              </Button>
+              <DialogQuizz editor={editor} />
             </>
           ) : (
             <>
+              <Button
+                variant="outline"
+                colorScheme="white"
+                rounded="full"
+                iconLeft={<FileTextIcon className="size-5" />}
+                onPress={() => {
+                  toast({
+                    title: 'Saved 🥳',
+                    content: 'Your notes have been saved',
+                    variant: 'success',
+                  });
+                  setIsEditing(false);
+                }}
+                className="min-w-fit md:hidden"
+              >
+                Save
+              </Button>
               <FileTrigger
                 acceptedFileTypes={['.jpg,', '.jpeg', '.png']}
                 onSelect={(event) => {
@@ -239,22 +261,13 @@ export const TipTapEditor = () => {
                   iconLeft={<CameraIcon className="size-5" />}
                   iconRight={loading && <Spinner />}
                 >
-                  Get notes from image
+                  Notes from image
                 </Button>
               </FileTrigger>
               <p className="hidden text-md text-gray-500 lg:block">
                 Sentence complete : ctrl + /
               </p>
-              <DialogGenerateContent editor={editor}>
-                <Button
-                  variant="solid"
-                  rounded="full"
-                  iconLeft={<MagicWandIcon className="size-5" />}
-                  className="min-w-fit"
-                >
-                  Generate content
-                </Button>
-              </DialogGenerateContent>
+              <DialogGenerateContent editor={editor} />
             </>
           )}
         </div>

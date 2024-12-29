@@ -21,6 +21,7 @@ export default function Home() {
   const toast = useToastStore((state) => state.setToast);
 
   const [isOpen, setIsOpen] = React.useState(false);
+
   return (
     <Layout>
       <div className="flex flex-col gap-4 p-6">
@@ -81,7 +82,11 @@ export default function Home() {
         open={isOpen}
         onOpenChange={setIsOpen}
         triggerProps={{
-          children: <Button className="mt-10">Open modal</Button>,
+          children: (
+            <Button className="mt-10" onPress={() => setIsOpen(true)}>
+              Open modal
+            </Button>
+          ),
           asChild: true,
         }}
         title="Cool man"
