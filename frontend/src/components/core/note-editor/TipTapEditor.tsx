@@ -264,7 +264,7 @@ export const TipTapEditor = () => {
                   Notes from image
                 </Button>
               </FileTrigger>
-              <p className="hidden text-md text-gray-500 lg:block">
+              <p className="hidden text-balance text-md text-gray-500 lg:block">
                 Sentence complete : ctrl + /
               </p>
               <DialogGenerateContent editor={editor} />

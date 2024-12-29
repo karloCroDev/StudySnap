@@ -49,6 +49,7 @@ export const DialogQuizz: React.FC<{
         const data = await response.json();
         const dataJSON = JSON.parse(data);
         setQuizzData(dataJSON);
+        setHasBeenActivated(true);
       } catch (error) {
         console.error('Failed to generate quizz:', error);
         setIsOpen(false);
@@ -64,7 +65,6 @@ export const DialogQuizz: React.FC<{
 
     if (isOpen && !hasBeenActivated) {
       generateQuizzData();
-      setHasBeenActivated(true);
     }
   }, [isOpen]);
 
@@ -112,16 +112,29 @@ export const DialogQuizz: React.FC<{
               <h4 className="text-center text-md font-medium">
                 {quizzData[questionCount]?.question}
               </h4>
-              <LayoutRow className="w-full justify-center">
+              <LayoutRow
+                className="animate-slide-in-quizz w-full justify-center"
+                key={questionCount} // This rerenders the quizz animation
+              >
                 {quizzData[questionCount]?.content.map((answer, index) => (
                   <LayoutColumn xs={12} md={6} className="p-2" key={index}>
                     <ReactAriaButton
-                      className="h-16 w-full rounded border border-blue-400 text-md text-blue-900 outline-none"
-                      onPress={() => {
+                      className="min-h-16 w-full text-balance rounded border border-blue-400 text-md text-blue-900 outline-none"
+                      onPress={(e) => {
+                        e.target.classList.add('text-gray-100');
                         if (index === quizzData[questionCount]?.correct - 1) {
                           setCorrectAnswers((prev) => prev + 1);
+                          e.target.classList.add('bg-green-400');
+                        } else {
+                          e.target.classList.add('bg-red-400');
                         }
-                        setQuestionCount(questionCount + 1);
+                        setTimeout(() => {
+                          setQuestionCount(questionCount + 1);
+                          // Waiting for two seconds to display feedback to user
+                          e.target.classList.remove('bg-green-400');
+                          e.target.classList.remove('bg-red-400');
+                          e.target.classList.remove('text-gray-100');
+                        }, 2000);
                       }}
                     >
                       {answer}

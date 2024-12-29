@@ -339,6 +339,17 @@ const config: Config = {
             transform: 'scale(100%)',
           },
         },
+
+        // Quizz
+
+        'slide-in-quizz': {
+          from: {
+            transform: 'translateX(-100px)',
+          },
+          to: {
+            transform: 'translateX(0px)',
+          },
+        },
       },
       animation: {
         // General animation
@@ -388,6 +399,7 @@ const config: Config = {
         'text-editor-initial-apperance':
           'text-editor-initial-apperance 300ms linear',
         'text-editor-editing': 'text-editor-editing 300ms linear',
+        'slide-in-quizz': 'slide-in-quizz 300ms ease-in',
       },
     },
   },

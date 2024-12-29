@@ -47,7 +47,7 @@ const model = genAi.getGenerativeModel({
 router.post('/quizz', async (req, res) => {
   const { context } = req.body;
   const quizzData = await model.generateContent(
-    `Create me a quizz simmilar to the show who wants to be a millionaire. I will give you the context, and based on that context generate me a quizz with miniumum of 3 questions and maximum of 5 questions. Please recoginze the language and then give in the same language, also follow the schema you have been given. Here is the context: ${context}.`
+    `Create me a quizz simmilar to the show who wants to be a millionaire. I will give you the context, and based on that context generate me a quizz with miniumum of 3 questions and maximum of 5 questions (question must be maxiumum one sentence, while answers need to be about one to two words). Please recoginze the language and then give in the same language, also follow the schema you have been given. Here is the context: ${context}.`
   );
 
   res.json(quizzData.response.text());
