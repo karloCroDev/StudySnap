@@ -12,7 +12,7 @@ export const Logo: React.FC<
     {...rest}
     href={href || '/home/subjects'}
     className={twMerge(
-      'text-lg font-semibold !italic sm:text-2xl lg:text-3xl',
+      'text-lg font-semibold !italic sm:text-xl 2xl:text-2xl',
       plus_jakarta_sans.className,
       className
     )}

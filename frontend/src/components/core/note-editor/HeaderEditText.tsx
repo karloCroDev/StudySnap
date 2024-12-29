@@ -56,7 +56,7 @@ export const HeaderEditText: React.FC<{
 
   if (editor === null) return null;
   return (
-    <div className="flex h-24 animate-header-initial-apperance items-center gap-4 rounded-2xl border border-blue-900 p-4 md:gap-6 lg:px-6 lg:py-5 xl:gap-8">
+    <div className="flex h-20 animate-header-initial-apperance items-center gap-4 rounded-2xl border border-blue-900 p-4 md:gap-6 lg:px-6 lg:py-5 xl:gap-8">
       <Link
         href="/home/subjects"
         //Here is the deal, when I make discover notes, and notes from user then I will need to change this link

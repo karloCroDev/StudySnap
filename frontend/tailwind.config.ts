@@ -22,6 +22,9 @@ const config: Config = {
 
   theme: {
     extend: {
+      screens: {
+        '2xl': '1800px',
+      },
       fontSize: {
         xs: '12px',
         sm: '14px',

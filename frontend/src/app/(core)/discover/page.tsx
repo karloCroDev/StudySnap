@@ -13,7 +13,7 @@ export default function Disover() {
   return (
     <>
       <SearchableHeader title="Discover" />
-      <LayoutRow className="mt-8 animate-card-initial-apperance justify-center sm:mt-12 lg:mt-16">
+      <LayoutRow className="mt-8 animate-card-initial-apperance justify-center xl:mt-12">
         <LayoutColumn xs={11} lg={10}>
           <LayoutRow className="sm:-mr-4">
             {[...Array(8)].map((_, i) => (

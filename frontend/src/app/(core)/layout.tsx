@@ -1,8 +1,8 @@
-'use client';
-
 // Components
 import { Layout } from '@/components/ui/Layout';
-import { Header } from '@/components/core/Header';
+import { Logo } from '@/components/ui/Logo';
+import { Menu, Navigation } from '@/components/core/Header';
+import { Drawer } from '@/components/core/Drawer';
 
 export default function CoreLayout({
   children,
@@ -11,8 +11,27 @@ export default function CoreLayout({
 }>) {
   return (
     <>
-      <Header />
-      <Layout className="mt-32 xl:mt-36">{children}</Layout>
+      <div className="fixed left-0 top-0 z-20 h-20 w-full border-b border-gray-900 bg-gray-100 2xl:h-24">
+        <Layout className="h-full">
+          <nav className="h-full">
+            <ul className="flex h-full items-center justify-between">
+              <li className="flex-1">
+                <Logo />
+              </li>
+              <li className="hidden flex-1 justify-center gap-4 lg:flex">
+                <Navigation />
+              </li>
+              <li className="hidden flex-1 justify-end lg:flex">
+                <Menu />
+              </li>
+              <li className="lg:hidden">
+                <Drawer />
+              </li>
+            </ul>
+          </nav>
+        </Layout>
+      </div>
+      <Layout className="mt-[104px] 2xl:mt-36">{children}</Layout>
     </>
   );
 }

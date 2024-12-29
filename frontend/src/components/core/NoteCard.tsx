@@ -88,7 +88,7 @@ export const NoteCard: React.FC<{
         </li>
       </ul>
 
-      <Link href="/note-editor" className="absolute inset-0" />
+      <Link href="/home-note-name" className="absolute inset-0" />
     </div>
   );
 };

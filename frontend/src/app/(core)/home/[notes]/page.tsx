@@ -15,7 +15,7 @@ export default function Notes() {
   return (
     <>
       <SearchableHeader title="Your notes" />
-      <LayoutRow className="mt-8 animate-card-initial-apperance justify-center sm:mt-12 lg:mt-16">
+      <LayoutRow className="mt-8 animate-card-initial-apperance justify-center xl:mt-12">
         <LayoutColumn xs={11} lg={10}>
           <LayoutRow className="pr-0 sm:-mr-4">
             <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
