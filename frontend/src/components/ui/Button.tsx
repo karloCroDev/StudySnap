@@ -11,7 +11,7 @@ import { twJoin, twMerge } from 'tailwind-merge';
 
 export interface AdditionalButtonProps {
   variant?: 'solid' | 'outline';
-  colorScheme?: 'light-blue' | 'dark-blue' | 'white' | 'black';
+  colorScheme?: 'light-blue' | 'dark-blue' | 'red' | 'white' | 'black';
   size?: 'sm' | 'lg';
   rounded?: 'none' | 'md' | 'full';
   iconLeft?: React.ReactNode;
@@ -44,9 +44,11 @@ export const getButtonClassNames = ({
       (colorScheme === 'light-blue'
         ? 'border-blue-400 text-blue-400'
         : colorScheme === 'dark-blue'
-          ? 'border-blue-900 text-blue-900 '
-          : (colorScheme === 'black' || colorScheme === 'white') &&
-            'border-gray-900 text-gray-900 '),
+          ? 'border-blue-900 text-blue-900'
+          : colorScheme === 'red'
+            ? 'border-red-400 text-red-400'
+            : (colorScheme === 'black' || colorScheme === 'white') &&
+              'border-gray-900 text-gray-900'),
 
     // Solid styles
     variant === 'solid' &&

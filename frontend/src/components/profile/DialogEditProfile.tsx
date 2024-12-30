@@ -2,14 +2,14 @@
 
 // External packages
 import * as React from 'react';
+import { Form } from 'react-aria-components';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Avatar } from '@/components/ui/Avatar';
-import { Form } from 'react-aria-components';
-import Link from 'next/link';
+import { DialogDeleteProfile } from '@/components/profile/DialogDeleteProfile';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
@@ -24,6 +24,7 @@ export const DialogEditProfile: React.FC<{
   const toast = useToastStore((state) => state.setToast);
 
   const [isOpen, setIsOpen] = React.useState(false);
+
   React.useEffect(() => {
     setIsDialogOpen && setIsDialogOpen(isOpen);
   }, [isOpen]);
@@ -97,11 +98,8 @@ export const DialogEditProfile: React.FC<{
           }}
         />
 
-        <div className="flex items-center justify-between">
-          <Link
-            href="/public-profile"
-            className="text-gray-600 underline-offset-2 hover:underline"
-          ></Link>
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+          <DialogDeleteProfile />
           <Button onPress={saveChanges}>Save changes</Button>
         </div>
       </Form>

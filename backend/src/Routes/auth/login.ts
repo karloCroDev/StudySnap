@@ -69,7 +69,7 @@ router.post('/log-in', (req, res) => {
     const refreshToken = generateRefreshToken(user);
     refreshTokens.push(refreshToken);
 
-    res.json({ email: user.email, accessToken, refreshToken });
+    res.json({ email: user.email, id: user.id, accessToken, refreshToken });
   } else {
     res.status(401).json('Invalid email or password');
   }
@@ -96,7 +96,7 @@ const verify = (req: any, res: any, next: any) => {
 router.delete('/users/:userId', verify, (req: any, res) => {
   console.log(req.user.id, req.params.userId);
   if (req.user.id === +req.params.userId) {
-    res.status(200).json('User deleted');
+    res.status(200).json('Account successully deleted');
   } else {
     res.status(403).json("This account can't be deleted");
   }
