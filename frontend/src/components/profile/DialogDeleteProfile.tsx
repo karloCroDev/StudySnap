@@ -29,12 +29,12 @@ export const DialogDeleteProfile = () => {
         },
       });
       const data = await response.json();
-      router.push('/login');
       toast({
         title: 'Profile deleted!',
         content: `${data}. Refresing the page in 5s`,
         variant: 'success',
       });
+      router.push('/login');
     } catch (error) {
       console.error(error);
     }

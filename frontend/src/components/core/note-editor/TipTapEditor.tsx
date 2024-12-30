@@ -60,7 +60,7 @@ export const TipTapEditor = () => {
       setLoading(true);
       const formData = new FormData();
       formData.append('file', image);
-      const res = await fetch('http://localhost:4000/image-note', {
+      const res = await fetch('http://localhost:3000/api/image-note', {
         method: 'POST',
         body: formData,
       });
@@ -90,7 +90,7 @@ export const TipTapEditor = () => {
     const context = editor?.getText();
 
     try {
-      const response = await fetch('http://localhost:4000/completion', {
+      const response = await fetch('http://localhost:3000/api/completion', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

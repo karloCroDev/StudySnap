@@ -37,7 +37,7 @@ export const DialogQuizz: React.FC<{
     const generateQuizzData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('http://localhost:4000/quizz', {
+        const response = await fetch('http://localhost:3000/api/quizz', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ export const DialogQuizz: React.FC<{
                 {quizzData[questionCount]?.question}
               </h4>
               <LayoutRow
-                className="animate-slide-in-quizz w-full justify-center"
+                className="w-full animate-slide-in-quizz justify-center"
                 key={questionCount} // This rerenders the quizz animation
               >
                 {quizzData[questionCount]?.content.map((answer, index) => (

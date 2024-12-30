@@ -28,13 +28,16 @@ export const DialogGenerateContent: React.FC<{
     try {
       setLoading(true);
       const context = editor?.getText();
-      const response = await fetch('http://localhost:4000/completion-context', {
-        method: 'POST',
-        body: JSON.stringify({ prompt, context }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        'http://localhost:3000/api/completion-context',
+        {
+          method: 'POST',
+          body: JSON.stringify({ prompt, context }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       const data = await response.json();
       editor?.commands.setContent(data);
       toast({
