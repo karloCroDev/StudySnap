@@ -71,7 +71,7 @@ export const TipTapEditor = () => {
       toast({
         title: 'Notes genearted',
         content: 'Notes generated successfully from your image',
-        variant: 'error',
+        variant: 'success',
       });
     } catch (error) {
       console.error('Upload failed:', error);

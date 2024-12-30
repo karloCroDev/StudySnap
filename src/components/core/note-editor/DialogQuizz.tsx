@@ -72,7 +72,7 @@ export const DialogQuizz: React.FC<{
     <Dialog
       open={isOpen}
       onOpenChange={setIsOpen}
-      title="WWII Quizz"
+      title="Quizz"
       triggerProps={{
         asChild: true,
         children: (

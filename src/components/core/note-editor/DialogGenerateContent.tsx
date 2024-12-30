@@ -39,6 +39,7 @@ export const DialogGenerateContent: React.FC<{
         }
       );
       const data = await response.json();
+      console.log(data);
       editor?.commands.setContent(data);
       toast({
         title: 'Generated successfully',
@@ -50,7 +51,7 @@ export const DialogGenerateContent: React.FC<{
       toast({
         title: 'Failed to generate',
         content: 'Please try again later',
-        variant: 'success',
+        variant: 'error',
       });
     } finally {
       setLoading(false);
