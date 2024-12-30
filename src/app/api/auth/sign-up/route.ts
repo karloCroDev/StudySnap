@@ -14,6 +14,10 @@ export async function POST(req: Request) {
     const hashedPassword = await bcrypt.hash(password, 10);
     // 10 is the number of rounds to generate the salt
     await connectMongoDB();
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return NextResponse.json('Email already in use.', { status: 400 });
+    }
     await User.create({ username, email, password: hashedPassword });
     return NextResponse.json('User registred', { status: 200 });
   } catch (error) {

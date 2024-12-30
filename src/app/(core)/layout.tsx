@@ -15,6 +15,7 @@ export default async function CoreLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(authOptions);
+
   if (!session) {
     redirect('/login');
   }

@@ -39,12 +39,13 @@ export const LoginForm = () => {
         });
         return;
       }
+
       toast({
         title: 'Logged in',
         content: 'You have successfully logged in 🎉',
         variant: 'success',
       });
-      router.push('/home/subjects');
+      router.replace('/home/subjects');
     } catch (error) {
       console.error(error);
       toast({

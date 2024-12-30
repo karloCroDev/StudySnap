@@ -23,24 +23,6 @@ export const SignupForm = () => {
   const signupUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const responseUserExists = await fetch('/api/auth/user-exists', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-      const dataUser = await responseUserExists.json();
-
-      if (dataUser) {
-        toast({
-          title: 'User already exists',
-          content:
-            'The user with this email already exists. Please try again with a different email',
-          variant: 'error',
-        });
-        return;
-      }
       const response = await fetch('/api/auth/sign-up', {
         method: 'POST',
         headers: {
@@ -49,14 +31,24 @@ export const SignupForm = () => {
         body: JSON.stringify({ username, email, password }),
       });
       const data = await response.json();
-      console.log(data);
+      if (data === 'Email already in use.') {
+        toast({
+          title: 'User already exists',
+          content:
+            'The user with this email already exists. Please try again with a different email',
+          variant: 'error',
+        });
+        return;
+      }
+
       if (response.ok) {
         toast({
           title: 'Signed up',
-          content: 'You have successfully signed up. Welcome 😃!',
+          content:
+            'You have successfully signed up. Please log in to your account!',
           variant: 'success',
         });
-        router.push('/home/subjects');
+        router.push('/login');
       }
     } catch (error) {
       console.error(error);

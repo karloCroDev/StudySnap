@@ -23,7 +23,10 @@ export const SubjectCard: React.FC<{
         image ? 'text-gray-100' : 'text-blue-900'
       )}
     >
-      <Link href="/home/notes" className="flex aspect-square flex-col p-6 pb-4">
+      <Link
+        href="/home/subjects/notes"
+        className="flex aspect-square flex-col p-6 pb-4"
+      >
         {image}
         <div>
           <h3 className="text-2xl font-semibold">{title}</h3>

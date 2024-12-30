@@ -17,22 +17,18 @@ export const authOptions = {
 
       async authorize(credentials: any) {
         const { email, password } = credentials;
-        console.log(email, password);
+
         try {
           await connectMongoDB();
           const user = await User.findOne({ email });
-
+          console.log(user);
           if (!user) {
             return;
           }
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
-          if (!passwordsMatch) {
-            return;
-          }
-
-          return user;
+          if (passwordsMatch) return user;
         } catch (error) {
           console.log('Error: ', error);
         }
