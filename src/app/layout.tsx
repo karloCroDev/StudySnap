@@ -17,11 +17,15 @@ import './globals.css';
 // Components
 import { Toast } from '@/components/ui/Toast';
 
+// Libs
+import { connectMongoDB } from '@/libs/db';
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // await connectMongoDB();
   return (
     <html lang="en">
       <body className={twJoin(poppins.className, 'bg-gray-100')}>

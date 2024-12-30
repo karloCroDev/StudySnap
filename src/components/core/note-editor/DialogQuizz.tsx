@@ -37,7 +37,7 @@ export const DialogQuizz: React.FC<{
     const generateQuizzData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('http://localhost:3000/api/quizz', {
+        const response = await fetch('http://localhost:3000/api/ai/quizz', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -47,9 +47,11 @@ export const DialogQuizz: React.FC<{
           }),
         });
         const data = await response.json();
-        const dataJSON = JSON.parse(data);
-        setQuizzData(dataJSON);
-        setHasBeenActivated(true);
+        if (response.ok) {
+          const dataJSON = JSON.parse(data);
+          setQuizzData(dataJSON);
+          setHasBeenActivated(true);
+        }
       } catch (error) {
         console.error('Failed to generate quizz:', error);
         setIsOpen(false);

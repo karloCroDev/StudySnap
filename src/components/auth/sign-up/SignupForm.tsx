@@ -16,18 +16,58 @@ export const SignupForm = () => {
   const [username, setUsername] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  console.log(username, email, password);
+
   const router = useRouter();
   const toast = useToastStore((state) => state.setToast);
 
-  const signupUser = (e: React.FormEvent<HTMLFormElement>) => {
+  const signupUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast({
-      title: 'Logged in',
-      content: 'You have successfully logged in 😃',
-      variant: 'success',
-    });
-    router.push('/home/subjects');
+    try {
+      const responseUserExists = await fetch('/api/auth/user-exists', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+      const dataUser = await responseUserExists.json();
+
+      if (dataUser) {
+        toast({
+          title: 'User already exists',
+          content:
+            'The user with this email already exists. Please try again with a different email',
+          variant: 'error',
+        });
+        return;
+      }
+      const response = await fetch('/api/auth/sign-up', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        toast({
+          title: 'Signed up',
+          content: 'You have successfully signed up. Welcome 😃!',
+          variant: 'success',
+        });
+        router.push('/home/subjects');
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Uhoh, something went wrong',
+        content:
+          'Please make sure you have entered all the credentials correctly and try again',
+        variant: 'error',
+      });
+    }
+
     //Catch
     // toast({
     //   title: 'Uhoh, something went wrong',
@@ -61,6 +101,7 @@ export const SignupForm = () => {
           placeholder: 'Enter your email',
         }}
         onChange={(val) => setEmail(val.toString())}
+        minLength={3}
       />
       <Input
         isRequired
@@ -71,6 +112,8 @@ export const SignupForm = () => {
           placeholder: '********',
         }}
         onChange={(val) => setPassword(val.toString())}
+        minLength={8}
+        maxLength={16}
       />
       <Button rounded="none" size="lg" type="submit">
         Sign up

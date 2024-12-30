@@ -344,7 +344,7 @@ const config: Config = {
 
         'slide-in-quizz': {
           from: {
-            transform: 'translateX(-100px)',
+            transform: 'translateX(-50%)',
           },
           to: {
             transform: 'translateX(0px)',

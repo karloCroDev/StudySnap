@@ -29,7 +29,7 @@ export const DialogGenerateContent: React.FC<{
       setLoading(true);
       const context = editor?.getText();
       const response = await fetch(
-        'http://localhost:3000/api/completion-context',
+        'http://localhost:3000/api/ai/completion-context',
         {
           method: 'POST',
           body: JSON.stringify({ prompt, context }),
@@ -39,13 +39,14 @@ export const DialogGenerateContent: React.FC<{
         }
       );
       const data = await response.json();
-      console.log(data);
-      editor?.commands.setContent(data);
-      toast({
-        title: 'Generated successfully',
-        content: 'Your text has been generated successfully',
-        variant: 'success',
-      });
+      if (response.ok) {
+        editor?.commands.setContent(data);
+        toast({
+          title: 'Generated successfully',
+          content: 'Your text has been generated successfully',
+          variant: 'success',
+        });
+      }
     } catch (error) {
       console.error('Failed to complete sentence:', error);
       toast({

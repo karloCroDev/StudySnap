@@ -55,24 +55,25 @@ export const TipTapEditor = () => {
   const [loading, setLoading] = React.useState(false);
 
   // Getting notes
-  const getNotes = async (image: File) => {
+  const getNotesFromImage = async (image: File) => {
     try {
       setLoading(true);
       const formData = new FormData();
       formData.append('file', image);
-      const res = await fetch('http://localhost:3000/api/image-note', {
+      const response = await fetch('http://localhost:3000/api/ai/image-note', {
         method: 'POST',
         body: formData,
       });
 
-      const data = await res.json();
-      console.log(data);
-      editor?.commands.insertContent(data);
-      toast({
-        title: 'Notes genearted',
-        content: 'Notes generated successfully from your image',
-        variant: 'success',
-      });
+      const data = await response.json();
+      if (response.ok) {
+        editor?.commands.insertContent(data);
+        toast({
+          title: 'Notes genearted',
+          content: 'Notes generated successfully from your image',
+          variant: 'success',
+        });
+      }
     } catch (error) {
       console.error('Upload failed:', error);
       toast({
@@ -90,7 +91,7 @@ export const TipTapEditor = () => {
     const context = editor?.getText();
 
     try {
-      const response = await fetch('http://localhost:3000/api/completion', {
+      const response = await fetch('http://localhost:3000/api/ai/completion', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +100,7 @@ export const TipTapEditor = () => {
       });
 
       const data = await response.json();
-      editor?.commands.insertContent(data);
+      if (response.ok) editor?.commands.insertContent(data);
     } catch (error) {
       console.error('Failed to complete sentence:', error);
     }
@@ -251,7 +252,7 @@ export const TipTapEditor = () => {
               <FileTrigger
                 acceptedFileTypes={['.jpg,', '.jpeg', '.png']}
                 onSelect={(event) => {
-                  event && getNotes(Array.from(event)[0]);
+                  event && getNotesFromImage(Array.from(event)[0]);
                 }}
               >
                 <Button

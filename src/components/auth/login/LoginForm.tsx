@@ -36,7 +36,7 @@ export const LoginForm = () => {
 
       toast({
         title: 'Logged in',
-        content: 'You have successfully logged in 😃',
+        content: 'You have successfully logged in AAAA',
         variant: 'success',
       });
       router.push('/home/subjects');
