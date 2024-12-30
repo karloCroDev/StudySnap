@@ -16,6 +16,7 @@ import './globals.css';
 
 // Components
 import { Toast } from '@/components/ui/Toast';
+import { AuthProvider } from '@/components/ui/AuthWrapper';
 
 // Libs
 import { connectMongoDB } from '@/libs/db';
@@ -29,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={twJoin(poppins.className, 'bg-gray-100')}>
-        {children}
+        <AuthProvider>{children}</AuthProvider>
         <Toast />
       </body>
     </html>

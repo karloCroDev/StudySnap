@@ -4,6 +4,7 @@
 import * as React from 'react';
 import { Form as AriaForm } from 'react-aria-components';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 // Components
 import { Input } from '@/components/ui/Input';
@@ -14,29 +15,33 @@ import { useToastStore } from '@/store/useToastStore';
 import { useGeneralInfo } from '@/store/useGeneralInfo';
 
 export const LoginForm = () => {
-  const setUser = useGeneralInfo((state) => state.setUser);
+  // const setUser = useGeneralInfo((state) => state.setUser);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  console.log(email, password);
+
   const toast = useToastStore((state) => state.setToast);
   const router = useRouter();
 
   const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
-      const response = await fetch('http://localhost:4000/log-in', {
-        method: 'POST',
-        body: JSON.stringify({ email, password }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const res = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
       });
-      const data = await response.json();
-      console.log(data);
-      setUser(data);
-
+      if (res?.error) {
+        toast({
+          title: 'Uhoh, something went wrong',
+          content:
+            'Please make sure you have entered all the credentials correctly and try again ',
+          variant: 'error',
+        });
+        return;
+      }
       toast({
         title: 'Logged in',
-        content: 'You have successfully logged in AAAA',
+        content: 'You have successfully logged in 🎉',
         variant: 'success',
       });
       router.push('/home/subjects');
@@ -45,7 +50,7 @@ export const LoginForm = () => {
       toast({
         title: 'Uhoh, something went wrong',
         content:
-          'Please make sure you have entered all the credentials correctly and try again 😢',
+          'Please make sure you have entered all the credentials correctly and try again ',
         variant: 'error',
       });
     }
@@ -54,10 +59,7 @@ export const LoginForm = () => {
   return (
     <AriaForm
       className="mt-4 flex flex-col gap-y-8 md:gap-y-6 2xl:mt-8"
-      onSubmit={async (e) => {
-        e.preventDefault();
-        await loginUser(e);
-      }}
+      onSubmit={(e) => loginUser(e)}
     >
       <Input
         isRequired

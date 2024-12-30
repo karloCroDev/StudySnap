@@ -12,18 +12,36 @@ import {
   ExitIcon,
 } from '@radix-ui/react-icons';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+
+import { useRouter, usePathname } from 'next/navigation';
 
 // Components
 import { LinkAsButton } from '@/components/ui/LinkAsButton';
 import { Button } from '@/components/ui/Button';
 import { DialogEditProfile } from '@/components/profile/DialogEditProfile';
+import { signOut } from 'next-auth/react';
+
+// Store
+import { useToastStore } from '@/store/useToastStore';
 
 // Images
 import example from '@/public/images/login-image.png';
 
 export const Drawer = () => {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const toast = useToastStore((state) => state.setToast);
+
+  const logOut = async () => {
+    await signOut();
+    toast({
+      title: 'Logged out',
+      content: 'Noo, why are you leaving us 😢',
+      variant: 'success',
+    });
+    // router.push('/login');
+  };
 
   return (
     <RadixDialog.Root>
@@ -105,6 +123,7 @@ export const Drawer = () => {
                 size="lg"
                 iconLeft={<ExitIcon className="size-6" />}
                 className="w-full justify-start bg-red-400 text-gray-100"
+                onPress={logOut}
               >
                 Log out
               </Button>

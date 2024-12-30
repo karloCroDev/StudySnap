@@ -10,14 +10,12 @@ import {
   Popover,
 } from 'react-aria-components';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 
 // Components
 import { LinkAsButton } from '@/components/ui/LinkAsButton';
 import { Button } from '@/components/ui/Button';
-import { Layout } from '@/components/ui/Layout';
-import { Logo } from '@/components/ui/Logo';
-import { Drawer } from '@/components/core/Drawer';
 import { Avatar } from '@/components/ui/Avatar';
 import { DialogEditProfile } from '@/components/profile/DialogEditProfile';
 
@@ -31,9 +29,22 @@ import ImageExample from '@/public/images/login-image.png';
 export const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-  const toast = useToastStore((state) => state.setToast);
+
   const user = useGeneralInfo((state) => state.user);
-  console.log(user);
+  const toast = useToastStore((state) => state.setToast);
+
+  const router = useRouter();
+
+  const logOut = async () => {
+    await signOut();
+    toast({
+      title: 'Logged out',
+      content: 'Noo, why are you leaving us 😢',
+      variant: 'success',
+    });
+    // router.push('/login');
+  };
+
   return (
     <MenuTrigger isOpen={isMenuOpen}>
       <Button
@@ -85,15 +96,7 @@ export const Menu = () => {
           </MenuItem>
           <MenuItem
             className="flex cursor-pointer items-center gap-2 bg-red-400 p-2 text-gray-100 outline-none hover:brightness-90"
-            onAction={() => {
-              console.log('Loggged out');
-              toast({
-                title: 'Logged out',
-                content: 'Nooooo, please come back soon 😢!',
-                variant: 'success',
-              });
-              setIsMenuOpen(false);
-            }}
+            onAction={logOut}
           >
             <ExitIcon /> Log out
           </MenuItem>
