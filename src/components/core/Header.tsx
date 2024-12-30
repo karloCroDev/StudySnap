@@ -36,13 +36,13 @@ export const Menu = () => {
   const router = useRouter();
 
   const logOut = async () => {
+    // router.push('/login');
     await signOut();
     toast({
       title: 'Logged out',
       content: 'Noo, why are you leaving us 😢',
       variant: 'success',
     });
-    // router.push('/login');
   };
 
   return (

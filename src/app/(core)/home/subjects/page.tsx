@@ -3,7 +3,6 @@ import Image from 'next/image';
 
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
-import { NoteCard } from '@/components/core/NoteCard';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { CreateSubjectCard } from '@/components/core/subjects/CreateSubjectCard';
 import { SubjectCard } from '@/components/core/subjects/SubjectCard';
@@ -11,7 +10,7 @@ import { SubjectCard } from '@/components/core/subjects/SubjectCard';
 // Images
 import ImageExample from '@/public/images/login-image.png';
 
-export default function Subjects() {
+export default async function Subjects() {
   return (
     <>
       <SearchableHeader title="Subjects" />
