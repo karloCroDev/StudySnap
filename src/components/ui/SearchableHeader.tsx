@@ -5,6 +5,8 @@ import * as React from 'react';
 import { twJoin } from 'tailwind-merge';
 import { MagnifyingGlassIcon, Cross2Icon } from '@radix-ui/react-icons';
 import { Button as AriaButton } from 'react-aria-components';
+// import { getServerSession } from 'next-auth';
+// import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 // Libs
 import { plus_jakarta_sans } from '@/libs/fonts';
@@ -19,6 +21,13 @@ export const SearchableHeader: React.FC<{
   const infoHeader = React.useRef<HTMLDivElement | null>(null);
 
   const toggleSearch = () => {
+    // React.useEffect(() => {
+    //   const xxx = async () => {
+    //     const session = await getServerSession(authOptions);
+    //     console.log(session);
+    //   };
+    // }, []);
+
     const searchElement = infoHeader.current;
 
     if (searchElement) {
