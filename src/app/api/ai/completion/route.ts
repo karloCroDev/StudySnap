@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 
 // Config
-import { modelFlash } from '@/libs/ai';
+import { modelFlash } from '@/lib/ai';
 
 export async function POST(req: Request) {
   try {

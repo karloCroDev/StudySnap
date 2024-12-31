@@ -12,10 +12,8 @@ import { Button } from '@/components/ui/Button';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
-import { useGeneralInfo } from '@/store/useGeneralInfo';
 
 export const LoginForm = () => {
-  // const setUser = useGeneralInfo((state) => state.setUser);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 

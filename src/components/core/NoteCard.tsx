@@ -15,17 +15,11 @@ import { DialogDelete } from '@/components/core/note/DialogDelete';
 import { Avatar } from '@/components/ui/Avatar';
 import { LikeComponent } from '@/components/ui/LikeComponent';
 
-// Images
-import ImageExample from '@/public/images/login-image.png';
-
-// Libs
-import { plus_jakarta_sans } from '@/libs/fonts';
-
 export const NoteCard: React.FC<{
   title: string;
   description?: string;
   author: string;
-  userImage?: StaticImageData;
+  userImage?: string;
   likes: number;
 }> = ({ title, description, userImage, author, likes }) => {
   const likeAction = async () => {
@@ -43,11 +37,11 @@ export const NoteCard: React.FC<{
           <div className="flex items-center gap-2">
             <Avatar
               imageProps={{
-                src: userImage?.src,
+                src: userImage,
                 alt: '',
               }}
             >
-              Ana Horvat
+              {author}
             </Avatar>
 
             <Link

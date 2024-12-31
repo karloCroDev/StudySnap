@@ -7,7 +7,7 @@ import { Button as ReactAriaButton } from 'react-aria-components';
 import { twMerge, twJoin } from 'tailwind-merge';
 
 // Libs
-import { plus_jakarta_sans } from '@/libs/fonts';
+import { plus_jakarta_sans } from '@/lib/fonts';
 
 export const LikeComponent: React.FC<{
   hasBeenLiked: boolean;

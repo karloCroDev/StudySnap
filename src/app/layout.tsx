@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { twJoin } from 'tailwind-merge';
 
 // Fonts
-import { poppins } from '@/libs/fonts';
+import { poppins } from '@/lib/fonts';
 
 // Metadata
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ import { Toast } from '@/components/ui/Toast';
 import { AuthProvider } from '@/components/ui/AuthWrapper';
 
 // Libs
-import { connectMongoDB } from '@/libs/db';
+import { connectMongoDB } from '@/lib/db';
 
 export default function RootLayout({
   children,

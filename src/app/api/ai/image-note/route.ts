@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 
 // Config
-import { modelPro } from '@/libs/ai';
+import { modelPro } from '@/lib/ai';
 
 export async function POST(req: Request) {
   try {

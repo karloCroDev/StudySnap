@@ -10,35 +10,14 @@ import { Button } from '@/components/ui/Button';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
-import { useGeneralInfo } from '@/store/useGeneralInfo';
 
 export const DialogDeleteProfile = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const user = useGeneralInfo((state) => state.user);
   const toast = useToastStore((state) => state.setToast);
 
   const router = useRouter();
 
-  const deleteProfile = async () => {
-    try {
-      const response = await fetch(`http://localhost:4000/users/${user.id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      });
-      const data = await response.json();
-      toast({
-        title: 'Profile deleted!',
-        content: `${data}. Refresing the page in 5s`,
-        variant: 'success',
-      });
-      router.push('/login');
-    } catch (error) {
-      console.error(error);
-    }
-  };
   return (
     <Dialog
       open={isOpen}
@@ -62,9 +41,7 @@ export const DialogDeleteProfile = () => {
           Are you sure you want to delete your profile?
         </h4>
         <div className="mt-6 flex gap-6">
-          <Button className="uppercase" onPress={deleteProfile}>
-            yes
-          </Button>
+          <Button className="uppercase">yes</Button>
           <Button
             onPress={() => setIsOpen(false)}
             variant="outline"

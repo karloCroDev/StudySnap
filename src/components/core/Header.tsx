@@ -11,7 +11,7 @@ import {
 } from 'react-aria-components';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 // Components
 import { LinkAsButton } from '@/components/ui/LinkAsButton';
@@ -21,29 +21,13 @@ import { DialogEditProfile } from '@/components/profile/DialogEditProfile';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
-import { useGeneralInfo } from '@/store/useGeneralInfo';
-
-// Images
-import ImageExample from '@/public/images/login-image.png';
 
 export const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
-  const user = useGeneralInfo((state) => state.user);
   const toast = useToastStore((state) => state.setToast);
-
-  const router = useRouter();
-
-  const logOut = async () => {
-    // router.push('/login');
-    await signOut();
-    toast({
-      title: 'Logged out',
-      content: 'Noo, why are you leaving us 😢',
-      variant: 'success',
-    });
-  };
+  const session = useSession();
 
   return (
     <MenuTrigger isOpen={isMenuOpen}>
@@ -53,18 +37,18 @@ export const Menu = () => {
         iconLeft={
           <Avatar
             imageProps={{
-              src: ImageExample.src,
+              src: session.data?.user?.image || '',
               alt: '',
             }}
             size="md"
           >
-            Ivan Horvat
+            {session.data?.user?.name}
           </Avatar>
         }
         className="text-lg font-medium 2xl:text-xl"
         onPress={() => setIsMenuOpen(!isMenuOpen)}
       >
-        Ivan Horvat
+        {session.data?.user?.name}
       </Button>
       <Popover
         className="!z-20 w-[var(--trigger-width)] outline-none data-[exiting]:pointer-events-none data-[entering]:pointer-events-auto data-[entering]:animate-menu-open data-[exiting]:animate-menu-closed"
@@ -96,7 +80,7 @@ export const Menu = () => {
           </MenuItem>
           <MenuItem
             className="flex cursor-pointer items-center gap-2 bg-red-400 p-2 text-gray-100 outline-none hover:brightness-90"
-            onAction={logOut}
+            onAction={signOut}
           >
             <ExitIcon /> Log out
           </MenuItem>

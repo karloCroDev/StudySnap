@@ -7,7 +7,7 @@ import bcrypt from 'bcryptjs';
 import { User } from '@/models/user';
 
 // Libs
-import { connectMongoDB } from '@/libs/db';
+import { connectMongoDB } from '@/lib/db';
 
 export const authOptions = {
   providers: [
@@ -39,12 +39,16 @@ export const authOptions = {
     session: async ({ session, token }: any) => {
       if (session?.user) {
         session.user.id = token.sub;
+        session.user.image = token.image;
+        session.user.name = token.username;
       }
       return session;
     },
     jwt: async ({ user, token }: any) => {
       if (user) {
         token.uid = user.id;
+        token.image = user.image;
+        token.name = user.username;
       }
       return token;
     },

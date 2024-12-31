@@ -36,7 +36,7 @@ import { RxDividerHorizontal } from 'react-icons/rx';
 import { DialogURL } from '@/components/core/note-editor/DialogURL';
 
 // Libs
-import { plus_jakarta_sans } from '@/libs/fonts';
+import { plus_jakarta_sans } from '@/lib/fonts';
 
 export const HeaderEditText: React.FC<{
   editor: EditorType;

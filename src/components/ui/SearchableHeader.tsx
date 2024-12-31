@@ -9,7 +9,7 @@ import { Button as AriaButton } from 'react-aria-components';
 // import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 // Libs
-import { plus_jakarta_sans } from '@/libs/fonts';
+import { plus_jakarta_sans } from '@/lib/fonts';
 
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';

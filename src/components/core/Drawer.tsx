@@ -12,20 +12,17 @@ import {
   ExitIcon,
 } from '@radix-ui/react-icons';
 import Image from 'next/image';
-
+import { signOut, useSession } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
 
 // Components
 import { LinkAsButton } from '@/components/ui/LinkAsButton';
 import { Button } from '@/components/ui/Button';
 import { DialogEditProfile } from '@/components/profile/DialogEditProfile';
-import { signOut } from 'next-auth/react';
+import { Avatar } from '@/components/ui/Avatar';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
-
-// Images
-import example from '@/public/images/login-image.png';
 
 export const Drawer = () => {
   const pathname = usePathname();
@@ -33,15 +30,7 @@ export const Drawer = () => {
 
   const toast = useToastStore((state) => state.setToast);
 
-  const logOut = async () => {
-    await signOut();
-    toast({
-      title: 'Logged out',
-      content: 'Noo, why are you leaving us 😢',
-      variant: 'success',
-    });
-    // router.push('/login');
-  };
+  const session = useSession();
 
   return (
     <RadixDialog.Root>
@@ -51,12 +40,15 @@ export const Drawer = () => {
       <RadixDialog.Overlay className="fixed left-0 top-0 z-max h-screen w-screen bg-gray-900 opacity-60 data-[state=closed]:animate-overlay-closed data-[state=open]:animate-overlay-open" />
       <RadixDialog.Content className="text-grayscale-10 fixed left-0 top-0 z-max flex h-full w-3/4 max-w-96 flex-col overflow-scroll overflow-x-hidden rounded-r-xl bg-gray-100 px-3 py-6 outline-none data-[state=closed]:animate-drawer-slide-closed data-[state=open]:animate-drawer-slide-open">
         <div className="flex flex-col items-center">
-          <Image
-            src={example}
-            alt="Hello world"
-            className="size-36 rounded-full object-cover"
-          />
-          <h4 className="mt-6 text-lg font-semibold">Ana horvat</h4>
+          <Avatar
+            size="lg"
+            imageProps={{ src: session?.data?.user?.image || '', alt: '' }}
+          >
+            {session?.data?.user?.name}
+          </Avatar>
+          <h4 className="mt-6 text-lg font-semibold">
+            {session?.data?.user?.name}
+          </h4>
         </div>
         <hr className="mt-3 h-px w-full border-0 bg-gray-900" />
         <ul className="mt-6 flex flex-col gap-3">
@@ -123,7 +115,7 @@ export const Drawer = () => {
                 size="lg"
                 iconLeft={<ExitIcon className="size-6" />}
                 className="w-full justify-start bg-red-400 text-gray-100"
-                onPress={logOut}
+                onPress={() => signOut()}
               >
                 Log out
               </Button>

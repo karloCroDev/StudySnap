@@ -28,7 +28,7 @@ export const Avatar: React.FC<
       <RadixAvatar.Fallback>
         {typeof children === 'string' &&
           children
-            .toString()
+
             .split(' ')
             .map((letter) => letter[0])
             .join('')}

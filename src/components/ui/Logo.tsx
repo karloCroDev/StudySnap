@@ -3,7 +3,7 @@ import Link, { LinkProps } from 'next/link';
 import { twMerge } from 'tailwind-merge';
 
 // Libs
-import { plus_jakarta_sans } from '@/libs/fonts';
+import { plus_jakarta_sans } from '@/lib/fonts';
 
 export const Logo: React.FC<
   React.ComponentPropsWithoutRef<'a'> & Omit<LinkProps, 'href'>

@@ -23,7 +23,7 @@ export default function Disover() {
                   description="Lorem ipsum dolorem"
                   likes={100}
                   author="Ivan Horvat"
-                  userImage={ImageExample}
+                  userImage={ImageExample.src}
                   key={i}
                 />
               </LayoutColumn>

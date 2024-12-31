@@ -30,7 +30,7 @@ import { Spinner } from '@/components/ui/Spinner';
 import { useToastStore } from '@/store/useToastStore';
 
 // Libs
-import { plus_jakarta_sans } from '@/libs/fonts';
+import { plus_jakarta_sans } from '@/lib/fonts';
 import { LikeComponent } from '@/components/ui/LikeComponent';
 
 export const TipTapEditor = () => {

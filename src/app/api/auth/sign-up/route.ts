@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 
 // libs
-import { connectMongoDB } from '@/libs/db';
+import { connectMongoDB } from '@/lib/db';
 
 // Models
 import { User } from '@/models/user';
@@ -18,7 +18,11 @@ export async function POST(req: Request) {
     if (existingUser) {
       return NextResponse.json('Email already in use.', { status: 400 });
     }
-    await User.create({ username, email, password: hashedPassword });
+    await User.create({
+      username,
+      email,
+      password: hashedPassword,
+    });
     return NextResponse.json('User registred', { status: 200 });
   } catch (error) {
     console.error(error);
