@@ -7,18 +7,17 @@ import { User } from '@/models/models';
 
 export async function POST(req: Request) {
   try {
-    const { username, full_name, email, password } = await req.json();
-    console.log(username, full_name, email, password);
+    const { username, email, password } = await req.json();
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    // 10 is the number of rounds to generate the salt
+
     if (!username || !email || !password) {
       return NextResponse.json('Insufficient data provided', { status: 200 });
     }
     if (await IsUsernameOrEmailTaken(username)) {
       return NextResponse.json('Username or email is already taken', { status: 200 });
     }
-    await new User(username, "full_name", email, hashedPassword).Insert()
+    await new User(username, "full_name", email, hashedPassword).Insert()//Remove full_name when you remake the database
     return NextResponse.json('User registred', { status: 201 });
   } catch (error) {
     console.error(error);
