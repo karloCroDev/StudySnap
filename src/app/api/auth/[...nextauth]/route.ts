@@ -1,13 +1,8 @@
-// Etxternal packages
+// External packages
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
-
-// Models
-import { User } from '@/models/user';
-
-// Libs
-import { connectMongoDB } from '@/lib/db';
+import { GetUserByEmail } from '../../database/pool';
 
 export const authOptions = {
   providers: [
@@ -17,20 +12,19 @@ export const authOptions = {
 
       async authorize(credentials: any) {
         const { email, password } = credentials;
-
         try {
-          await connectMongoDB();
-          const user = await User.findOne({ email });
-          console.log(user);
+          const user = await GetUserByEmail(email);
           if (!user) {
-            return;
+            return null;//what is it returning?
           }
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
-
           if (passwordsMatch) return user;
+          else return null;
+
         } catch (error) {
           console.log('Error: ', error);
+          return null;
         }
       },
     }),
@@ -54,9 +48,9 @@ export const authOptions = {
     },
   },
   session: {
-    strategy: 'jwt' as 'jwt', // For auth options this must be seted
+    strategy: 'jwt' as 'jwt',
   },
-
+  //add token expiry date and refresh
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: '/',
