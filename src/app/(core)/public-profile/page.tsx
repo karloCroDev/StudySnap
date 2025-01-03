@@ -12,6 +12,7 @@ import { useSession } from 'next-auth/react';
 export default async function PublicProfile() {
   const session = await getServerSession(authOptions);
 
+  console.log(session);
   return (
     <>
       <div className="mb-12 animate-public-profile-initial-apperance lg:mb-16">

@@ -37,7 +37,6 @@ export const LoginForm = () => {
         });
         return;
       }
-
       toast({
         title: 'Logged in',
         content: 'You have successfully logged in 🎉',

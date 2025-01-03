@@ -13,13 +13,17 @@ export const authOptions = {
       async authorize(credentials: any) {
         const { email, password } = credentials;
         try {
+          if (!email || !password) 
+            return null;
+
           const user = await GetUserByEmail(email);
           if (!user) {
-            return null;//what is it returning?
+            return null;
           }
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
-          if (passwordsMatch) return user;
+          console.log(passwordsMatch, password, user.password);
+          if (passwordsMatch) return user ;
           else return null;
 
         } catch (error) {
@@ -34,14 +38,14 @@ export const authOptions = {
       if (session?.user) {
         session.user.id = token.sub;
         session.user.image = token.image;
-        session.user.name = token.username;
+        session.user.name = token.name;
       }
       return session;
     },
     jwt: async ({ user, token }: any) => {
       if (user) {
         token.uid = user.id;
-        token.image = user.image;
+        token.image = user.profile_picture;
         token.name = user.username;
       }
       return token;

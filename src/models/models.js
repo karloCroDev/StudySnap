@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'; 
-import { pool } from '../app/api/database/pool.js';
+import { pool } from '../app/api/database/pool.ts';
 
 export class User {
     constructor(username, email, password, date_created = new Date(), profile_picture = null, id = uuidv4()) {
@@ -45,47 +45,49 @@ export class User {
     }
 }
 
-export class Subject {
-    constructor(name, details, creator, id = uuidv4()) {
+export class Subject { //Todo add image to subject
+    constructor(name, details, creator, image, id = uuidv4()) {
         this.id = id;
         this.name = name;
         this.details = details;
         this.creator = creator;
+        this.image = image;
     }
 
     async Insert() {
         try {
             await pool.execute(`
-                INSERT INTO subject (id, name, details, creator)
-                VALUES (?, ?, ?, ?);
-            `, [this.id, this.name, this.details, this.creator]);
+                INSERT INTO subject (id, name, details, creator, image)
+                VALUES (?, ?, ?, ?, ?);
+            `, [this.id, this.name, this.details, this.creator, this.image]);
         } catch (err) {
             console.error('Error inserting subject:', err);
         }
     }
 
-    async Update() {
+    static async Update(id, name, details) {
         try {
             await pool.execute(`
                 UPDATE subject
-                SET name = ?, details = ?, creator = ?
+                SET name = ?, details = ?
                 WHERE id = ?;
-            `, [this.name, this.details, this.creator, this.id]);
+            `, [name, details, id]);
         } catch (err) {
             console.error('Error updating subject:', err);
         }
     }
 
-    async Delete() {
+    static async Delete(id) {
         try {
             await pool.execute(`
                 DELETE FROM subject WHERE id = ?;
-            `, [this.id]);
+            `, [id]);
         } catch (err) {
             console.error('Error deleting subject:', err);
         }
     }
 }
+
 
 export class Note {
     constructor(title, details, is_public, subject_id, id = uuidv4()) {

@@ -36,4 +36,4 @@ yarn-error.log*
 next-env.d.ts
 
 # secret variables
-/Secrets.js
+/Secrets.ts
