@@ -2,7 +2,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 // Models
-import { Subject } from '@/models/models';
+import { Subject } from '@/models/subject';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
