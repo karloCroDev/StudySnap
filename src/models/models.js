@@ -2,23 +2,21 @@ import { v4 as uuidv4 } from 'uuid';
 import { pool } from '../app/api/database/pool.js';
 
 export class User {
-    constructor(username, full_name, email, password, date_created = new Date(), validated = false, profile_picture = null, id = uuidv4()) {
+    constructor(username, email, password, date_created = new Date(), profile_picture = null, id = uuidv4()) {
         this.id = id;
         this.username = username;
-        this.full_name = full_name;
         this.email = email;
         this.password = password;
         this.date_created = date_created;
-        this.validated = validated;
         this.profile_picture = profile_picture;
     }
 
     async Insert() {
         try {
             await pool.execute(`
-                INSERT INTO user (id, username, full_name, email, password, date_created, validated, profile_picture)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-            `, [this.id, this.username, this.full_name, this.email, this.password, this.date_created, this.validated, this.profile_picture]);
+                INSERT INTO user (id, username, email, password, date_created, profile_picture)
+                VALUES (?, ?, ?, ?, ?, ?);
+            `, [this.id, this.username, this.email, this.password, this.date_created, this.profile_picture]);
         } catch (err) {
             console.error('Error inserting user:', err);
         }
@@ -28,9 +26,9 @@ export class User {
         try {
             await pool.execute(`
                 UPDATE user
-                SET username = ?, full_name = ?, email = ?, password = ?, date_created = ?, validated = ?, profile_picture = ?
+                SET username = ?, email = ?, password = ?, date_created = ?, profile_picture = ?
                 WHERE id = ?;
-            `, [this.username, this.full_name, this.email, this.password, this.date_created, this.validated, this.profile_picture, this.id]);
+            `, [this.username, this.email, this.password, this.date_created, this.profile_picture, this.id]);
         } catch (err) {
             console.error('Error updating user:', err);
         }
@@ -89,7 +87,7 @@ export class Subject {
     }
 }
 
-export class Section {
+export class Note {
     constructor(title, details, is_public, subject_id, id = uuidv4()) {
         this.id = id;
         this.title = title;
@@ -101,7 +99,7 @@ export class Section {
     async Insert() {
         try {
             await pool.execute(`
-                INSERT INTO section (id, title, details, is_public, subject_id)
+                INSERT INTO note (id, title, details, is_public, subject_id)
                 VALUES (?, ?, ?, ?, ?);
             `, [this.id, this.title, this.details, this.is_public, this.subject_id]);
         } catch (err) {
@@ -112,7 +110,7 @@ export class Section {
     async Update() {
         try {
             await pool.execute(`
-                UPDATE section
+                UPDATE note
                 SET title = ?, details = ?, is_public = ?, subject_id = ?
                 WHERE id = ?;
             `, [this.title, this.details, this.is_public, this.subject_id, this.id]);
@@ -124,7 +122,7 @@ export class Section {
     async Delete() {
         try {
             await pool.execute(`
-                DELETE FROM section WHERE id = ?;
+                DELETE FROM note WHERE id = ?;
             `, [this.id]);
         } catch (err) {
             console.error('Error deleting section:', err);
@@ -132,20 +130,20 @@ export class Section {
     }
 }
 
-export class Note {
-    constructor(title, content, section_id, id = uuidv4()) {
+export class Document {
+    constructor(title, content, note_id, id = uuidv4()) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.section_id = section_id;
+        this.note_id = note_id;
     }
 
     async Insert() {
         try {
             await pool.execute(`
-                INSERT INTO note (id, title, content, section_id)
+                INSERT INTO note (id, title, content, note_id)
                 VALUES (?, ?, ?, ?);
-            `, [this.id, this.title, this.content, this.section_id]);
+            `, [this.id, this.title, this.content, this.note_id]);
         } catch (err) {
             console.error('Error inserting note:', err);
         }
@@ -155,9 +153,9 @@ export class Note {
         try {
             await pool.execute(`
                 UPDATE note
-                SET title = ?, content = ?, section_id = ?
+                SET title = ?, content = ?, note_id = ?
                 WHERE id = ?;
-            `, [this.title, this.content, this.section_id, this.id]);
+            `, [this.title, this.content, this.note_id, this.id]);
         } catch (err) {
             console.error('Error updating note:', err);
         }
