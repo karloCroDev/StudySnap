@@ -35,7 +35,7 @@ export const SignupForm = () => {
         toast({
           title: 'User already exists',
           content:
-            'The user with this email already exists. Please try again with a different email',
+            'The user with this email or username already exists. Please try again with a different email or username',
           variant: 'error',
         });
         return;

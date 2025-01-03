@@ -12,10 +12,11 @@ import { DialogDelete } from '@/components/core/subjects/DialogDelete';
 import { DialogChangeDetails } from '@/components/core/subjects/DialogChangeDetails';
 
 export const SubjectCard: React.FC<{
+  id: string;
   title: string;
   description?: string;
   image?: React.ReactNode;
-}> = ({ title, description, image }) => {
+}> = ({ id, title, description, image }) => {
   return (
     <div
       className={twJoin(
@@ -49,7 +50,8 @@ export const SubjectCard: React.FC<{
 
       <ul className="md:ity absolute right-5 top-8 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
         <li>
-          <DialogChangeDetails>
+          <DialogChangeDetails
+          id = {id}>
             <Pencil1Icon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',
@@ -59,7 +61,8 @@ export const SubjectCard: React.FC<{
           </DialogChangeDetails>
         </li>
         <li>
-          <DialogDelete>
+          <DialogDelete
+            id = {id}>
             <TrashIcon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',

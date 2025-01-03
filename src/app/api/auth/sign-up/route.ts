@@ -14,8 +14,8 @@ export async function POST(req: Request) {
     if (!username || !email || !password) {
       return NextResponse.json('Insufficient data provided', { status: 200 });
     }
-    if (await IsUsernameOrEmailTaken(username)) {
-      return NextResponse.json('Username or email is already taken', { status: 200 });
+    if (await IsUsernameOrEmailTaken(username, email)) {
+      return NextResponse.json('Email already in use.', { status: 400 });
     }
     await new User(username, email, hashedPassword).Insert()
     return NextResponse.json('User registred', { status: 201 });
