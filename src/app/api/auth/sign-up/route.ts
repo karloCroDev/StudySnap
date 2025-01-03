@@ -1,7 +1,7 @@
 // External packages
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { IsUsernameOrEmailTaken } from '../../database/pool';
+import { IsUsernameOrEmailTaken } from '../../database/pool.js';
 // Models
 import { User } from '@/models/models';
 
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     if (await IsUsernameOrEmailTaken(username)) {
       return NextResponse.json('Username or email is already taken', { status: 200 });
     }
-    await new User(username, "full_name", email, hashedPassword).Insert()//Remove full_name when you remake the database
+    await new User(username, email, hashedPassword).Insert()
     return NextResponse.json('User registred', { status: 201 });
   } catch (error) {
     console.error(error);
