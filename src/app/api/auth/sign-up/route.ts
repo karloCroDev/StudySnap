@@ -1,9 +1,9 @@
 // External packages
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { IsUsernameOrEmailTaken } from '../../database/pool.js';
+import { IsUsernameOrEmailTaken } from '../../../../database/pool.js';
 // Models
-import { User } from '@/models/models';
+import  {User}  from '@/models/user';
 
 export async function POST(req: Request) {
   try {

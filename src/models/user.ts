@@ -1,26 +1,69 @@
-import { Schema, models, model } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
+import { pool } from '../database/pool';
 
-const userSchema = new Schema(
-  {
-    username: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      unique: true,
-      required: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    image: {
-      type: String,
-      default: '',
-    },
-  },
-  { timestamps: true }
-);
+export class User {
+  id: string;
+  username: string;
+  email: string;
+  password: string;
+  date_created: Date;
+  profile_picture: string | null;
 
-export const User = models.User || model('User', userSchema);
+  constructor(
+    username: string,
+    email: string,
+    password: string,
+    date_created: Date = new Date(),
+    profile_picture: string | null = null,
+    id: string = uuidv4()
+  ) {
+    this.id = id;
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.date_created = date_created;
+    this.profile_picture = profile_picture;
+  }
+
+  async Insert(): Promise<void> {
+    try {
+      await pool.execute(
+        `
+        INSERT INTO user (id, username, email, password, date_created, profile_picture)
+        VALUES (?, ?, ?, ?, ?, ?);
+      `,
+        [this.id, this.username, this.email, this.password, this.date_created, this.profile_picture]
+      );
+    } catch (err) {
+      console.error('Error inserting user:', err);
+    }
+  }
+
+  async Update(): Promise<void> {
+    try {
+      await pool.execute(
+        `
+        UPDATE user
+        SET username = ?, email = ?, password = ?, date_created = ?, profile_picture = ?
+        WHERE id = ?;
+      `,
+        [this.username, this.email, this.password, this.date_created, this.profile_picture, this.id]
+      );
+    } catch (err) {
+      console.error('Error updating user:', err);
+    }
+  }
+
+  async Delete(): Promise<void> {
+    try {
+      await pool.execute(
+        `
+        DELETE FROM user WHERE id = ?;
+      `,
+        [this.id]
+      );
+    } catch (err) {
+      console.error('Error deleting user:', err);
+    }
+  }
+}

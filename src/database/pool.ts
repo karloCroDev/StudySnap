@@ -1,6 +1,7 @@
 import { createPool } from 'mysql2'
-import { databaseConnectionObject } from "../../../../Secrets"
-import { User, Subject } from '@/models/models.js';
+import { databaseConnectionObject } from "../../Secrets"
+import { User } from '../models/user';
+import { Subject } from '../models/subject';
 
 export const pool = createPool(databaseConnectionObject).promise()
 

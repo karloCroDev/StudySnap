@@ -2,7 +2,7 @@
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
-import { GetUserByEmail } from '../../database/pool';
+import { GetUserByEmail } from '../../../../database/pool';
 
 export const authOptions = {
   providers: [
@@ -13,7 +13,7 @@ export const authOptions = {
       async authorize(credentials: any) {
         const { email, password } = credentials;
         try {
-          if (!email || !password) 
+          if (!email || !password)
             return null;
 
           const user = await GetUserByEmail(email);
@@ -23,7 +23,7 @@ export const authOptions = {
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
           console.log(passwordsMatch, password, user.password);
-          if (passwordsMatch) return user ;
+          if (passwordsMatch) return user;
           else return null;
 
         } catch (error) {
