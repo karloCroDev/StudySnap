@@ -25,7 +25,7 @@ export const SubjectCard: React.FC<{
       )}
     >
       <Link
-        href="/home/subjects/notes"
+        href={`/home/notes/${id}`}
         className="flex aspect-square flex-col p-6 pb-4"
       >
         {image}

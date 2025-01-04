@@ -12,8 +12,9 @@ import { Input } from '@/components/ui/Input';
 import { useToastStore } from '@/store/useToastStore';
 
 export const DialogChangeDetails: React.FC<{
-  children: React.ReactNode;
-}> = ({ children }) => {
+  children: React.ReactNode,
+  noteId: string;
+}> = ({ children, noteId }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isPublic, setIsPublic] = React.useState(false);
 
@@ -22,13 +23,40 @@ export const DialogChangeDetails: React.FC<{
 
   const toast = useToastStore((state) => state.setToast);
 
-  const changeDetails = (e: React.FormEvent<HTMLFormElement>) => {
+  const changeDetails = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast({
-      title: `${noteName} subject created`,
-      content: `You have succesfully updated ${noteName}`,
-      variant: 'success',
-    });
+    try {
+      const response = await fetch('http://localhost:3000/api/core/home/notes', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ noteName, details, isPublic, noteId }),
+      });
+
+      if (response.ok) {
+        toast({
+          title: `${noteName} note changed`,
+          content: `You have succesfully changed ${noteName}`,
+          variant: 'success',
+        });
+      }
+      else if (response.status === 400) {
+        toast({
+          title: 'Missing required fields',
+          content: 'Please make sure you have entered all the credentials correctly and try again',
+          variant: 'error',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Uhoh, something went wrong',
+        content:
+          'Failed to create note',
+        variant: 'error',
+      });
+    }
 
     setIsOpen(false);
   };

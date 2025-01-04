@@ -2,20 +2,39 @@
 import Image from 'next/image';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { GetSubjectByCreatorId } from '@/database/pool';
 
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { CreateSubjectCard } from '@/components/core/subjects/CreateSubjectCard';
 import { SubjectCard } from '@/components/core/subjects/SubjectCard';
-
+import { Subject } from '@/models/subject';
 // Images
 import ImageExample from '@/public/images/login-image.png';
 
 export default async function Subjects() {
+
   const session = await getServerSession(authOptions);
-  const subjects = await GetSubjectByCreatorId(session.user.id);
+
+  let subjects: Array<Subject> = [];
+
+  try {
+    const response = await fetch(`http://localhost:3000/api/core/home/subjects?userId=${session.user.id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.accessToken}`,
+      },
+    });
+
+    const data = await response.json();
+    subjects = Array.isArray(data) ? data : [];
+
+  } catch (error) {
+    console.error(error);
+  }
+
+
   return (
     <>
       <SearchableHeader title="Subjects" />

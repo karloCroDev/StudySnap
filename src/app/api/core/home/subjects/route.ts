@@ -3,8 +3,26 @@ import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 // Models
 import { Subject } from '@/models/subject';
+import { GetSubjectByCreatorId } from '@/database/pool';
 
 const secret = process.env.NEXTAUTH_SECRET;
+
+export async function GET(req: NextRequest) {
+    try {
+        const { searchParams } = new URL(req.url);
+        const userId = searchParams.get('userId');
+
+        const subjects = await GetSubjectByCreatorId(userId as string);
+        if (!subjects) {
+            return NextResponse.json('Subjects not found', { status: 404 });
+        }
+        return NextResponse.json(subjects, { status: 200 });
+    
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json('Failed to get subjects', { status: 500 });
+    }
+}
 
 export async function POST(req: NextRequest) {
     try {
@@ -16,7 +34,7 @@ export async function POST(req: NextRequest) {
 
         const { subjectName, details, image } = await req.json();
         const creator = token.uid;
-        console.log(token, creator, subjectName, details, image);
+
         if (!subjectName|| !creator) {
             return NextResponse.json('Missing required fields', { status: 400 });
         }

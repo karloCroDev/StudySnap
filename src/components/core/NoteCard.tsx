@@ -16,12 +16,13 @@ import { Avatar } from '@/components/ui/Avatar';
 import { LikeComponent } from '@/components/ui/LikeComponent';
 
 export const NoteCard: React.FC<{
+  noteid: string;
   title: string;
   description?: string;
   author: string;
   userImage?: string;
   likes: number;
-}> = ({ title, description, userImage, author, likes }) => {
+}> = ({ noteid, title, description, userImage, author, likes }) => {
   const likeAction = async () => {
     'use server';
     console.log('What the actual ***');
@@ -63,7 +64,7 @@ export const NoteCard: React.FC<{
 
       <ul className="absolute right-5 top-8 z-10 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
         <li>
-          <DialogChangeDetails>
+          <DialogChangeDetails noteId = {noteid}>
             <Pencil1Icon
               className={twJoin(
                 'size-9 transition-colors hover:text-blue-400 lg:size-7'
@@ -72,7 +73,7 @@ export const NoteCard: React.FC<{
           </DialogChangeDetails>
         </li>
         <li>
-          <DialogDelete>
+          <DialogDelete noteId = {noteid}>
             <TrashIcon
               className={twJoin(
                 'size-9 transition-colors hover:text-blue-400 lg:size-7'
