@@ -36,28 +36,28 @@ export class Note {
     }
   }
 
-  async Update(): Promise<void> {
+  static async Update(title: string, details: string, is_public: boolean, id: string ): Promise<void> {
     try {
       await pool.execute(
         `
         UPDATE note
-        SET title = ?, details = ?, is_public = ?, subject_id = ?
+        SET title = ?, details = ?, is_public = ?
         WHERE id = ?;
       `,
-        [this.title, this.details, this.is_public, this.subject_id, this.id]
+        [title, details,is_public,id]
       );
     } catch (err) {
       console.error('Error updating note:', err);
     }
   }
 
-  async Delete(): Promise<void> {
+  static async Delete(id: string): Promise<void> {
     try {
       await pool.execute(
         `
         DELETE FROM note WHERE id = ?;
       `,
-        [this.id]
+        [id]
       );
     } catch (err) {
       console.error('Error deleting note:', err);

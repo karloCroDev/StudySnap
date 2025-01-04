@@ -8,7 +8,7 @@ export class Likes {
     constructor(user_id: string, subject_id: string) {
         this.id = user_id + subject_id;
         this.user_id = user_id;
-        this.subject_id = subject_id;
+        this.subject_id = subject_id;//this should bind to note :(
     }
 
     async Insert(): Promise<void> {

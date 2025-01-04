@@ -12,18 +12,46 @@ import { useToastStore } from '@/store/useToastStore';
 
 export const DialogDelete: React.FC<{
   children: React.ReactNode;
-}> = ({ children }) => {
+  noteId: string;
+}> = ({ children, noteId }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const toast = useToastStore((state) => state.setToast);
 
-  const deleteDialog = () => {
-    toast({
-      title: 'Note deleted',
-      content: 'You have succesfully delete your note',
-      variant: 'success',
-    });
+  const deleteDialog = async() => {
+    try {
+      const response = await fetch('http://localhost:3000/api/core/home/notes', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ noteId }),
+      });
 
+      if (response.ok) {
+        toast({
+          title: 'Note deleted',
+          content: 'You have succesfully delete your note',
+          variant: 'success',
+        });
+      }
+      
+      else if (response.status === 400) {
+        toast({
+          title: 'Missing required fields',
+          content: 'Please make sure you have entered all the credentials correctly and try again',
+          variant: 'error',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Uhoh, something went wrong',
+        content:
+          'Failed to delete note',
+        variant: 'error',
+      });
+    }
     setIsOpen(false);
   };
   return (

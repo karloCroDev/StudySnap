@@ -39,6 +39,7 @@ export const authOptions = {
         session.user.id = token.sub;
         session.user.image = token.image;
         session.user.name = token.name;
+        
       }
       return session;
     },
