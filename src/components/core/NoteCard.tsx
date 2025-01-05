@@ -16,7 +16,7 @@ import { Avatar } from '@/components/ui/Avatar';
 import { LikeComponent } from '@/components/ui/LikeComponent';
 
 export const NoteCard: React.FC<{
-  noteid: string;
+  noteid: string ;
   title: string;
   description?: string;
   author: string;

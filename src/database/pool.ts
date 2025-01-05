@@ -25,3 +25,13 @@ export async function GetNotesBySubjectId(subject_id: string): Promise<Array<Not
     const result: [any[], any] = await pool.query(`SELECT * FROM note WHERE subject_id = "${subject_id}"`);
     return result[0] as Note[];
 }
+
+export async function GetPublicNotes(limit: number): Promise<Array<Note>> {
+    const result: [any[], any] = await pool.query(`SELECT * FROM note where is_public = true LIMIT ${limit} `);
+    return result[0] as Note[];
+}
+
+export async function GetDocumentsByNoteId(note_id: string): Promise<Document> {
+    const result: [any, any] = await pool.query(`SELECT * FROM document WHERE note_id = "${note_id} Limit 1"`);
+    return result[0];
+}

@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
             return NextResponse.json('Subjects not found', { status: 404 });
         }
         return NextResponse.json(subjects, { status: 200 });
-    
+
     } catch (error) {
         console.error(error);
         return NextResponse.json('Failed to get subjects', { status: 500 });
@@ -35,18 +35,14 @@ export async function POST(req: NextRequest) {
         const { subjectName, details, image } = await req.json();
         const creator = token.uid;
 
-        if (!subjectName|| !creator) {
+        if (!subjectName || !creator) {
             return NextResponse.json('Missing required fields', { status: 400 });
         }
 
-        try{
-            const subject = new Subject(subjectName, details ? details : "", creator.toString(), image ? image : "");
-            await subject.Insert();
-            return NextResponse.json('Subject created successfully', { status: 201 });
-        }catch(e){
-            console.error(e);
-            return NextResponse.json('Failed to create subject', { status: 500 });
-        }
+        const subject = new Subject(subjectName, details ? details : "", creator.toString(), image ? image : "");
+        await subject.Insert();
+        return NextResponse.json('Subject created successfully', { status: 201 });
+
     } catch (error) {
         console.error(error);
         return NextResponse.json('Failed to create subject', { status: 500 });
@@ -66,13 +62,9 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json('Missing required fields', { status: 400 });
         }
 
-        try {
-            await Subject.Delete(id);
-            return NextResponse.json('Subject deleted successfully', { status: 200 });
-        } catch (e) {
-            console.error(e);
-            return NextResponse.json('Failed to delete subject', { status: 500 });
-        }
+        await Subject.Delete(id);
+        return NextResponse.json('Subject deleted successfully', { status: 200 });
+
     } catch (error) {
         console.error(error);
         return NextResponse.json('Failed to delete subject', { status: 500 });
@@ -87,18 +79,14 @@ export async function PUT(req: NextRequest) {
             return NextResponse.json('Unauthorized', { status: 401 });
         }
         const { id, subjectName, details } = await req.json();
-    
+
         if (!id || !subjectName) {
             return NextResponse.json('Missing required fields', { status: 400 });
         }
 
-        try {
-            await Subject.Update(id, subjectName, details);
-            return NextResponse.json('Subject updated successfully', { status: 200 });
-        } catch (e) {
-            console.error(e);
-            return NextResponse.json('Failed to update subject', { status: 500 });
-        }
+        await Subject.Update(id, subjectName, details);
+        return NextResponse.json('Subject updated successfully', { status: 200 });
+
     } catch (error) {
         console.error(error);
         return NextResponse.json('Failed to update subject', { status: 500 });

@@ -1,7 +1,7 @@
 // External packages
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { IsUsernameOrEmailTaken } from '../../../../database/pool.js';
+import { IsUsernameOrEmailTaken } from '@/database/pool';
 // Models
 import  {User}  from '@/models/user';
 
