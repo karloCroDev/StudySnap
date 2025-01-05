@@ -1,6 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
 import { pool } from '../database/pool';
 
+export interface ExtendedNote{
+  id: string;
+  title: string;
+  details: string;
+  is_public: boolean;
+  subject_id: string;
+  likes: number;
+  creator: string;
+}
+
 export class Note {
   id: string;
   title: string;

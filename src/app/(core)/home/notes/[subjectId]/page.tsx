@@ -15,7 +15,6 @@ import ImageExample from '@/public/images/login-image.png';
 
 export default async function Notes({ params }: { params: { subjectId: string } }) {
   const { subjectId } = params;
-
   const session = await getServerSession(authOptions);
 
   let notes: Array<Note> = [];
@@ -23,15 +22,11 @@ export default async function Notes({ params }: { params: { subjectId: string } 
   try {
     const response = await fetch(`http://localhost:3000/api/core/home/notes?subjectId=${subjectId}`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${session.accessToken}`,
-      },
     });
 
     const data = await response.json();
     notes = Array.isArray(data) ? data : [];
-    console.log(notes + "notes");
+
   } catch (error) {
     console.error(error);
   }
