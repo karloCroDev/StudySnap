@@ -3,6 +3,7 @@ import { databaseConnectionObject } from "../../Secrets"
 import { User } from '../models/user';
 import { Subject } from '../models/subject';
 import { Note } from '../models/note';
+import { Dokument } from '../models/document';
 
 export const pool = createPool(databaseConnectionObject).promise()
 
@@ -31,7 +32,12 @@ export async function GetPublicNotes(limit: number): Promise<Array<Note>> {
     return result[0] as Note[];
 }
 
-export async function GetDocumentsByNoteId(note_id: string): Promise<Document> {
-    const result: [any, any] = await pool.query(`SELECT * FROM document WHERE note_id = "${note_id} Limit 1"`);
-    return result[0];
+export async function GetDocumentsByNoteId(note_id: string): Promise<Dokument> {
+    const result: [any, any] = await pool.query(`SELECT * FROM document WHERE note_id = "${note_id}" Limit 1`);
+    return result[0][0] as Dokument;
+}
+
+export async function GetNoteNameById(note_id: string): Promise<string> {
+    const result: [any, any] = await pool.query(`SELECT title FROM note WHERE id = "${note_id}"`);
+    return result[0][0].title;
 }

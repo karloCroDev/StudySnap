@@ -1,7 +1,7 @@
 'use client';
 
 // Eternal packagess
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import CodeBlock from '@tiptap/extension-code-block';
 import StarterKit from '@tiptap/starter-kit';
@@ -25,7 +25,7 @@ import { HeaderEditText } from '@/components/core/note-editor/HeaderEditText';
 import { DialogQuizz } from '@/components/core/note-editor/DialogQuizz';
 import { DialogGenerateContent } from './DialogGenerateContent';
 import { Spinner } from '@/components/ui/Spinner';
-
+import { Dokument } from '@/models/document';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
@@ -33,10 +33,42 @@ import { useToastStore } from '@/store/useToastStore';
 import { plus_jakarta_sans } from '@/lib/fonts';
 import { LikeComponent } from '@/components/ui/LikeComponent';
 
-export const TipTapEditor = () => {
+export const TipTapEditor: React.FC<{noteId: string}> = ({ noteId }) => {
   const toast = useToastStore((state) => state.setToast);
 
   const [isEditing, setIsEditing] = React.useState(false);
+
+  const [dokument, setDokument] = useState<Dokument | null>(null);
+
+  // Fetch dokument from backend
+  const fetchDokument = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/core/note-editor`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ noteId }),
+        }
+      );
+
+      const data = await response.json();
+      console.log("Data", data)
+      if (response.ok) {
+        setDokument(data);
+        console.log('Fetched dokument:', data);
+      } else {
+        console.error('Failed to fetch dokument:', data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch dokument:', error);
+    }
+  };// you need to add request for put 
+
+  useEffect(() => {
+    fetchDokument();
+  }, [noteId]);
 
   const editor = useEditor({
     extensions: [
@@ -49,7 +81,7 @@ export const TipTapEditor = () => {
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
     editable: isEditing,
-    content: '<h1>Hello world<h1/>',
+    content: dokument?.content,//This doesn't work
   });
 
   const [loading, setLoading] = React.useState(false);

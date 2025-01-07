@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { pool } from '../database/pool';
 
-export class Document {
+export class Dokument {
     id: string;
     title: string;
     content: string;
@@ -33,15 +33,15 @@ export class Document {
         }
     }
 
-    async Update(): Promise<void> {
+    static async Update(title: string, content: string, id: string): Promise<void> {
         try {
             await pool.execute(
                 `
         UPDATE document
-        SET title = ?, content = ?, note_id = ?
+        SET title = ?, content = ?
         WHERE id = ?;
       `,
-                [this.title, this.content, this.note_id, this.id]
+                [title, content, id]
             );
         } catch (err) {
             console.error('Error updating document:', err);
