@@ -38,6 +38,7 @@ export default async function PublicProfile() {
             {[...Array(7)].map((_, i) => (
               <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
                 <NoteCard
+                  noteid="1"
                   title="Biology"
                   description="Lorem ipsum dolorem"
                   likes={100}
