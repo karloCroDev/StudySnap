@@ -14,7 +14,7 @@ export default async function Disover() {
 
   try {
     const response = await fetch(`http://localhost:3000/api/core/discover`, {
-      method: 'GET',
+      method: 'POST',
     });
     let data: any = null;
     if (response.ok) {

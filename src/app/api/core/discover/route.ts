@@ -8,7 +8,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 
 
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
     try {
         let notes = await GetPublicNotes(20);
         if (!notes) {

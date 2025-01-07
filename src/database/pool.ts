@@ -41,3 +41,13 @@ export async function GetNoteNameById(note_id: string): Promise<string> {
     const result: [any, any] = await pool.query(`SELECT title FROM note WHERE id = "${note_id}"`);
     return result[0][0].title;
 }
+
+export async function GetNotesByUserId(user_id: string): Promise<Array<Note>> {
+    const result: [any[], any] = await pool.query(`
+        SELECT note.*
+            FROM note
+            JOIN subject ON note.subject_id = subject.id
+            WHERE subject.creator = "${user_id}"
+        `);
+    return result[0] as Note[];
+}

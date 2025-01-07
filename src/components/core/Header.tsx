@@ -28,8 +28,8 @@ export const Menu = () => {
 
   const toast = useToastStore((state) => state.setToast);
   const session = useSession();
-
-  return (
+  console.log(session, "Here should be the session")
+  return (//
     <MenuTrigger isOpen={isMenuOpen}>
       <Button
         colorScheme="white"
@@ -62,7 +62,7 @@ export const Menu = () => {
             className="flex cursor-pointer items-center gap-2 border-b border-gray-900 bg-gray-100 p-2 outline-none hover:brightness-90"
             onAction={() => setIsMenuOpen(true)}
           >
-            <DialogEditProfile setIsDialogOpen={setIsDialogOpen}>
+            <DialogEditProfile setIsDialogOpen={setIsDialogOpen} userId= {"session.data?.id"}>
               <div className="flex items-center gap-2">
                 <GearIcon />
                 Edit profile

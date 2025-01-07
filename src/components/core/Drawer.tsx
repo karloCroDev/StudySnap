@@ -85,7 +85,8 @@ export const Drawer = () => {
 
         <ul className="mt-6 flex flex-col gap-4">
           <li>
-            <DialogEditProfile>
+            <DialogEditProfile
+            userId = {"session"}>
               <LinkAsButton
                 href="/discover"
                 colorScheme="white"

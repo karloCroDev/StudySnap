@@ -18,9 +18,9 @@ export default async function Subjects() {
 
   let subjects: Array<Subject> = [];
 
-  try {
+  try {//Todo make this POST request
     const response = await fetch(`http://localhost:3000/api/core/home/subjects?userId=${session.user.id}`, {
-      method: 'GET',
+      method: 'Get',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${session.accessToken}`,

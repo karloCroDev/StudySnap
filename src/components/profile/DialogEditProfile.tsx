@@ -20,7 +20,8 @@ import ImageExample from '@/public/images/login-image.png';
 export const DialogEditProfile: React.FC<{
   setIsDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   children: React.ReactNode;
-}> = ({ setIsDialogOpen, children }) => {
+  userId: string;
+}> = ({ setIsDialogOpen, children,  userId }) => {
   const toast = useToastStore((state) => state.setToast);
 
   const [isOpen, setIsOpen] = React.useState(false);
@@ -29,7 +30,43 @@ export const DialogEditProfile: React.FC<{
     setIsDialogOpen && setIsDialogOpen(isOpen);
   }, [isOpen]);
 
-  const saveChanges = () => {
+  const saveChanges = async () => {
+
+    try {
+      const response = await fetch('http://localhost:3000/api/core/public-profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          //username, email, password, profile_picture, id
+        }),//Todo provide me with this informaiton, place where DialogEditProfile is called has a wrong userId (two places)
+      });
+
+      if (response.ok) {
+        toast({
+          title: 'Profile updated',
+          content: 'You have succesfully updated your profile',
+          variant: 'success',
+        });
+      }
+      else if (response.status === 400) {
+        toast({
+          title: 'Missing required fields',
+          content: 'Please make sure you have entered all the credentials correctly and try again',
+          variant: 'error',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Uhoh, something went wrong',
+        content:
+          'Failed to update profile',
+        variant: 'error',
+      });
+    }
+
     toast({
       // title: 'Deleted',
       // content: 'You have succesfully delete your note',
@@ -99,7 +136,7 @@ export const DialogEditProfile: React.FC<{
         />
 
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-          <DialogDeleteProfile />
+          <DialogDeleteProfile userId = {userId}/>
           <Button onPress={saveChanges}>Save changes</Button>
         </div>
       </Form>
