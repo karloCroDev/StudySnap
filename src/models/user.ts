@@ -41,28 +41,28 @@ export class User {
     }
   }
 
-  async Update(): Promise<void> {
+  static async Update( username:string,  email:string, password:string, profile_picture:string, id:string): Promise<void> {
     try {
       await pool.execute(
         `
         UPDATE user
-        SET username = ?, email = ?, password = ?, date_created = ?, profile_picture = ?
+        SET username = ?, email = ?, password = ?, profile_picture = ?
         WHERE id = ?;
       `,
-        [this.username, this.email, this.password, this.date_created, this.profile_picture, this.id]
+        [username, email, password, profile_picture, id]
       );
     } catch (err) {
       console.error('Error updating user:', err);
     }
   }
 
-  async Delete(): Promise<void> {
+  static async Delete(id: string): Promise<void> {
     try {
       await pool.execute(
         `
         DELETE FROM user WHERE id = ?;
       `,
-        [this.id]
+        [id]
       );
     } catch (err) {
       console.error('Error deleting user:', err);

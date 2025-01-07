@@ -8,11 +8,28 @@ import { Avatar } from '@/components/ui/Avatar';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { NoteCard } from '@/components/core/NoteCard';
 import { useSession } from 'next-auth/react';
+import { Note } from '@/models/note';
 
 export default async function PublicProfile() {
   const session = await getServerSession(authOptions);
 
-  console.log(session);
+  let notes: Array<Note> = [];
+    try {
+      const response = await fetch(`http://localhost:3000/api/core/public-profile`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: session.user.id }),
+      });
+
+      const data = await response.json();
+      notes = Array.isArray(data) ? data : [];
+
+    } catch (error) {
+      console.error(error);
+    }
+
   return (
     <>
       <div className="mb-12 animate-public-profile-initial-apperance lg:mb-16">
@@ -35,12 +52,12 @@ export default async function PublicProfile() {
         <LayoutColumn xs={11} lg={10}>
           {/* All notes that are public!!! */}
           <LayoutRow className="pr-0 sm:-mr-4">
-            {[...Array(7)].map((_, i) => (
+            {notes.map((note, i) => (
               <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
                 <NoteCard
-                  noteid="1"
-                  title="Biology"
-                  description="Lorem ipsum dolorem"
+                  noteid={note.id}
+                  title={note.title}
+                  description={note.details}
                   likes={100}
                   author={session.user.name}
                   key={i}
