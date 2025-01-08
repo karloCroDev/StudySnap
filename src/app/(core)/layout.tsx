@@ -16,7 +16,8 @@ export default async function CoreLayout({
 }>) {
   const session = await getServerSession(authOptions);
 
-  if (!session) {
+  // Chnage this to !session, only added this for checking the ui without regisration
+  if (session) {
     redirect('/login');
   }
   return (
@@ -41,7 +42,7 @@ export default async function CoreLayout({
           </nav>
         </Layout>
       </div>
-      <Layout className="mt-[104px] 2xl:mt-36">{children}</Layout>
+      <Layout className="mt-[104px] 2xl:mt-[128px]">{children}</Layout>
     </>
   );
 }
