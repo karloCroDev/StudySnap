@@ -25,7 +25,7 @@ export const DialogChangeDetails: React.FC<{
   const changeDetails = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     toast({
-      title: `${noteName} subject created`,
+      title: `${noteName} note updated`,
       content: `You have succesfully updated ${noteName}`,
       variant: 'success',
     });
@@ -46,16 +46,19 @@ export const DialogChangeDetails: React.FC<{
         <Input
           type="text"
           label="Note name"
+          minLength={3}
+          maxLength={24}
           isMdHorizontal
           inputProps={{
             placeholder: 'Enter note name',
-            // onChange: (e) => setNoteName(e.target.value),
           }}
           onChange={(val) => setNoteName(val.toString())}
         />
         <Input
           type="text"
-          label="Details "
+          label="Details"
+          minLength={5}
+          maxLength={40}
           isMdHorizontal
           inputProps={{
             placeholder: "Enter your note's details ",
@@ -87,7 +90,11 @@ export const DialogChangeDetails: React.FC<{
             </Radio>
           </RadioGroup>
         </div>
-        <Button className="self-end" type="submit">
+        <Button
+          className="self-end"
+          type="submit"
+          isDisabled={!noteName && !details}
+        >
           Change note
         </Button>
       </Form>

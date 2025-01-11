@@ -53,6 +53,8 @@ export const DialogCreate: React.FC<{
           isRequired
           type="text"
           label="Subject name"
+          minLength={3}
+          maxLength={24}
           isMdHorizontal
           inputProps={{
             placeholder: 'Enter subject name',
@@ -62,6 +64,8 @@ export const DialogCreate: React.FC<{
         <Input
           type="text"
           label="Details (optional)"
+          minLength={5}
+          maxLength={40}
           isMdHorizontal
           inputProps={{
             placeholder: 'Enter your subject’s details (optional)',
@@ -88,7 +92,7 @@ export const DialogCreate: React.FC<{
             )}
           </div>
         </FileTrigger>
-        <Button className="self-end" type="submit">
+        <Button className="self-end" type="submit" isDisabled={!subjectName}>
           Add new subject
         </Button>
       </Form>

@@ -30,8 +30,8 @@ export const DialogChangeDetails: React.FC<{
   const createNote = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     toast({
-      title: `${subjectName} note created`,
-      content: `You have succesfully created ${subjectName}`,
+      title: `Subject created`,
+      content: `You have succesfully created Subject`,
       variant: 'success',
     });
 
@@ -52,18 +52,24 @@ export const DialogChangeDetails: React.FC<{
         <Input
           type="text"
           label="Subject name"
+          minLength={3}
+          maxLength={24}
           isMdHorizontal
           inputProps={{
             placeholder: 'Enter new subject name',
           }}
+          onChange={(val) => setSubjectName(val.toString())}
         />
         <Input
           type="text"
           label="Details"
+          minLength={5}
+          maxLength={40}
           isMdHorizontal
           inputProps={{
             placeholder: 'Enter new subject details',
           }}
+          onChange={(val) => setDetails(val.toString())}
         />
         {/* note: Ako stignemo i sliku bi bilo super */}
         {/* <FileTrigger
@@ -86,7 +92,11 @@ export const DialogChangeDetails: React.FC<{
             )}
           </div>
         </FileTrigger> */}
-        <Button className="self-end" type="submit">
+        <Button
+          className="self-end"
+          type="submit"
+          isDisabled={!subjectName && !details}
+        >
           Change subject
         </Button>
       </Form>

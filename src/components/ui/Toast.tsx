@@ -57,7 +57,7 @@ export const Toast = () => {
         </RadixToast.Close>
       </RadixToast.Root>
       {/* todo: Decide padding on mobile */}
-      <RadixToast.Viewport className="fixed inset-x-6 bottom-6 md:inset-auto md:bottom-12 md:left-24 md:w-96" />
+      <RadixToast.Viewport className="fixed inset-x-6 bottom-6 z-max md:inset-auto md:bottom-12 md:left-24 md:w-96" />
     </RadixToast.Provider>
   );
 };

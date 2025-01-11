@@ -49,6 +49,8 @@ export const DialogCreate: React.FC<{
           isRequired
           type="text"
           label="Note name"
+          minLength={3}
+          maxLength={24}
           isMdHorizontal
           inputProps={{
             placeholder: 'Enter note name',
@@ -59,6 +61,8 @@ export const DialogCreate: React.FC<{
           isRequired
           type="text"
           label="Details "
+          minLength={5}
+          maxLength={40}
           isMdHorizontal
           inputProps={{
             placeholder: "Enter your note's details ",
@@ -90,7 +94,11 @@ export const DialogCreate: React.FC<{
             </Radio>
           </RadioGroup>
         </div>
-        <Button className="self-end" type="submit">
+        <Button
+          className="self-end"
+          type="submit"
+          isDisabled={!noteName || !details}
+        >
           Add new note
         </Button>
       </Form>
