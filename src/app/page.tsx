@@ -110,6 +110,9 @@ export default function Home() {
         </div>
         <Button onPress={() => setIsOpen(false)}>Finish the task </Button>
       </Dialog>
+      <Button colorScheme="light-blue" isDisabled>
+        sss
+      </Button>
     </Layout>
   );
 }

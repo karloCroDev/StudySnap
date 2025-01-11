@@ -2,7 +2,6 @@
 
 // External packages
 import * as React from 'react';
-
 import { Button as ReactAriaButton } from 'react-aria-components';
 import { Editor as EditorType } from '@tiptap/react';
 import Link from 'next/link';

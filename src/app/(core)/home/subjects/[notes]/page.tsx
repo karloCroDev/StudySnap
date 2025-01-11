@@ -1,5 +1,4 @@
 // External packages
-import Image from 'next/image';
 import { getServerSession } from 'next-auth';
 
 // Components
@@ -7,11 +6,7 @@ import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { NoteCard } from '@/components/core/NoteCard';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { CreateNoteCard } from '@/components/core/note/CreateNoteCard';
-import { SubjectCard } from '@/components/core/subjects/SubjectCard';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-
-// Images
-import ImageExample from '@/public/images/login-image.png';
 
 export default async function Notes() {
   const session = await getServerSession(authOptions);
@@ -31,14 +26,13 @@ export default async function Notes() {
                   title="Biology"
                   description="Lorem ipsum do lorem"
                   likes={100}
-                  author={session.user.name}
+                  author={session?.user.name}
                   key={i}
                 />
               </LayoutColumn>
             ))}
           </LayoutRow>
         </LayoutColumn>
-        <LayoutColumn lg={8}></LayoutColumn>
       </LayoutRow>
     </>
   );

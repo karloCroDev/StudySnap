@@ -3,7 +3,7 @@ import {
   Button as AriaButton,
   ButtonProps as AriaProps,
 } from 'react-aria-components';
-import { twJoin, twMerge } from 'tailwind-merge';
+import { twMerge } from 'tailwind-merge';
 
 import {
   AdditionalButtonProps,

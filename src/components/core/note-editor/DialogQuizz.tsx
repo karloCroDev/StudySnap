@@ -84,11 +84,11 @@ export const DialogQuizz: React.FC<{
             variant="outline"
             iconLeft={<MagicWandIcon className="size-5" />}
             className="min-w-fit"
-            onPressStart={() => setIsOpen(true)}
+            onPress={() => setIsOpen(true)}
           >
             Quizz yourself
           </Button>
-          // Some problems when passing buttons from react aria components (because of the onPressStart, so I only passed children directly)
+          // Some problems when passing buttons from react aria components (so need to do this mannually)
         ),
       }}
     >

@@ -29,7 +29,7 @@ export const DialogDeleteProfile = () => {
           <Button
             variant="outline"
             colorScheme="red"
-            onPressStart={() => setIsOpen(true)}
+            onPress={() => setIsOpen(true)}
           >
             Delete profile
           </Button>
