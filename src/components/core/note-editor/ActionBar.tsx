@@ -5,9 +5,7 @@ import * as React from 'react';
 import { Editor as EditorType } from '@tiptap/react';
 
 import { Pencil2Icon, FileTextIcon, CameraIcon } from '@radix-ui/react-icons';
-import { twJoin } from 'tailwind-merge';
 import { FileTrigger } from 'react-aria-components';
-import { Markdown } from 'tiptap-markdown';
 
 // Components
 import { Button } from '@/components/ui/Button';
@@ -23,12 +21,13 @@ export const ActionBar: React.FC<{
   isEditing: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   editor: EditorType;
-}> = ({ isEditing, setIsEditing, editor }) => {
+  completionLoading: boolean;
+}> = ({ isEditing, setIsEditing, editor, completionLoading }) => {
   const toast = useToastStore((state) => state.setToast);
 
+  // Getting notes
   const [loading, setLoading] = React.useState(false);
 
-  // Getting notes
   const getNotesFromImage = async (image: File) => {
     try {
       setLoading(true);
@@ -125,9 +124,14 @@ export const ActionBar: React.FC<{
               Notes from image
             </Button>
           </FileTrigger>
-          <p className="hidden text-balance text-md text-gray-500 lg:block">
-            Sentence complete : ctrl + /
-          </p>
+          <div className="hidden items-center gap-4 text-balance text-md text-gray-500 lg:flex">
+            <p className="italic">Sentence complete:</p>
+            {completionLoading ? (
+              <Spinner />
+            ) : (
+              <p className="font-semibold">ctrl + /</p>
+            )}
+          </div>
           <DialogGenerateContent editor={editor} />
         </>
       )}

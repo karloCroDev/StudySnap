@@ -71,7 +71,7 @@ export const DialogGenerateContent: React.FC<{
             rounded="full"
             iconLeft={<MagicWandIcon className="size-5" />}
             className="min-w-fit"
-            onPress={() => setIsOpen(true)}
+            onPressStart={() => setIsOpen(true)}
           >
             Generate content
           </Button>

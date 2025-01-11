@@ -37,16 +37,16 @@ export const TipTapEditor = () => {
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
     editable: isEditing,
-    content: '<h1>Hello world<h1/>',
+    content: '<h1>WWII<h1/>',
   });
 
-  const [loading, setLoading] = React.useState(false);
-
   // Sentence completion
+  const [completionLoading, setCompletionLoading] = React.useState(false);
   const completeSentence = async () => {
     const context = editor?.getText();
 
     try {
+      setCompletionLoading(true);
       const response = await fetch('http://localhost:3000/api/ai/completion', {
         method: 'POST',
         headers: {
@@ -59,6 +59,8 @@ export const TipTapEditor = () => {
       if (response.ok) editor?.commands.insertContent(data);
     } catch (error) {
       console.error('Failed to complete sentence:', error);
+    } finally {
+      setCompletionLoading(false);
     }
   };
 
@@ -137,7 +139,7 @@ export const TipTapEditor = () => {
         <div className="prose h-full !max-w-none !overflow-scroll scroll-smooth">
           <EditorContent
             editor={editor}
-            disabled={true}
+            disabled={isEditing}
             className="text-editor"
           />
         </div>
@@ -145,6 +147,7 @@ export const TipTapEditor = () => {
           editor={editor}
           isEditing={isEditing}
           setIsEditing={setIsEditing}
+          completionLoading={completionLoading}
         />
       </div>
     </>
