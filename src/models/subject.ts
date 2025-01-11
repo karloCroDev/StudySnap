@@ -1,35 +1,24 @@
-import { v4 as uuidv4 } from 'uuid';
 import { pool } from '../database/pool';
 
-export class Subject {
-    id: string;
-    name: string;
-    details: string;
-    creator: string;
-    image: string | null;
+export interface Subject{
+    id: string,
+    name: string,
+    date_created: Date,
+    date_modified: Date,
+    details: string,
+    image: string | null,
+    creator_id: string,
+}
 
-    constructor(
-        name: string,
-        details: string,
-        creator: string,
-        image: string | null = null,
-        id: string = uuidv4()
-    ) {
-        this.id = id;
-        this.name = name;
-        this.details = details;
-        this.creator = creator;
-        this.image = image;
-    }
-
-    async Insert(): Promise<void> {
+export class SubjectClass {
+    static async Insert(name: string, details: string, creator: string, image: string | null,): Promise<void> {
         try {
             await pool.execute(
                 `
-        INSERT INTO subject (id, name, details, creator, image)
-        VALUES (?, ?, ?, ?, ?);
+        INSERT INTO subject ( name, details, creator, image)
+        VALUES (?, ?, ?, ?);
       `,
-                [this.id, this.name, this.details, this.creator, this.image]
+                [name, details, creator, image]
             );
         } catch (err) {
             console.error('Error inserting subject:', err);

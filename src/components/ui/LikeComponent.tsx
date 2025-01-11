@@ -64,7 +64,7 @@ export const LikeComponent: React.FC<{
           plus_jakarta_sans.className
         )}
       >
-        {numberOfLikes + (isLiked ? 1 : 0)}
+        {numberOfLikes}
       </p>
     </div>
   );

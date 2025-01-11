@@ -4,7 +4,7 @@ import { getToken } from 'next-auth/jwt';
 import bcrypt from 'bcryptjs';
 import { GetNotesByUserId } from '@/database/pool';
 // Models
-import  {User}  from '@/models/user';
+import  {User, UserClass}  from '@/models/user';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
@@ -36,7 +36,7 @@ export async function PUT(req: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await User.Update(username, email, hashedPassword, profile_picture, userId);
+    await UserClass.Update(username, email, hashedPassword, profile_picture, userId);
 
     return NextResponse.json('User updated', { status: 201 });
   } catch (error) {
@@ -58,7 +58,7 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json('Missing required fields', { status: 400 });
         }
 
-        await User.Delete(id);
+        await UserClass.Delete(id);
         return NextResponse.json('Subject deleted successfully', { status: 200 });
 
     } catch (error) {

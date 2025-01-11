@@ -2,7 +2,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 // Models
-import { Subject } from '@/models/subject';
+import { SubjectClass } from '@/models/subject';
 import { GetSubjectByCreatorId } from '@/database/pool';
 
 const secret = process.env.NEXTAUTH_SECRET;
@@ -39,8 +39,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json('Missing required fields', { status: 400 });
         }
 
-        const subject = new Subject(subjectName, details ? details : "", creator.toString(), image ? image : "");
-        await subject.Insert();
+        await SubjectClass.Insert(subjectName, details ? details : "", creator.toString(), image);
         return NextResponse.json('Subject created successfully', { status: 201 });
 
     } catch (error) {
@@ -62,7 +61,7 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json('Missing required fields', { status: 400 });
         }
 
-        await Subject.Delete(id);
+        await SubjectClass.Delete(id);
         return NextResponse.json('Subject deleted successfully', { status: 200 });
 
     } catch (error) {
@@ -84,7 +83,7 @@ export async function PUT(req: NextRequest) {
             return NextResponse.json('Missing required fields', { status: 400 });
         }
 
-        await Subject.Update(id, subjectName, details);
+        await SubjectClass.Update(id, subjectName, details);
         return NextResponse.json('Subject updated successfully', { status: 200 });
 
     } catch (error) {

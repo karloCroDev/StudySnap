@@ -3,7 +3,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
 // Models
-import { Dokument } from '@/models/document';
+import { Dokument, DokumentClass } from '@/models/document';
 import { GetDocumentsByNoteId, GetNoteNameById } from '@/database/pool';
 
 const secret = process.env.NEXTAUTH_SECRET;
@@ -21,9 +21,13 @@ export async function POST(req: NextRequest) {
 
         if (!doc) {
             let title = await GetNoteNameById(noteId);
-
-            doc = new Dokument(title, "", noteId);
-            await doc.Insert();
+            let id = await DokumentClass.Insert(title, "", noteId);
+            doc = {
+                id: id,
+                title: title,
+                content: "",
+                note_id: noteId,
+            } as Dokument
         }
 
         return NextResponse.json(doc, { status: 200 });
@@ -36,7 +40,7 @@ export async function POST(req: NextRequest) {
 
 
 export async function PUT(req: NextRequest) {
-    console.log("Wrong addreess")
+
     try {
         const { title, content, id } = await req.json();
 
@@ -50,8 +54,8 @@ export async function PUT(req: NextRequest) {
             return NextResponse.json('Unauthorized', { status: 401 });
         }
 
-        
-        await Dokument.Update(title, content, id);
+
+        await DokumentClass.Update(title, content, id);
 
         return NextResponse.json('Saved', { status: 200 });
 

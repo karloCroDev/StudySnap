@@ -1,35 +1,28 @@
-import { v4 as uuidv4 } from 'uuid';
 import { pool } from '../database/pool';
 
-export class Dokument {
-    id: string;
-    title: string;
-    content: string;
-    note_id: string;
+export interface Dokument{
+    id: string,
+    title: string,
+    content: string,
+    note_id: string,
+}
 
-    constructor(
-        title: string,
-        content: string,
-        note_id: string,
-        id: string = uuidv4()
-    ) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.note_id = note_id;
-    }
+export class DokumentClass {
 
-    async Insert(): Promise<void> {
-        try {
+    static async Insert(title: string, content: string, note_id: string): Promise<string | null> {
+    try {
+        const [result]: any = 
             await pool.execute(
                 `
-        INSERT INTO document (id, title, content, note_id)
-        VALUES (?, ?, ?, ?);
-      `,
-                [this.id, this.title, this.content, this.note_id]
+            INSERT INTO document (title, content, note_id)
+            VALUES (?, ?, ?);
+            `,
+                [title, content, note_id]
             );
+            return result.insertId as string
         } catch (err) {
             console.error('Error inserting document:', err);
+            return null
         }
     }
 
@@ -45,19 +38,6 @@ export class Dokument {
             );
         } catch (err) {
             console.error('Error updating document:', err);
-        }
-    }
-
-    async Delete(): Promise<void> {
-        try {
-            await pool.execute(
-                `
-        DELETE FROM document WHERE id = ?;
-      `,
-                [this.id]
-            );
-        } catch (err) {
-            console.error('Error deleting document:', err);
         }
     }
 }

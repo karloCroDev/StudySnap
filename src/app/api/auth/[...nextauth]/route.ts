@@ -22,7 +22,7 @@ export const authOptions = {
           }
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
-          console.log(passwordsMatch, password, user.password);
+
           if (passwordsMatch) return user;
           else return null;
 

@@ -2,20 +2,22 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 // Models
-import { Note } from '@/models/note';
 import { GetNotesBySubjectId } from '@/database/pool';
+import { NoteClass } from '@/models/note';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
 
 export async function GET(req: NextRequest) {
     try {
+
         const { searchParams } = new URL(req.url);
         const subjectId = searchParams.get('subjectId');
 
         const notes = await GetNotesBySubjectId(subjectId as string);
+
         if (!notes) {
-            return NextResponse.json('Notes not found', { status: 404 });
+            return NextResponse.json('Notes not found', { status: 400 });
         }
         return NextResponse.json(notes, { status: 200 });
     
@@ -35,8 +37,8 @@ export async function POST(req: NextRequest) {
             return NextResponse.json('Missing required fields', { status: 400 });
         }
 
-        const note = new Note(noteName, details ? details : "",isPublic,  subjectId);
-        await note.Insert();
+        await NoteClass.Insert(noteName, details ? details : "", isPublic, subjectId);
+
         return NextResponse.json('Note created successfully', { status: 201 });
 
     } catch (error) {
@@ -51,8 +53,7 @@ export async function DELETE(req: NextRequest) {
         if (!noteId) {
             return NextResponse.json('Missing required fields', { status: 400 });
         }
-
-        await Note.Delete(noteId);
+        await NoteClass.Delete(noteId);
         return NextResponse.json('Deleted successfully', { status: 200 });
     
     } catch (error) {
@@ -69,7 +70,7 @@ export async function PUT(req: NextRequest) {
         if (!noteName || isPublic == undefined || !noteId) {
             return NextResponse.json('Missing required fields', { status: 400 });
         }
-        await Note.Update(noteName, details, isPublic, noteId);
+        await NoteClass.Update(noteName, details, isPublic, noteId);
 
         return NextResponse.json('Note updated successfully', { status: 201 });
 
