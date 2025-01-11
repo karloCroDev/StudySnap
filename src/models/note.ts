@@ -1,45 +1,26 @@
 import { v4 as uuidv4 } from 'uuid';
 import { pool } from '../database/pool';
 
-export interface ExtendedNote{
+export interface Note{
   id: string;
   title: string;
   details: string;
   is_public: boolean;
   subject_id: string;
   likes: number;
-  creator: string;
+  liked: boolean
+  creator_name: string;
 }
 
-export class Note {
-  id: string;
-  title: string;
-  details: string;
-  is_public: boolean;
-  subject_id: string;
-
-  constructor(
-    title: string,
-    details: string,
-    is_public: boolean,
-    subject_id: string,
-    id: string = uuidv4()
-  ) {
-    this.id = id;
-    this.title = title;
-    this.details = details;
-    this.is_public = is_public;
-    this.subject_id = subject_id;
-  }
-
-  async Insert(): Promise<void> {
+export class NoteClass {
+  static async Insert(title: string, details:  string, is_public: boolean, subject_id: string): Promise<void> {
     try {
       await pool.execute(
         `
-        INSERT INTO note (id, title, details, is_public, subject_id)
-        VALUES (?, ?, ?, ?, ?);
+        INSERT INTO note (title, details, is_public, subject_id)
+        VALUES (?, ?, ?, ?);
       `,
-        [this.id, this.title, this.details, this.is_public, this.subject_id]
+        [title, details, is_public, subject_id]
       );
     } catch (err) {
       console.error('Error inserting note:', err);
@@ -54,7 +35,7 @@ export class Note {
         SET title = ?, details = ?, is_public = ?
         WHERE id = ?;
       `,
-        [title, details,is_public,id]
+        [title, details, is_public, id]
       );
     } catch (err) {
       console.error('Error updating note:', err);

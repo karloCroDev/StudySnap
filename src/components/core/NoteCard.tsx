@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { twJoin } from 'tailwind-merge';
 import { StaticImageData } from 'next/image';
 
+
+
 // Components
 import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';
 import { DialogDelete } from '@/components/core/note/DialogDelete';
@@ -16,16 +18,29 @@ import { Avatar } from '@/components/ui/Avatar';
 import { LikeComponent } from '@/components/ui/LikeComponent';
 
 export const NoteCard: React.FC<{
-  noteid: string ;
+  noteId: string;
   title: string;
   description?: string;
   author: string;
   userImage?: string;
   likes: number;
-}> = ({ noteid, title, description, userImage, author, likes }) => {
+  liked: boolean;
+  userId: string
+}> = ({ noteId, title, description, userImage, author, likes, liked, userId }) => {
+
   const likeAction = async () => {
     'use server';
-    console.log('What the actual ***');
+    try {
+      await fetch('http://localhost:3000/api/core/home/notes/like', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({"noteId": noteId, "userId": userId, "exists": liked }), //image is missing here
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <div className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400 text-blue-900">
@@ -54,7 +69,7 @@ export const NoteCard: React.FC<{
           </div>
 
           <LikeComponent
-            hasBeenLiked
+            hasBeenLiked ={liked}
             isOrderReversed
             numberOfLikes={likes}
             action={likeAction}
@@ -64,7 +79,7 @@ export const NoteCard: React.FC<{
 
       <ul className="absolute right-5 top-8 z-10 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
         <li>
-          <DialogChangeDetails noteId = {noteid}>
+          <DialogChangeDetails noteId={noteId}>
             <Pencil1Icon
               className={twJoin(
                 'size-9 transition-colors hover:text-blue-400 lg:size-7'
@@ -73,7 +88,7 @@ export const NoteCard: React.FC<{
           </DialogChangeDetails>
         </li>
         <li>
-          <DialogDelete noteId = {noteid}>
+          <DialogDelete noteId={noteId}>
             <TrashIcon
               className={twJoin(
                 'size-9 transition-colors hover:text-blue-400 lg:size-7'
@@ -83,7 +98,7 @@ export const NoteCard: React.FC<{
         </li>
       </ul>
 
-      <Link href={`/note-editor/${noteid}`} className="absolute inset-0" />
+      <Link href={`/note-editor/${noteId}`} className="absolute inset-0" />
     </div>
   );
 };

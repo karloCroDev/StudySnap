@@ -12,23 +12,23 @@ import { Note } from '@/models/note';
 
 export default async function PublicProfile() {
   const session = await getServerSession(authOptions);
-
+  const userId = await session.user.id
   let notes: Array<Note> = [];
-    try {
-      const response = await fetch(`http://localhost:3000/api/core/public-profile`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId: session.user.id }),
-      });
+  try {
+    const response = await fetch(`http://localhost:3000/api/core/public-profile`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: session.user.id }),
+    });
 
-      const data = await response.json();
-      notes = Array.isArray(data) ? data : [];
-
-    } catch (error) {
-      console.error(error);
-    }
+    const data = await response.json();
+    notes = Array.isArray(data) ? data : [];
+    console.log(notes)
+  } catch (error) {
+    console.error(error);
+  }
 
   return (
     <>
@@ -55,11 +55,13 @@ export default async function PublicProfile() {
             {notes.map((note, i) => (
               <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
                 <NoteCard
-                  noteid={note.id}
+                  noteId={note.id}
                   title={note.title}
                   description={note.details}
-                  likes={100}
-                  author={session.user.name}
+                  likes={note.likes}
+                  author={note.creator_name}
+                  liked={note.liked}
+                  userId={userId}
                   key={i}
                 />
               </LayoutColumn>
