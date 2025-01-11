@@ -2,10 +2,10 @@
 
 'use client';
 // External packages
-import { Form } from 'react-aria-components';
+import { Form, DropZone } from 'react-aria-components';
 import { DialogClose } from '@radix-ui/react-dialog';
 import * as React from 'react';
-
+import Image from 'next/image';
 // Components
 import { Layout, LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { Logo } from '@/components/ui/Logo';
@@ -21,7 +21,7 @@ export default function Home() {
   const toast = useToastStore((state) => state.setToast);
 
   const [isOpen, setIsOpen] = React.useState(false);
-
+  const [filledSrc, setFilledSrc] = React.useState('');
   return (
     <Layout>
       <div className="flex flex-col gap-4 p-6">
@@ -113,6 +113,37 @@ export default function Home() {
       <Button colorScheme="light-blue" isDisabled>
         sss
       </Button>
+
+      <DropZone
+        getDropOperation={(types) =>
+          types.has('image/png') || types.has('image/jpeg') ? 'copy' : 'cancel'
+        }
+        onDrop={async (e) => {
+          e.items.find(async (item) => {
+            if (
+              item.kind === 'file' &&
+              (item.type === 'image/jpeg' ||
+                item.type === 'image/png' ||
+                item.type === 'image/jpg')
+            )
+              setFilledSrc(URL.createObjectURL(await item.getFile()));
+          });
+        }}
+      >
+        {filledSrc ? (
+          <Image
+            className="object-contain"
+            alt="Image to analyse"
+            src={filledSrc}
+            width={160}
+            height={160}
+          />
+        ) : (
+          <div className="size-40 rounded border border-dashed border-blue-400">
+            Drop image
+          </div>
+        )}
+      </DropZone>
     </Layout>
   );
 }

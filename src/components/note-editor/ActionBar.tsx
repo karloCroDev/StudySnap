@@ -9,7 +9,7 @@ import { FileTrigger } from 'react-aria-components';
 
 // Components
 import { Button } from '@/components/ui/Button';
-import { DialogQuizz } from '@/components/core/note-editor/DialogQuizz';
+import { DialogQuizz } from '@/components/note-editor/DialogQuizz';
 import { DialogGenerateContent } from './DialogGenerateContent';
 import { Spinner } from '@/components/ui/Spinner';
 import { LikeComponent } from '@/components/ui/LikeComponent';

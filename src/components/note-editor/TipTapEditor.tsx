@@ -15,11 +15,12 @@ import { Markdown } from 'tiptap-markdown';
 
 // Components
 import { Button } from '@/components/ui/Button';
-import { Header } from '@/components/core/note-editor/Header';
+import { Header } from '@/components/note-editor/Header';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
 import { ActionBar } from './ActionBar';
+import { useNavigationGuard } from 'next-navigation-guard';
 
 export const TipTapEditor = () => {
   const toast = useToastStore((state) => state.setToast);
@@ -41,6 +42,7 @@ export const TipTapEditor = () => {
   });
 
   // Sentence completion
+
   const [completionLoading, setCompletionLoading] = React.useState(false);
   const completeSentence = async () => {
     const context = editor?.getText();
@@ -85,6 +87,30 @@ export const TipTapEditor = () => {
       editor.setEditable(isEditing);
     }
   }, [isEditing, editor]);
+
+  //
+
+  const navGuard = useNavigationGuard({
+    enabled: isEditing,
+    confirm: () =>
+      window.confirm('You have unsaved changes that will be lost.'),
+  });
+  console.log(navGuard.active);
+  // React.useEffect(() => {
+  //   if (!isEditing) return;
+
+  //   // Handler for tab close or page reload
+  //   const beforeUnload = (e: BeforeUnloadEvent) => {
+  //     e.preventDefault();
+  //   };
+
+  //   window.addEventListener('beforeunload', beforeUnload);
+
+  //   return () => {
+  //     // Remove event listeners on cleanup
+  //     window.removeEventListener('beforeunload', beforeUnload);
+  //   };
+  // }, [isEditing, router]);
 
   if (editor === null) return;
   return (
@@ -149,6 +175,10 @@ export const TipTapEditor = () => {
           setIsEditing={setIsEditing}
           completionLoading={completionLoading}
         />
+        {/* <div className={navGuard.active ? 'block' : 'hidden'}>
+          <p onClick={() => navGuard.reject}>no</p>
+          <p onClick={() => navGuard.reject}>yes</p>
+        </div> */}
       </div>
     </>
   );

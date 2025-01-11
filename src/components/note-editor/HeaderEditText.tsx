@@ -32,7 +32,7 @@ import { ImQuotesLeft } from 'react-icons/im';
 import { RxDividerHorizontal } from 'react-icons/rx';
 
 // Components
-import { DialogURL } from '@/components/core/note-editor/DialogURL';
+import { DialogURL } from '@/components/note-editor/DialogURL';
 
 // Libs
 import { plus_jakarta_sans } from '@/lib/fonts';

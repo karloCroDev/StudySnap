@@ -6,7 +6,7 @@ import { Editor as EditorType } from '@tiptap/react';
 import { twJoin } from 'tailwind-merge';
 
 // Components
-import { HeaderEditText } from '@/components/core/note-editor/HeaderEditText';
+import { HeaderEditText } from '@/components/note-editor/HeaderEditText';
 
 // Libs
 import { plus_jakarta_sans } from '@/lib/fonts';

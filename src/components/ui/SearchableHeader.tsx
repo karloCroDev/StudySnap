@@ -17,17 +17,11 @@ import { Search } from '@/components/ui/Search';
 
 export const SearchableHeader: React.FC<{
   title: string;
+  setSearch?: React.Dispatch<React.SetStateAction<string>>; // Za ovo ce trebati zustand kada budem fetcaho podatke!!!
 }> = ({ title }) => {
   const infoHeader = React.useRef<HTMLDivElement | null>(null);
 
   const toggleSearch = () => {
-    // React.useEffect(() => {
-    //   const xxx = async () => {
-    //     const session = await getServerSession(authOptions);
-    //     console.log(session);
-    //   };
-    // }, []);
-
     const searchElement = infoHeader.current;
 
     if (searchElement) {
@@ -53,6 +47,7 @@ export const SearchableHeader: React.FC<{
             placeholderLabel="Search"
             className="fixed opacity-0 group-data-[search-visible=true]:pointer-events-auto group-data-[search-visible=true]:relative group-data-[search-visible=false]:-z-10 group-data-[search-visible=false]:animate-search-closed group-data-[search-visible=true]:animate-search-open group-data-[search-visible=true]:opacity-100 md:pointer-events-auto md:relative md:animate-search-initial-apperance md:opacity-100"
             // data-search-visible="true"
+            onChange={(val) => val.toString()}
           />
           <AriaButton
             className="rounded-full bg-blue-400 p-3 text-center text-gray-100 outline-none transition-colors duration-300 group-data-[search-visible=true]:bg-red-400 md:hidden"

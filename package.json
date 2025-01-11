@@ -28,6 +28,7 @@
     "mongoose": "^8.9.2",
     "next": "14.2.15",
     "next-auth": "^4.24.11",
+    "next-navigation-guard": "^0.1.2",
     "react": "^18",
     "react-aria-components": "^1.5.0",
     "react-dom": "^18",
