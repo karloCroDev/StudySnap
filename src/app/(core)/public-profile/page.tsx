@@ -17,16 +17,16 @@ export default async function PublicProfile() {
       <div className="mb-12 animate-public-profile-initial-apperance lg:mb-16">
         <Avatar
           imageProps={{
-            src: session.user.image,
+            src: session?.user.image,
             alt: '',
           }}
           size="xl"
           className="mx-auto mb-8"
         >
-          {session.user.name}
+          {session?.user.name}
         </Avatar>
         <h1 className="mb-12 text-center text-4xl font-semibold lg:mb-16">
-          {session.user.name}
+          {session?.user.name}
         </h1>
       </div>
       <SearchableHeader title="All notes" />
@@ -40,7 +40,7 @@ export default async function PublicProfile() {
                   title="Biology"
                   description="Lorem ipsum dolorem"
                   likes={100}
-                  author={session.user.name}
+                  author={session?.user.name}
                   key={i}
                 />
               </LayoutColumn>

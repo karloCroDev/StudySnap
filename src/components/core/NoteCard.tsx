@@ -22,10 +22,6 @@ export const NoteCard: React.FC<{
   userImage?: string;
   likes: number;
 }> = ({ title, description, userImage, author, likes }) => {
-  const likeAction = async () => {
-    'use server';
-    console.log('What the actual ***');
-  };
   return (
     <div className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400 text-blue-900">
       <div className="flex aspect-square flex-col p-6 pb-4">
@@ -52,12 +48,7 @@ export const NoteCard: React.FC<{
             </Link>
           </div>
 
-          <LikeComponent
-            hasBeenLiked
-            isOrderReversed
-            numberOfLikes={likes}
-            action={likeAction}
-          />
+          <LikeComponent hasBeenLiked isOrderReversed numberOfLikes={likes} />
         </div>
       </div>
 

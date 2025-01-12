@@ -121,7 +121,7 @@ export const ActionBar: React.FC<{
               iconLeft={<CameraIcon className="size-5" />}
               iconRight={loading && <Spinner />}
             >
-              Notes from image
+              Image notes
             </Button>
           </FileTrigger>
           <div className="hidden items-center gap-4 text-balance text-md text-gray-500 lg:flex">

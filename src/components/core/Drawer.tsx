@@ -18,7 +18,7 @@ import { useRouter, usePathname } from 'next/navigation';
 // Components
 import { LinkAsButton } from '@/components/ui/LinkAsButton';
 import { Button } from '@/components/ui/Button';
-import { DialogEditProfile } from '@/components/profile/DialogEditProfile';
+import { DialogEditProfile } from '@/components/core/profile/DialogEditProfile';
 import { Avatar } from '@/components/ui/Avatar';
 
 // Store
@@ -30,7 +30,7 @@ export const Drawer = () => {
 
   const toast = useToastStore((state) => state.setToast);
 
-  const session = useSession();
+  const user = useSession();
 
   return (
     <RadixDialog.Root>
@@ -42,12 +42,12 @@ export const Drawer = () => {
         <div className="flex flex-col items-center">
           <Avatar
             size="lg"
-            imageProps={{ src: session?.data?.user?.image || '', alt: '' }}
+            imageProps={{ src: user?.data?.user?.image || '', alt: '' }}
           >
-            {session?.data?.user?.name}
+            {user?.data?.user?.name}
           </Avatar>
           <h4 className="mt-6 text-lg font-semibold">
-            {session?.data?.user?.name}
+            {user?.data?.user?.name}
           </h4>
         </div>
         <hr className="mt-3 h-px w-full border-0 bg-gray-900" />

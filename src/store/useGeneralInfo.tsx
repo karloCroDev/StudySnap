@@ -1,11 +1,10 @@
 // External packages
 import { create } from 'zustand';
-import { Editor as EditorType } from '@tiptap/react';
 
 export const useGeneralInfo = create<{
-  editor: EditorType | null;
-  setEditor: (val: EditorType) => void;
+  search: string;
+  setSerach: (val: string) => void;
 }>((set) => ({
-  editor: null,
-  setEditor: (val) => set({ editor: val }),
+  search: '',
+  setSerach: (val) => set({ search: val }),
 }));

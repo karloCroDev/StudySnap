@@ -3,13 +3,14 @@
 // External packages
 import * as React from 'react';
 import { Form } from 'react-aria-components';
+import { useSession } from 'next-auth/react';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Avatar } from '@/components/ui/Avatar';
-import { DialogDeleteProfile } from '@/components/profile/DialogDeleteProfile';
+import { DialogDeleteProfile } from '@/components/core/profile/DialogDeleteProfile';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
@@ -21,6 +22,8 @@ export const DialogEditProfile: React.FC<{
   setIsDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   children: React.ReactNode;
 }> = ({ setIsDialogOpen, children }) => {
+  const user = useSession();
+  console.log;
   const toast = useToastStore((state) => state.setToast);
 
   const [isOpen, setIsOpen] = React.useState(false);
@@ -60,13 +63,13 @@ export const DialogEditProfile: React.FC<{
         <Avatar
           size="lg"
           imageProps={{
-            src: ImageExample.src,
-            alt: '',
+            src: user.data?.user?.image || '',
+            alt: 'Your pfp',
           }}
         >
-          Ivan Horvat
+          {user.data?.user?.name}
         </Avatar>
-        <h2 className="mt-4 text-lg font-semibold">Ivan Horvat</h2>
+        <h2 className="mt-4 text-lg font-semibold"> {user.data?.user?.name}</h2>
       </div>
       <hr className="h-px w-full border-0 bg-gray-900" />
       <Form className="flex flex-col gap-5">

@@ -14,16 +14,19 @@ export const LikeComponent: React.FC<{
   numberOfLikes: number;
   isOrderReversed?: boolean;
   size?: 'sm' | 'lg';
-  action: () => void;
+  // action: () => void;
 }> = ({
   hasBeenLiked,
   isOrderReversed = false,
   numberOfLikes,
   size = 'sm',
-  action,
+  // action,
 }) => {
   const [isLiked, setIsLiked] = React.useState(hasBeenLiked);
 
+  const likeNote = () => {
+    console.log('Like this note');
+  };
   return (
     <div
       className={twJoin(
@@ -35,7 +38,7 @@ export const LikeComponent: React.FC<{
       <ReactAriaButton
         className="outline-none transition-transform duration-75 active:scale-75"
         onPress={() => {
-          action();
+          likeNote();
           setIsLiked(!isLiked);
         }}
       >

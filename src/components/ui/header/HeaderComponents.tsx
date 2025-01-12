@@ -17,7 +17,7 @@ import { signOut, useSession } from 'next-auth/react';
 import { LinkAsButton } from '@/components/ui/LinkAsButton';
 import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
-import { DialogEditProfile } from '@/components/profile/DialogEditProfile';
+import { DialogEditProfile } from '@/components/core/profile/DialogEditProfile';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
@@ -27,7 +27,7 @@ export const Menu = () => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
   const toast = useToastStore((state) => state.setToast);
-  const session = useSession();
+  const user = useSession();
 
   return (
     <MenuTrigger isOpen={isMenuOpen}>
@@ -37,18 +37,18 @@ export const Menu = () => {
         iconLeft={
           <Avatar
             imageProps={{
-              src: session.data?.user?.image || '',
+              src: user.data?.user?.image || '',
               alt: '',
             }}
             size="md"
           >
-            {session.data?.user?.name}
+            {user.data?.user?.name}
           </Avatar>
         }
         className="text-lg font-medium 2xl:text-xl"
         onPress={() => setIsMenuOpen(!isMenuOpen)}
       >
-        {session.data?.user?.name}
+        {user.data?.user?.name}
       </Button>
       <Popover
         className="!z-20 w-[var(--trigger-width)] outline-none data-[exiting]:pointer-events-none data-[entering]:pointer-events-auto data-[entering]:animate-menu-open data-[exiting]:animate-menu-closed"
