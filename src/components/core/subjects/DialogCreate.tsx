@@ -2,8 +2,7 @@
 
 // External packages
 import * as React from 'react';
-import { FileTrigger, Form } from 'react-aria-components';
-import { ImageIcon } from '@radix-ui/react-icons';
+import { FileTrigger, Form, Button as AriaButton } from 'react-aria-components';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
@@ -21,9 +20,6 @@ export const DialogCreate: React.FC<{
   const [details, setDetails] = React.useState('');
 
   const [image, setImage] = React.useState<File | null>(null);
-  const imageNameArray = image?.name.split('.');
-
-  console.log(imageNameArray);
 
   const toast = useToastStore((state) => state.setToast);
 
@@ -76,21 +72,17 @@ export const DialogCreate: React.FC<{
           acceptedFileTypes={['.jpg,', '.jpeg', '.png']}
           onSelect={(event) => setImage(event && Array.from(event)[0])}
         >
-          <div className="flex items-center gap-2">
-            <Button
-              className="self-start"
-              variant="outline"
-              colorScheme="black"
-              iconLeft={<ImageIcon className="hidden size-5 md:block" />}
-            >
-              Image(optional)
-            </Button>
-            {imageNameArray && (
-              <p>
-                {imageNameArray[0].slice(0, 5) + '.' + imageNameArray.at(-1)}
-              </p>
-            )}
-          </div>
+          <AriaButton className="outline-none">
+            <Input
+              label="Image (optional)"
+              isMdHorizontal
+              inputProps={{
+                placeholder: 'Enter thumbnail image (optional)',
+                value: image ? image?.name.toString() : '',
+              }}
+              className="text-start"
+            />
+          </AriaButton>
         </FileTrigger>
         <Button className="self-end" type="submit" isDisabled={!subjectName}>
           Add new subject
