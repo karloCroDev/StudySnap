@@ -23,14 +23,42 @@ export const DialogCreate: React.FC<{
 
   const toast = useToastStore((state) => state.setToast);
 
-  const createNote = (e: React.FormEvent<HTMLFormElement>) => {
+  const createSubject = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast({
-      title: `${subjectName} note created`,
-      content: `You have succesfully created ${subjectName}`,
-      variant: 'success',
-    });
+    try {
+      const response = await fetch(
+        'http://localhost:3000/api/core/home/subjects',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ subjectName, details, image }),
+        }
+      );
 
+      if (response.ok) {
+        toast({
+          title: `${subjectName} subject created`,
+          content: `You have succesfully created ${subjectName}`,
+          variant: 'success',
+        });
+      } else if (response.status === 400) {
+        toast({
+          title: 'Missing required fields',
+          content:
+            'Please make sure you have entered all the credentials correctly and try again',
+          variant: 'error',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Uhoh, something went wrong',
+        content: 'Failed to create subject',
+        variant: 'error',
+      });
+    }
     setIsOpen(false);
   };
 
@@ -44,7 +72,7 @@ export const DialogCreate: React.FC<{
         asChild: true,
       }}
     >
-      <Form className="flex flex-col gap-5" onSubmit={createNote}>
+      <Form className="flex flex-col gap-5" onSubmit={createSubject}>
         <Input
           isRequired
           type="text"

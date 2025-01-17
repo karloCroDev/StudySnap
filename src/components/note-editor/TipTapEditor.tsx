@@ -22,7 +22,9 @@ import { useToastStore } from '@/store/useToastStore';
 import { ActionBar } from './ActionBar';
 import { useNavigationGuard } from 'next-navigation-guard';
 
-export const TipTapEditor = () => {
+export const TipTapEditor: React.FC<{
+  noteId: string;
+}> = ({ noteId }) => {
   const toast = useToastStore((state) => state.setToast);
 
   const [isEditing, setIsEditing] = React.useState(false);
@@ -183,3 +185,36 @@ export const TipTapEditor = () => {
     </>
   );
 };
+
+// const [dokument, setDokument] = useState<Dokument | null>(null);
+
+// // Fetch dokument from backend
+// const fetchDokument = async () => {
+//   try {
+//     const response = await fetch(
+//       `http://localhost:3000/api/core/note-editor`,
+//       {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ noteId }),
+//       }
+//     );
+
+//     const data = await response.json();
+//     console.log('Data', data);
+//     if (response.ok) {
+//       setDokument(data);
+//       console.log('Fetched dokument:', data);
+//     } else {
+//       console.error('Failed to fetch dokument:', data);
+//     }
+//   } catch (error) {
+//     console.error('Failed to fetch dokument:', error);
+//   }
+// }; // you need to add request for put
+
+// useEffect(() => {
+//   fetchDokument();
+// }, [noteId]);

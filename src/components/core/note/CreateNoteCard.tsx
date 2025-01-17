@@ -4,9 +4,14 @@ import { DoubleArrowRightIcon, FilePlusIcon } from '@radix-ui/react-icons';
 // Components
 import { DialogCreate } from '@/components/core/note/DialogCreate';
 
-export const CreateNoteCard = () => {
+interface CreateNoteCardProps {
+  subject: string;
+}
+
+export const CreateNoteCard = ({ subject }: CreateNoteCardProps) => {
   return (
-    <DialogCreate>
+    <DialogCreate
+      subjectId={subject}>
       <div className="group flex aspect-square cursor-pointer flex-col rounded-2xl border-2 border-blue-400">
         <div className="flex h-3/4 items-center justify-center border-b border-blue-400">
           <FilePlusIcon className="h-24 w-24 text-blue-900 transition-colors duration-200 group-hover:text-blue-400" />
