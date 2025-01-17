@@ -14,8 +14,9 @@ import { Input } from '@/components/ui/Input';
 import { useToastStore } from '@/store/useToastStore';
 
 export const DialogChangeDetails: React.FC<{
+  id: string;
   children: React.ReactNode;
-}> = ({ children }) => {
+}> = ({ id, children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [subjectName, setSubjectName] = React.useState('');
   const [details, setDetails] = React.useState('');
@@ -24,13 +25,42 @@ export const DialogChangeDetails: React.FC<{
 
   const toast = useToastStore((state) => state.setToast);
 
-  const createNote = (e: React.FormEvent<HTMLFormElement>) => {
+  const updateSubject = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast({
-      title: `Subject created`,
-      content: `You have succesfully created Subject`,
-      variant: 'success',
-    });
+    try {
+      const response = await fetch(
+        'http://localhost:3000/api/core/home/subjects',
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id, subjectName, details }), //image is missing here
+        }
+      );
+
+      if (response.ok) {
+        toast({
+          title: 'Subject updated',
+          content: 'You have succesfully updated your subject',
+          variant: 'success',
+        });
+      } else if (response.status === 400) {
+        toast({
+          title: 'Missing required fields',
+          content:
+            'Please make sure you have entered all the credentials correctly and try again',
+          variant: 'error',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Uhoh, something went wrong',
+        content: 'Failed to update subject',
+        variant: 'error',
+      });
+    }
 
     setIsOpen(false);
   };
@@ -45,7 +75,7 @@ export const DialogChangeDetails: React.FC<{
         children,
       }}
     >
-      <Form className="flex flex-col gap-5" onSubmit={createNote}>
+      <Form className="flex flex-col gap-5" onSubmit={updateSubject}>
         <Input
           type="text"
           label="Subject name"

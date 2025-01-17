@@ -15,7 +15,7 @@ export default async function CoreLayout({
   const session = await getServerSession(authOptions);
 
   // Chnage this to !session, only added this for checking the ui without regisration
-  if (session) {
+  if (!session) {
     redirect('/login');
   }
   return (

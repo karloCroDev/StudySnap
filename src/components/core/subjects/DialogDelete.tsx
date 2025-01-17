@@ -11,18 +11,45 @@ import { Button } from '@/components/ui/Button';
 import { useToastStore } from '@/store/useToastStore';
 
 export const DialogDelete: React.FC<{
+  id: string;
   children: React.ReactNode;
-}> = ({ children }) => {
+}> = ({ id, children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const toast = useToastStore((state) => state.setToast);
+  const deleteDialog = async() => {
 
-  const deleteDialog = () => {
-    toast({
-      title: 'Subject delted',
-      content: 'You have succesfully delete your subject',
-      variant: 'success',
-    });
+    try {
+      const response = await fetch('http://localhost:3000/api/core/home/subjects', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id }),
+      });
 
+      if (response.ok) {
+        toast({
+          title: 'Subject delted',
+          content: 'You have succesfully delete your subject',
+          variant: 'success',
+        });
+      }
+      else if (response.status === 400) {
+        toast({
+          title: 'Missing required fields',
+          content: 'Please make sure you have entered all the credentials correctly and try again',
+          variant: 'error',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Uhoh, something went wrong',
+        content:
+          'Failed to delete subject',
+        variant: 'error',
+      });
+    }
     setIsOpen(false);
   };
   return (

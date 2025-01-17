@@ -1,13 +1,8 @@
-// Etxternal packages
+// External packages
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
-
-// Models
-import { User } from '@/models/user';
-
-// Libs
-import { connectMongoDB } from '@/lib/db';
+import { GetUserByEmail } from '../../../../database/pool';
 
 export const authOptions = {
   providers: [
@@ -17,20 +12,23 @@ export const authOptions = {
 
       async authorize(credentials: any) {
         const { email, password } = credentials;
-
         try {
-          await connectMongoDB();
-          const user = await User.findOne({ email });
-          console.log(user);
+          if (!email || !password)
+            return null;
+
+          const user = await GetUserByEmail(email);
           if (!user) {
-            return;
+            return null;
           }
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
           if (passwordsMatch) return user;
+          else return null;
+
         } catch (error) {
           console.log('Error: ', error);
+          return null;
         }
       },
     }),
@@ -40,23 +38,24 @@ export const authOptions = {
       if (session?.user) {
         session.user.id = token.sub;
         session.user.image = token.image;
-        session.user.name = token.username;
+        session.user.name = token.name;
+        
       }
       return session;
     },
     jwt: async ({ user, token }: any) => {
       if (user) {
         token.uid = user.id;
-        token.image = user.image;
+        token.image = user.profile_picture;
         token.name = user.username;
       }
       return token;
     },
   },
   session: {
-    strategy: 'jwt' as 'jwt', // For auth options this must be seted
+    strategy: 'jwt' as 'jwt',
   },
-
+  //add token expiry date and refresh
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: '/',

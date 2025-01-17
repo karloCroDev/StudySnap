@@ -1,16 +1,40 @@
 // External packages
 import Image from 'next/image';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { CreateSubjectCard } from '@/components/core/subjects/CreateSubjectCard';
 import { SubjectCard } from '@/components/core/subjects/SubjectCard';
-
+import { Subject } from '@/models/subject';
 // Images
 import ImageExample from '@/public/images/login-image.png';
 
 export default async function Subjects() {
+
+  const session = await getServerSession(authOptions);
+
+  let subjects: Array<Subject> = [];
+
+  try {//Todo make this POST request
+    const response = await fetch(`http://localhost:3000/api/core/home/subjects?userId=${session.user.id}`, {
+      method: 'Get',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.accessToken}`,
+      },
+    });
+
+    const data = await response.json();
+    subjects = Array.isArray(data) ? data : [];
+
+  } catch (error) {
+    console.error(error);
+  }
+
+
   return (
     <>
       <SearchableHeader title="Subjects" />
@@ -20,36 +44,28 @@ export default async function Subjects() {
             <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
               <CreateSubjectCard />
             </LayoutColumn>
-            {[...Array(7)].map((_, i) => {
-              if ((i + 1) % 2) {
-                return (
-                  <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
-                    <SubjectCard
-                      title="Biology"
-                      description="Lorem ipsum dolorem"
-                      key={i}
-                    />
-                  </LayoutColumn>
-                );
-              } else {
-                return (
-                  <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
-                    <SubjectCard
-                      title="Biology"
-                      image={
-                        <div className="absolute left-0 top-0 -z-10 h-full w-full">
-                          <Image
-                            src={ImageExample}
-                            alt="Informative image about subject"
-                            className="h-full object-cover brightness-50"
-                          />
-                        </div>
-                      }
-                    />
-                  </LayoutColumn>
-                );
-              }
-            })}
+            {subjects.map((subject, i) => {
+              return (
+                <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
+                  <SubjectCard
+                    id={subject.id}
+                    title={subject.name}
+                    description={subject.details}
+                    image={
+                      <div className="absolute left-0 top-0 -z-10 h-full w-full">
+                        <Image
+                          src={ImageExample}//Todo make image visible
+                          alt="Informative image about subject"
+                          className="h-full object-cover brightness-50"
+                        />
+                      </div>
+                    }
+                    key={i}
+                  />
+                </LayoutColumn>
+              );
+            }
+            )}
           </LayoutRow>
         </LayoutColumn>
         <LayoutColumn lg={8}></LayoutColumn>

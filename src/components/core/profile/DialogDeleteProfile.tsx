@@ -1,5 +1,4 @@
 'use client';
-
 // External packages
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
@@ -11,12 +10,52 @@ import { Button } from '@/components/ui/Button';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
-export const DialogDeleteProfile = () => {
+
+export const DialogDeleteProfile : React.FC<{
+  userId: string;
+}> = ({ userId }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const toast = useToastStore((state) => state.setToast);
 
   const router = useRouter();
+
+  const deleteDialog = async () => {
+
+    try {
+      const response = await fetch('http://localhost:3000/api/core/public-profile', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (response.ok) {
+        toast({
+          title: 'Profile deleted',
+          content: 'You have succesfully deleted your profile',
+          variant: 'success',
+        });
+      }
+      else if (response.status === 400) {
+        toast({
+          title: 'Missing required fields',
+          content: 'Please make sure you have entered all the credentials correctly and try again',
+          variant: 'error',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Uhoh, something went wrong',
+        content:
+          'Failed to delete profile',
+        variant: 'error',
+      });
+    }
+    setIsOpen(false);
+  };
 
   return (
     <Dialog
@@ -29,7 +68,7 @@ export const DialogDeleteProfile = () => {
           <Button
             variant="outline"
             colorScheme="red"
-            onPressStart={() => setIsOpen(true)}
+            onPressStart={() => {deleteDialog(); setIsOpen(true)}}
           >
             Delete profile
           </Button>
