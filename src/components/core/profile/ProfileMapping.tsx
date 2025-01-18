@@ -27,6 +27,9 @@ export const DiscoverMapping: React.FC<{
         return (
           <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
             <NoteCard
+              liked
+              noteId=""
+              userId=""
               title="Biology"
               description="Lorem ipsum dolorem"
               likes={100}

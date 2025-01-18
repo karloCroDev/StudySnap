@@ -20,6 +20,7 @@ export const DialogEditProfile: React.FC<{
   children: React.ReactNode;
 }> = ({ setIsDialogOpen, children }) => {
   const user = useSession();
+
   const toast = useToastStore((state) => state.setToast);
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -33,6 +34,17 @@ export const DialogEditProfile: React.FC<{
 
   const saveChanges = async () => {
     try {
+      const payload: Record<string, any> = {
+        userId: user.data?.user.id,
+        // Delete this under when your done (only setted this now to work)
+        email: user.data?.user.email,
+        password: '12345678',
+        profile_picture: '',
+      };
+      if (username) payload.username = username;
+      if (password) payload.password = password;
+      if (image) payload.profile_picture = ''; // We need to handle upload of images
+      console.log(payload);
       const response = await fetch(
         'http://localhost:3000/api/core/public-profile',
         {
@@ -40,18 +52,20 @@ export const DialogEditProfile: React.FC<{
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            //username, email, password, profile_picture, id
-          }), //Todo provide me with this informaiton, place where DialogEditProfile is called has a wrong userId (two places)
+          // I wrote the explaination in public-profile api
+          body: JSON.stringify(payload),
         }
       );
-
       if (response.ok) {
+        // if (image) await user.update({ image: '' }); // We need to handle upload of images
+        if (username) await user.update({ name: username });
+
         toast({
           title: 'Profile updated',
           content: 'You have succesfully updated your profile',
           variant: 'success',
         });
+        // Find a better way, this works for now
       } else if (response.status === 400) {
         toast({
           title: 'Missing required fields',
@@ -67,23 +81,9 @@ export const DialogEditProfile: React.FC<{
         content: 'Failed to update profile',
         variant: 'error',
       });
+    } finally {
+      setIsOpen(false);
     }
-
-    toast({
-      // title: 'Deleted',
-      // content: 'You have succesfully delete your note',
-      // variant: 'success',
-      title: 'Profile updated!',
-      content:
-        'You have successfuly updated your profile, please refresh to see your changes',
-      variant: 'success',
-    });
-    setIsOpen(false);
-    // toast({
-    //   title: 'Oooposies',
-    //   content: 'Something went wrong, please try again ',
-    //   variant: 'error',
-    // });
   };
   return (
     <Dialog
@@ -146,8 +146,13 @@ export const DialogEditProfile: React.FC<{
         />
 
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-          <DialogDeleteProfile userId="" />
-          <Button onPress={saveChanges}>Save changes</Button>
+          <DialogDeleteProfile />
+          <Button
+            onPress={saveChanges}
+            isDisabled={!username && !password && !image}
+          >
+            Save changes
+          </Button>
         </div>
       </Form>
     </Dialog>
