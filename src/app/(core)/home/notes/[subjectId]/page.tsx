@@ -8,10 +8,30 @@ import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { NoteCard } from '@/components/core/NoteCard';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { CreateNoteCard } from '@/components/core/note/CreateNoteCard';
+import { NoteMapping } from '@/components/core/note/NoteMapping';
 
-import { Note } from '@/models/note';
 // Images
 import ImageExample from '@/public/images/login-image.png';
+
+// Models (types)
+import { Note } from '@/models/note';
+
+async function getNotes({ session, subjectId }: any) {
+  const response = await fetch(
+    `http://localhost:3000/api/core/home/notes?subjectId=${subjectId}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session.accessToken}`, // I think this is not neccessary, will fix it after I am done with everything
+      },
+    }
+  );
+
+  if (!response.ok) throw new Error('Failed to fetch data');
+
+  return await response.json();
+}
 
 export default async function Notes({
   params,
@@ -20,27 +40,8 @@ export default async function Notes({
 }) {
   const { subjectId } = params;
   const session = await getServerSession(authOptions);
-
-  let notes: Array<Note> = [];
-
-  try {
-    const response = await fetch(
-      `http://localhost:3000/api/core/home/notes?subjectId=${subjectId}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session.accessToken}`,
-        },
-      }
-    );
-
-    const data = await response.json();
-    notes = Array.isArray(data) ? data : [];
-  } catch (error) {
-    console.error(error);
-  }
-  let userId = await session.user.id;
+  const userId = session.user.id;
+  const notes: Note[] = await getNotes({ subjectId, session });
 
   return (
     <>
@@ -51,23 +52,9 @@ export default async function Notes({
             <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
               <CreateNoteCard subject={subjectId} />
             </LayoutColumn>
-            {notes.map((note, i) => (
-              <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
-                <NoteCard
-                  noteId={note.id}
-                  title={note.title}
-                  description={note.details}
-                  likes={note.likes}
-                  author={note.creator_name}
-                  liked={note.liked}
-                  userId={userId}
-                  key={i}
-                />
-              </LayoutColumn>
-            ))}
+            <NoteMapping notes={notes} userId={userId} />
           </LayoutRow>
         </LayoutColumn>
-        <LayoutColumn lg={8}></LayoutColumn>
       </LayoutRow>
     </>
   );

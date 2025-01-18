@@ -28,19 +28,19 @@ export const NoteCard: React.FC<{
   liked,
   userId,
 }) => {
-  const likeAction = async () => {
-    'use server';
-    try {
-      await fetch('http://localhost:3000/api/core/home/notes/like', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ noteId: noteId, userId: userId, exists: liked }), //image is missing here
-      });
-    } catch (error) {
-      console.error(error);
-    }
+  const likeAction = () => {
+    // 'use server';
+    // try {
+    //   await fetch('http://localhost:3000/api/core/home/notes/like', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ noteId: noteId, userId: userId, exists: liked }), //image is missing here
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
   return (
     <div className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400 text-blue-900">

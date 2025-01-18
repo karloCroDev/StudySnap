@@ -7,33 +7,33 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { CreateSubjectCard } from '@/components/core/subjects/CreateSubjectCard';
-import { SubjectCard } from '@/components/core/subjects/SubjectCard';
-import { Subject } from '@/models/subject';
+import { SubjectMapping } from '@/components/core/subjects/SubjectMapping';
+
 // Images
 import ImageExample from '@/public/images/login-image.png';
 
-export default async function Subjects() {
+// Models (types)
+import { Subject } from '@/models/subject';
 
-  const session = await getServerSession(authOptions);
-
-  let subjects: Array<Subject> = [];
-
-  try {//Todo make this POST request
-    const response = await fetch(`http://localhost:3000/api/core/home/subjects?userId=${session.user.id}`, {
-      method: 'Get',
+async function getSubjects(session: any) {
+  const response = await fetch(
+    `http://localhost:3000/api/core/home/subjects?userId=${session.user.id}`,
+    {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${session.accessToken}`,
+        Authorization: `Bearer ${session.accessToken}`,
       },
-    });
+    }
+  );
+  if (!response.ok) throw new Error('Failed to fetch data');
 
-    const data = await response.json();
-    subjects = Array.isArray(data) ? data : [];
+  return await response.json();
+}
 
-  } catch (error) {
-    console.error(error);
-  }
-
+export default async function Subjects() {
+  const session = await getServerSession(authOptions);
+  const subjects: Subject[] = await getSubjects(session);
 
   return (
     <>
@@ -44,31 +44,9 @@ export default async function Subjects() {
             <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
               <CreateSubjectCard />
             </LayoutColumn>
-            {subjects.map((subject, i) => {
-              return (
-                <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
-                  <SubjectCard
-                    id={subject.id}
-                    title={subject.name}
-                    description={subject.details}
-                    image={
-                      <div className="absolute left-0 top-0 -z-10 h-full w-full">
-                        <Image
-                          src={ImageExample}//Todo make image visible
-                          alt="Informative image about subject"
-                          className="h-full object-cover brightness-50"
-                        />
-                      </div>
-                    }
-                    key={i}
-                  />
-                </LayoutColumn>
-              );
-            }
-            )}
+            <SubjectMapping subjects={subjects} />
           </LayoutRow>
         </LayoutColumn>
-        <LayoutColumn lg={8}></LayoutColumn>
       </LayoutRow>
     </>
   );

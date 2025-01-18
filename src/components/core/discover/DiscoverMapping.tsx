@@ -8,38 +8,36 @@ import { useGeneralInfo } from '@/store/useGeneralInfo';
 import { LayoutColumn } from '@/components/ui/Layout';
 import { NoteCard } from '@/components/core/NoteCard';
 
+// Models (types)
+import { Note } from '@/models/note';
+
 // Images
 import ImageExample from '@/public/images/login-image.png';
 
 export const DiscoverMapping: React.FC<{
-  data?: {}; // Passing the fetched data to this object
-}> = ({ data }) => {
+  publicNotes: Note[];
+  userId: string;
+}> = ({ publicNotes, userId }) => {
   const search = useGeneralInfo((state) => state.search);
-  console.log(search);
-  return (
-    <>
-      {[...Array(8)].map((_, i) => {
-        //    if (
-        //      note.title === search ||
-        //      note.desciption === search ||
-        //      note.author === search
-        //    )
-        return (
-          <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
-            <NoteCard
-              liked
-              noteId=""
-              userId=""
-              title="Biology"
-              description="Lorem ipsum dolorem"
-              likes={100}
-              author="Ivan Horvat"
-              userImage={ImageExample.src}
-              key={i}
-            />
-          </LayoutColumn>
-        );
-      })}
-    </>
-  );
+  return publicNotes
+    .filter(
+      (note) =>
+        note.title.toLowerCase().includes(search) ||
+        note.creator_name.toLowerCase().includes(search) ||
+        note.details.toLowerCase().includes(search)
+    )
+    .map((note) => (
+      <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
+        <NoteCard
+          noteId={note.id}
+          title={note.title}
+          description={note.details}
+          likes={note.likes}
+          author={note.creator_name}
+          liked={note.liked}
+          userId={userId}
+          key={note.id}
+        />
+      </LayoutColumn>
+    ));
 };

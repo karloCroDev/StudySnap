@@ -29,6 +29,10 @@ export const DialogEditProfile: React.FC<{
   }, [isOpen]);
 
   const [image, setImage] = React.useState<File | null>(null);
+  const clientImage = React.useMemo(
+    () => image && URL.createObjectURL(image),
+    [image]
+  );
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
@@ -105,10 +109,7 @@ export const DialogEditProfile: React.FC<{
               className="cursor-pointer"
               size="lg"
               imageProps={{
-                src:
-                  (image && URL.createObjectURL(image)) ||
-                  user.data?.user?.image ||
-                  '',
+                src: clientImage || user.data?.user?.image || '',
                 alt: 'Your pfp',
               }}
             >

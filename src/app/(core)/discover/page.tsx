@@ -1,37 +1,32 @@
 // External packages
-import Image from 'next/image';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
-import { DiscoverMapping } from '@/components/core/discover/DiscoverMapping';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
+import { DiscoverMapping } from '@/components/core/discover/DiscoverMapping';
+
+// Models (types)
 import { Note } from '@/models/note';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { NoteCard } from '@/components/core/NoteCard';
+
+async function getPublicNotes(userId: string) {
+  const response = await fetch(`http://localhost:3000/api/core/discover`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ userId }),
+  });
+  if (!response.ok) throw new Error('Failed to fetch data');
+
+  return await response.json();
+}
 
 export default async function Disover() {
-  let notes: Array<Note> = [];
-
   const session = await getServerSession(authOptions);
-  const userId = await session.user.id;
-
-  try {
-    const response = await fetch(`http://localhost:3000/api/core/discover`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId }),
-    });
-    let data: any = null;
-    if (response.ok) {
-      data = await response.json();
-    }
-    notes = Array.isArray(data) ? data : [];
-  } catch (error) {
-    console.error(error);
-  }
+  const userId: string = session.user.id;
+  const publicNotes: Note[] = await getPublicNotes(userId);
 
   return (
     //Ja mogu brisati tuđe noteove: Ne, to sam samo mapirao samo da se nesto prikaze (bez api-ja) - sada napravim  ???
@@ -40,20 +35,7 @@ export default async function Disover() {
       <LayoutRow className="mt-8 animate-card-initial-apperance justify-center xl:mt-12">
         <LayoutColumn xs={11} lg={10}>
           <LayoutRow className="sm:-mr-4">
-            {notes.map((note, i) => (
-              <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
-                <NoteCard
-                  noteId={note.id}
-                  title={note.title}
-                  description={note.details}
-                  likes={note.likes}
-                  author={note.creator_name}
-                  liked={note.liked}
-                  userId={userId}
-                  key={i}
-                />
-              </LayoutColumn>
-            ))}
+            <DiscoverMapping publicNotes={publicNotes} userId="" />
           </LayoutRow>
         </LayoutColumn>
       </LayoutRow>
