@@ -1,23 +1,3 @@
-/*
-1) Install mysql on your PC (and workbench if you prefer)
-2) Create user and connection to your base
-3) Execute this file in mysqlq to create database
-4) Create file Secrets.ts in src directory and paste this:
-
-
-import { PoolOptions } from "mysql2/promise";
-
-export let databaseConnectionObject: PoolOptions = {
-    host: 'localhost',
-    port: 3306,
-    user: "--enter username you created--",
-    password: "--enter password for that user--",
-    database: "studysnap",
-}
-
-*/
-
-
 CREATE DATABASE studysnap;
 
 CREATE TABLE IF NOT EXISTS `user` (

@@ -4,10 +4,9 @@ import { getToken } from 'next-auth/jwt';
 import bcrypt from 'bcryptjs';
 import { GetNotesByUserId } from '@/database/pool';
 // Models
-import  {User, UserClass}  from '@/models/user';
+import { User, UserClass } from '@/models/user';
 
 const secret = process.env.NEXTAUTH_SECRET;
-
 
 export async function POST(req: Request) {
   try {
@@ -28,15 +27,30 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
   try {
-      const { username, email, password, profile_picture, userId } = await req.json();
+    // Luka:
 
-    if (!username || !password || !email || !userId) {
-      return NextResponse.json('Insufficient data provided', { status: 200 });
+    // Make this PATCH request, because we don't upadate everything, and if resaurce is missing e.g. password it is getting updated?
+    // Email is not needed
+    const { username, email, password, profile_picture, userId } =
+      await req.json();
+
+    // Chnaged with and cloases (&&) instead of inital ors(||), and set status to 400 (Feel free to remove this, because I also check this on frontend)
+    // See how to upload first then send image
+
+    if (!username && !password && !email && !userId && profile_picture) {
+      return NextResponse.json('Insufficient data provided', { status: 400 });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await UserClass.Update(username, email, hashedPassword, profile_picture, userId);
+    // You need to make this fields optional, User don't want to update all fields, (I need to update only one or two fields ussually ).
+    await UserClass.Update(
+      username,
+      email,
+      hashedPassword,
+      profile_picture, // Chnages this to camel case
+      userId
+    );
 
     return NextResponse.json('User updated', { status: 201 });
   } catch (error) {
@@ -46,23 +60,22 @@ export async function PUT(req: Request) {
 }
 
 export async function DELETE(req: NextRequest) {
-    try {
-        // Extract and verify the JWT
-        const token = await getToken({ req, secret });
-        if (!token) {
-            return NextResponse.json('Unauthorized', { status: 401 });
-        }
-
-        const { id } = await req.json();
-        if (!id) {
-            return NextResponse.json('Missing required fields', { status: 400 });
-        }
-
-        await UserClass.Delete(id);
-        return NextResponse.json('Subject deleted successfully', { status: 200 });
-
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json('Failed to delete subject', { status: 500 });
+  try {
+    // Extract and verify the JWT
+    const token = await getToken({ req, secret });
+    if (!token) {
+      return NextResponse.json('Unauthorized', { status: 401 });
     }
+
+    const { id } = await req.json();
+    if (!id) {
+      return NextResponse.json('Missing required fields', { status: 400 });
+    }
+
+    await UserClass.Delete(id);
+    return NextResponse.json('Subject deleted successfully', { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json('Failed to delete subject', { status: 500 });
+  }
 }

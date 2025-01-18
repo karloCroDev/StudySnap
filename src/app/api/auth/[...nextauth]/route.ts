@@ -13,8 +13,7 @@ export const authOptions = {
       async authorize(credentials: any) {
         const { email, password } = credentials;
         try {
-          if (!email || !password)
-            return null;
+          if (!email || !password) return null;
 
           const user = await GetUserByEmail(email);
           if (!user) {
@@ -25,7 +24,6 @@ export const authOptions = {
 
           if (passwordsMatch) return user;
           else return null;
-
         } catch (error) {
           console.log('Error: ', error);
           return null;
@@ -34,22 +32,25 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    session: async ({ session, token }: any) => {
-      if (session?.user) {
-        session.user.id = token.sub;
-        session.user.image = token.image;
-        session.user.name = token.name;
-        
+    jwt: async ({ token, user, session, trigger }: any) => {
+      if (trigger === 'update' && session?.name) {
+        token.name = session.name;
       }
-      return session;
-    },
-    jwt: async ({ user, token }: any) => {
       if (user) {
         token.uid = user.id;
         token.image = user.profile_picture;
         token.name = user.username;
       }
       return token;
+    },
+
+    session: async ({ session, token }: any) => {
+      if (session?.user) {
+        session.user.id = token.sub;
+        session.user.image = token.image;
+        session.user.name = token.name;
+      }
+      return session;
     },
   },
   session: {

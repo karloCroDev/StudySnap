@@ -74,6 +74,7 @@ export const LoginForm = () => {
         label="Password"
         size="lg"
         type="password"
+        minLength={8}
         inputProps={{
           placeholder: '********',
         }}

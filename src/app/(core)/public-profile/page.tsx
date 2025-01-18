@@ -13,6 +13,7 @@ import { Note } from '@/models/note';
 export default async function PublicProfile() {
   const session = await getServerSession(authOptions);
   const userId = await session.user.id;
+  console.log(userId);
   let notes: Array<Note> = [];
   try {
     const response = await fetch(

@@ -1,13 +1,7 @@
 // External packages
-import {
-  HeartIcon,
-  HeartFilledIcon,
-  TrashIcon,
-  Pencil1Icon,
-} from '@radix-ui/react-icons';
+import { TrashIcon, Pencil1Icon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { twJoin } from 'tailwind-merge';
-import { StaticImageData } from 'next/image';
 
 // Components
 import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';

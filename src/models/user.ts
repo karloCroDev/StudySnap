@@ -2,19 +2,22 @@ import { pool } from '../database/pool';
 
 //Todo add cascade delete
 export interface User {
-  id: string,
-  date_created: Date,
-  date_modified: Date,
-  username: string,
-  password: string,
-  email: string,
-  profile_picture: string | null
+  id: string;
+  date_created: Date;
+  date_modified: Date;
+  username: string;
+  password: string;
+  email: string;
+  profile_picture: string | null;
 }
 
-
 export class UserClass {
-
-  static async Insert(username: string, email: string, hashedPassword: string, profile_picture: string | null): Promise<void> {
+  static async Insert(
+    username: string,
+    email: string,
+    hashedPassword: string,
+    profile_picture: string | null
+  ): Promise<void> {
     try {
       const [result]: any = await pool.execute(
         `
@@ -28,7 +31,13 @@ export class UserClass {
     }
   }
 
-  static async Update(username: string, email: string, hashedPassword: string, profile_picture: string, id: string): Promise<void> {
+  static async Update(
+    username: string,
+    email: string,
+    hashedPassword: string,
+    profile_picture: string,
+    id: string
+  ): Promise<void> {
     try {
       await pool.execute(
         `
