@@ -16,7 +16,7 @@ async function getPublicNotes(userId: string) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ userId }),
+    body: JSON.stringify({ userId }), // It would be niice if you make this with params
   });
   if (!response.ok) throw new Error('Failed to fetch data');
 

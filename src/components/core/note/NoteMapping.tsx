@@ -8,9 +8,6 @@ import { useGeneralInfo } from '@/store/useGeneralInfo';
 import { LayoutColumn } from '@/components/ui/Layout';
 import { NoteCard } from '@/components/core/NoteCard';
 
-// Images
-import ImageExample from '@/public/images/login-image.png';
-
 // Models (types)
 import { Note } from '@/models/note';
 

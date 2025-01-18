@@ -22,6 +22,9 @@ export const SearchableHeader: React.FC<{
   const infoHeader = React.useRef<HTMLDivElement | null>(null);
 
   const setSearch = useGeneralInfo((state) => state.setSerach);
+  React.useEffect(() => {
+    setSearch('');
+  }, []);
 
   // Mobile only
   const toggleSearch = () => {
