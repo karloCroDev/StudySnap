@@ -115,7 +115,7 @@ export const Drawer = () => {
           <li>
             <RadixDialog.Close asChild>
               <LinkAsButton
-                href="/public-profile"
+                href={`/public-profile/${user.data?.user.id}`}
                 colorScheme="white"
                 iconLeft={<PersonIcon className="size-6" />}
                 className="justify-start"

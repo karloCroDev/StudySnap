@@ -49,17 +49,14 @@ export const DialogEditProfile: React.FC<{
       if (password) payload.password = password;
       if (image) payload.profile_picture = ''; // We need to handle upload of images
       console.log(payload);
-      const response = await fetch(
-        'http://localhost:3000/api/core/public-profile',
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          // I wrote the explaination in public-profile api
-          body: JSON.stringify(payload),
-        }
-      );
+      const response = await fetch('http://localhost:3000/api/core/', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // I wrote the explaination in public-profile api
+        body: JSON.stringify(payload),
+      });
       if (response.ok) {
         // if (image) await user.update({ image: '' }); // We need to handle upload of images
         if (username) await user.update({ name: username });

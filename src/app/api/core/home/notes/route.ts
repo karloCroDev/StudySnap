@@ -63,7 +63,7 @@ export async function DELETE(req: NextRequest) {
 }
 
 // Luka:
-//  This needs to be PATCH, because user doesn't update all the fileds (give them possiblity to update one field, two filed etc.)
+//  This needs to be PATCH, because user doesn't update all the fileds (give them possiblity to update one field, two field etc.)
 export async function PUT(req: NextRequest) {
   try {
     const { noteName, details, isPublic, noteId } = await req.json();

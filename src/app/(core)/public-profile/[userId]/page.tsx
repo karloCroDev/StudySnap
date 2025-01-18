@@ -27,9 +27,15 @@ async function getPublicProfileNotes(userId: string) {
   return await response.json();
 }
 
-export default async function PublicProfile() {
-  const session = await getServerSession(authOptions);
-  const userId: string = await session.user.id;
+export default async function PublicProfile({
+  params, // Params for accessing the userId
+}: {
+  params: { userId: string };
+}) {
+  // const session = await getServerSession(authOptions);
+  // const userId: string = await session.user.id; // Handle immediate changes on client if user updates his data
+
+  const { userId } = params;
   const notes: Note[] = await getPublicProfileNotes(userId);
 
   return (
@@ -37,16 +43,16 @@ export default async function PublicProfile() {
       <div className="mb-12 animate-public-profile-initial-apperance lg:mb-16">
         <Avatar
           imageProps={{
-            src: session?.user.image,
+            // src: session?.user.image,
             alt: '',
           }}
           size="xl"
           className="mx-auto mb-8"
         >
-          {session?.user.name}
+          {/* {session?.user.name} */}
         </Avatar>
         <h1 className="mb-12 text-center text-4xl font-semibold lg:mb-16">
-          {session?.user.name}
+          {/* {session?.user.name} */}
         </h1>
       </div>
       <SearchableHeader title="All notes" />
