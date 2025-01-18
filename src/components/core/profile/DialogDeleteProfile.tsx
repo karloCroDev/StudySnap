@@ -33,13 +33,17 @@ export const DialogDeleteProfile = () => {
         }
       );
 
+      const data = await response.json();
+      console.log(data);
+
       if (response.ok) {
+        await signOut({ redirect: false });
+        router.push('/login');
         toast({
           title: 'Profile deleted',
           content: 'You have succesfully deleted your profile',
           variant: 'success',
         });
-        await signOut();
       } else if (response.status === 400) {
         toast({
           title: 'Uhoh',
@@ -54,8 +58,9 @@ export const DialogDeleteProfile = () => {
         content: 'Failed to delete profile',
         variant: 'error',
       });
+    } finally {
+      setIsOpen(false);
     }
-    setIsOpen(false);
   };
 
   return (

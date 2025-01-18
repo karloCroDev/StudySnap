@@ -8,8 +8,6 @@ import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { Note } from '@/models/note';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-// Images
-import ImageExample from '@/public/images/login-image.png';
 import { NoteCard } from '@/components/core/NoteCard';
 
 export default async function Disover() {

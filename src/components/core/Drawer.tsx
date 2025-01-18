@@ -11,7 +11,6 @@ import {
   FrameIcon,
   ExitIcon,
 } from '@radix-ui/react-icons';
-import Image from 'next/image';
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -28,9 +27,27 @@ export const Drawer = () => {
   const pathname = usePathname();
   const router = useRouter();
 
+  const user = useSession();
   const toast = useToastStore((state) => state.setToast);
 
-  const user = useSession();
+  const logOut = async () => {
+    try {
+      toast({
+        title: 'Signed out',
+        content: 'Nooo, please come back 😢',
+        variant: 'success',
+      });
+      await signOut({ redirect: false }); // Refreshes the page (with redirect:true)
+      router.push('/login');
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Signed out',
+        content: 'Nooo, please come back 😢',
+        variant: 'error',
+      });
+    }
+  };
 
   return (
     <RadixDialog.Root>
@@ -86,14 +103,13 @@ export const Drawer = () => {
         <ul className="mt-6 flex flex-col gap-4">
           <li>
             <DialogEditProfile>
-              <LinkAsButton
-                href="/discover"
+              <Button
                 colorScheme="white"
                 iconLeft={<GearIcon className="size-6" />}
-                className="justify-start"
+                className="w-full justify-start"
               >
                 Edit profile
-              </LinkAsButton>
+              </Button>
             </DialogEditProfile>
           </li>
           <li>
@@ -115,7 +131,7 @@ export const Drawer = () => {
                 size="lg"
                 iconLeft={<ExitIcon className="size-6" />}
                 className="w-full justify-start bg-red-400 text-gray-100"
-                onPress={() => signOut()}
+                onPress={logOut}
               >
                 Log out
               </Button>
