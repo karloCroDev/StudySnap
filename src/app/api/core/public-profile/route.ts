@@ -10,8 +10,11 @@ import { UserClass } from '@/models/user';
 const secret = process.env.NEXTAUTH_SECRET;
 
 // Luka:
-// I need this for every user, and to only display the public notes of them. I hope this is not too complicated to make (intead of me fetching on frontend)
-// It would be nice if you can make it get with params
+// This works that when you click on the user inside the note that you can see all his public notes, and this page is also for own public profile
+// I need this for every user, and to only display the public notes of them. I hope this is not too complicated to make (intead of me fetching on frontend and then filtering)
+// It would be nice if you can make it get with params instead of post request
+// Btw I also need  username and profile picture in api when I get data from the user
+
 export async function POST(req: Request) {
   try {
     const { userId } = await req.json();

@@ -60,7 +60,7 @@ export const NoteCard: React.FC<{
             </Avatar>
 
             <Link
-              href="/public-profile"
+              href={`/public-profile/${userId}`}
               className="font-medium underline-offset-2 hover:underline"
             >
               {author}

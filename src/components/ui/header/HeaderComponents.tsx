@@ -94,7 +94,10 @@ export const Menu = () => {
             className="cursor-pointer border-b border-gray-900 bg-gray-100 p-2 outline-none hover:brightness-90"
             onAction={() => setIsMenuOpen(false)}
           >
-            <Link href="/public-profile" className="flex items-center gap-2">
+            <Link
+              href={`/public-profile/${user.data?.user.id}`}
+              className="flex items-center gap-2"
+            >
               <PersonIcon /> Public profile
             </Link>
           </MenuItem>

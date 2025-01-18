@@ -1,6 +1,7 @@
 // External packages
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+
 // Models
 import { GetPublicNotes } from '@/database/pool';
 
@@ -8,7 +9,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 
 export async function POST(req: NextRequest) {
   // Luka:
-  // This would be awesome if you make it with params
+  // Why does this need user.id I don't get it. Provide me with userId for each note (author --> then his id)
   try {
     const { userId } = await req.json();
 
