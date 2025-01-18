@@ -11,34 +11,36 @@ import { NoteCard } from '@/components/core/NoteCard';
 // Images
 import ImageExample from '@/public/images/login-image.png';
 
-export const DiscoverMapping: React.FC<{
-  data?: {}; // Passing the fetched data to this object
-}> = ({ data }) => {
+// Models (types)
+import { Note } from '@/models/note';
+
+export const NoteMapping: React.FC<{
+  notes: Note[];
+  userId: string;
+}> = ({ notes, userId }) => {
   const search = useGeneralInfo((state) => state.search);
-  console.log(search);
-  return (
-    <>
-      {[...Array(8)].map((_, i) => {
-        //    if (
-        //      note.title === search ||
-        //      note.desciption === search ||
-        //      note.author === search
-        //    )
-        return (
-          <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
-            <NoteCard
-              title="Biology"
-              description="Lorem ipsum dolorem"
-              likes={100}
-              author="Ivan Horvat"
-              userImage={ImageExample.src}
-              key={i}
-            />
-          </LayoutColumn>
-        );
-      })}
-    </>
-  );
+
+  return notes
+    .filter(
+      (note) =>
+        note.title.toLowerCase().includes(search) ||
+        note.creator_name.toLowerCase().includes(search) ||
+        note.details.toLowerCase().includes(search)
+    )
+    .map((note) => (
+      <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
+        <NoteCard
+          noteId={note.id}
+          title={note.title}
+          description={note.details}
+          likes={note.likes}
+          author={note.creator_name}
+          liked={note.liked}
+          userId={userId}
+          key={note.id}
+        />
+      </LayoutColumn>
+    ));
 };
 
 // NOT IN USE, import it in page when I get data

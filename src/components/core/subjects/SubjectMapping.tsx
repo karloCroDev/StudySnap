@@ -2,43 +2,51 @@
 
 // External packages
 import * as React from 'react';
+import Image from 'next/image';
+
+// Components
+import { LayoutColumn } from '@/components/ui/Layout';
+import { SubjectCard } from '@/components/core/subjects/SubjectCard';
 
 // Store
 import { useGeneralInfo } from '@/store/useGeneralInfo';
-import { LayoutColumn } from '@/components/ui/Layout';
-import { NoteCard } from '@/components/core/NoteCard';
 
 // Images
 import ImageExample from '@/public/images/login-image.png';
 
-export const DiscoverMapping: React.FC<{
-  data?: {}; // Passing the fetched data to this object
-}> = ({ data }) => {
+// Models (types)
+import { Subject } from '@/models/subject';
+
+export const SubjectMapping: React.FC<{
+  subjects: Subject[]; // Passing the fetched data to this object
+}> = ({ subjects }) => {
   const search = useGeneralInfo((state) => state.search);
-  console.log(search);
-  return (
-    <>
-      {[...Array(8)].map((_, i) => {
-        //    if (
-        //      note.title === search ||
-        //      note.desciption === search ||
-        //      note.author === search
-        //    )
-        return (
-          <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
-            <NoteCard
-              title="Biology"
-              description="Lorem ipsum dolorem"
-              likes={100}
-              author="Ivan Horvat"
-              userImage={ImageExample.src}
-              key={i}
-            />
-          </LayoutColumn>
-        );
-      })}
-    </>
-  );
+
+  return subjects
+    .filter(
+      (subject) =>
+        subject.name.toLowerCase().includes(search) ||
+        subject.details.toLowerCase().includes(search)
+    )
+    .map((subject) => (
+      <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
+        <SubjectCard
+          id={subject.id}
+          title={subject.name}
+          description={subject.details}
+          // image={
+          //   <div className="absolute left-0 top-0 -z-10 h-full w-full">
+          //     <Image
+          //       src={ImageExample} //Todo make image visible
+          //       alt="Informative image about subject"
+          //       className="h-full object-cover brightness-50"
+          //     />
+          //   </div>
+          // }
+          key={subject.id}
+        />
+      </LayoutColumn>
+    ));
 };
 
 // NOT IN USE, import it in page when I get data (use from the page directory )

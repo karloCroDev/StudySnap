@@ -6,5 +6,5 @@ export const useGeneralInfo = create<{
   setSerach: (val: string) => void;
 }>((set) => ({
   search: '',
-  setSerach: (val) => set({ search: val }),
+  setSerach: (val) => set({ search: val.toLowerCase() }),
 }));
