@@ -37,6 +37,8 @@ export const DialogCreate: React.FC<{
         }
       );
 
+      const data = await response.json();
+      console.log(data);
       if (response.ok) {
         toast({
           title: `${subjectName} subject created`,

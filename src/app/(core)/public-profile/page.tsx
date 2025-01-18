@@ -6,33 +6,31 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { Avatar } from '@/components/ui/Avatar';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
-import { NoteCard } from '@/components/core/NoteCard';
-import { useSession } from 'next-auth/react';
+import { ProfileMapping } from '@/components/core/profile/ProfileMapping';
+
+// Models (types)
 import { Note } from '@/models/note';
+
+async function getPublicProfileNotes(userId: string) {
+  const response = await fetch(
+    `http://localhost:3000/api/core/public-profile`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId }),
+    }
+  );
+
+  if (!response.ok) throw new Error('Error with fetching');
+  return await response.json();
+}
 
 export default async function PublicProfile() {
   const session = await getServerSession(authOptions);
-  const userId = await session.user.id;
-  console.log(userId);
-  let notes: Array<Note> = [];
-  try {
-    const response = await fetch(
-      `http://localhost:3000/api/core/public-profile`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId: session.user.id }),
-      }
-    );
-
-    const data = await response.json();
-    notes = Array.isArray(data) ? data : [];
-    console.log(notes);
-  } catch (error) {
-    console.error(error);
-  }
+  const userId: string = await session.user.id;
+  const notes: Note[] = await getPublicProfileNotes(userId);
 
   return (
     <>
@@ -56,23 +54,9 @@ export default async function PublicProfile() {
         <LayoutColumn xs={11} lg={10}>
           {/* All notes that are public!!! */}
           <LayoutRow className="pr-0 sm:-mr-4">
-            {notes.map((note, i) => (
-              <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
-                <NoteCard
-                  noteId={note.id}
-                  title={note.title}
-                  description={note.details}
-                  likes={note.likes}
-                  author={note.creator_name}
-                  liked={note.liked}
-                  userId={userId}
-                  key={i}
-                />
-              </LayoutColumn>
-            ))}
+            <ProfileMapping notes={notes} userId={userId} />
           </LayoutRow>
         </LayoutColumn>
-        <LayoutColumn lg={8}></LayoutColumn>
       </LayoutRow>
     </>
   );

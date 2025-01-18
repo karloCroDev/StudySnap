@@ -1,11 +1,9 @@
 // External packages
-import Image from 'next/image';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
-import { NoteCard } from '@/components/core/NoteCard';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { CreateNoteCard } from '@/components/core/note/CreateNoteCard';
 import { NoteMapping } from '@/components/core/note/NoteMapping';

@@ -1,5 +1,4 @@
 // External packages
-import Image from 'next/image';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
@@ -8,9 +7,6 @@ import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { CreateSubjectCard } from '@/components/core/subjects/CreateSubjectCard';
 import { SubjectMapping } from '@/components/core/subjects/SubjectMapping';
-
-// Images
-import ImageExample from '@/public/images/login-image.png';
 
 // Models (types)
 import { Subject } from '@/models/subject';

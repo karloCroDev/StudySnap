@@ -3,11 +3,15 @@ import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import bcrypt from 'bcryptjs';
 import { GetNotesByUserId } from '@/database/pool';
+
 // Models
-import { User, UserClass } from '@/models/user';
+import { UserClass } from '@/models/user';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
+// Luka:
+// I need this for every user, and to only display the public notes of them. I hope this is not too complicated to make (intead of me fetching on frontend)
+// It would be nice if you can make it get with params
 export async function POST(req: Request) {
   try {
     const { userId } = await req.json();
@@ -29,7 +33,7 @@ export async function PUT(req: Request) {
   try {
     // Luka:
 
-    // Make this PATCH request, because we don't upadate everything, and if resaurce is missing e.g. password it is getting updated?
+    // Make this PATCH request, because we don't upadate everything, and if resaurce is missing e.g. password it's getting updated?
     // Email is not needed
     const { username, email, password, profile_picture, userId } =
       await req.json();
