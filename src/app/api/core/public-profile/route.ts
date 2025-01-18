@@ -67,12 +67,12 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json('Unauthorized', { status: 401 });
     }
 
-    const { id } = await req.json();
-    if (!id) {
+    const { userId } = await req.json();
+    if (!userId) {
       return NextResponse.json('Missing required fields', { status: 400 });
     }
 
-    await UserClass.Delete(id);
+    await UserClass.Delete(userId);
     return NextResponse.json('Subject deleted successfully', { status: 200 });
   } catch (error) {
     console.error(error);

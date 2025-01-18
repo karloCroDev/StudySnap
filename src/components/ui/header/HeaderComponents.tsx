@@ -10,7 +10,7 @@ import {
   Popover,
 } from 'react-aria-components';
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 
 // Components
@@ -21,14 +21,34 @@ import { DialogEditProfile } from '@/components/core/profile/DialogEditProfile';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
+import { useRouter } from 'next/navigation';
 
 export const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
-  const toast = useToastStore((state) => state.setToast);
   const user = useSession();
+  const router = useRouter();
+  const toast = useToastStore((state) => state.setToast);
 
+  const logOut = async () => {
+    try {
+      toast({
+        title: 'Signed out',
+        content: 'Nooo, please come back 😢',
+        variant: 'success',
+      });
+      await signOut({ redirect: false }); // Refreshes the page (with redirect:true)
+      router.push('/login');
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Signed out',
+        content: 'Nooo, please come back 😢',
+        variant: 'error',
+      });
+    }
+  };
   return (
     <MenuTrigger isOpen={isMenuOpen}>
       <Button
@@ -62,10 +82,7 @@ export const Menu = () => {
             className="flex cursor-pointer items-center gap-2 border-b border-gray-900 bg-gray-100 p-2 outline-none hover:brightness-90"
             onAction={() => setIsMenuOpen(true)}
           >
-            <DialogEditProfile
-              setIsDialogOpen={setIsDialogOpen}
-              // userId={'session.data?.id'}
-            >
+            <DialogEditProfile setIsDialogOpen={setIsDialogOpen}>
               <div className="flex items-center gap-2">
                 <GearIcon />
                 Edit profile
@@ -83,7 +100,7 @@ export const Menu = () => {
           </MenuItem>
           <MenuItem
             className="flex cursor-pointer items-center gap-2 bg-red-400 p-2 text-gray-100 outline-none hover:brightness-90"
-            onAction={signOut}
+            onAction={logOut}
           >
             <ExitIcon /> Log out
           </MenuItem>
