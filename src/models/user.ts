@@ -17,7 +17,7 @@ export class UserClass {
     email: string,
     hashedPassword: string,
     profile_picture: string | null
-  ): Promise<void> {
+  ): Promise< string | null> {
     try {
       const [result]: any = await pool.execute(
         `
@@ -26,8 +26,10 @@ export class UserClass {
       `,
         [username, email, hashedPassword, profile_picture]
       );
+      return result.insertId as string
     } catch (err) {
       console.error('Error inserting document:', err);
+      return null
     }
   }
 
@@ -43,7 +45,7 @@ export class UserClass {
         `
         UPDATE user
         SET username = ?, email = ?, password = ?, profile_picture = ?
-        WHERE id = ?;
+        WHERE id = ?, date_modified = CURRENT_TIMESTAMP;
       `,
         [username, email, hashedPassword, profile_picture, id]
       );

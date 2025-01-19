@@ -20,6 +20,7 @@ export const ProfileMapping: React.FC<{
   userId: string;
 }> = ({ notes, userId }) => {
   const search = useGeneralInfo((state) => state.search);
+  console.log(notes)
   return notes
     .filter(
       (note) =>

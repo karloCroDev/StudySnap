@@ -13,17 +13,19 @@ export interface Note{
 }
 
 export class NoteClass {
-  static async Insert(title: string, details:  string, is_public: boolean, subject_id: string): Promise<void> {
+  static async Insert(title: string, details:  string, is_public: boolean, subject_id: string): Promise<string | null> {
     try {
-      await pool.execute(
+      const [result]: any = await pool.execute(
         `
         INSERT INTO note (title, details, is_public, subject_id)
         VALUES (?, ?, ?, ?);
       `,
         [title, details, is_public, subject_id]
       );
+      return result.insertId as string
     } catch (err) {
       console.error('Error inserting note:', err);
+      return null
     }
   }
 
@@ -33,7 +35,7 @@ export class NoteClass {
         `
         UPDATE note
         SET title = ?, details = ?, is_public = ?
-        WHERE id = ?;
+        WHERE id = ?, date_modified = CURRENT_TIMESTAMP;
       `,
         [title, details, is_public, id]
       );

@@ -12,21 +12,28 @@ export async function GetUserByEmail(email: string): Promise<User> {
         SELECT * FROM user WHERE email = "${email}" LIMIT 1
     `);
     return rows[0] as User;
-}//
+}
+
+export async function GetUserById(id: string): Promise<User> {
+    const [rows]: [any, any] = await pool.query(`
+        SELECT * FROM user WHERE id = "${id}" LIMIT 1
+    `);
+    return rows[0] as User;
+}
 
 export async function IsUsernameOrEmailTaken(username: string, email: string): Promise<boolean> {
     const result: [Array<any>, any] = await pool.query(`
         SELECT * FROM user WHERE username = "${username}" OR email = "${email}" LIMIT 1
     `);
     return result[0].length > 0;
-}//
+}
 
 export async function GetSubjectByCreatorId(creatorId: string): Promise<Array<Subject>> {
     const result: [any[], any] = await pool.query(`
         SELECT * FROM subject WHERE creator = ${creatorId}
     `);
     return result[0] as Subject[];
-}//
+}
 
 export async function GetNotesBySubjectId(subject_id: string): Promise<Array<Note>> {
     const result: [any[], any] = await pool.query(`
@@ -89,6 +96,7 @@ export async function GetPublicNotes(limit: number, offset: number = 0, userId: 
         LIMIT ${limit}
         OFFSET ${offset}
     `);
+    console.log(result)
     return result[0] as Note[];
 }
 
@@ -101,6 +109,7 @@ export async function GetDocumentsByNoteId(note_id: string): Promise<Dokument> {
 
 export async function GetNoteNameById(note_id: string): Promise<string> {
     const result: [any, any] = await pool.query(`SELECT title FROM note WHERE id = ${note_id}`);
+    console.log(result, "+++++++++++++++++++++++++")
     return result[0][0].title;
 }
 
@@ -123,7 +132,7 @@ export async function GetNotesByUserId(user_id: string): Promise<Array<Note>> {
             user u ON s.creator = u.id
         LEFT JOIN
             likes l ON n.id = l.note_id
-        WHERE u.id = ?
+        WHERE u.id = ? AND n.is_public = true
         GROUP BY
             n.id,
             n.title,

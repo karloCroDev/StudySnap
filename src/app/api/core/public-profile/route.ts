@@ -2,7 +2,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import bcrypt from 'bcryptjs';
-import { GetNotesByUserId } from '@/database/pool';
+import { GetNotesByUserId, GetUserById } from '@/database/pool';
 
 // Models
 import { UserClass } from '@/models/user';
@@ -10,12 +10,10 @@ import { UserClass } from '@/models/user';
 const secret = process.env.NEXTAUTH_SECRET;
 
 // Luka:
-// This works that when you click on the user inside the note that you can see all his public notes, and this page is also for own public profile
 // I need this for every user, and to only display the public notes of them. I hope this is not too complicated to make (intead of me fetching on frontend and then filtering)
-// It would be nice if you can make it get with params instead of post request
 // Btw I also need  username and profile picture in api when I get data from the user
 
-export async function POST(req: Request) {
+export async function POST(req: Request) {//Updated
   try {
     const { userId } = await req.json();
 
@@ -24,8 +22,9 @@ export async function POST(req: Request) {
     }
 
     let notes = await GetNotesByUserId(userId);
+    let user = await GetUserById(userId)
 
-    return NextResponse.json(notes, { status: 201 });
+    return NextResponse.json([notes, user], { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json('Failed to load notes', { status: 500 });

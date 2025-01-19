@@ -32,7 +32,7 @@ export class DokumentClass {
                 `
         UPDATE document
         SET title = ?, content = ?
-        WHERE id = ?;
+        WHERE id = ?, date_modified = CURRENT_TIMESTAMP;
       `,
                 [title, content, id]
             );
