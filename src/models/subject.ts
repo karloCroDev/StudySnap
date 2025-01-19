@@ -11,17 +11,19 @@ export interface Subject{
 }
 
 export class SubjectClass {
-    static async Insert(name: string, details: string, creator: string, image: string | null,): Promise<void> {
-        try {
-            await pool.execute(
+    static async Insert(name: string, details: string, creator: string, image: string | null,): Promise<string | null> {
+         try {
+            const [result]: any  = await pool.execute(
                 `
         INSERT INTO subject ( name, details, creator, image)
         VALUES (?, ?, ?, ?);
       `,
                 [name, details, creator, image]
             );
+            return result.insertId as string
         } catch (err) {
             console.error('Error inserting subject:', err);
+            return null
         }
     }
 
@@ -31,7 +33,7 @@ export class SubjectClass {
                 `
         UPDATE subject
         SET name = ?, details = ?
-        WHERE id = ?;
+        WHERE id = ?, date_modified = CURRENT_TIMESTAMP;
       `,
                 [name, details, id]
             );

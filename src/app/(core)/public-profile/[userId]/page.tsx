@@ -36,23 +36,22 @@ export default async function PublicProfile({
   // const userId: string = await session.user.id; // Handle immediate changes on client if user updates his data
 
   const { userId } = params;
-  const notes: Note[] = await getPublicProfileNotes(userId);
-
+  const [notes, user] = await getPublicProfileNotes(userId);
   return (
     <>
       <div className="mb-12 animate-public-profile-initial-apperance lg:mb-16">
         <Avatar
           imageProps={{
-            // src: session?.user.image,
+             src: user.image,
             alt: '',
           }}
           size="xl"
           className="mx-auto mb-8"
         >
-          {/* {session?.user.name} */}
+          { user.username }
         </Avatar>
         <h1 className="mb-12 text-center text-4xl font-semibold lg:mb-16">
-          {/* {session?.user.name} */}
+          { user.username }
         </h1>
       </div>
       <SearchableHeader title="All notes" />

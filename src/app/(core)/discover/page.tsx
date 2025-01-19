@@ -16,7 +16,7 @@ async function getPublicNotes(userId: string) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ userId }), // Why do I need userId here I don't get it. I am mapping thourgh the discover notes
+    body: JSON.stringify({ userId }), // Why do I need userId here I don't get it. I am mapping thourgh the discover notes //Bc i need to find did this user liked this note
   });
   if (!response.ok) throw new Error('Failed to fetch data');
 
