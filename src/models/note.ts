@@ -10,7 +10,8 @@ export interface Note{
   likes: number;
   liked: boolean
   creator_name: string;
-}
+  creator_id: string
+}//add image
 
 export class NoteClass {
   static async Insert(title: string, details:  string, is_public: boolean, subject_id: string): Promise<string | null> {
@@ -29,16 +30,17 @@ export class NoteClass {
     }
   }
 
-  static async Update(title: string, details: string, is_public: boolean, id: string ): Promise<void> {
+  static async Update(id: string, updates: { [key: string]: any }): Promise<void> {
     try {
-      await pool.execute(
-        `
+      let values = []
+      for (const [key, value] of Object.entries(updates)) {
+        typeof value === 'number' ? values.push(`${key} = ${value}`) : values.push(`${key} = "${value}"`);
+      }
+      await pool.execute(`
         UPDATE note
-        SET title = ?, details = ?, is_public = ?
-        WHERE id = ?, date_modified = CURRENT_TIMESTAMP;
-      `,
-        [title, details, is_public, id]
-      );
+        SET ${values.join(', ')}, date_modified = CURRENT_TIMESTAMP
+        WHERE id = ${id};
+      `);
     } catch (err) {
       console.error('Error updating note:', err);
     }

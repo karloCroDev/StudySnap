@@ -31,11 +31,11 @@ export const DialogChangeDetails: React.FC<{
       const response = await fetch(
         'http://localhost:3000/api/core/home/subjects',
         {
-          method: 'PUT',
+          method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ id, subjectName, details }), //image is missing here
+          body: JSON.stringify({ subjectId: id, subjectName, details }), //image is missing here
         }
       );
 

@@ -25,7 +25,8 @@ export class DokumentClass {
             return null
         }
     }
-
+    
+    //Update like user
     static async Update(title: string, content: string, id: string): Promise<void> {
         try {
             await pool.execute(

@@ -29,7 +29,7 @@ export const DialogChangeDetails: React.FC<{
       const response = await fetch(
         'http://localhost:3000/api/core/home/notes',
         {
-          method: 'PUT',
+          method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
           },

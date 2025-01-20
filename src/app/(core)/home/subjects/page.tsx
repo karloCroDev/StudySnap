@@ -22,6 +22,7 @@ async function getSubjects(session: any) {
       },
     }
   );
+
   if (!response.ok) throw new Error('Failed to fetch data');
 
   return await response.json();

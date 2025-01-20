@@ -36,6 +36,8 @@ export async function POST(req: NextRequest) {
   }
 }
 
+
+//Change to PATCH
 export async function PUT(req: NextRequest) {
   try {
     const { title, content, id } = await req.json();
@@ -59,6 +61,3 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json('Failed to save', { status: 500 });
   }
 }
-
-// Luka:
-// I think that everything is good here, haven't tested

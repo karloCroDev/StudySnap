@@ -5,6 +5,7 @@ import { Subject } from '../models/subject';
 import { Note } from '../models/note';
 import { Dokument } from '../models/document';
 
+//Make this singleton
 export const pool = createPool(databaseConnectionObject).promise()
 
 export async function GetUserByEmail(email: string): Promise<User> {
@@ -35,6 +36,13 @@ export async function GetSubjectByCreatorId(creatorId: string): Promise<Array<Su
     return result[0] as Subject[];
 }
 
+export async function GetSubjectById(id: string): Promise<Subject> {
+    const result: [any, any] = await pool.query(`
+        SELECT * FROM subject WHERE id = ${id} LIMIT 1
+    `);
+    return result[0] as Subject;
+}
+
 export async function GetNotesBySubjectId(subject_id: string): Promise<Array<Note>> {
     const result: [any[], any] = await pool.query(`
         SELECT
@@ -45,7 +53,8 @@ export async function GetNotesBySubjectId(subject_id: string): Promise<Array<Not
             n.subject_id,
             COUNT(DISTINCT l.user_id) AS likes,
             MAX(CASE WHEN l.user_id = u.id THEN 1 ELSE 0 END) AS liked,
-            u.username AS creator_name
+            u.username AS creator_name,
+            u.id AS creator_id
         FROM
             note n
         JOIN
@@ -76,7 +85,8 @@ export async function GetPublicNotes(limit: number, offset: number = 0, userId: 
             n.subject_id,
             COUNT(DISTINCT l.user_id) AS likes,
             MAX(CASE WHEN l.user_id = ${userId} THEN 1 ELSE 0 END) AS liked,
-            u.username AS creator_name
+            u.username AS creator_name,
+            u.id AS creator_id
         FROM
             note n
         JOIN
@@ -123,7 +133,8 @@ export async function GetNotesByUserId(user_id: string): Promise<Array<Note>> {
             n.subject_id,
             COUNT(DISTINCT l.user_id) AS likes,
             MAX(CASE WHEN l.user_id = u.id THEN 1 ELSE 0 END) AS liked,
-            u.username AS creator_name
+            u.username AS creator_name,
+            u.id AS creator_id
         FROM
             note n
         JOIN
@@ -142,4 +153,36 @@ export async function GetNotesByUserId(user_id: string): Promise<Array<Note>> {
             u.username
     `, [user_id]);
     return result[0] as Note[];
+}
+
+export async function GetNoteById(note_id: string): Promise<Note> {
+    const result: [any, any] = await pool.query(`
+        SELECT
+            n.id,
+            n.title,
+            n.details,
+            n.is_public,
+            n.subject_id,
+            COUNT(DISTINCT l.user_id) AS likes,
+            MAX(CASE WHEN l.user_id = u.id THEN 1 ELSE 0 END) AS liked,
+            u.username AS creator_name,
+            u.id AS creator_id
+        FROM
+            note n
+        JOIN
+            subject s ON n.subject_id = s.id
+        JOIN
+            user u ON s.creator = u.id
+        LEFT JOIN
+            likes l ON n.id = l.note_id
+        WHERE n.id = ?
+        GROUP BY
+            n.id,
+            n.title,
+            n.details,
+            n.is_public,
+            n.subject_id,
+            u.username
+    `, [note_id]);
+    return result[0] as Note;
 }

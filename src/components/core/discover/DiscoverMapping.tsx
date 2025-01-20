@@ -34,9 +34,10 @@ export const DiscoverMapping: React.FC<{
           title={note.title}
           description={note.details}
           likes={note.likes}
-          author={note.creator_name} // Luka: Okay I guess, but if user updates their username, then your going to need to update the user inside the every note, right? // No cause i make good databases :)
+          author={note.creator_name}
           liked={note.liked}
-          userId={userId} // Luka: This is your id (of user that your logged in). I need from every user his id, not only my id. See public profile, I am passing that id to url
+          creatorId={note.creator_id} 
+          userId={userId}
           key={note.id}
         />
       </LayoutColumn>
