@@ -8,13 +8,13 @@ import { LikeClass } from '@/models/like';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
+//This request is responsible for liking and disliking notes
 
 export async function POST(req: NextRequest) {
     try {
 
-        const { userId, noteId, exists } = await req.json();
+        const {noteId , userId, exists } = await req.json();
 
-        console.log(userId, noteId)
         if (!noteId || !userId) {
             return NextResponse.json('Missing required fields', { status: 400 });
         }

@@ -17,6 +17,7 @@ export const NoteCard: React.FC<{
   userImage?: string;
   likes: number;
   liked: boolean;
+  creatorId: string;
   userId: string;
 }> = ({
   noteId,
@@ -26,7 +27,8 @@ export const NoteCard: React.FC<{
   author,
   likes,
   liked,
-  userId,
+  creatorId,
+  userId
 }) => {
   const likeAction = async () => {
     try {
@@ -35,7 +37,7 @@ export const NoteCard: React.FC<{
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ noteId: noteId, userId: userId, exists: liked }), //image is missing here
+        body: JSON.stringify({ noteId: noteId, userId: userId, exists: liked }), //image
       });
     } catch (error) {
       console.error(error);
@@ -60,7 +62,7 @@ export const NoteCard: React.FC<{
             </Avatar>
 
             <Link
-              href={`/public-profile/${userId}`}
+              href={`/public-profile/${creatorId}`}
               className="font-medium underline-offset-2 hover:underline"
             >
               {author}

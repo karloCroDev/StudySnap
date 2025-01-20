@@ -27,20 +27,26 @@ export class SubjectClass {
         }
     }
 
-    static async Update(id: string, name: string, details: string): Promise<void> {
+    static async Update(id: string, updates: { [key: string]: any }): Promise<void> {
         try {
-            await pool.execute(
-                `
-        UPDATE subject
-        SET name = ?, details = ?
-        WHERE id = ?, date_modified = CURRENT_TIMESTAMP;
-      `,
-                [name, details, id]
-            );
+            let values = [];
+
+            for (const [key, value] of Object.entries(updates)) {
+                typeof value === 'number' ? values.push(`${key} = ${value}`) : values.push(`${key} = "${value}"`);
+            }
+
+            await pool.execute(`
+                UPDATE subject
+                SET ${values.join(', ')}, date_modified = CURRENT_TIMESTAMP
+                WHERE id = ${id};
+            `);
+
         } catch (err) {
             console.error('Error updating subject:', err);
         }
     }
+
+
 
     static async Delete(id: string): Promise<void> {
         try {

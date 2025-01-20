@@ -33,22 +33,20 @@ export class UserClass {
     }
   }
 
-  static async Update(
-    username: string,
-    email: string,
-    hashedPassword: string,
-    profile_picture: string,
-    id: string
-  ): Promise<void> {
+  static async Update(id: string, updates: { [key: string]: any }): Promise<void> {
     try {
-      await pool.execute(
-        `
+      let values = [];
+
+      for (const [key, value] of Object.entries(updates)) {
+        typeof value === 'number' ? values.push(`${key} = ${value}`) : values.push(`${key} = "${value}"`);
+      }
+
+      await pool.execute( `
         UPDATE user
-        SET username = ?, email = ?, password = ?, profile_picture = ?
-        WHERE id = ?, date_modified = CURRENT_TIMESTAMP;
-      `,
-        [username, email, hashedPassword, profile_picture, id]
-      );
+        SET ${values.join(', ')}, date_modified = CURRENT_TIMESTAMP
+        WHERE id = ${id};
+      `);
+
     } catch (err) {
       console.error('Error updating user:', err);
     }

@@ -40,21 +40,16 @@ export const DialogEditProfile: React.FC<{
     try {
       const payload: Record<string, any> = {
         userId: user.data?.user.id,
-        // Delete this under when your done (only setted this now to work)
-        email: user.data?.user.email,
-        password: '12345678',
-        profile_picture: '',
       };
       if (username) payload.username = username;
       if (password) payload.password = password;
       if (image) payload.profile_picture = ''; // We need to handle upload of images
       console.log(payload);
-      const response = await fetch('http://localhost:3000/api/core/', {
-        method: 'PUT',
+      const response = await fetch('http://localhost:3000/api/core/public-profile', {
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        // I wrote the explaination in public-profile api
         body: JSON.stringify(payload),
       });
       if (response.ok) {

@@ -9,11 +9,7 @@ import { UserClass } from '@/models/user';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
-// Luka:
-// I need this for every user, and to only display the public notes of them. I hope this is not too complicated to make (intead of me fetching on frontend and then filtering)
-// Btw I also need  username and profile picture in api when I get data from the user
-
-export async function POST(req: Request) {//Updated
+export async function POST(req: Request) {
   try {
     const { userId } = await req.json();
 
@@ -31,34 +27,26 @@ export async function POST(req: Request) {//Updated
   }
 }
 
-export async function PUT(req: Request) {
+export async function PATCH(req: NextRequest) {
   try {
-    // Luka:
+    const { username, password, profile_picture, userId } = await req.json();
 
-    // Make this PATCH request, because we don't upadate everything, and if resaurce is missing e.g. password it's getting updated?
-    // Email is not needed
-    const { username, email, password, profile_picture, userId } =
-      await req.json();
-
-    // Chnaged with and cloases (&&) instead of inital ors(||), and set status to 400 (Feel free to remove this, because I also check this on frontend)
-    // See how to upload first then send image
-
-    if (!username && !password && !email && !userId && profile_picture) {
-      return NextResponse.json('Insufficient data provided', { status: 400 });
+    if (!userId) {
+      return NextResponse.json('User ID is required', { status: 400 });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const updates: { [key: string]: any } = {};
+    if (username) updates.username = username;
+    if (password) updates.password = await bcrypt.hash(password, 10);
+    if (profile_picture) updates.profile_picture = profile_picture;
 
-    // You need to make this fields optional, User don't want to update all fields, (I need to update only one or two fields ussually ).
-    await UserClass.Update(
-      username,
-      email,
-      hashedPassword,
-      profile_picture, // Chnages this to camel case
-      userId
-    );
+    if (Object.keys(updates).length === 0) {
+      return NextResponse.json('No fields to update', { status: 400 });
+    }
 
-    return NextResponse.json('User updated', { status: 201 });
+    await UserClass.Update(userId, updates);
+
+    return NextResponse.json('User updated successfully', { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json('Failed to update user', { status: 500 });
