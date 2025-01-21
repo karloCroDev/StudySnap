@@ -1,9 +1,9 @@
-import { pool } from '../database/pool';
+import { getPool } from '../database/pool';
 
 export class LikeClass {
     static async Insert(user_id: string, note_id: string): Promise<void> {
         try {
-            await pool.execute(
+            await getPool().execute(
                 `
         INSERT INTO likes (user_id, note_id)
         VALUES (?, ?);
@@ -16,7 +16,7 @@ export class LikeClass {
     }
     static async Delete(user_id: string, note_id: string): Promise<void> {
         try {
-            await pool.execute(
+            await getPool().execute(
                 `
         DELETE FROM likes where user_id = ? and note_id = ?
       `,

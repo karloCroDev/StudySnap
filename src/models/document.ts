@@ -1,4 +1,4 @@
-import { pool } from '../database/pool';
+import { getPool } from '../database/pool';
 
 export interface Dokument{
     id: string,
@@ -12,7 +12,7 @@ export class DokumentClass {
     static async Insert(title: string, content: string, note_id: string): Promise<string | null> {
     try {
         const [result]: any = 
-            await pool.execute(
+            await getPool().execute(
                 `
             INSERT INTO document (title, content, note_id)
             VALUES (?, ?, ?);
@@ -29,7 +29,7 @@ export class DokumentClass {
     //Update like user
     static async Update(title: string, content: string, id: string): Promise<void> {
         try {
-            await pool.execute(
+            await getPool().execute(
                 `
         UPDATE document
         SET title = ?, content = ?

@@ -1,4 +1,4 @@
-import { pool } from '../database/pool';
+import { getPool } from '../database/pool';
 
 //Todo add cascade delete
 export interface User {
@@ -19,7 +19,7 @@ export class UserClass {
     profile_picture: string | null
   ): Promise< string | null> {
     try {
-      const [result]: any = await pool.execute(
+      const [result]: any = await getPool().execute(
         `
         INSERT INTO user (username, email, password, profile_picture)
         VALUES (?, ?, ?, ?);
@@ -41,7 +41,7 @@ export class UserClass {
         typeof value === 'number' ? values.push(`${key} = ${value}`) : values.push(`${key} = "${value}"`);
       }
 
-      await pool.execute( `
+      await getPool().execute( `
         UPDATE user
         SET ${values.join(', ')}, date_modified = CURRENT_TIMESTAMP
         WHERE id = ${id};
@@ -54,7 +54,7 @@ export class UserClass {
 
   static async Delete(id: string): Promise<void> {
     try {
-      await pool.execute(
+      await getPool().execute(
         `
         DELETE FROM user WHERE id = ?;
       `,

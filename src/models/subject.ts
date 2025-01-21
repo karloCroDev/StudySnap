@@ -1,4 +1,4 @@
-import { pool } from '../database/pool';
+import { getPool } from '../database/pool';
 
 export interface Subject{
     id: string,
@@ -13,7 +13,7 @@ export interface Subject{
 export class SubjectClass {
     static async Insert(name: string, details: string, creator: string, image: string | null,): Promise<string | null> {
          try {
-            const [result]: any  = await pool.execute(
+             const [result]: any = await getPool().execute(
                 `
         INSERT INTO subject ( name, details, creator, image)
         VALUES (?, ?, ?, ?);
@@ -35,7 +35,7 @@ export class SubjectClass {
                 typeof value === 'number' ? values.push(`${key} = ${value}`) : values.push(`${key} = "${value}"`);
             }
 
-            await pool.execute(`
+            await getPool().execute(`
                 UPDATE subject
                 SET ${values.join(', ')}, date_modified = CURRENT_TIMESTAMP
                 WHERE id = ${id};
@@ -50,7 +50,7 @@ export class SubjectClass {
 
     static async Delete(id: string): Promise<void> {
         try {
-            await pool.execute(
+            await getPool().execute(
                 `
         DELETE FROM subject WHERE id = ?;
       `,

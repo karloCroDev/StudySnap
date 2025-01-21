@@ -25,15 +25,18 @@ export const DialogCreate: React.FC<{
 
   const createSubject = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    if (subjectName) formData.append('subjectName', subjectName);
+    if (details) formData.append('details', details);
+    if (image) formData.append('file', image);
+
     try {
       const response = await fetch(
         'http://localhost:3000/api/core/home/subjects',
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ subjectName, details, image }),
+          body: formData,
         }
       );
 

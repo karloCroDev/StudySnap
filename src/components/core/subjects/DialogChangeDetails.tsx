@@ -27,6 +27,15 @@ export const DialogChangeDetails: React.FC<{
 
   const updateSubject = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('subjectId', id);
+    if (subjectName) formData.append('subjectName', subjectName);
+    if (details) formData.append('details', details);
+    if (image) formData.append('file', image);
+    
+    console.log(formData, "Prethod")
+
     try {
       const response = await fetch(
         'http://localhost:3000/api/core/home/subjects',
@@ -35,7 +44,7 @@ export const DialogChangeDetails: React.FC<{
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ subjectId: id, subjectName, details }), //image is missing here
+          body: formData, //image is missing here
         }
       );
 
