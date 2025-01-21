@@ -30,7 +30,7 @@ async function getSubjects(session: any) {
 
 export default async function Subjects() {
   const session = await getServerSession(authOptions);
-  const subjects: Subject[] = await getSubjects(session);
+  const [subjects, images] = await getSubjects(session);
 
   return (
     <>
@@ -41,7 +41,7 @@ export default async function Subjects() {
             <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
               <CreateSubjectCard />
             </LayoutColumn>
-            <SubjectMapping subjects={subjects} />
+            <SubjectMapping subjects={subjects} images ={images} />
           </LayoutRow>
         </LayoutColumn>
       </LayoutRow>

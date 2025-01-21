@@ -18,8 +18,9 @@ import ImageExample from '@/public/images/login-image.png';
 import { Subject } from '@/models/subject';
 
 export const SubjectMapping: React.FC<{
-  subjects: Subject[]; // Passing the fetched data to this object
-}> = ({ subjects }) => {
+  subjects: Subject[];
+  images: string[] // Passing the fetched data to this object
+}> = ({ subjects, images }) => {
   const search = useGeneralInfo((state) => state.search);
 
   return subjects
@@ -34,15 +35,15 @@ export const SubjectMapping: React.FC<{
           id={subject.id}
           title={subject.name}
           description={subject.details}
-          // image={
-          //   <div className="absolute left-0 top-0 -z-10 h-full w-full">
-          //     <Image
-          //       src={ImageExample} //Todo make image visible
-          //       alt="Informative image about subject"
-          //       className="h-full object-cover brightness-50"
-          //     />
-          //   </div>
-          // }
+          /*image={
+            <div className="absolute left-0 top-0 -z-10 h-full w-full">
+              <Image
+                src={subject.image? subject.image : ImageExample} //Todo make image visible
+                alt="Informative image about subject"// Returns error that image does not have good width dimensions
+                className="h-full object-cover brightness-50"
+              />
+            </div>
+          }*/
           key={subject.id}
         />
       </LayoutColumn>

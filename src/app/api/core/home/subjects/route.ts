@@ -1,9 +1,15 @@
 // External packages
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import { writeFile } from 'fs/promises';
+import path from 'path';
+
 // Models
 import { SubjectClass } from '@/models/subject';
 import { GetSubjectByCreatorId, GetSubjectById } from '@/database/pool';
+
+//Internal functions
+import { GetImage, WriteImage } from '@/database/ImageHandler'
 
 const secret = process.env.NEXTAUTH_SECRET;
 
@@ -16,7 +22,10 @@ export async function GET(req: NextRequest) {
     if (!subjects) {
       return NextResponse.json('Subjects not found', { status: 404 });
     }
-    return NextResponse.json(subjects, { status: 200 });
+
+    const images: Array<string> = (await Promise.all(subjects.map(async (subject) => await GetImage(subject.image)))).filter((image): image is string => image !== null);
+    
+    return NextResponse.json([subjects, images], { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json('Failed to get subjects', { status: 500 });
@@ -31,18 +40,23 @@ export async function POST(req: NextRequest) {
       return NextResponse.json('Unauthorized', { status: 401 });
     }
 
-    const { subjectName, details, image } = await req.json();
+    const formData = await req.formData();
     const creator = token.uid;
+    const subjectName = formData.get('subjectName') as string;
+    const details = formData.get('details') as string | null;
+    const file = formData.get('file');
 
     if (!subjectName || !creator) {
       return NextResponse.json('Missing required fields', { status: 400 });
     }
 
+    const imagePath = await WriteImage(file)
+
     const id = await SubjectClass.Insert(
       subjectName,
       details ? details : '',
       creator.toString(),
-      image
+      imagePath
     );
 
     if (id === null) {
@@ -90,7 +104,13 @@ export async function PATCH(req: NextRequest) {
     if (!token) {
       return NextResponse.json('Unauthorized', { status: 401 });
     }
-    const { subjectId, subjectName, details } = await req.json();
+
+    const formData = await req.formData();
+    console.log(formData)
+    const subjectId = formData.get('subjectId') as string;
+    const subjectName = formData.get('subjectName');
+    const details = formData.get('details');
+    const file = formData.get('file');
 
     if (!subjectId) {
       return NextResponse.json( { status: 400, statusText: "Missing subject Id" });
@@ -99,7 +119,7 @@ export async function PATCH(req: NextRequest) {
     const updates: { [key: string]: any } = {};
     if (subjectName) updates.name = subjectName;
     if (details) updates.details = details;
-    //Add picture
+    if (file) updates.image = WriteImage(file);
 
     if (Object.keys(updates).length === 0) {
       return NextResponse.json('No fields to update', { status: 400 });
@@ -112,3 +132,5 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json('Failed to update subject', { status: 500 });
   }
 }
+
+

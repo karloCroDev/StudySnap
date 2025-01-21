@@ -38,6 +38,7 @@ export const ProfileMapping: React.FC<{
           author={note.creator_name}
           liked={note.liked}
           userId={userId}
+          creatorId={note.creator_id}
           key={note.id}
         />
       </LayoutColumn>

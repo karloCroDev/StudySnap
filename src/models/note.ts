@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { pool } from '../database/pool';
+import { getPool } from '../database/pool';
 
 export interface Note{
   id: string;
@@ -16,7 +16,7 @@ export interface Note{
 export class NoteClass {
   static async Insert(title: string, details:  string, is_public: boolean, subject_id: string): Promise<string | null> {
     try {
-      const [result]: any = await pool.execute(
+      const [result]: any = await getPool().execute(
         `
         INSERT INTO note (title, details, is_public, subject_id)
         VALUES (?, ?, ?, ?);
@@ -36,7 +36,7 @@ export class NoteClass {
       for (const [key, value] of Object.entries(updates)) {
         typeof value === 'number' ? values.push(`${key} = ${value}`) : values.push(`${key} = "${value}"`);
       }
-      await pool.execute(`
+      await getPool().execute(`
         UPDATE note
         SET ${values.join(', ')}, date_modified = CURRENT_TIMESTAMP
         WHERE id = ${id};
@@ -48,7 +48,7 @@ export class NoteClass {
 
   static async Delete(id: string): Promise<void> {
     try {
-      await pool.execute(
+      await getPool().execute(
         `
         DELETE FROM note WHERE id = ?;
       `,

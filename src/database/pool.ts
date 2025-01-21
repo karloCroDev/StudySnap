@@ -6,45 +6,52 @@ import { Note } from '../models/note';
 import { Dokument } from '../models/document';
 
 //Make this singleton
-export const pool = createPool(databaseConnectionObject).promise()
+let pool = createPool(databaseConnectionObject).promise()
+
+export function getPool() {
+    if (!pool) {
+        pool = createPool(databaseConnectionObject).promise();
+    }
+    return pool;
+}
 
 export async function GetUserByEmail(email: string): Promise<User> {
-    const [rows]: [any, any] = await pool.query(`
+    const [rows]: [any, any] = await getPool().query(`
         SELECT * FROM user WHERE email = "${email}" LIMIT 1
     `);
     return rows[0] as User;
 }
 
 export async function GetUserById(id: string): Promise<User> {
-    const [rows]: [any, any] = await pool.query(`
+    const [rows]: [any, any] = await getPool().query(`
         SELECT * FROM user WHERE id = "${id}" LIMIT 1
     `);
     return rows[0] as User;
 }
 
 export async function IsUsernameOrEmailTaken(username: string, email: string): Promise<boolean> {
-    const result: [Array<any>, any] = await pool.query(`
+    const result: [Array<any>, any] = await getPool().query(`
         SELECT * FROM user WHERE username = "${username}" OR email = "${email}" LIMIT 1
     `);
     return result[0].length > 0;
 }
 
 export async function GetSubjectByCreatorId(creatorId: string): Promise<Array<Subject>> {
-    const result: [any[], any] = await pool.query(`
+    const result: [any[], any] = await getPool().query(`
         SELECT * FROM subject WHERE creator = ${creatorId}
     `);
     return result[0] as Subject[];
 }
 
 export async function GetSubjectById(id: string): Promise<Subject> {
-    const result: [any, any] = await pool.query(`
+    const result: [any, any] = await getPool().query(`
         SELECT * FROM subject WHERE id = ${id} LIMIT 1
     `);
     return result[0] as Subject;
 }
 
 export async function GetNotesBySubjectId(subject_id: string): Promise<Array<Note>> {
-    const result: [any[], any] = await pool.query(`
+    const result: [any[], any] = await getPool().query(`
         SELECT
             n.id,
             n.title,
@@ -76,7 +83,7 @@ export async function GetNotesBySubjectId(subject_id: string): Promise<Array<Not
 }
 
 export async function GetPublicNotes(limit: number, offset: number = 0, userId: string): Promise<Array<Note>> {
-    const result: [any[], any] = await pool.query(`
+    const result: [any[], any] = await getPool().query(`
         SELECT
             n.id,
             n.title,
@@ -118,13 +125,13 @@ export async function GetDocumentsByNoteId(note_id: string): Promise<Dokument> {
 }
 
 export async function GetNoteNameById(note_id: string): Promise<string> {
-    const result: [any, any] = await pool.query(`SELECT title FROM note WHERE id = ${note_id}`);
+    const result: [any, any] = await getPool().query(`SELECT title FROM note WHERE id = ${note_id}`);
     console.log(result, "+++++++++++++++++++++++++")
     return result[0][0].title;
 }
 
 export async function GetNotesByUserId(user_id: string): Promise<Array<Note>> {
-    const result: [any[], any] = await pool.query(`
+    const result: [any[], any] = await getPool().query(`
         SELECT
             n.id,
             n.title,
@@ -156,7 +163,7 @@ export async function GetNotesByUserId(user_id: string): Promise<Array<Note>> {
 }
 
 export async function GetNoteById(note_id: string): Promise<Note> {
-    const result: [any, any] = await pool.query(`
+    const result: [any, any] = await getPool().query(`
         SELECT
             n.id,
             n.title,
