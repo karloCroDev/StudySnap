@@ -33,7 +33,7 @@ export default async function Disover() {
     //Ja mogu brisati tuđe noteove???: Ne, to sam samo mapirao samo da se nesto prikaze (bez api-ja) - napravim kasnije
     <>
       <SearchableHeader title="Discover" />
-      <LayoutRow className="mt-8 animate-card-initial-apperance justify-center xl:mt-12">
+      <LayoutRow className="mt-8 justify-center xl:mt-12">
         <LayoutColumn xs={11} lg={10}>
           <LayoutRow className="sm:-mr-4">
             <DiscoverMapping publicNotes={publicNotes} userId={userId} />

@@ -19,7 +19,7 @@ import { Subject } from '@/models/subject';
 
 export const SubjectMapping: React.FC<{
   subjects: Subject[];
-  images: string[] // Passing the fetched data to this object
+  images: string[]; // Passing the fetched data to this object
 }> = ({ subjects, images }) => {
   const search = useGeneralInfo((state) => state.search);
 
@@ -30,7 +30,12 @@ export const SubjectMapping: React.FC<{
         subject.details.toLowerCase().includes(search)
     )
     .map((subject) => (
-      <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
+      <LayoutColumn
+        sm={6}
+        lg={4}
+        xl2={3}
+        className="animate-card-apperance mb-8 sm:pr-4"
+      >
         <SubjectCard
           id={subject.id}
           title={subject.name}

@@ -284,7 +284,7 @@ const config: Config = {
             transform: 'translateY(-50px)',
           },
         },
-        'card-initial-apperance': {
+        'card-apperance': {
           from: {
             opacity: '0',
             transform: 'translateY(400px)',
@@ -385,7 +385,7 @@ const config: Config = {
         // Card animation
         'card-options-hover': 'card-options-hover 200ms linear',
         'card-options-unhovered': 'card-options-unhovered 200ms linear',
-        'card-initial-apperance': 'card-initial-apperance 500ms ease-in',
+        'card-apperance': 'card-apperance 500ms ease-in',
 
         // Public-profile
         'public-profile-initial-apperance':

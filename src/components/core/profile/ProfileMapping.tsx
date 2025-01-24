@@ -29,12 +29,17 @@ export const ProfileMapping: React.FC<{
         note.details.toLowerCase().includes(search)
     )
     .map((note) => (
-      <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
+      <LayoutColumn
+        sm={6}
+        lg={4}
+        xl2={3}
+        className="animate-card-apperance mb-8 sm:pr-4"
+      >
         <NoteCard
           noteId={note.id}
           title={note.title}
           description={note.details}
-          likes={note.likes}
+          numberOfLikes={note.likes}
           author={note.creator_name}
           isPublic={note.is_public}
           liked={note.liked}
