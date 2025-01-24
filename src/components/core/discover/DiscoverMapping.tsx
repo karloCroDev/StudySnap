@@ -35,8 +35,9 @@ export const DiscoverMapping: React.FC<{
           description={note.details}
           likes={note.likes}
           author={note.creator_name}
+          isPublic={note.is_public}
           liked={note.liked}
-          creatorId={note.creator_id} 
+          creatorId={note.creator_id}
           userId={userId}
           key={note.id}
         />

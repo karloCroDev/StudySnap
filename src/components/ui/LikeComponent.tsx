@@ -13,13 +13,14 @@ export const LikeComponent: React.FC<{
   size?: 'sm' | 'lg';
   action: () => void;
 }> = ({
-  hasBeenLiked,
+  hasBeenLiked = false,
   isOrderReversed = false,
   numberOfLikes,
   size = 'sm',
   action,
 }) => {
   const [isLiked, setIsLiked] = React.useState(hasBeenLiked);
+  const [likeCount, setLikeCount] = React.useState(numberOfLikes);
   // fix: Move action over here and get the crucial info that is needed
   return (
     <div
@@ -32,8 +33,10 @@ export const LikeComponent: React.FC<{
       <ReactAriaButton
         className="outline-none transition-transform duration-75 active:scale-75"
         onPress={() => {
+          const syncLiked = !isLiked;
+          setIsLiked(syncLiked);
+          setLikeCount(syncLiked ? likeCount + 1 : likeCount - 1);
           action();
-          setIsLiked(!isLiked);
         }}
       >
         {isLiked ? (
@@ -60,7 +63,7 @@ export const LikeComponent: React.FC<{
           size === 'lg' && 'text-md font-bold'
         )}
       >
-        {numberOfLikes}
+        {likeCount}
       </p>
     </div>
   );

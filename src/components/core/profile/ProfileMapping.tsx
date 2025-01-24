@@ -20,7 +20,7 @@ export const ProfileMapping: React.FC<{
   userId: string;
 }> = ({ notes, userId }) => {
   const search = useGeneralInfo((state) => state.search);
-  console.log(notes)
+  console.log(notes);
   return notes
     .filter(
       (note) =>
@@ -36,6 +36,7 @@ export const ProfileMapping: React.FC<{
           description={note.details}
           likes={note.likes}
           author={note.creator_name}
+          isPublic={note.is_public}
           liked={note.liked}
           userId={userId}
           creatorId={note.creator_id}
