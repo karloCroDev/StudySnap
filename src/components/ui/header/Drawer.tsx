@@ -37,7 +37,7 @@ export const Drawer = () => {
         content: 'Nooo, please come back 😢',
         variant: 'success',
       });
-      await signOut({ redirect: false }); // Refreshes the page (with redirect:true)
+      await signOut({ redirect: false }); // Refreshes the page by default
       router.push('/login');
     } catch (error) {
       console.error(error);
