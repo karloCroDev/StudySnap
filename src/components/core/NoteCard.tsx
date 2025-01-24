@@ -1,4 +1,7 @@
+'use client';
+
 // External packages
+import * as React from 'react';
 import { TrashIcon, Pencil1Icon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { twJoin } from 'tailwind-merge';
@@ -16,9 +19,9 @@ export const NoteCard: React.FC<{
   title: string;
   description?: string;
   author: string;
-  isPublic: boolean;
+  isPublic?: boolean;
   userImage?: string;
-  likes: number;
+  numberOfLikes: number;
   liked: boolean;
   creatorId: string;
   userId: string;
@@ -28,8 +31,8 @@ export const NoteCard: React.FC<{
   description,
   userImage,
   author,
-  isPublic,
-  likes,
+  isPublic = false,
+  numberOfLikes,
   liked,
   creatorId,
   userId,
@@ -47,6 +50,7 @@ export const NoteCard: React.FC<{
       console.error(error);
     }
   };
+
   return (
     <div className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400 text-blue-900">
       <div className="flex aspect-square flex-col p-6 pb-4">
@@ -76,7 +80,7 @@ export const NoteCard: React.FC<{
           <LikeComponent
             hasBeenLiked={liked}
             isOrderReversed
-            numberOfLikes={likes}
+            numberOfLikes={numberOfLikes}
             action={likeAction}
           />
         </div>
