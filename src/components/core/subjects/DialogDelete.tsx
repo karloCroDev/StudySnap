@@ -24,7 +24,7 @@ export const DialogDelete: React.FC<{
   const toast = useToastStore((state) => state.setToast);
   const deleteSubject = useGeneralInfo((state) => state.deleteSubject);
 
-  const deleteDialog = async () => {
+  const deleteNoteFn = async () => {
     try {
       setLoading(true);
       const response = await fetch(
@@ -48,7 +48,7 @@ export const DialogDelete: React.FC<{
       }
       setTimeout(() => {
         // This is inside the set timeout because the dialog needs to complete the animation, and I am completly removing the subject from the list which means that it doesn't exist anymore --> dialog immediatelly closes without animation
-        deleteSubject(id);
+        deleteSubject(id); // Client deletion
         toast({
           title: `${name} subject deleted`,
           content: `You have succesfully deleted ${name} subject`,
@@ -80,7 +80,7 @@ export const DialogDelete: React.FC<{
           Are you sure you want to delete your subject
         </h4>
         <div className="mt-6 flex gap-6">
-          <Button className="uppercase" onPress={deleteDialog}>
+          <Button className="uppercase" onPress={deleteNoteFn}>
             yes
           </Button>
           <Button

@@ -2,25 +2,36 @@
 
 // External packages
 import * as React from 'react';
+import { useShallow } from 'zustand/shallow';
+
+// Components
+import { LayoutColumn } from '@/components/ui/Layout';
+import { NoteCard } from '@/components/core/NoteCard';
 
 // Store
 import { useGeneralInfo } from '@/store/useGeneralInfo';
-import { LayoutColumn } from '@/components/ui/Layout';
-import { NoteCard } from '@/components/core/NoteCard';
 
 // Models (types)
 import { Note } from '@/models/note';
 
-// Images
-import ImageExample from '@/public/images/login-image.png';
-
-export const DiscoverMapping: React.FC<{
-  publicNotes: Note[];
+export const NoteMapping: React.FC<{
+  notesData: Note[];
   userId: string;
-}> = ({ publicNotes, userId }) => {
-  const search = useGeneralInfo((state) => state.search);
+}> = ({ notesData, userId }) => {
+  const { search, notes, setNotes } = useGeneralInfo(
+    useShallow((state) => ({
+      search: state.search,
+      notes: state.notes,
+      setNotes: state.setNotes,
+    }))
+  );
 
-  return publicNotes
+  React.useEffect(() => {
+    setNotes(notesData);
+  }, []);
+
+  if (!notes.length) return;
+  return notes
     .filter(
       (note) =>
         note.title.toLowerCase().includes(search) ||
@@ -39,13 +50,15 @@ export const DiscoverMapping: React.FC<{
           title={note.title}
           description={note.details}
           numberOfLikes={note.likes}
-          author={note.creator_name}
           isPublic={note.is_public}
+          author={note.creator_name}
           liked={note.liked}
-          creatorId={note.creator_id}
           userId={userId}
+          creatorId={note.creator_id}
           key={note.id}
         />
       </LayoutColumn>
     ));
 };
+
+// NOT IN USE, import it in page when I get data

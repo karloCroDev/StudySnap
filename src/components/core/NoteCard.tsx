@@ -10,14 +10,14 @@ import { DialogDelete } from '@/components/core/note/DialogDelete';
 import { Avatar } from '@/components/ui/Avatar';
 import { LikeComponent } from '@/components/core/LikeComponent';
 
-// Karlo and Luka: Make sure that Notes types are here, fix this if we have time
+// Karlo : Make sure that Notes types are here, fix this if we have time
 
 export const NoteCard: React.FC<{
   noteId: string;
   title: string;
   description: string;
   author: string;
-  isPublic?: boolean;
+  isPublic: boolean;
   userImage?: string;
   numberOfLikes: number;
   liked: boolean;
@@ -29,7 +29,7 @@ export const NoteCard: React.FC<{
   description,
   userImage,
   author,
-  isPublic = false,
+  isPublic,
   numberOfLikes,
   liked,
   creatorId,
@@ -98,7 +98,7 @@ export const NoteCard: React.FC<{
             />
           </li>
           <li>
-            <DialogDelete noteId={noteId} />
+            <DialogDelete noteId={noteId} noteName={noteName} />
           </li>
         </ul>
       )}
