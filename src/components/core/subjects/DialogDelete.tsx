@@ -16,16 +16,18 @@ export const DialogDelete: React.FC<{
 }> = ({ id, children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const toast = useToastStore((state) => state.setToast);
-  const deleteDialog = async() => {
-
+  const deleteDialog = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/core/home/subjects', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id }),
-      });
+      const response = await fetch(
+        'http://localhost:3000/api/core/home/subjects',
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id }),
+        }
+      );
 
       if (response.ok) {
         toast({
@@ -33,11 +35,11 @@ export const DialogDelete: React.FC<{
           content: 'You have succesfully delete your subject',
           variant: 'success',
         });
-      }
-      else if (response.status === 400) {
+      } else if (response.status === 400) {
         toast({
           title: 'Missing required fields',
-          content: 'Please make sure you have entered all the credentials correctly and try again',
+          content:
+            'Please make sure you have entered all the credentials correctly and try again',
           variant: 'error',
         });
       }
@@ -45,8 +47,7 @@ export const DialogDelete: React.FC<{
       console.error(error);
       toast({
         title: 'Uhoh, something went wrong',
-        content:
-          'Failed to delete subject',
+        content: 'Failed to delete subject',
         variant: 'error',
       });
     }
@@ -58,7 +59,6 @@ export const DialogDelete: React.FC<{
       onOpenChange={setIsOpen}
       title="Delete subject"
       triggerProps={{
-        asChild: true,
         children,
       }}
     >

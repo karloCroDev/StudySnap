@@ -1,7 +1,10 @@
 'use client';
+
 // External packages
 import * as React from 'react';
 import { RadioGroup, Radio, Form } from 'react-aria-components';
+import { twJoin } from 'tailwind-merge';
+import { Pencil1Icon } from '@radix-ui/react-icons';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
@@ -12,11 +15,13 @@ import { Input } from '@/components/ui/Input';
 import { useToastStore } from '@/store/useToastStore';
 
 export const DialogChangeDetails: React.FC<{
-  children: React.ReactNode;
   noteId: string;
-}> = ({ children, noteId }) => {
+  chnageNoteName: string;
+  setChangeNoteName: React.Dispatch<React.SetStateAction<string>>;
+  setChangeNoteDetails: React.Dispatch<React.SetStateAction<string>>;
+}> = ({ noteId, chnageNoteName, setChangeNoteDetails, setChangeNoteName }) => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [isPublic, setIsPublic] = React.useState(false);
+  const [isPublic, setIsPublic] = React.useState(false); // Provjeri da li ovo radi na backendu
 
   const [noteName, setNoteName] = React.useState('');
   const [details, setDetails] = React.useState('');
@@ -37,20 +42,24 @@ export const DialogChangeDetails: React.FC<{
         }
       );
 
-      if (response.ok) {
-        toast({
-          title: `${noteName} note changed`,
-          content: `You have succesfully changed ${noteName}`,
-          variant: 'success',
-        });
-      } else if (response.status === 400) {
+      if (!response.ok) {
         toast({
           title: 'Missing required fields',
           content:
             'Please make sure you have entered all the credentials correctly and try again',
           variant: 'error',
         });
+        return;
       }
+      const syncName = noteName || chnageNoteName;
+      toast({
+        title: `${syncName} note updated`,
+        content: `You have succesfully updated ${syncName}`,
+        variant: 'success',
+      });
+
+      setChangeNoteName(noteName);
+      setChangeNoteDetails(details);
     } catch (error) {
       console.error(error);
       toast({
@@ -68,8 +77,13 @@ export const DialogChangeDetails: React.FC<{
       onOpenChange={setIsOpen}
       title="Change note's details"
       triggerProps={{
-        asChild: true,
-        children,
+        children: (
+          <Pencil1Icon
+            className={twJoin(
+              'size-9 transition-colors hover:text-blue-400 lg:size-7'
+            )}
+          />
+        ),
       }}
     >
       <Form className="flex flex-col gap-5" onSubmit={changeDetails}>
@@ -82,7 +96,9 @@ export const DialogChangeDetails: React.FC<{
           inputProps={{
             placeholder: 'Enter note name',
           }}
-          onChange={(val) => setNoteName(val.toString())}
+          onChange={(val) => {
+            setNoteName(val.toString());
+          }}
         />
         <Input
           type="text"
@@ -120,12 +136,8 @@ export const DialogChangeDetails: React.FC<{
             </Radio>
           </RadioGroup>
         </div>
-        <Button
-          className="self-end"
-          type="submit"
-          isDisabled={!noteName && !details}
-        >
-          Change note
+        <Button className="self-end" type="submit">
+          Save
         </Button>
       </Form>
     </Dialog>

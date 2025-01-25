@@ -3,6 +3,7 @@
 // External packages
 import * as RadixDialog from '@radix-ui/react-dialog'; // Importing as everything because of readabilty
 import { Cross2Icon } from '@radix-ui/react-icons';
+import { twMerge } from 'tailwind-merge';
 
 export const Dialog: React.FC<
   React.ComponentPropsWithoutRef<'button'> &
@@ -12,7 +13,10 @@ export const Dialog: React.FC<
     }
 > = ({ triggerProps, children, title, footer, ...rest }) => (
   <RadixDialog.Root {...rest}>
-    <RadixDialog.Trigger {...triggerProps}>
+    <RadixDialog.Trigger
+      {...triggerProps}
+      className={twMerge('outline-none', triggerProps?.className)}
+    >
       {triggerProps?.children}
     </RadixDialog.Trigger>
     <RadixDialog.Portal>
