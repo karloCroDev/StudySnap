@@ -15,10 +15,10 @@ import { useToastStore } from '@/store/useToastStore';
 export const DialogChangeDetails: React.FC<{
   id: string;
   children: React.ReactNode;
-  changeTitle: string;
-  setChangeTitle: React.Dispatch<React.SetStateAction<string>>;
-  setChangeDescription: React.Dispatch<React.SetStateAction<string>>;
-}> = ({ changeTitle, setChangeTitle, setChangeDescription, id, children }) => {
+  cardTitle: string;
+  setCardTitle: React.Dispatch<React.SetStateAction<string>>;
+  setCardDescripton: React.Dispatch<React.SetStateAction<string>>;
+}> = ({ cardTitle, setCardTitle, setCardDescripton, id, children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const [subjectName, setSubjectName] = React.useState('');
@@ -35,7 +35,7 @@ export const DialogChangeDetails: React.FC<{
     if (subjectName) formData.append('subjectName', subjectName);
     if (details) formData.append('details', details);
     if (image) formData.append('file', image);
-
+    console.log('Hello world');
     console.log(formData, 'Prethod');
 
     try {
@@ -43,13 +43,10 @@ export const DialogChangeDetails: React.FC<{
         'http://localhost:3000/api/core/home/subjects',
         {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: formData, //image is missing here
         }
       );
-
+      console.log(response.status);
       if (!response.ok) {
         toast({
           title: 'Missing required fields',
@@ -60,15 +57,18 @@ export const DialogChangeDetails: React.FC<{
         return;
       }
 
-      const syncName = subjectName || changeTitle;
+      const syncName = subjectName || cardTitle;
       toast({
         title: `${syncName} subject updated`,
         content: `You have succesfully updated ${syncName} `,
         variant: 'success',
       });
 
-      setChangeTitle(subjectName);
-      setChangeDescription(details);
+      if (subjectName) setCardTitle(subjectName);
+      if (details) setCardDescripton(details);
+
+      setSubjectName('');
+      setDetails('');
     } catch (error) {
       console.error(error);
       toast({
@@ -76,9 +76,9 @@ export const DialogChangeDetails: React.FC<{
         content: 'Failed to update subject',
         variant: 'error',
       });
+    } finally {
+      setIsOpen(false);
     }
-
-    setIsOpen(false);
   };
 
   return (
@@ -97,6 +97,7 @@ export const DialogChangeDetails: React.FC<{
           minLength={3}
           maxLength={24}
           isMdHorizontal
+          value={subjectName}
           inputProps={{
             placeholder: 'Enter new subject name',
           }}
@@ -104,10 +105,11 @@ export const DialogChangeDetails: React.FC<{
         />
         <Input
           type="text"
-          label="Details"
+          label="Details (optional)"
           minLength={5}
           maxLength={40}
           isMdHorizontal
+          value={details}
           inputProps={{
             placeholder: 'Enter new subject details',
           }}

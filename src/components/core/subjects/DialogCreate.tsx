@@ -39,23 +39,24 @@ export const DialogCreate: React.FC<{
           body: formData,
         }
       );
-
       const data = await response.json();
       console.log(data);
-      if (response.ok) {
-        toast({
-          title: `${subjectName} subject created`,
-          content: `You have succesfully created ${subjectName}`,
-          variant: 'success',
-        });
-      } else if (response.status === 400) {
+
+      if (!response.ok) {
         toast({
           title: 'Missing required fields',
           content:
             'Please make sure you have entered all the credentials correctly and try again',
           variant: 'error',
         });
+        return;
       }
+
+      toast({
+        title: `${subjectName} subject created`,
+        content: `You have succesfully created ${subjectName}`,
+        variant: 'success',
+      });
     } catch (error) {
       console.error(error);
       toast({
@@ -85,6 +86,7 @@ export const DialogCreate: React.FC<{
           minLength={3}
           maxLength={24}
           isMdHorizontal
+          value={subjectName}
           inputProps={{
             placeholder: 'Enter subject name',
           }}
@@ -96,6 +98,7 @@ export const DialogCreate: React.FC<{
           minLength={5}
           maxLength={40}
           isMdHorizontal
+          value={details}
           inputProps={{
             placeholder: 'Enter your subject’s details (optional)',
           }}
