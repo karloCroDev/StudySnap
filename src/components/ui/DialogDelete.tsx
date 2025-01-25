@@ -9,11 +9,12 @@ import { useSession } from 'next-auth/react';
 // Components
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
+import { Spinner } from '@/components/ui/Spinner';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
-export const DialogDeleteProfile = () => {
+export const DialogDelete: React.FC<{}> = () => {
   const user = useSession();
 
   const [isOpen, setIsOpen] = React.useState(false);
@@ -36,22 +37,21 @@ export const DialogDeleteProfile = () => {
       const data = await response.json();
       console.log(data);
 
-      if (!response.ok) {
+      if (response.ok) {
+        await signOut({ redirect: false });
+        router.push('/login');
+        toast({
+          title: 'Profile deleted',
+          content: 'You have succesfully deleted your profile',
+          variant: 'success',
+        });
+      } else if (response.status === 400) {
         toast({
           title: 'Uhoh',
           content: 'Please login again, and then try to delete profile',
           variant: 'error',
         });
-        return;
       }
-
-      await signOut({ redirect: false });
-      router.push('/login');
-      toast({
-        title: 'Profile deleted',
-        content: 'You have succesfully deleted your profile',
-        variant: 'success',
-      });
     } catch (error) {
       console.error(error);
       toast({

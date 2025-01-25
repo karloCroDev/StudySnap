@@ -8,6 +8,7 @@ import { RadioGroup, Radio, Form } from 'react-aria-components';
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { Spinner } from '@/components/ui/Spinner';
 
 //Store
 import { useToastStore } from '@/store/useToastStore';
@@ -15,51 +16,57 @@ import { useToastStore } from '@/store/useToastStore';
 export const DialogCreate: React.FC<{
   children: React.ReactNode;
   subjectId: string;
-}> = ({ children,subjectId }) => {
+}> = ({ children, subjectId }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isPublic, setIsPublic] = React.useState(false);
 
   const [noteName, setNoteName] = React.useState('');
   const [details, setDetails] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
   const toast = useToastStore((state) => state.setToast);
 
   const createNote = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/api/core/home/notes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ noteName, details, isPublic, subjectId }),
-      });
+      setLoading(true);
+      const response = await fetch(
+        'http://localhost:3000/api/core/home/notes',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ noteName, details, isPublic, subjectId }),
+        }
+      );
 
-      if (response.ok) {
-        toast({
-          title: `${noteName} note created`,
-          content: `You have succesfully created ${noteName}`,
-          variant: 'success',
-        });
-      }
-      else if (response.status === 400) {
+      if (!response.ok) {
         toast({
           title: 'Missing required fields',
-          content: 'Please make sure you have entered all the credentials correctly and try again',
+          content:
+            'Please make sure you have entered all the credentials correctly and try again',
           variant: 'error',
         });
+        return;
       }
+
+      toast({
+        title: `${noteName} note created`,
+        content: `You have succesfully created ${noteName}`,
+        variant: 'success',
+      });
     } catch (error) {
       console.error(error);
       toast({
         title: 'Uhoh, something went wrong',
-        content:
-          'Failed to create note',
+        content: 'Failed to create note',
         variant: 'error',
       });
+    } finally {
+      setIsOpen(false);
+      setLoading(false);
     }
-
-    setIsOpen(false);
   };
   console.log(noteName, details);
   return (
@@ -80,6 +87,7 @@ export const DialogCreate: React.FC<{
           minLength={3}
           maxLength={24}
           isMdHorizontal
+          value={noteName}
           inputProps={{
             placeholder: 'Enter note name',
           }}
@@ -92,6 +100,7 @@ export const DialogCreate: React.FC<{
           minLength={5}
           maxLength={40}
           isMdHorizontal
+          value={details}
           inputProps={{
             placeholder: "Enter your note's details ",
           }}
@@ -126,6 +135,7 @@ export const DialogCreate: React.FC<{
           className="self-end"
           type="submit"
           isDisabled={!noteName || !details}
+          iconLeft={loading && <Spinner />}
         >
           Add new note
         </Button>
