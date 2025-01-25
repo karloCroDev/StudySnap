@@ -10,27 +10,30 @@ import { Pencil1Icon } from '@radix-ui/react-icons';
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { Spinner } from '@/components/ui/Spinner';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
 export const DialogChangeDetails: React.FC<{
   noteId: string;
-  chnageNoteName: string;
-  setChangeNoteName: React.Dispatch<React.SetStateAction<string>>;
-  setChangeNoteDetails: React.Dispatch<React.SetStateAction<string>>;
-}> = ({ noteId, chnageNoteName, setChangeNoteDetails, setChangeNoteName }) => {
+  noteName: string;
+  setNoteName: React.Dispatch<React.SetStateAction<string>>;
+  setNoteDetails: React.Dispatch<React.SetStateAction<string>>;
+}> = ({ noteId, noteName, setNoteName, setNoteDetails }) => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [isPublic, setIsPublic] = React.useState(false); // Provjeri da li ovo radi na backendu
 
-  const [noteName, setNoteName] = React.useState('');
+  const [isPublic, setIsPublic] = React.useState(false); // Provjeri da li ovo radi na backendu
+  const [name, setName] = React.useState('');
   const [details, setDetails] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
   const toast = useToastStore((state) => state.setToast);
 
   const changeDetails = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await fetch(
         'http://localhost:3000/api/core/home/notes',
         {
@@ -38,7 +41,7 @@ export const DialogChangeDetails: React.FC<{
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ noteName, details, isPublic, noteId }),
+          body: JSON.stringify({ noteName: name, details, isPublic, noteId }),
         }
       );
 
@@ -51,15 +54,18 @@ export const DialogChangeDetails: React.FC<{
         });
         return;
       }
-      const syncName = noteName || chnageNoteName;
+      const syncName = name || noteName;
       toast({
         title: `${syncName} note updated`,
         content: `You have succesfully updated ${syncName}`,
         variant: 'success',
       });
 
-      setChangeNoteName(noteName);
-      setChangeNoteDetails(details);
+      if (name) setNoteName(name);
+      if (details) setNoteDetails(details);
+
+      setName('');
+      setDetails('');
     } catch (error) {
       console.error(error);
       toast({
@@ -67,9 +73,10 @@ export const DialogChangeDetails: React.FC<{
         content: 'Failed to create note',
         variant: 'error',
       });
+    } finally {
+      setLoading(false);
+      setIsOpen(false);
     }
-
-    setIsOpen(false);
   };
   return (
     <Dialog
@@ -93,11 +100,12 @@ export const DialogChangeDetails: React.FC<{
           minLength={3}
           maxLength={24}
           isMdHorizontal
+          value={name}
           inputProps={{
             placeholder: 'Enter note name',
           }}
           onChange={(val) => {
-            setNoteName(val.toString());
+            setName(val.toString());
           }}
         />
         <Input
@@ -106,6 +114,7 @@ export const DialogChangeDetails: React.FC<{
           minLength={5}
           maxLength={40}
           isMdHorizontal
+          value={details}
           inputProps={{
             placeholder: "Enter your note's details ",
           }}
@@ -136,7 +145,11 @@ export const DialogChangeDetails: React.FC<{
             </Radio>
           </RadioGroup>
         </div>
-        <Button className="self-end" type="submit">
+        <Button
+          className="self-end"
+          type="submit"
+          iconLeft={loading && <Spinner />}
+        >
           Save
         </Button>
       </Form>

@@ -32,7 +32,7 @@ export const DiscoverMapping: React.FC<{
         sm={6}
         lg={4}
         xl2={3}
-        className="animate-card-apperance mb-8 sm:pr-4"
+        className="mb-8 animate-card-apperance sm:pr-4"
       >
         <NoteCard
           noteId={note.id}

@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/Button';
 import { DialogQuizz } from '@/components/note-editor/DialogQuizz';
 import { DialogGenerateContent } from './DialogGenerateContent';
 import { Spinner } from '@/components/ui/Spinner';
-import { LikeComponent } from '@/components/ui/LikeComponent';
+import { LikeComponent } from '@/components/core/LikeComponent';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';

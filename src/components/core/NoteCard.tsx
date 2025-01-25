@@ -10,14 +10,14 @@ import { twJoin } from 'tailwind-merge';
 import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';
 import { DialogDelete } from '@/components/core/note/DialogDelete';
 import { Avatar } from '@/components/ui/Avatar';
-import { LikeComponent } from '@/components/ui/LikeComponent';
+import { LikeComponent } from '@/components/core/LikeComponent';
 
 // Karlo and Luka: Make sure that Notes types are here, fix this if we have time
 
 export const NoteCard: React.FC<{
   noteId: string;
   title: string;
-  description?: string;
+  description: string;
   author: string;
   isPublic?: boolean;
   userImage?: string;
@@ -37,6 +37,7 @@ export const NoteCard: React.FC<{
   creatorId,
   userId,
 }) => {
+  // Karlo: TODO pass this to the like component
   const likeAction = async () => {
     try {
       await fetch('http://localhost:3000/api/core/home/notes/like', {
@@ -51,19 +52,15 @@ export const NoteCard: React.FC<{
     }
   };
 
-  const [changeNoteName, setChangeNoteName] = React.useState(title);
-  const [changeNoteDetails, setChangeNoteDetails] = React.useState('');
+  const [noteName, setNoteName] = React.useState(title);
+  const [noteDetails, setNoteDetails] = React.useState(description);
 
   return (
     <div className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400 text-blue-900">
       <div className="flex aspect-square flex-col p-6 pb-4">
         <div>
-          <h3 className="text-2xl font-semibold">{changeNoteName || title}</h3>
-          {description && (
-            <p className="text-xs font-medium">
-              {changeNoteDetails || description}
-            </p>
-          )}
+          <h3 className="text-2xl font-semibold">{noteName}</h3>
+          {description && <p className="text-xs font-medium">{noteDetails}</p>}
         </div>
         <div className="z-10 mt-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -96,9 +93,9 @@ export const NoteCard: React.FC<{
         <ul className="absolute right-5 top-8 z-10 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
           <li>
             <DialogChangeDetails
-              chnageNoteName={changeNoteName}
-              setChangeNoteDetails={setChangeNoteDetails}
-              setChangeNoteName={setChangeNoteName}
+              noteName={noteName}
+              setNoteName={setNoteName}
+              setNoteDetails={setNoteDetails}
               noteId={noteId}
             />
           </li>
