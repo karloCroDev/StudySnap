@@ -38,20 +38,30 @@ export const DialogEditProfile: React.FC<{
 
   const saveChanges = async () => {
     try {
-      const payload: Record<string, any> = {
-        userId: user.data?.user.id,
-      };
-      if (username) payload.username = username;
-      if (password) payload.password = password;
-      if (image) payload.profile_picture = ''; // We need to handle upload of images
-      console.log(payload);
-      const response = await fetch('http://localhost:3000/api/core/public-profile', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        'http://localhost:3000/api/core/public-profile',
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: user.data?.user.id,
+            username,
+            password,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        toast({
+          title: 'Missing required fields',
+          content:
+            'Please make sure you have entered all the credentials correctly and try again',
+          variant: 'error',
+        });
+        return;
+      }
       if (response.ok) {
         // if (image) await user.update({ image: '' }); // We need to handle upload of images
         if (username) await user.update({ name: username });
@@ -62,13 +72,6 @@ export const DialogEditProfile: React.FC<{
           variant: 'success',
         });
         // Find a better way, this works for now
-      } else if (response.status === 400) {
-        toast({
-          title: 'Missing required fields',
-          content:
-            'Please make sure you have entered all the credentials correctly and try again',
-          variant: 'error',
-        });
       }
     } catch (error) {
       console.error(error);
@@ -121,6 +124,7 @@ export const DialogEditProfile: React.FC<{
           minLength={3}
           maxLength={24}
           isMdHorizontal
+          value={username}
           inputProps={{
             placeholder: 'Enter new username',
           }}
@@ -132,6 +136,7 @@ export const DialogEditProfile: React.FC<{
           minLength={8}
           maxLength={16}
           isMdHorizontal
+          value={password}
           inputProps={{
             placeholder: 'Enter new password',
           }}

@@ -19,9 +19,9 @@ export const SubjectCard: React.FC<{
   title: string;
   description?: string;
   image?: React.ReactNode;
-}> = ({ id, title, description, image }) => {
-  const [changeTitle, setChangeTitle] = React.useState(title);
-  const [changeDescription, setChangeDescription] = React.useState('');
+}> = ({ id, title, description = '', image }) => {
+  const [cardTitle, setCardTitle] = React.useState(title);
+  const [cardDescription, setCardDescription] = React.useState(description);
 
   return (
     <div
@@ -36,7 +36,7 @@ export const SubjectCard: React.FC<{
       >
         {image}
         <div>
-          <h3 className="text-2xl font-semibold">{title}</h3>
+          <h3 className="text-2xl font-semibold">{cardTitle}</h3>
           {description && (
             <p
               className={twJoin(
@@ -44,7 +44,7 @@ export const SubjectCard: React.FC<{
                 image ? 'text-gray-200' : 'text-gray-400'
               )}
             >
-              {description}
+              {cardDescription}
             </p>
           )}
         </div>
@@ -58,9 +58,9 @@ export const SubjectCard: React.FC<{
         <li>
           <DialogChangeDetails
             id={id}
-            changeTitle={changeTitle}
-            setChangeTitle={setChangeTitle}
-            setChangeDescription={setChangeDescription}
+            cardTitle={cardTitle}
+            setCardTitle={setCardTitle}
+            setCardDescripton={setCardDescription}
           >
             <Pencil1Icon
               className={twJoin(
