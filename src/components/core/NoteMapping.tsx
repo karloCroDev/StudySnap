@@ -16,8 +16,7 @@ import { Note } from '@/models/note';
 
 export const NoteMapping: React.FC<{
   notesData: Note[];
-  userId: string;
-}> = ({ notesData, userId }) => {
+}> = ({ notesData }) => {
   const { search, notes, setNotes } = useGeneralInfo(
     useShallow((state) => ({
       search: state.search,
@@ -53,7 +52,7 @@ export const NoteMapping: React.FC<{
           isPublic={note.is_public}
           author={note.creator_name}
           liked={note.liked}
-          userId={userId}
+          // userId={userId}
           creatorId={note.creator_id}
           key={note.id}
         />
