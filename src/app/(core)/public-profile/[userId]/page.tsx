@@ -6,7 +6,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { Avatar } from '@/components/ui/Avatar';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
-import { ProfileMapping } from '@/components/core/profile/ProfileMapping';
+import { NoteMapping } from '@/components/core/NoteMapping';
 
 // Models (types)
 import { Note } from '@/models/note';
@@ -58,7 +58,7 @@ export default async function PublicProfile({
       <LayoutRow className="mt-8 justify-center xl:mt-12">
         <LayoutColumn xs={11} lg={10}>
           <LayoutRow className="pr-0 sm:-mr-4">
-            <ProfileMapping notes={notes} userId={userId} />
+            <NoteMapping notesData={notes} userId={userId} />
           </LayoutRow>
         </LayoutColumn>
       </LayoutRow>

@@ -12,6 +12,10 @@ import { Spinner } from '@/components/ui/Spinner';
 
 //Store
 import { useToastStore } from '@/store/useToastStore';
+import { useGeneralInfo } from '@/store/useGeneralInfo';
+
+// Models (types)
+import { Note } from '@/models/note';
 
 export const DialogCreate: React.FC<{
   children: React.ReactNode;
@@ -25,8 +29,9 @@ export const DialogCreate: React.FC<{
   const [loading, setLoading] = React.useState(false);
 
   const toast = useToastStore((state) => state.setToast);
+  const addNote = useGeneralInfo((state) => state.addNote);
 
-  const createNote = async (e: React.FormEvent<HTMLFormElement>) => {
+  const createNoteFn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       setLoading(true);
@@ -40,7 +45,7 @@ export const DialogCreate: React.FC<{
           body: JSON.stringify({ noteName, details, isPublic, subjectId }),
         }
       );
-
+      const data = await response.json();
       if (!response.ok) {
         toast({
           title: 'Missing required fields',
@@ -50,7 +55,7 @@ export const DialogCreate: React.FC<{
         });
         return;
       }
-
+      addNote(data[0] as Note);
       toast({
         title: `${noteName} note created`,
         content: `You have succesfully created ${noteName}`,
@@ -79,7 +84,7 @@ export const DialogCreate: React.FC<{
         asChild: true,
       }}
     >
-      <Form className="flex flex-col gap-5" onSubmit={createNote}>
+      <Form className="flex flex-col gap-5" onSubmit={createNoteFn}>
         <Input
           isRequired
           type="text"
