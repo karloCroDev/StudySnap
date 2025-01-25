@@ -51,12 +51,19 @@ export const NoteCard: React.FC<{
     }
   };
 
+  const [changeNoteName, setChangeNoteName] = React.useState(title);
+  const [changeNoteDetails, setChangeNoteDetails] = React.useState('');
+
   return (
     <div className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400 text-blue-900">
       <div className="flex aspect-square flex-col p-6 pb-4">
         <div>
-          <h3 className="text-2xl font-semibold">{title}</h3>
-          {description && <p className="text-xs font-medium">{description}</p>}
+          <h3 className="text-2xl font-semibold">{changeNoteName || title}</h3>
+          {description && (
+            <p className="text-xs font-medium">
+              {changeNoteDetails || description}
+            </p>
+          )}
         </div>
         <div className="z-10 mt-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -88,22 +95,15 @@ export const NoteCard: React.FC<{
       {!isPublic && ( // Could make this to check if that user is registered
         <ul className="absolute right-5 top-8 z-10 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
           <li>
-            <DialogChangeDetails noteId={noteId}>
-              <Pencil1Icon
-                className={twJoin(
-                  'size-9 transition-colors hover:text-blue-400 lg:size-7'
-                )}
-              />
-            </DialogChangeDetails>
+            <DialogChangeDetails
+              chnageNoteName={changeNoteName}
+              setChangeNoteDetails={setChangeNoteDetails}
+              setChangeNoteName={setChangeNoteName}
+              noteId={noteId}
+            />
           </li>
           <li>
-            <DialogDelete noteId={noteId}>
-              <TrashIcon
-                className={twJoin(
-                  'size-9 transition-colors hover:text-blue-400 lg:size-7'
-                )}
-              />
-            </DialogDelete>
+            <DialogDelete noteId={noteId} />
           </li>
         </ul>
       )}

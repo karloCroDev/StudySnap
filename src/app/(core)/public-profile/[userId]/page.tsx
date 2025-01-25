@@ -57,7 +57,6 @@ export default async function PublicProfile({
       <SearchableHeader title="All notes" />
       <LayoutRow className="mt-8 justify-center xl:mt-12">
         <LayoutColumn xs={11} lg={10}>
-          {/* All notes that are public!!! */}
           <LayoutRow className="pr-0 sm:-mr-4">
             <ProfileMapping notes={notes} userId={userId} />
           </LayoutRow>

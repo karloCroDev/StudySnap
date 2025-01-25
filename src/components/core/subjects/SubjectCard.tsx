@@ -1,4 +1,7 @@
+'use client';
+
 // External packages
+import * as React from 'react';
 import {
   DoubleArrowRightIcon,
   TrashIcon,
@@ -17,6 +20,9 @@ export const SubjectCard: React.FC<{
   description?: string;
   image?: React.ReactNode;
 }> = ({ id, title, description, image }) => {
+  const [changeTitle, setChangeTitle] = React.useState(title);
+  const [changeDescription, setChangeDescription] = React.useState('');
+
   return (
     <div
       className={twJoin(
@@ -51,7 +57,11 @@ export const SubjectCard: React.FC<{
       <ul className="md:ity absolute right-5 top-8 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
         <li>
           <DialogChangeDetails
-          id = {id}>
+            id={id}
+            changeTitle={changeTitle}
+            setChangeTitle={setChangeTitle}
+            setChangeDescription={setChangeDescription}
+          >
             <Pencil1Icon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',
@@ -61,8 +71,7 @@ export const SubjectCard: React.FC<{
           </DialogChangeDetails>
         </li>
         <li>
-          <DialogDelete
-            id = {id}>
+          <DialogDelete id={id}>
             <TrashIcon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',
