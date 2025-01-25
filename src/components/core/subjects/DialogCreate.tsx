@@ -11,6 +11,9 @@ import { Input } from '@/components/ui/Input';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
+import { useGeneralInfo } from '@/store/useGeneralInfo';
+import { Subject } from '@/models/subject';
+import { useShallow } from 'zustand/shallow';
 
 export const DialogCreate: React.FC<{
   children: React.ReactNode;
@@ -22,6 +25,7 @@ export const DialogCreate: React.FC<{
   const [image, setImage] = React.useState<File | null>(null);
 
   const toast = useToastStore((state) => state.setToast);
+  const setSubjects = useGeneralInfo((state) => state.setSubjects);
 
   const createSubject = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,6 +56,10 @@ export const DialogCreate: React.FC<{
         return;
       }
 
+      setSubjects((prevSubjects: Subject[]): Subject[] => [
+        ...prevSubjects,
+        data[0] as Subject,
+      ]);
       toast({
         title: `${subjectName} subject created`,
         content: `You have succesfully created ${subjectName}`,

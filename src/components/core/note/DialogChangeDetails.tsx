@@ -28,6 +28,8 @@ export const DialogChangeDetails: React.FC<{
   const [details, setDetails] = React.useState('');
   const [loading, setLoading] = React.useState(false);
 
+  console.log(isPublic);
+
   const toast = useToastStore((state) => state.setToast);
 
   const changeDetails = async (e: React.FormEvent<HTMLFormElement>) => {

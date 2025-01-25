@@ -7,7 +7,7 @@ import { NoteClass, Note } from '@/models/note';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
-//Change responses like this POST request 
+//Change responses like this POST request
 
 export async function GET(req: NextRequest) {
   try {
@@ -42,15 +42,18 @@ export async function POST(req: NextRequest) {
     );
 
     if (!id) {
-      console.error("Failed to get id from inserted note");
+      console.error('Failed to get id from inserted note');
       return NextResponse.json('Failed to create note', { status: 500 });
     }
 
-    const note = await GetNoteById(id)
+    const note = await GetNoteById(id);
     // Luka: +
     // I need to get noteId (and noteName,  details, isPublic) as a response , in order to create it on client (instead of refreshing the page)
-    
-    return NextResponse.json(note, { status: 201, statusText: "Created successfully"  });
+
+    return NextResponse.json(note, {
+      status: 201,
+      statusText: 'Created successfully',
+    });
   } catch (error) {
     console.error(error);
     return NextResponse.json('Failed to create note', { status: 500 });
@@ -78,23 +81,35 @@ export async function PATCH(req: NextRequest) {
     const { noteName, details, isPublic, noteId } = await req.json();
 
     if (!noteId) {
-      return NextResponse.json({ status: 400, statusText: "Note Id is requiered" });
+      return NextResponse.json({
+        status: 400,
+        statusText: 'Note Id is requiered',
+      });
     }
 
     const updates: { [key: string]: any } = {};
     if (noteName) updates.title = noteName;
     if (details) updates.details = details;
-    if (isPublic) updates.is_Public = isPublic? 1 : 0;
+    updates.is_Public = isPublic ? 1 : 0; // Luka: Just changed this without if statement (becuase you were always checking if it is true, but it can be false)
 
     if (Object.keys(updates).length === 0) {
-      return NextResponse.json({ status: 400, statusText: 'No fields to update', });
+      return NextResponse.json({
+        status: 400,
+        statusText: 'No fields to update',
+      });
     }
 
     await NoteClass.Update(noteId, updates);
 
-    return NextResponse.json({ status: 201, statusText: 'Note updated successfully', });
+    return NextResponse.json({
+      status: 201,
+      statusText: 'Note updated successfully',
+    });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ status: 500, statusText: 'Failed to update note', });
+    return NextResponse.json({
+      status: 500,
+      statusText: 'Failed to update note',
+    });
   }
 }

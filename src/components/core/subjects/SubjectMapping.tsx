@@ -2,7 +2,7 @@
 
 // External packages
 import * as React from 'react';
-import Image from 'next/image';
+import { useShallow } from 'zustand/shallow';
 
 // Components
 import { LayoutColumn } from '@/components/ui/Layout';
@@ -11,18 +11,26 @@ import { SubjectCard } from '@/components/core/subjects/SubjectCard';
 // Store
 import { useGeneralInfo } from '@/store/useGeneralInfo';
 
-// Images
-import ImageExample from '@/public/images/login-image.png';
-
 // Models (types)
 import { Subject } from '@/models/subject';
 
 export const SubjectMapping: React.FC<{
-  subjects: Subject[];
+  subjectsData: Subject[];
   images: string[]; // Passing the fetched data to this object
-}> = ({ subjects, images }) => {
-  const search = useGeneralInfo((state) => state.search);
+}> = ({ subjectsData, images }) => {
+  const { search, subjects, setSubjects } = useGeneralInfo(
+    useShallow((state) => ({
+      search: state.search,
+      subjects: state.subjects,
+      setSubjects: state.setSubjects,
+    }))
+  );
 
+  React.useEffect(() => {
+    setSubjects(subjectsData);
+  }, []);
+
+  if (!subjects.length) return;
   return subjects
     .filter(
       (subject) =>
@@ -34,7 +42,7 @@ export const SubjectMapping: React.FC<{
         sm={6}
         lg={4}
         xl2={3}
-        className="animate-card-apperance mb-8 sm:pr-4"
+        className="mb-8 animate-card-apperance sm:pr-4"
       >
         <SubjectCard
           id={subject.id}
