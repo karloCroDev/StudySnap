@@ -8,11 +8,14 @@ import { Form as AriaForm } from 'react-aria-components';
 // Components
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { Spinner } from '@/components/ui/Spinner';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
 export const SignupForm = () => {
+  const [loading, setLoading] = React.useState(false);
+
   const [username, setUsername] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -23,6 +26,7 @@ export const SignupForm = () => {
   const signupUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await fetch('http://localhost:3000/api/auth/sign-up', {
         method: 'POST',
         headers: {
@@ -58,15 +62,9 @@ export const SignupForm = () => {
           'Please make sure you have entered all the credentials correctly and try again',
         variant: 'error',
       });
+    } finally {
+      setLoading(false);
     }
-
-    //Catch
-    // toast({
-    //   title: 'Uhoh, something went wrong',
-    //   content:
-    //     'Please make sure you have entered all the credentials correctly and try again 😢',
-    //   variant: 'error',
-    // });
   };
 
   return (
@@ -107,7 +105,12 @@ export const SignupForm = () => {
         minLength={8}
         maxLength={16}
       />
-      <Button rounded="none" size="lg" type="submit">
+      <Button
+        rounded="none"
+        size="lg"
+        type="submit"
+        iconRight={loading && <Spinner />}
+      >
         Sign up
       </Button>
       {/* 

@@ -2,9 +2,7 @@
 
 // External packages
 import * as React from 'react';
-import { TrashIcon, Pencil1Icon } from '@radix-ui/react-icons';
 import Link from 'next/link';
-import { twJoin } from 'tailwind-merge';
 
 // Components
 import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';

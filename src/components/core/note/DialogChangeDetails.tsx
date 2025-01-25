@@ -150,7 +150,7 @@ export const DialogChangeDetails: React.FC<{
         <Button
           className="self-end"
           type="submit"
-          iconLeft={loading && <Spinner />}
+          iconRight={loading && <Spinner />}
         >
           Save
         </Button>
