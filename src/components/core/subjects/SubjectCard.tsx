@@ -71,7 +71,7 @@ export const SubjectCard: React.FC<{
           </DialogChangeDetails>
         </li>
         <li>
-          <DialogDelete id={id}>
+          <DialogDelete id={id} name={cardTitle}>
             <TrashIcon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',

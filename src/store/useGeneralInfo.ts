@@ -9,20 +9,18 @@ export const useGeneralInfo = create<{
   search: string;
   setSerach: (val: string) => void;
   subjects: Subject[];
-  setSubjects: (
-    val: Subject | Subject[] | ((prev: Subject[]) => Subject[])
-  ) => void;
+  setSubjects: (val: Subject[]) => void;
+  addSubject: (val: Subject) => void;
+  deleteSubject: (val: string) => void;
 }>((set) => ({
   search: '',
   setSerach: (val) => set({ search: val.toLowerCase() }),
   subjects: [],
-  setSubjects: (val) =>
+  setSubjects: (val) => set({ subjects: val }),
+  addSubject: (val) => set((state) => ({ subjects: [...state.subjects, val] })),
+  deleteSubject: (val) => {
     set((state) => ({
-      subjects:
-        typeof val === 'function' // This is used to update the state of the subjects, but without calling the subject again --> reducing the code by avoiding to call the subject and using useShallow
-          ? val(state.subjects)
-          : Array.isArray(val)
-            ? val
-            : [...state.subjects, val],
-    })),
+      subjects: state.subjects.filter((subject) => subject.id !== val),
+    }));
+  },
 }));

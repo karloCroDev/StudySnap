@@ -135,7 +135,7 @@ export const DialogCreate: React.FC<{
           className="self-end"
           type="submit"
           isDisabled={!noteName || !details}
-          iconLeft={loading && <Spinner />}
+          iconRight={loading && <Spinner />}
         >
           Add new note
         </Button>
