@@ -37,7 +37,7 @@ export default async function Disover() {
       <LayoutRow className="mt-8 justify-center xl:mt-12">
         <LayoutColumn xs={11} lg={10}>
           <LayoutRow className="sm:-mr-4">
-            <NoteMapping notesData={publicNotes} userId={userId} />
+            <NoteMapping notesData={publicNotes} />
           </LayoutRow>
         </LayoutColumn>
       </LayoutRow>

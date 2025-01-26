@@ -8,6 +8,7 @@ import { GetDocumentsByNoteId, GetNoteNameById } from '@/database/pool';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
+// Luka: Not mandatory, but GET with params, is maybe better
 export async function POST(req: NextRequest) {
   try {
     const { noteId } = await req.json();
@@ -36,8 +37,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-
-//Change to PATCH
+// Luka: Change to PATCH, not mandatory because I can just pass title every time
 export async function PUT(req: NextRequest) {
   try {
     const { title, content, id } = await req.json();
