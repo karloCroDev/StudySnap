@@ -5,7 +5,6 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
-// import { DiscoverMapping } from '@/components/core/discover/DiscoverMapping';
 import { NoteMapping } from '@/components/core/NoteMapping';
 
 // Models (types)
@@ -31,7 +30,6 @@ export default async function Disover() {
   const publicNotes: Note[] = await getPublicNotes(userId);
 
   return (
-    //Ja mogu brisati tuđe noteove???: Ne, to sam samo mapirao samo da se nesto prikaze (bez api-ja) - napravim kasnije
     <>
       <SearchableHeader title="Discover" />
       <LayoutRow className="mt-8 justify-center xl:mt-12">

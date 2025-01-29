@@ -4,6 +4,7 @@
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import { Form as AriaForm } from 'react-aria-components';
+import { signIn } from 'next-auth/react';
 
 // Components
 import { Input } from '@/components/ui/Input';
@@ -35,25 +36,26 @@ export const SignupForm = () => {
         body: JSON.stringify({ username, email, password }),
       });
       const data = await response.json();
-      if (data === 'Email already in use.') {
+      if (!response.ok) {
         toast({
-          title: 'User already exists',
-          content:
-            'The user with this email or username already exists. Please try again with a different email or username',
+          title: 'Uhoh something went wrong',
+          content: data,
           variant: 'error',
         });
         return;
       }
-
-      if (response.ok) {
-        toast({
-          title: 'Signed up',
-          content:
-            'You have successfully signed up. Please log in to your account!',
-          variant: 'success',
-        });
-        router.push('/login');
-      }
+      // Immediatelly signning in, after sign up
+      await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
+      toast({
+        title: `Welcome ${username} to StudySnap`,
+        content: data,
+        variant: 'success',
+      });
+      router.push('/home/subjects');
     } catch (error) {
       console.error(error);
       toast({
@@ -95,6 +97,7 @@ export const SignupForm = () => {
       />
       <Input
         isRequired
+        isPassword
         label="Password"
         size="lg"
         type="password"

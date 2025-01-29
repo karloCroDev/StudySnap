@@ -15,15 +15,12 @@ async function getSubjects(session: any) {
   const response = await fetch(
     `http://localhost:3000/api/core/home/subjects?userId=${session.user.id}`,
     {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session.accessToken}`,
-      },
+      cache: 'no-store',
     }
   );
 
   if (!response.ok) throw new Error('Failed to fetch data');
+  console.log('Something');
 
   return await response.json();
 }

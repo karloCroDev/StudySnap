@@ -27,16 +27,16 @@ export const LoginForm = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await signIn('credentials', {
+      const response = await signIn('credentials', {
         email,
         password,
         redirect: false,
       });
-      if (!res?.ok) {
+      if (!response?.ok) {
         toast({
           title: 'Uhoh, something went wrong',
           content:
-            'Please make sure you have entered all the credentials correctly and try again ',
+            'Please make sure you have entered all the credentials correctly and try again',
           variant: 'error',
         });
         return;
@@ -77,6 +77,7 @@ export const LoginForm = () => {
       />
       <Input
         isRequired
+        isPassword
         label="Password"
         size="lg"
         type="password"

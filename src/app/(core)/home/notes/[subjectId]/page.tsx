@@ -16,14 +16,7 @@ import { Note } from '@/models/note';
 
 async function getNotes({ session, subjectId }: any) {
   const response = await fetch(
-    `http://localhost:3000/api/core/home/notes?subjectId=${subjectId}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session.accessToken}`, // I think this is not neccessary, will fix it after I am done with everything
-      },
-    }
+    `http://localhost:3000/api/core/home/notes?subjectId=${subjectId}`
   );
 
   if (!response.ok) throw new Error('Failed to fetch data');
@@ -55,7 +48,10 @@ export default async function Notes({
             >
               <CreateNoteCard subject={subjectId} />
             </LayoutColumn>
-            <NoteMapping notesData={notes} userId={userId} />
+            <NoteMapping
+              notesData={notes}
+              // userId={userId}
+            />
           </LayoutRow>
         </LayoutColumn>
       </LayoutRow>
