@@ -19,9 +19,12 @@ import { Subject } from '@/models/subject';
 
 export const SubjectMapping: React.FC<{
   subjects: Subject[];
-  images: string[] // Passing the fetched data to this object
+  images: string[]
 }> = ({ subjects, images }) => {
+
   const search = useGeneralInfo((state) => state.search);
+  // console.log(subjects)
+  // console.log(images)
 
   return subjects
     .filter(
@@ -29,21 +32,23 @@ export const SubjectMapping: React.FC<{
         subject.name.toLowerCase().includes(search) ||
         subject.details.toLowerCase().includes(search)
     )
-    .map((subject) => (
+    .map((subject, index) => (
       <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
         <SubjectCard
           id={subject.id}
           title={subject.name}
           description={subject.details}
-          /*image={
+          image={
             <div className="absolute left-0 top-0 -z-10 h-full w-full">
               <Image
-                src={subject.image? subject.image : ImageExample} //Todo make image visible
-                alt="Informative image about subject"// Returns error that image does not have good width dimensions
+                src={subject.image ? `data:image/(png | jpg | jepg));base64,${images[index]}` : ImageExample} // Convert byte string to Base64 image
+                alt="Informative image about subject"
                 className="h-full object-cover brightness-50"
+                width = "500"
+                height = "500"
               />
             </div>
-          }*/
+          }
           key={subject.id}
         />
       </LayoutColumn>

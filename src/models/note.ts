@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import { getPool } from '../database/pool';
 
 export interface Note{
@@ -7,21 +6,22 @@ export interface Note{
   details: string;
   is_public: boolean;
   subject_id: string;
+  image: string | null;
   likes: number;
   liked: boolean
   creator_name: string;
   creator_id: string
-}//add image
+}
 
 export class NoteClass {
-  static async Insert(title: string, details:  string, is_public: boolean, subject_id: string): Promise<string | null> {
+  static async Insert(title: string, details:  string, is_public: boolean, subject_id: string, image: string | null): Promise<string | null> {
     try {
       const [result]: any = await getPool().execute(
         `
-        INSERT INTO note (title, details, is_public, subject_id)
-        VALUES (?, ?, ?, ?);
+        INSERT INTO note (title, details, is_public, subject_id, image)
+        VALUES (?, ?, ?, ?, ?);
       `,
-        [title, details, is_public, subject_id]
+        [title, details, is_public, subject_id, image]
       );
       return result.insertId as string
     } catch (err) {

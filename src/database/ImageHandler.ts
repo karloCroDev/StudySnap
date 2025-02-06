@@ -2,6 +2,8 @@
 import { writeFile, readFile } from 'fs/promises';
 import path from 'path';
 
+
+//use this to crop image and save storage: https://cloudinary.com/documentation/resizing_and_cropping
 export async function WriteImage(image: FormDataEntryValue | null ): Promise<string | null> {
     let imageUrl = null
     try{
@@ -24,9 +26,7 @@ export async function WriteImage(image: FormDataEntryValue | null ): Promise<str
 }
 
 export async function GetImage(imageUrl: string | null): Promise<string | null>{
-    //const subjectsWithImages = await Promise.all(subjects.map(async (subject) => {
     if (imageUrl) {
-        //const imagePath = path.join(process.cwd(), 'public/uploads', subject.image);
         try {
             const imageBuffer = await readFile(imageUrl);
             const base64Image = imageBuffer.toString('base64');
