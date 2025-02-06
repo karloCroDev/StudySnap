@@ -6,6 +6,13 @@ import { Note } from '../models/note';
 import { Dokument } from '../models/document';
 
 //Make this singleton
+//Kada idem na localhost 3000 baci me na onu test stranicu
+//popravio je za firefox
+//kada likeam ne promjeni se broj likeova
+//discover mora ici na vise stranica
+//edit page jos ne radi
+//promijeni sliku baze
+
 let pool = createPool(databaseConnectionObject).promise()
 
 export function getPool() {
@@ -58,6 +65,7 @@ export async function GetNotesBySubjectId(subject_id: string): Promise<Array<Not
             n.details,
             n.is_public,
             n.subject_id,
+            n.image,
             COUNT(DISTINCT l.user_id) AS likes,
             MAX(CASE WHEN l.user_id = u.id THEN 1 ELSE 0 END) AS liked,
             u.username AS creator_name,
@@ -90,6 +98,7 @@ export async function GetPublicNotes(limit: number, offset: number = 0, userId: 
             n.details,
             n.is_public,
             n.subject_id,
+            n.image,
             COUNT(DISTINCT l.user_id) AS likes,
             MAX(CASE WHEN l.user_id = ${userId} THEN 1 ELSE 0 END) AS liked,
             u.username AS creator_name,
@@ -126,7 +135,6 @@ export async function GetDocumentsByNoteId(note_id: string): Promise<Dokument> {
 
 export async function GetNoteNameById(note_id: string): Promise<string> {
     const result: [any, any] = await getPool().query(`SELECT title FROM note WHERE id = ${note_id}`);
-    console.log(result, "+++++++++++++++++++++++++")
     return result[0][0].title;
 }
 
@@ -138,6 +146,7 @@ export async function GetNotesByUserId(user_id: string): Promise<Array<Note>> {
             n.details,
             n.is_public,
             n.subject_id,
+            n.image,
             COUNT(DISTINCT l.user_id) AS likes,
             MAX(CASE WHEN l.user_id = u.id THEN 1 ELSE 0 END) AS liked,
             u.username AS creator_name,
@@ -170,6 +179,7 @@ export async function GetNoteById(note_id: string): Promise<Note> {
             n.details,
             n.is_public,
             n.subject_id,
+            n.image,
             COUNT(DISTINCT l.user_id) AS likes,
             MAX(CASE WHEN l.user_id = u.id THEN 1 ELSE 0 END) AS liked,
             u.username AS creator_name,
