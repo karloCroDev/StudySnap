@@ -30,6 +30,8 @@ import { LuImage } from 'react-icons/lu';
 import { LuCodeXml } from 'react-icons/lu';
 import { ImQuotesLeft } from 'react-icons/im';
 import { RxDividerHorizontal } from 'react-icons/rx';
+import { LuSubscript } from 'react-icons/lu';
+import { LuSuperscript } from 'react-icons/lu';
 
 // Components
 import { DialogURL } from '@/components/note-editor/DialogURL';
@@ -165,6 +167,27 @@ export const HeaderEditText: React.FC<{
         >
           <LuStrikethrough className="size-8" />
         </ReactAriaButton>
+        <ReactAriaButton
+          onPress={() => editor.chain().focus().toggleSubscript().run()}
+          className={
+            editor.isActive('subscript')
+              ? 'is-given-option-active'
+              : 'default-button'
+          }
+        >
+          <LuSubscript className="size-8" />
+        </ReactAriaButton>
+        <ReactAriaButton
+          onPress={() => editor.chain().focus().toggleSuperscript().run()}
+          className={
+            editor.isActive('superscript')
+              ? 'is-given-option-active'
+              : 'default-button'
+          }
+        >
+          <LuSuperscript className="size-8" />
+        </ReactAriaButton>
+
         <DialogURL editor={editor}>
           <LuImage className="size-8" />
         </DialogURL>
@@ -234,6 +257,7 @@ export const HeaderEditText: React.FC<{
         >
           <LuCodeXml className="size-8" />
         </ReactAriaButton>
+
         <ReactAriaButton
           onPress={() => editor.chain().focus().toggleBlockquote().run()}
           className={

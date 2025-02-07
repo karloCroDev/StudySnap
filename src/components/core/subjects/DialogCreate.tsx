@@ -8,20 +8,27 @@ import { FileTrigger, Form, Button as AriaButton } from 'react-aria-components';
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { Spinner } from '@/components/ui/Spinner';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
+import { useGeneralInfo } from '@/store/useGeneralInfo';
+
+// Models (types)
+import { Subject } from '@/models/subject';
 
 export const DialogCreate: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
   const [subjectName, setSubjectName] = React.useState('');
   const [details, setDetails] = React.useState('');
-
   const [image, setImage] = React.useState<File | null>(null);
 
   const toast = useToastStore((state) => state.setToast);
+  const addSubject = useGeneralInfo((state) => state.addSubject);
 
   const createSubject = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,6 +39,7 @@ export const DialogCreate: React.FC<{
     if (image) formData.append('file', image);
 
     try {
+      setLoading(true);
       const response = await fetch(
         'http://localhost:3000/api/core/home/subjects',
         {
@@ -39,23 +47,23 @@ export const DialogCreate: React.FC<{
           body: formData,
         }
       );
-
       const data = await response.json();
-      console.log(data);
-      if (response.ok) {
-        toast({
-          title: `${subjectName} subject created`,
-          content: `You have succesfully created ${subjectName}`,
-          variant: 'success',
-        });
-      } else if (response.status === 400) {
+      if (!response.ok) {
         toast({
           title: 'Missing required fields',
           content:
             'Please make sure you have entered all the credentials correctly and try again',
           variant: 'error',
         });
+        return;
       }
+
+      addSubject(data[0] as Subject);
+      toast({
+        title: `${subjectName} subject created`,
+        content: `You have succesfully created ${subjectName}`,
+        variant: 'success',
+      });
     } catch (error) {
       console.error(error);
       toast({
@@ -63,8 +71,10 @@ export const DialogCreate: React.FC<{
         content: 'Failed to create subject',
         variant: 'error',
       });
+    } finally {
+      setIsOpen(false);
+      setLoading(false);
     }
-    setIsOpen(false);
   };
 
   return (
@@ -85,6 +95,7 @@ export const DialogCreate: React.FC<{
           minLength={3}
           maxLength={24}
           isMdHorizontal
+          value={subjectName}
           inputProps={{
             placeholder: 'Enter subject name',
           }}
@@ -96,6 +107,7 @@ export const DialogCreate: React.FC<{
           minLength={5}
           maxLength={40}
           isMdHorizontal
+          value={details}
           inputProps={{
             placeholder: 'Enter your subject’s details (optional)',
           }}
@@ -117,7 +129,12 @@ export const DialogCreate: React.FC<{
             />
           </AriaButton>
         </FileTrigger>
-        <Button className="self-end" type="submit" isDisabled={!subjectName}>
+        <Button
+          className="self-end"
+          type="submit"
+          isDisabled={!subjectName}
+          iconRight={loading && <Spinner />}
+        >
           Add new subject
         </Button>
       </Form>

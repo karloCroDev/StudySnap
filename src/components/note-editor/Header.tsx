@@ -14,7 +14,9 @@ import { plus_jakarta_sans } from '@/lib/fonts';
 export const Header: React.FC<{
   isEditing: boolean;
   editor: EditorType;
-}> = ({ isEditing, editor }) =>
+  title: string;
+  author: string;
+}> = ({ title, author, isEditing, editor }) =>
   isEditing ? (
     <HeaderEditText editor={editor} />
   ) : (
@@ -25,8 +27,8 @@ export const Header: React.FC<{
           plus_jakarta_sans.className
         )}
       >
-        WWII
+        {title}
       </h1>
-      <p className="text-md font-semibold text-gray-500">by: You</p>
+      <p className="text-md font-semibold text-gray-500">by: {author}</p>
     </div>
   );

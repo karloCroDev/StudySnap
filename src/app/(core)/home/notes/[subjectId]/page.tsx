@@ -6,7 +6,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { CreateNoteCard } from '@/components/core/note/CreateNoteCard';
-import { NoteMapping } from '@/components/core/note/NoteMapping';
+import { NoteMapping } from '@/components/core/NoteMapping';
 
 // Images
 import ImageExample from '@/public/images/login-image.png';
@@ -44,13 +44,18 @@ export default async function Notes({
   return (
     <>
       <SearchableHeader title="Your notes" />
-      <LayoutRow className="mt-8 animate-card-initial-apperance justify-center xl:mt-12">
+      <LayoutRow className="mt-8 justify-center xl:mt-12">
         <LayoutColumn xs={11} lg={10}>
           <LayoutRow className="pr-0 sm:-mr-4">
-            <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
+            <LayoutColumn
+              sm={6}
+              lg={4}
+              xl2={3}
+              className="mb-8 animate-card-apperance sm:pr-4"
+            >
               <CreateNoteCard subject={subjectId} />
             </LayoutColumn>
-            <NoteMapping notes={notes} userId={userId} />
+            <NoteMapping notesData={notes} userId={userId} />
           </LayoutRow>
         </LayoutColumn>
       </LayoutRow>

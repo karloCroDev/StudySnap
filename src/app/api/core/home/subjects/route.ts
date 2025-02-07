@@ -9,7 +9,7 @@ import { SubjectClass } from '@/models/subject';
 import { GetSubjectByCreatorId, GetSubjectById } from '@/database/pool';
 
 //Internal functions
-import { GetImage, WriteImage } from '@/database/ImageHandler'
+import { GetImage, WriteImage } from '@/database/ImageHandler';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     }
 
     const images: Array<string | null> = (await Promise.all(subjects.map(async (subject) => await GetImage(subject.image))));
-    
+
     return NextResponse.json([subjects, images], { status: 200 });
   } catch (error) {
     console.error(error);
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json('Missing required fields', { status: 400 });
     }
 
-    const imagePath = await WriteImage(file)
+    const imagePath = await WriteImage(file);
 
     const id = await SubjectClass.Insert(
       subjectName,
@@ -60,11 +60,11 @@ export async function POST(req: NextRequest) {
     );
 
     if (id === null) {
-      console.error("Creating Subject in database did not return id")
+      console.error('Creating Subject in database did not return id');
       return NextResponse.json({ status: 500 });
     }
 
-    const subject = await GetSubjectById(id)
+    const subject = await GetSubjectById(id);
     // Luka: +
     // I need to get subjectId (and subjectName, details, image) as a response, in order to create it on client (instead of refreshing the page)
     return NextResponse.json(subject, { status: 201 });
@@ -111,7 +111,10 @@ export async function PATCH(req: NextRequest) {
     const file = formData.get('file');
 
     if (!subjectId) {
-      return NextResponse.json( { status: 400, statusText: "Missing subject Id" });
+      return NextResponse.json({
+        status: 400,
+        statusText: 'Missing subject Id',
+      });
     }
 
     const updates: { [key: string]: any } = {};
@@ -132,5 +135,3 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json('Failed to update subject', { status: 500 });
   }
 }
-
-

@@ -1,35 +1,41 @@
+'use client';
+
 // External packages
-import { TrashIcon, Pencil1Icon } from '@radix-ui/react-icons';
+import * as React from 'react';
 import Link from 'next/link';
-import { twJoin } from 'tailwind-merge';
+import { useSession } from 'next-auth/react';
 
 // Components
 import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';
 import { DialogDelete } from '@/components/core/note/DialogDelete';
 import { Avatar } from '@/components/ui/Avatar';
-import { LikeComponent } from '@/components/ui/LikeComponent';
+import { LikeComponent } from '@/components/core/LikeComponent';
+// Karlo : Make sure that Notes types are here, fix this if we have time
 
 export const NoteCard: React.FC<{
   noteId: string;
   title: string;
-  description?: string;
+  description: string;
   author: string;
+  isPublic: boolean;
   userImage?: string;
-  likes: number;
+  numberOfLikes: number;
   liked: boolean;
   creatorId: string;
-  userId: string;
 }> = ({
   noteId,
   title,
   description,
   userImage,
   author,
-  likes,
+  isPublic,
+  numberOfLikes,
   liked,
   creatorId,
-  userId
 }) => {
+  // Karlo: TODO pass this to the like component
+  const user = useSession();
+
   const likeAction = async () => {
     try {
       await fetch('http://localhost:3000/api/core/home/notes/like', {
@@ -37,18 +43,32 @@ export const NoteCard: React.FC<{
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ noteId: noteId, userId: userId, exists: liked }), //image
+        body: JSON.stringify({
+          noteId,
+          userId: user.data?.user.id,
+          exists: liked,
+        }), //image
       });
     } catch (error) {
       console.error(error);
     }
   };
+
+  const [noteName, setNoteName] = React.useState(title);
+  const [noteDetails, setNoteDetails] = React.useState(description);
+
+  // Real time updating if user chnages his name (instead of refreshing)
+  const authorCheck =
+    creatorId.toString() === user.data?.user.id ? user.data.user.name : author;
+
   return (
     <div className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400 text-blue-900">
       <div className="flex aspect-square flex-col p-6 pb-4">
         <div>
-          <h3 className="text-2xl font-semibold">{title}</h3>
-          {description && <p className="text-xs font-medium">{description}</p>}
+          <h3 className="w-3/5 break-words text-xl font-semibold">
+            {noteName}
+          </h3>
+          {description && <p className="text-xs font-medium">{noteDetails}</p>}
         </div>
         <div className="z-10 mt-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -58,47 +78,41 @@ export const NoteCard: React.FC<{
                 alt: '',
               }}
             >
-              {author}
+              {authorCheck}
             </Avatar>
 
             <Link
               href={`/public-profile/${creatorId}`}
               className="font-medium underline-offset-2 hover:underline"
             >
-              {author}
+              {authorCheck}
             </Link>
           </div>
 
           <LikeComponent
             hasBeenLiked={liked}
             isOrderReversed
-            numberOfLikes={likes}
+            numberOfLikes={numberOfLikes}
             action={likeAction}
           />
         </div>
       </div>
-
-      <ul className="absolute right-5 top-8 z-10 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
-        <li>
-          <DialogChangeDetails noteId={noteId}>
-            <Pencil1Icon
-              className={twJoin(
-                'size-9 transition-colors hover:text-blue-400 lg:size-7'
-              )}
+      {/* Luka: What do you think to let user directly change our notes on discover (This under user can only change his notes udner discover) */}
+      {user.data?.user.id === creatorId.toString() && ( // Could make this to check if that user is registered
+        <ul className="absolute right-5 top-8 z-10 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
+          <li>
+            <DialogChangeDetails
+              noteName={noteName}
+              setNoteName={setNoteName}
+              setNoteDetails={setNoteDetails}
+              noteId={noteId}
             />
-          </DialogChangeDetails>
-        </li>
-        <li>
-          <DialogDelete noteId={noteId}>
-            <TrashIcon
-              className={twJoin(
-                'size-9 transition-colors hover:text-blue-400 lg:size-7'
-              )}
-            />
-          </DialogDelete>
-        </li>
-      </ul>
-
+          </li>
+          <li>
+            <DialogDelete noteId={noteId} noteName={noteName} />
+          </li>
+        </ul>
+      )}
       <Link href={`/note-editor/${noteId}`} className="absolute inset-0" />
     </div>
   );

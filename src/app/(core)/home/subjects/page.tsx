@@ -35,13 +35,18 @@ export default async function Subjects() {
   return (
     <>
       <SearchableHeader title="Subjects" />
-      <LayoutRow className="mt-8 animate-card-initial-apperance justify-center xl:mt-12">
+      <LayoutRow className="mt-8 justify-center xl:mt-12">
         <LayoutColumn xs={11} lg={10}>
           <LayoutRow className="pr-0 sm:-mr-4">
-            <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
+            <LayoutColumn
+              sm={6}
+              lg={4}
+              xl2={3}
+              className="mb-8 animate-card-apperance sm:pr-4"
+            >
               <CreateSubjectCard />
             </LayoutColumn>
-            <SubjectMapping subjects={subjects} images ={images} />
+            <SubjectMapping subjectsData={subjects} images={images} />
           </LayoutRow>
         </LayoutColumn>
       </LayoutRow>

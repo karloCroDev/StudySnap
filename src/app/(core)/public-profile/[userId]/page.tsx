@@ -6,7 +6,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { Avatar } from '@/components/ui/Avatar';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
-import { ProfileMapping } from '@/components/core/profile/ProfileMapping';
+import { NoteMapping } from '@/components/core/NoteMapping';
 
 // Models (types)
 import { Note } from '@/models/note';
@@ -42,24 +42,23 @@ export default async function PublicProfile({
       <div className="mb-12 animate-public-profile-initial-apperance lg:mb-16">
         <Avatar
           imageProps={{
-             src: user.image,
+            src: user.image,
             alt: '',
           }}
           size="xl"
           className="mx-auto mb-8"
         >
-          { user.username }
+          {user.username}
         </Avatar>
         <h1 className="mb-12 text-center text-4xl font-semibold lg:mb-16">
-          { user.username }
+          {user.username}
         </h1>
       </div>
       <SearchableHeader title="All notes" />
-      <LayoutRow className="mt-8 animate-card-initial-apperance justify-center xl:mt-12">
+      <LayoutRow className="mt-8 justify-center xl:mt-12">
         <LayoutColumn xs={11} lg={10}>
-          {/* All notes that are public!!! */}
           <LayoutRow className="pr-0 sm:-mr-4">
-            <ProfileMapping notes={notes} userId={userId} />
+            <NoteMapping notesData={notes} userId={userId} />
           </LayoutRow>
         </LayoutColumn>
       </LayoutRow>
