@@ -23,11 +23,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json('Subjects not found', { status: 404 });
     }
 
-    const images: Array<string> = (
-      await Promise.all(
-        subjects.map(async (subject) => await GetImage(subject.image))
-      )
-    ).filter((image): image is string => image !== null);
+    const images: Array<string | null> = (await Promise.all(subjects.map(async (subject) => await GetImage(subject.image))));
 
     return NextResponse.json([subjects, images], { status: 200 });
   } catch (error) {
@@ -99,8 +95,6 @@ export async function DELETE(req: NextRequest) {
   }
 }
 
-// Luka: +
-//  This needs to be PATCH, because user doesn't update all the fileds (give them possiblity to update one field, two filed etc.)
 export async function PATCH(req: NextRequest) {
   try {
     // Extract and verify the JWT
@@ -110,7 +104,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     const formData = await req.formData();
-    console.log(formData);
+
     const subjectId = formData.get('subjectId') as string;
     const subjectName = formData.get('subjectName');
     const details = formData.get('details');
@@ -126,13 +120,15 @@ export async function PATCH(req: NextRequest) {
     const updates: { [key: string]: any } = {};
     if (subjectName) updates.name = subjectName;
     if (details) updates.details = details;
-    if (file) updates.image = WriteImage(file);
+    if (file) updates.image = await WriteImage(file);
 
     if (Object.keys(updates).length === 0) {
       return NextResponse.json('No fields to update', { status: 400 });
     }
 
     await SubjectClass.Update(subjectId, updates);
+
+    
     return NextResponse.json('Subject updated successfully', { status: 200 });
   } catch (error) {
     console.error(error);

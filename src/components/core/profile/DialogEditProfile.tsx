@@ -43,20 +43,21 @@ export const DialogEditProfile: React.FC<{
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await fetch(
-        'http://localhost:3000/api/core/public-profile',
-        {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userId: user.data?.user.id,
-            username,
-            password,
-          }),
-        }
-      );
+
+      const formData = new FormData();
+      formData.append('userId', user.data?.user.id as string)
+      if (username) formData.append('username', username);
+      if (password) formData.append('password', password);
+      if (image) formData.append('file', image);
+
+      const response = await fetch('http://localhost:3000/api/core/public-profile', {
+        method: 'PATCH',
+        headers: {},
+        body: formData ,
+      });
+      if (response.ok) {
+        if (image) await user.update({ image: '' }); // We need to handle upload of images
+        if (username) await user.update({ name: username });    
 
       if (!response.ok) {
         toast({
@@ -88,6 +89,8 @@ export const DialogEditProfile: React.FC<{
       setIsOpen(false);
     }
   };
+
+  // Karlo: input field for an image is missing here
   return (
     <Dialog
       open={isOpen}
@@ -146,7 +149,7 @@ export const DialogEditProfile: React.FC<{
           }}
           onChange={(e) => setPassword(e.toString())}
         />
-
+        
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <DialogDeleteProfile />
           <Button
