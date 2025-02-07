@@ -1,4 +1,7 @@
+'use client';
+
 // External packages
+import * as React from 'react';
 import {
   DoubleArrowRightIcon,
   TrashIcon,
@@ -16,7 +19,10 @@ export const SubjectCard: React.FC<{
   title: string;
   description?: string;
   image?: React.ReactNode;
-}> = ({ id, title, description, image }) => {
+}> = ({ id, title, description = '', image }) => {
+  const [cardTitle, setCardTitle] = React.useState(title);
+  const [cardDescription, setCardDescription] = React.useState(description);
+
   return (
     <div
       className={twJoin(
@@ -30,7 +36,9 @@ export const SubjectCard: React.FC<{
       >
         {image}
         <div>
-          <h3 className="text-2xl font-semibold">{title}</h3>
+          <h3 className="w-3/5 break-words text-xl font-semibold">
+            {cardTitle}
+          </h3>
           {description && (
             <p
               className={twJoin(
@@ -38,7 +46,7 @@ export const SubjectCard: React.FC<{
                 image ? 'text-gray-200' : 'text-gray-400'
               )}
             >
-              {description}
+              {cardDescription}
             </p>
           )}
         </div>
@@ -51,7 +59,11 @@ export const SubjectCard: React.FC<{
       <ul className="md:ity absolute right-5 top-8 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
         <li>
           <DialogChangeDetails
-          id = {id}>
+            id={id}
+            cardTitle={cardTitle}
+            setCardTitle={setCardTitle}
+            setCardDescripton={setCardDescription}
+          >
             <Pencil1Icon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',
@@ -61,8 +73,7 @@ export const SubjectCard: React.FC<{
           </DialogChangeDetails>
         </li>
         <li>
-          <DialogDelete
-            id = {id}>
+          <DialogDelete id={id} name={cardTitle}>
             <TrashIcon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',

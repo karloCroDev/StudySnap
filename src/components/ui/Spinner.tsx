@@ -1,5 +1,5 @@
 // External packages
-import { UpdateIcon } from '@radix-ui/react-icons';
+import { FaSpinner } from 'react-icons/fa';
 import { twMerge } from 'tailwind-merge';
 
 export const Spinner: React.FC<
@@ -7,7 +7,7 @@ export const Spinner: React.FC<
     size?: 'sm' | 'md' | 'lg';
   }
 > = ({ size = 'sm', className }) => (
-  <UpdateIcon
+  <FaSpinner
     className={twMerge(
       'animate-spin',
       size === 'sm' && 'size-4',

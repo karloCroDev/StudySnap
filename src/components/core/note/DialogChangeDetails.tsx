@@ -1,31 +1,41 @@
 'use client';
+
 // External packages
 import * as React from 'react';
 import { RadioGroup, Radio, Form } from 'react-aria-components';
+import { twJoin } from 'tailwind-merge';
+import { Pencil1Icon } from '@radix-ui/react-icons';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { Spinner } from '@/components/ui/Spinner';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
 export const DialogChangeDetails: React.FC<{
-  children: React.ReactNode;
   noteId: string;
-}> = ({ children, noteId }) => {
+  noteName: string;
+  setNoteName: React.Dispatch<React.SetStateAction<string>>;
+  setNoteDetails: React.Dispatch<React.SetStateAction<string>>;
+}> = ({ noteId, noteName, setNoteName, setNoteDetails }) => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [isPublic, setIsPublic] = React.useState(false);
 
-  const [noteName, setNoteName] = React.useState('');
+  const [isPublic, setIsPublic] = React.useState(false); // Provjeri da li ovo radi na backendu
+  const [name, setName] = React.useState('');
   const [details, setDetails] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+
+  console.log(isPublic);
 
   const toast = useToastStore((state) => state.setToast);
 
   const changeDetails = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await fetch(
         'http://localhost:3000/api/core/home/notes',
         {
@@ -33,24 +43,31 @@ export const DialogChangeDetails: React.FC<{
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ noteName, details, isPublic, noteId }),
+          body: JSON.stringify({ noteName: name, details, isPublic, noteId }),
         }
       );
 
-      if (response.ok) {
-        toast({
-          title: `${noteName} note changed`,
-          content: `You have succesfully changed ${noteName}`,
-          variant: 'success',
-        });
-      } else if (response.status === 400) {
+      if (!response.ok) {
         toast({
           title: 'Missing required fields',
           content:
             'Please make sure you have entered all the credentials correctly and try again',
           variant: 'error',
         });
+        return;
       }
+      const syncName = name || noteName;
+      toast({
+        title: `${syncName} note updated`,
+        content: `You have succesfully updated ${syncName}`,
+        variant: 'success',
+      });
+
+      if (name) setNoteName(name);
+      if (details) setNoteDetails(details);
+
+      setName('');
+      setDetails('');
     } catch (error) {
       console.error(error);
       toast({
@@ -58,9 +75,10 @@ export const DialogChangeDetails: React.FC<{
         content: 'Failed to create note',
         variant: 'error',
       });
+    } finally {
+      setLoading(false);
+      setIsOpen(false);
     }
-
-    setIsOpen(false);
   };
   return (
     <Dialog
@@ -68,8 +86,13 @@ export const DialogChangeDetails: React.FC<{
       onOpenChange={setIsOpen}
       title="Change note's details"
       triggerProps={{
-        asChild: true,
-        children,
+        children: (
+          <Pencil1Icon
+            className={twJoin(
+              'size-9 transition-colors hover:text-blue-400 lg:size-7'
+            )}
+          />
+        ),
       }}
     >
       <Form className="flex flex-col gap-5" onSubmit={changeDetails}>
@@ -79,10 +102,13 @@ export const DialogChangeDetails: React.FC<{
           minLength={3}
           maxLength={24}
           isMdHorizontal
+          value={name}
           inputProps={{
             placeholder: 'Enter note name',
           }}
-          onChange={(val) => setNoteName(val.toString())}
+          onChange={(val) => {
+            setName(val.toString());
+          }}
         />
         <Input
           type="text"
@@ -90,6 +116,7 @@ export const DialogChangeDetails: React.FC<{
           minLength={5}
           maxLength={40}
           isMdHorizontal
+          value={details}
           inputProps={{
             placeholder: "Enter your note's details ",
           }}
@@ -123,9 +150,9 @@ export const DialogChangeDetails: React.FC<{
         <Button
           className="self-end"
           type="submit"
-          isDisabled={!noteName && !details}
+          iconRight={loading && <Spinner />}
         >
-          Change note
+          Save
         </Button>
       </Form>
     </Dialog>

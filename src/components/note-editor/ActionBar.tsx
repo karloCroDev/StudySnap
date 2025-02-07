@@ -3,7 +3,7 @@
 // External packagess
 import * as React from 'react';
 import { Editor as EditorType } from '@tiptap/react';
-
+import { useSession } from 'next-auth/react';
 import { Pencil2Icon, FileTextIcon, CameraIcon } from '@radix-ui/react-icons';
 import { FileTrigger } from 'react-aria-components';
 
@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/Button';
 import { DialogQuizz } from '@/components/note-editor/DialogQuizz';
 import { DialogGenerateContent } from './DialogGenerateContent';
 import { Spinner } from '@/components/ui/Spinner';
-import { LikeComponent } from '@/components/ui/LikeComponent';
+import { LikeComponent } from '@/components/core/LikeComponent';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
@@ -20,10 +20,39 @@ import { useToastStore } from '@/store/useToastStore';
 export const ActionBar: React.FC<{
   isEditing: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
+  saveDocument: () => void;
   editor: EditorType;
   completionLoading: boolean;
-}> = ({ isEditing, setIsEditing, editor, completionLoading }) => {
+  noteId: string;
+}> = ({
+  noteId,
+  isEditing,
+  setIsEditing,
+  editor,
+  saveDocument,
+  completionLoading,
+}) => {
+  const user = useSession();
+
   const toast = useToastStore((state) => state.setToast);
+
+  const likeAction = async () => {
+    try {
+      await fetch('http://localhost:3000/api/core/home/notes/like', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          noteId,
+          userId: user.data?.user.id,
+          // exists: liked,
+        }), //image
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // Getting notes
   const [loading, setLoading] = React.useState(false);
@@ -97,14 +126,7 @@ export const ActionBar: React.FC<{
             colorScheme="white"
             rounded="full"
             iconLeft={<FileTextIcon className="size-5" />}
-            onPress={() => {
-              toast({
-                title: 'Saved 🥳',
-                content: 'Your notes have been saved',
-                variant: 'success',
-              });
-              setIsEditing(false);
-            }}
+            onPress={saveDocument}
             className="min-w-fit md:hidden"
           >
             Save

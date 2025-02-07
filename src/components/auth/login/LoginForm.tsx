@@ -9,11 +9,14 @@ import { signIn } from 'next-auth/react';
 // Components
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { Spinner } from '@/components/ui/Spinner';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
 export const LoginForm = () => {
+  const [loading, setLoading] = React.useState(false);
+
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
@@ -23,12 +26,13 @@ export const LoginForm = () => {
   const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const res = await signIn('credentials', {
         email,
         password,
         redirect: false,
       });
-      if (res?.error) {
+      if (!res?.ok) {
         toast({
           title: 'Uhoh, something went wrong',
           content:
@@ -51,6 +55,8 @@ export const LoginForm = () => {
           'Please make sure you have entered all the credentials correctly and try again ',
         variant: 'error',
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -80,7 +86,13 @@ export const LoginForm = () => {
         }}
         onChange={(val) => setPassword(val.toString())}
       />
-      <Button colorScheme="light-blue" rounded="none" size="lg" type="submit">
+      <Button
+        colorScheme="light-blue"
+        rounded="none"
+        size="lg"
+        type="submit"
+        iconRight={loading && <Spinner />}
+      >
         Log in
       </Button>
       {/* 

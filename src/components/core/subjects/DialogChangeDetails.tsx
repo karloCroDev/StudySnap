@@ -3,7 +3,6 @@
 // External packages
 import * as React from 'react';
 import { FileTrigger, Form, Button as AriaButton } from 'react-aria-components';
-import { ImageIcon } from '@radix-ui/react-icons';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
@@ -16,11 +15,14 @@ import { useToastStore } from '@/store/useToastStore';
 export const DialogChangeDetails: React.FC<{
   id: string;
   children: React.ReactNode;
-}> = ({ id, children }) => {
+  cardTitle: string;
+  setCardTitle: React.Dispatch<React.SetStateAction<string>>;
+  setCardDescripton: React.Dispatch<React.SetStateAction<string>>;
+}> = ({ cardTitle, setCardTitle, setCardDescripton, id, children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
+
   const [subjectName, setSubjectName] = React.useState('');
   const [details, setDetails] = React.useState('');
-
   const [image, setImage] = React.useState<File | null>(null);
 
   const toast = useToastStore((state) => state.setToast);
@@ -33,7 +35,6 @@ export const DialogChangeDetails: React.FC<{
     if (subjectName) formData.append('subjectName', subjectName);
     if (details) formData.append('details', details);
     if (image) formData.append('file', image);
-    
     try {
       const response = await fetch(
         'http://localhost:3000/api/core/home/subjects',
@@ -43,21 +44,29 @@ export const DialogChangeDetails: React.FC<{
           body: formData,
         }
       );
-
-      if (response.ok) {
-        toast({
-          title: 'Subject updated',
-          content: 'You have succesfully updated your subject',
-          variant: 'success',
-        });
-      } else if (response.status === 400) {
+      console.log(response.status);
+      if (!response.ok) {
         toast({
           title: 'Missing required fields',
           content:
             'Please make sure you have entered all the credentials correctly and try again',
           variant: 'error',
         });
+        return;
       }
+
+      const syncName = subjectName || cardTitle;
+      toast({
+        title: `${syncName} subject updated`,
+        content: `You have succesfully updated ${syncName} `,
+        variant: 'success',
+      });
+
+      if (subjectName) setCardTitle(subjectName);
+      if (details) setCardDescripton(details);
+
+      setSubjectName('');
+      setDetails('');
     } catch (error) {
       console.error(error);
       toast({
@@ -65,9 +74,9 @@ export const DialogChangeDetails: React.FC<{
         content: 'Failed to update subject',
         variant: 'error',
       });
+    } finally {
+      setIsOpen(false);
     }
-
-    setIsOpen(false);
   };
 
   return (
@@ -76,7 +85,6 @@ export const DialogChangeDetails: React.FC<{
       onOpenChange={setIsOpen}
       title="Change subject's details"
       triggerProps={{
-        asChild: true,
         children,
       }}
     >
@@ -87,6 +95,7 @@ export const DialogChangeDetails: React.FC<{
           minLength={3}
           maxLength={24}
           isMdHorizontal
+          value={subjectName}
           inputProps={{
             placeholder: 'Enter new subject name',
           }}
@@ -94,10 +103,11 @@ export const DialogChangeDetails: React.FC<{
         />
         <Input
           type="text"
-          label="Details"
+          label="Details (optional)"
           minLength={5}
           maxLength={40}
           isMdHorizontal
+          value={details}
           inputProps={{
             placeholder: 'Enter new subject details',
           }}
@@ -124,7 +134,7 @@ export const DialogChangeDetails: React.FC<{
           type="submit"
           isDisabled={!subjectName && !details}
         >
-          Change subject
+          Save
         </Button>
       </Form>
     </Dialog>

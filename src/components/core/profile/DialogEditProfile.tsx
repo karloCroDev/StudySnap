@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Avatar } from '@/components/ui/Avatar';
 import { DialogDeleteProfile } from '@/components/core/profile/DialogDeleteProfile';
+import { Spinner } from '@/components/ui/Spinner';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
@@ -21,8 +22,10 @@ export const DialogEditProfile: React.FC<{
 }> = ({ setIsDialogOpen, children }) => {
   const user = useSession();
 
-  const toast = useToastStore((state) => state.setToast);
   const [isOpen, setIsOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  const toast = useToastStore((state) => state.setToast);
 
   React.useEffect(() => {
     setIsDialogOpen && setIsDialogOpen(isOpen);
@@ -36,8 +39,10 @@ export const DialogEditProfile: React.FC<{
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const saveChanges = async () => {
+  const saveChanges = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
+      setLoading(true);
 
       const formData = new FormData();
       formData.append('userId', user.data?.user.id as string)
@@ -45,7 +50,6 @@ export const DialogEditProfile: React.FC<{
       if (password) formData.append('password', password);
       if (image) formData.append('file', image);
 
-      console.log(formData);
       const response = await fetch('http://localhost:3000/api/core/public-profile', {
         method: 'PATCH',
         headers: {},
@@ -53,22 +57,26 @@ export const DialogEditProfile: React.FC<{
       });
       if (response.ok) {
         if (image) await user.update({ image: '' }); // We need to handle upload of images
-        if (username) await user.update({ name: username });
+        if (username) await user.update({ name: username });    
 
-        toast({
-          title: 'Profile updated',
-          content: 'You have succesfully updated your profile',
-          variant: 'success',
-        });
-        // Find a better way, this works for now
-      } else if (response.status === 400) {
+      if (!response.ok) {
         toast({
           title: 'Missing required fields',
           content:
             'Please make sure you have entered all the credentials correctly and try again',
           variant: 'error',
         });
+        return;
       }
+
+      // if (image) await user.update({ image: '' }); // We need to handle upload of images
+      if (username) await user.update({ name: username });
+
+      toast({
+        title: 'Profile updated',
+        content: 'You have succesfully updated your profile',
+        variant: 'success',
+      });
     } catch (error) {
       console.error(error);
       toast({
@@ -77,6 +85,7 @@ export const DialogEditProfile: React.FC<{
         variant: 'error',
       });
     } finally {
+      setLoading(false);
       setIsOpen(false);
     }
   };
@@ -115,13 +124,14 @@ export const DialogEditProfile: React.FC<{
         </h2>
       </div>
       <hr className="h-px w-full border-0 bg-gray-900" />
-      <Form className="flex flex-col gap-5">
+      <Form className="flex flex-col gap-5" onSubmit={saveChanges}>
         <Input
           type="text"
           label="Username"
           minLength={3}
           maxLength={24}
           isMdHorizontal
+          value={username}
           inputProps={{
             placeholder: 'Enter new username',
           }}
@@ -133,6 +143,7 @@ export const DialogEditProfile: React.FC<{
           minLength={8}
           maxLength={16}
           isMdHorizontal
+          value={password}
           inputProps={{
             placeholder: 'Enter new password',
           }}
@@ -142,8 +153,9 @@ export const DialogEditProfile: React.FC<{
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <DialogDeleteProfile />
           <Button
-            onPress={saveChanges}
             isDisabled={!username && !password && !image}
+            type="submit"
+            iconRight={loading && <Spinner />}
           >
             Save changes
           </Button>
