@@ -1,3 +1,5 @@
+
+DELETE DATABASE studysnap;
 CREATE DATABASE studysnap;
 
 CREATE TABLE IF NOT EXISTS `user` (

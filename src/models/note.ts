@@ -14,7 +14,7 @@ export interface Note{
 }
 
 export class NoteClass {
-  static async Insert(title: string, details:  string, is_public: boolean, subject_id: string, image: string | null): Promise<string | null> {
+  static async Insert(title: string, details:  string, is_public: boolean, subject_id: string, image: string | null = null): Promise<string | null> {
     try {
       const [result]: any = await getPool().execute(
         `

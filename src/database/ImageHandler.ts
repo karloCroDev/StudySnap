@@ -2,7 +2,6 @@
 import { writeFile, readFile } from 'fs/promises';
 import path from 'path';
 
-
 //use this to crop image and save storage: https://cloudinary.com/documentation/resizing_and_cropping
 export async function WriteImage(image: FormDataEntryValue | null ): Promise<string | null> {
     let imageUrl = null
