@@ -5,14 +5,12 @@ import { Subject } from '../models/subject';
 import { Note } from '../models/note';
 import { Dokument } from '../models/document';
 
-//Make this singleton
 //Kada idem na localhost 3000 baci me na onu test stranicu
-//popravio je za firefox
 //kada likeam ne promjeni se broj likeova
 //discover mora ici na vise stranica
 //edit page jos ne radi
 //promijeni sliku baze
-
+//Morat ces remakeat database
 let pool = createPool(databaseConnectionObject).promise()
 
 export function getPool() {

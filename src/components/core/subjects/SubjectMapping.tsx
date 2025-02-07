@@ -23,8 +23,6 @@ export const SubjectMapping: React.FC<{
 }> = ({ subjects, images }) => {
 
   const search = useGeneralInfo((state) => state.search);
-  // console.log(subjects)
-  // console.log(images)
 
   return subjects
     .filter(

@@ -102,7 +102,7 @@ export async function PATCH(req: NextRequest) {
     if (!token) {
       return NextResponse.json('Unauthorized', { status: 401 });
     }
-    console.log(req)
+
     const formData = await req.formData();
 
     const subjectId = formData.get('subjectId') as string;
@@ -124,6 +124,8 @@ export async function PATCH(req: NextRequest) {
     }
 
     await SubjectClass.Update(subjectId, updates);
+
+    
     return NextResponse.json('Subject updated successfully', { status: 200 });
   } catch (error) {
     console.error(error);
