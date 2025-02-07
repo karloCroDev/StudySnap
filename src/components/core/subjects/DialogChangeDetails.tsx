@@ -35,15 +35,13 @@ export const DialogChangeDetails: React.FC<{
     if (subjectName) formData.append('subjectName', subjectName);
     if (details) formData.append('details', details);
     if (image) formData.append('file', image);
-    console.log('Hello world');
-    console.log(formData, 'Prethod');
-
     try {
       const response = await fetch(
         'http://localhost:3000/api/core/home/subjects',
         {
           method: 'PATCH',
-          body: formData, //image is missing here
+          headers: {},
+          body: formData,
         }
       );
       console.log(response.status);

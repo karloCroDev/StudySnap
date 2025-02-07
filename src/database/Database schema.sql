@@ -1,3 +1,5 @@
+
+DELETE DATABASE studysnap;
 CREATE DATABASE studysnap;
 
 CREATE TABLE IF NOT EXISTS `user` (
@@ -31,6 +33,7 @@ CREATE TABLE `note` (
   `title` varchar(255) NOT NULL,
   `details` mediumtext NOT NULL,
   `is_public` tinyint(1) NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `subject_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `section_subject_id_foreign` (`subject_id`),
