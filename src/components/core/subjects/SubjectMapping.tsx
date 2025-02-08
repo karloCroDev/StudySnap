@@ -15,6 +15,7 @@ import ImageExample from '@/public/images/login-image.png';
 
 // Models (types)
 import { Subject } from '@/models/subject';
+import { ImageObject } from '@/database/ImageHandler';
 
 export const SubjectMapping: React.FC<{
   /*subjects: Subject[];
@@ -23,7 +24,7 @@ export const SubjectMapping: React.FC<{
 */
   //const search = useGeneralInfo((state) => state.search);
   subjectsData: Subject[];
-  images: string[]; // Passing the fetched data to this object
+  images: ImageObject[]; // Passing the fetched data to this object
 }> = ({ subjectsData, images }) => {
   const { search, subjects, setSubjects } = useGeneralInfo(
     useShallow((state) => ({
@@ -38,6 +39,7 @@ export const SubjectMapping: React.FC<{
   }, []);
 
   if (!subjects.length) return;
+  
   return subjects
     .filter(
       (subject) =>
@@ -45,7 +47,7 @@ export const SubjectMapping: React.FC<{
         subject.details.toLowerCase().includes(search)
     )
 
-    .map((subject, index) => (
+    .map((subject) => (
       <LayoutColumn
         sm={6}
         lg={4}
@@ -59,7 +61,7 @@ export const SubjectMapping: React.FC<{
           image={
             <div className="absolute left-0 top-0 -z-10 h-full w-full">
               <Image
-                src={subject.image ? `data:image/(png | jpg | jepg));base64,${images[index]}` : ImageExample}
+                src={subject.image != null ? `data:image/jpeg;base64,${images.find(image => image.url === subject.image)?.encodedImage}` : ImageExample}
                 alt="Informative image about subject"
                 className="h-full object-cover brightness-50"
                 width = "500"

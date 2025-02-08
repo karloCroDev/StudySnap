@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ status: 404, statusText: 'Subjects not found' });
     }
 
-    const images: Array<string | null> = (await Promise.all(subjects.map(async (subject) => await GetImage(subject.image))));
+    const images = (await Promise.all(subjects.map(async (subject) => await GetImage(subject.image)))).filter((imageObject) => imageObject != null);
 
     return NextResponse.json([subjects, images], { status: 200, statusText: "Fetched successfully" });
   } catch (error) {
@@ -36,6 +36,8 @@ export async function POST(req: NextRequest) {
   try {
     // Extract and verify the JWT
     const token = await getToken({ req, secret });
+    console.log("This in my POST token \n", token, " \n")
+
     if (!token) {
       return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
     }

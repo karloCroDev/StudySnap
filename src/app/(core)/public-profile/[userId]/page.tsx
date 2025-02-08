@@ -11,12 +11,14 @@ import { NoteMapping } from '@/components/core/NoteMapping';
 // Models (types)
 import { Note } from '@/models/note';
 
-async function getPublicProfileNotes(userId: string) {
+async function getPublicProfileNotes(userId: string, token: string) {
+
   const response = await fetch(
     `http://localhost:3000/api/core/public-profile`,
     {
       method: 'POST',
       headers: {
+        //'Authorization': `Bearer ${token}`, // Add JWT token to headers
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ userId }),
@@ -24,6 +26,7 @@ async function getPublicProfileNotes(userId: string) {
   );
 
   if (!response.ok) throw new Error('Error with fetching');
+
   return await response.json();
 }
 
@@ -32,11 +35,13 @@ export default async function PublicProfile({
 }: {
   params: { userId: string };
 }) {
-  // const session = await getServerSession(authOptions);
-  // const userId: string = await session.user.id; // Handle immediate changes on client if user updates his data
+  const session = await getServerSession(authOptions);
+  const token = session?.accessToken; // Assuming the token is stored in the session
+  //const userId: string = await session.user.id; // Handle immediate changes on client if user updates his data
+
 
   const { userId } = params;
-  const [notes, user] = await getPublicProfileNotes(userId);
+  const [notes, user] = await getPublicProfileNotes(userId, token);
   return (
     <>
       <div className="mb-12 animate-public-profile-initial-apperance lg:mb-16">

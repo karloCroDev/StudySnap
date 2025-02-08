@@ -2,6 +2,10 @@
 import { writeFile, readFile } from 'fs/promises';
 import path from 'path';
 
+export interface ImageObject{
+    url: string;
+    encodedImage: string;
+}
 //use this to crop image and save storage: https://cloudinary.com/documentation/resizing_and_cropping || react-easy-crop
 export async function WriteImage(image: FormDataEntryValue | null ): Promise<string | null> {
     let imageUrl = null
@@ -24,12 +28,12 @@ export async function WriteImage(image: FormDataEntryValue | null ): Promise<str
     }   
 }
 
-export async function GetImage(imageUrl: string | null): Promise<string | null>{
+export async function GetImage(imageUrl: string | null): Promise<ImageObject | null>{
     if (imageUrl) {
         try {
             const imageBuffer = await readFile(imageUrl);
             const base64Image = imageBuffer.toString('base64');
-            return base64Image ;
+            return {url: imageUrl, encodedImage: base64Image} ;
         } catch (error) {
             console.error('Error reading image:', error);
             return null
