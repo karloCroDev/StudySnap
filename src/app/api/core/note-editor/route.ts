@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const { noteId } = await req.json();
 
     if (!noteId) {
-      return NextResponse.json('Note ID is required', { status: 400 });
+      return NextResponse.json( { status: 400, statusText: 'Note ID is missing'});
     }
 
     let doc: Dokument = await GetDocumentsByNoteId(noteId);
@@ -30,10 +30,10 @@ export async function POST(req: NextRequest) {
       } as Dokument;
     }
 
-    return NextResponse.json(doc, { status: 200 });
+    return NextResponse.json(doc, { status: 200, statusText: "Created successfully"});
   } catch (error) {
     console.error('Error fetching document:', error);
-    return NextResponse.json('Internal Server Error', { status: 500 });
+    return NextResponse.json({ status: 500, statusText: 'Failed to create document'});
   }
 }
 
@@ -50,14 +50,14 @@ export async function PUT(req: NextRequest) {
     const token = await getToken({ req, secret });
 
     if (!token) {
-      return NextResponse.json('Unauthorized', { status: 401 });
+      return NextResponse.json({ status: 401, statusText: 'Unauthorized'});
     }
 
     await DokumentClass.Update(title, content, id);
 
-    return NextResponse.json('Saved', { status: 200 });
+    return NextResponse.json( { status: 200, statusText: 'Saved'});
   } catch (error) {
     console.error(error);
-    return NextResponse.json('Failed to save', { status: 500 });
+    return NextResponse.json( { status: 500, statusText:'Failed to save' });
   }
 }

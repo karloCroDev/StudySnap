@@ -58,7 +58,7 @@ export default async function PublicProfile({
       <LayoutRow className="mt-8 justify-center xl:mt-12">
         <LayoutColumn xs={11} lg={10}>
           <LayoutRow className="pr-0 sm:-mr-4">
-            <NoteMapping notesData={notes} userId={userId} />
+            <NoteMapping notesData={notes} />
           </LayoutRow>
         </LayoutColumn>
       </LayoutRow>

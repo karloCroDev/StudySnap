@@ -11,6 +11,7 @@ import { Dokument } from '../models/document';
 //edit page jos ne radi
 //promijeni sliku baze
 //Morat ces remakeat database
+//Need to verify token every time
 let pool = createPool(databaseConnectionObject).promise()
 
 export function getPool() {

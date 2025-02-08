@@ -20,15 +20,15 @@ export async function GET(req: NextRequest) {
 
     const subjects = await GetSubjectByCreatorId(userId as string);
     if (!subjects) {
-      return NextResponse.json('Subjects not found', { status: 404 });
+      return NextResponse.json({ status: 404, statusText: 'Subjects not found' });
     }
 
     const images: Array<string | null> = (await Promise.all(subjects.map(async (subject) => await GetImage(subject.image))));
 
-    return NextResponse.json([subjects, images], { status: 200 });
+    return NextResponse.json([subjects, images], { status: 200, statusText: "Fetched successfully" });
   } catch (error) {
     console.error(error);
-    return NextResponse.json('Failed to get subjects', { status: 500 });
+    return NextResponse.json({ status: 500, statusText: 'Failed to get subjects'});
   }
 }
 
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     // Extract and verify the JWT
     const token = await getToken({ req, secret });
     if (!token) {
-      return NextResponse.json('Unauthorized', { status: 401 });
+      return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
     }
 
     const formData = await req.formData();
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
     const file = formData.get('file');
 
     if (!subjectName || !creator) {
-      return NextResponse.json('Missing required fields', { status: 400 });
+      return NextResponse.json({ status: 400, statusText: 'Missing required fields'});
     }
 
     const imagePath = await WriteImage(file);
@@ -61,16 +61,16 @@ export async function POST(req: NextRequest) {
 
     if (id === null) {
       console.error('Creating Subject in database did not return id');
-      return NextResponse.json({ status: 500 });
+      return NextResponse.json({ status: 500, statusText: 'Creating Subject in database did not return id' });
     }
 
     const subject = await GetSubjectById(id);
     // Luka: +
     // I need to get subjectId (and subjectName, details, image) as a response, in order to create it on client (instead of refreshing the page)
-    return NextResponse.json(subject, { status: 201 });
+    return NextResponse.json(subject, { status: 201, statusText: "Created successfully"});
   } catch (error) {
     console.error(error);
-    return NextResponse.json('Failed to create subject', { status: 500 });
+    return NextResponse.json( { status: 500, statusText: 'Failed to create subject'});
   }
 }
 
@@ -79,19 +79,19 @@ export async function DELETE(req: NextRequest) {
     // Extract and verify the JWT
     const token = await getToken({ req, secret });
     if (!token) {
-      return NextResponse.json('Unauthorized', { status: 401 });
+      return NextResponse.json({ status: 401, statusText: 'Unauthorized'});
     }
 
     const { id } = await req.json();
     if (!id) {
-      return NextResponse.json('Missing required fields', { status: 400 });
+      return NextResponse.json({ status: 400, statusText: 'Missing required fields'});
     }
 
     await SubjectClass.Delete(id);
-    return NextResponse.json('Subject deleted successfully', { status: 200 });
+    return NextResponse.json({ status: 200, statusText: 'Subject deleted successfully'});
   } catch (error) {
     console.error(error);
-    return NextResponse.json('Failed to delete subject', { status: 500 });
+    return NextResponse.json({ status: 500, statusText: 'Failed to delete subject'});
   }
 }
 
@@ -100,7 +100,7 @@ export async function PATCH(req: NextRequest) {
     // Extract and verify the JWT
     const token = await getToken({ req, secret });
     if (!token) {
-      return NextResponse.json('Unauthorized', { status: 401 });
+      return NextResponse.json({ status: 401, statusText: 'Unauthorized'});
     }
 
     const formData = await req.formData();
@@ -123,15 +123,15 @@ export async function PATCH(req: NextRequest) {
     if (file) updates.image = await WriteImage(file);
 
     if (Object.keys(updates).length === 0) {
-      return NextResponse.json('No fields to update', { status: 400 });
+      return NextResponse.json( { status: 400, statusText: 'No fields to update'});
     }
 
     await SubjectClass.Update(subjectId, updates);
 
     
-    return NextResponse.json('Subject updated successfully', { status: 200 });
+    return NextResponse.json( { status: 200, statusText: 'Subject updated successfully'});
   } catch (error) {
     console.error(error);
-    return NextResponse.json('Failed to update subject', { status: 500 });
+    return NextResponse.json( { status: 500, statusText: 'Failed to update subject'});
   }
 }
