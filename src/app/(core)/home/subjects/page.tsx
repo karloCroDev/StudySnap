@@ -12,6 +12,7 @@ import { SubjectMapping } from '@/components/core/subjects/SubjectMapping';
 import { Subject } from '@/models/subject';
 
 async function getSubjects(session: any) {
+
   const response = await fetch(
     `http://localhost:3000/api/core/home/subjects?userId=${session.user.id}`,
     {

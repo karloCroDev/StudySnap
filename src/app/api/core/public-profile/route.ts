@@ -11,18 +11,26 @@ import { WriteImage } from '@/database/ImageHandler';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
+    /*const token = await getToken({ req, secret });
+        console.log("\n\n\n I am here", token)
+    if (!token) {
+          return NextResponse.json({ status: 401 });
+        }*/
+
+    //if (!await getToken({ req, secret })) return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
+
     const { userId } = await req.json();
 
     if (!userId) {
-      return NextResponse.json({ status: 200, statusText: 'Insufficient data provided'});
+      return NextResponse.json({ status: 400, statusText: 'Insufficient data provided'});
     }
 
     let notes = await GetNotesByUserId(userId);
     let user = await GetUserById(userId)
 
-    return NextResponse.json([notes, user], { status: 201, statusText: "Successfully created"});
+    return NextResponse.json([notes, user], { status: 201, statusText: "Success"});
   } catch (error) {
     console.error(error);
     return NextResponse.json({ status: 500, statusText: 'Failed to load notes'});
@@ -31,11 +39,9 @@ export async function POST(req: Request) {
 
 export async function PATCH(req: NextRequest) {
   try {
+    //if (!await getToken({ req, secret })) return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
     const token = await getToken({ req, secret });
-    if (!token) {
-      return NextResponse.json({ status: 401, statusText: 'Unauthorized'});
-    }
-
+    console.log("This in my Patch token \n", token, " \n")
     const formData = await req.formData();
 
     const userId = formData.get('user.Id') as string
@@ -67,11 +73,7 @@ export async function PATCH(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    // Extract and verify the JWT
-    const token = await getToken({ req, secret });
-    if (!token) {
-      return NextResponse.json({ status: 401, statusText: 'Unauthorized'});
-    }
+    //if (!await getToken({ req, secret })) return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
 
     const { userId } = await req.json();
     if (!userId) {
