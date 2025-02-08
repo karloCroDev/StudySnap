@@ -10,19 +10,19 @@ export async function POST(req: Request) {
     const { username, email, password } = await req.json();
     
     if (!username || !email || !password) {
-      return NextResponse.json('Insufficient data provided', { status: 200 });
+      return NextResponse.json({ status: 400, statusText: 'Insufficient data provided' });
     }
     if (await IsUsernameOrEmailTaken(username, email)) {
-      return NextResponse.json('Email already in use.', { status: 400 });
+      return NextResponse.json({ status: 400, statusText: 'Email already in use' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await UserClass.Insert(username, email, hashedPassword, null)
 
-    return NextResponse.json('User registred', { status: 201 });
+    return NextResponse.json({ status: 201, statusText: 'User registred' });
   } catch (error) {
     console.error(error);
-    return NextResponse.json('Failed to sign up', { status: 500 });
+    return NextResponse.json({ status: 500, statusText: 'Error occoured on server' });
   }
 }

@@ -4,6 +4,10 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { GetUserByEmail } from '../../../../database/pool';
 
+
+/*
+
+*/
 export const authOptions = {
   providers: [
     CredentialsProvider({
@@ -56,7 +60,7 @@ export const authOptions = {
   session: {
     strategy: 'jwt' as 'jwt',
   },
-  //add token expiry date and refresh
+
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: '/',

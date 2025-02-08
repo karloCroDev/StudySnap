@@ -7,20 +7,22 @@ import { useShallow } from 'zustand/shallow';
 // Components
 import { LayoutColumn } from '@/components/ui/Layout';
 import { SubjectCard } from '@/components/core/subjects/SubjectCard';
+import Image from 'next/image';
 
 // Store
 import { useGeneralInfo } from '@/store/useGeneralInfo';
+import ImageExample from '@/public/images/login-image.png';
 
 // Models (types)
 import { Subject } from '@/models/subject';
 
 export const SubjectMapping: React.FC<{
-  subjects: Subject[];
+  /*subjects: Subject[];
   images: string[]
 }> = ({ subjects, images }) => {
-
-  const search = useGeneralInfo((state) => state.search);
-  /*subjectsData: Subject[];
+*/
+  //const search = useGeneralInfo((state) => state.search);
+  subjectsData: Subject[];
   images: string[]; // Passing the fetched data to this object
 }> = ({ subjectsData, images }) => {
   const { search, subjects, setSubjects } = useGeneralInfo(
@@ -33,7 +35,7 @@ export const SubjectMapping: React.FC<{
 
   React.useEffect(() => {
     setSubjects(subjectsData);
-  }, []);*/
+  }, []);
 
   if (!subjects.length) return;
   return subjects
@@ -43,7 +45,7 @@ export const SubjectMapping: React.FC<{
         subject.details.toLowerCase().includes(search)
     )
 
-    .map((subject) => (
+    .map((subject, index) => (
       <LayoutColumn
         sm={6}
         lg={4}
@@ -57,7 +59,7 @@ export const SubjectMapping: React.FC<{
           image={
             <div className="absolute left-0 top-0 -z-10 h-full w-full">
               <Image
-                src={subject.image ? `data:image/(png | jpg | jepg));base64,${images[index]}` : ImageExample} // Convert byte string to Base64 image
+                src={subject.image ? `data:image/(png | jpg | jepg));base64,${images[index]}` : ImageExample}
                 alt="Informative image about subject"
                 className="h-full object-cover brightness-50"
                 width = "500"
