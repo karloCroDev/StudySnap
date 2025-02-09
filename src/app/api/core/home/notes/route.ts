@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ status: 500, statusText: 'Failed to get id from inserted note' });
     }
 
-    const note = await GetNoteById(id);
+    const note = await GetNoteById(id, "0");
 
     return NextResponse.json(note, {
       status: 201,

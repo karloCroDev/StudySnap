@@ -12,14 +12,14 @@ import { Header } from '@/components/ui/header/Header';
 // Models (types)
 import { Dokument } from '@/models/document';
 
-async function fetchDocument(noteId: string) {
+async function fetchDocument(noteId: string, userId: string) {
   try {
     const response = await fetch(`http://localhost:3000/api/core/note-editor`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ noteId }),
+      body: JSON.stringify({ noteId, userId }),
     });
     if (!response.ok) throw new Error('Failed to fetch data');
 
@@ -38,8 +38,9 @@ export default async function NoteEditor({
   if (!session) {
     redirect('/login');
   }
-
-  const documentData: Dokument = await fetchDocument(params.noteId);
+  const userId = session.user.id
+  //Karlo: Everything should be provided in this variable
+  const documentData: Dokument = await fetchDocument(params.noteId, userId);
 
   return (
     <NavigationGuardProvider>
@@ -50,7 +51,7 @@ export default async function NoteEditor({
             <TipTapEditor
               title={documentData.title}
               content={documentData.content}
-              // creatorId={documentData.}
+              creatorId={documentData.creator_id}
               noteId={documentData.id}
             />
           </LayoutColumn>

@@ -28,11 +28,11 @@ import { ActionBar } from './ActionBar';
 import { useNavigationGuard } from 'next-navigation-guard';
 
 export const TipTapEditor: React.FC<{
-  creatorId?: string; // NOT OPTIONAL
+  creatorId: string; // NOT OPTIONAL
   title: string;
   content: string;
   noteId: string;
-}> = ({ creatorId = 'PUT CREATOR ID!', title, content, noteId }) => {
+}> = ({ creatorId, title, content, noteId }) => {
   const user = useSession();
 
   const toast = useToastStore((state) => state.setToast);

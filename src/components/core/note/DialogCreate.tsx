@@ -42,7 +42,7 @@ export const DialogCreate: React.FC<{
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ noteName, details, isPublic, subjectId }),
+          body: JSON.stringify({ noteName, details, isPublic, subjectId, }),
         }
       );
       const data = await response.json();
@@ -55,6 +55,7 @@ export const DialogCreate: React.FC<{
         });
         return;
       }
+      //Karlo: When i Create note, the data that i provide to update page turns into undefined in the process and the error occures
       addNote(data[0] as Note);
       toast({
         title: `${noteName} note created`,
