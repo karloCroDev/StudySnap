@@ -11,17 +11,20 @@ const secret = process.env.NEXTAUTH_SECRET;
 // Luka: Not mandatory, but GET with params, is maybe better
 export async function POST(req: NextRequest) {
   try {
-    const { noteId } = await req.json();
+    const { noteId, userId } = await req.json();
 
-    if (!noteId) {
+    if (!noteId || !userId) {
       return NextResponse.json( { status: 400, statusText: 'Note ID is missing'});
     }
 
-    let doc: Dokument = await GetDocumentsByNoteId(noteId);
+    let doc: Dokument = await GetDocumentsByNoteId(noteId, userId);
 
     if (!doc) {
       let title = await GetNoteNameById(noteId);
-      let id = await DokumentClass.Insert(title, '', noteId);
+      let id = await DokumentClass.Insert('', noteId);
+
+      if (!id) return NextResponse.json({ status: 500, statusText: 'Failed to create document' });
+
       doc = {
         id: id,
         title: title,
@@ -53,7 +56,7 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ status: 401, statusText: 'Unauthorized'});
     }
 
-    await DokumentClass.Update(title, content, id);
+    await DokumentClass.Update(content, id);
 
     return NextResponse.json( { status: 200, statusText: 'Saved'});
   } catch (error) {

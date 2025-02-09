@@ -1,8 +1,6 @@
 // External packages
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { writeFile } from 'fs/promises';
-import path from 'path';
 
 // Models
 import { SubjectClass } from '@/models/subject';

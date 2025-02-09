@@ -2,7 +2,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import bcrypt from 'bcryptjs';
-import { GetNotesByUserId, GetUserById } from '@/database/pool';
+import { GetNotesByCreatorId, GetUserById } from '@/database/pool';
 
 // Models
 import { UserClass } from '@/models/user';
@@ -21,14 +21,14 @@ export async function POST(req: NextRequest) {
 
     //if (!await getToken({ req, secret })) return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
 
-    const { userId } = await req.json();
+    const { creatorId, userId } = await req.json();
 
-    if (!userId) {
+    if (!userId || !creatorId) {
       return NextResponse.json({ status: 400, statusText: 'Insufficient data provided'});
     }
 
-    let notes = await GetNotesByUserId(userId);
-    let user = await GetUserById(userId)
+    let notes = await GetNotesByCreatorId(creatorId, userId);
+    let user = await GetUserById(creatorId)
 
     return NextResponse.json([notes, user], { status: 201, statusText: "Success"});
   } catch (error) {

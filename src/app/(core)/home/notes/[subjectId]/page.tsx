@@ -21,7 +21,6 @@ async function getNotes({ session, subjectId }: any) {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${session.accessToken}`, // I think this is not neccessary, will fix it after I am done with everything
       },
     }
   );
@@ -55,7 +54,7 @@ export default async function Notes({
             >
               <CreateNoteCard subject={subjectId} />
             </LayoutColumn>
-            <NoteMapping notesData={notes} userId={userId} />
+            <NoteMapping notesData={notes} />
           </LayoutRow>
         </LayoutColumn>
       </LayoutRow>
