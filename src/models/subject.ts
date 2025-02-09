@@ -6,19 +6,19 @@ export interface Subject{
     date_created: Date,
     date_modified: Date,
     details: string,
-    image: string | null,
+    image_url: string | null,
     creator_id: string,
 }
 
 export class SubjectClass {
     static async Insert(name: string, details: string, creator: string, image: string | null,): Promise<string | null> {
          try {
+            console.log(creator)
              const [result]: any = await getPool().execute(
                 `
-        INSERT INTO subject ( name, details, creator, image)
-        VALUES (?, ?, ?, ?);
-      `,
-                [name, details, creator, image]
+                INSERT INTO subject ( name, details, creator_id, image_url)
+                VALUES (?, ?, ?, ?);
+                `,[name, details, creator, image]
             );
             return result.insertId as string
         } catch (err) {

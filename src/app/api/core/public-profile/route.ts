@@ -40,8 +40,7 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     //if (!await getToken({ req, secret })) return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
-    const token = await getToken({ req, secret });
-    console.log("This in my Patch token \n", token, " \n")
+
     const formData = await req.formData();
 
     const userId = formData.get('user.Id') as string

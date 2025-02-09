@@ -33,6 +33,7 @@ export default async function Subjects() {
   const session = await getServerSession(authOptions);
   const [subjects, images] = await getSubjects(session);
 
+  
   return (
     <>
       <SearchableHeader title="Subjects" />

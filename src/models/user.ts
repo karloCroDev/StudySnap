@@ -8,7 +8,7 @@ export interface User {
   username: string;
   password: string;
   email: string;
-  profile_picture: string | null;
+  profile_picture_url: string | null;
 }
 
 export class UserClass {
@@ -16,15 +16,15 @@ export class UserClass {
     username: string,
     email: string,
     hashedPassword: string,
-    profile_picture: string | null
   ): Promise< string | null> {
+    console.log("inserting+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
     try {
       const [result]: any = await getPool().execute(
         `
-        INSERT INTO user (username, email, password, profile_picture)
-        VALUES (?, ?, ?, ?);
+        INSERT INTO user (username, email, password)
+        VALUES (?, ?, ?);
       `,
-        [username, email, hashedPassword, profile_picture]
+        [username, email, hashedPassword]
       );
       return result.insertId as string
     } catch (err) {

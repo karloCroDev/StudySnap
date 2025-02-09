@@ -3,10 +3,11 @@ import { getPool } from '../database/pool';
 export interface Note{
   id: string;
   title: string;
-  details: string;
+  details: string | null;
+  content: string | null;
   is_public: boolean;
   subject_id: string;
-  image: string | null;
+  image_url: string | null;
   likes: number;
   liked: boolean
   creator_name: string;
@@ -18,7 +19,7 @@ export class NoteClass {
     try {
       const [result]: any = await getPool().execute(
         `
-        INSERT INTO note (title, details, is_public, subject_id, image)
+        INSERT INTO note (title, details, is_public, subject_id, image_url)
         VALUES (?, ?, ?, ?, ?);
       `,
         [title, details, is_public, subject_id, image]
