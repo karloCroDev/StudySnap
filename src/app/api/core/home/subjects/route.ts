@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ status: 404, statusText: 'Subjects not found' });
     }
 
-    const images = (await Promise.all(subjects.map(async (subject) => await GetImage(subject.image)))).filter((imageObject) => imageObject != null);
+    const images = (await Promise.all(subjects.map(async (subject) => await GetImage(subject.image_url)))).filter((imageObject) => imageObject != null);
 
     return NextResponse.json([subjects, images], { status: 200, statusText: "Fetched successfully" });
   } catch (error) {
@@ -65,9 +65,7 @@ export async function POST(req: NextRequest) {
     }
 
     const subject = await GetSubjectById(id);
-    // Luka: +
-    // I need to get subjectId (and subjectName, details, image) as a response, in order to create it on client (instead of refreshing the page)
-    return NextResponse.json(subject, { status: 201, statusText: "Created successfully"});
+   return NextResponse.json(subject, { status: 201, statusText: "Created successfully"});
   } catch (error) {
     console.error(error);
     return NextResponse.json( { status: 500, statusText: 'Failed to create subject'});
@@ -120,7 +118,7 @@ export async function PATCH(req: NextRequest) {
     const updates: { [key: string]: any } = {};
     if (subjectName) updates.name = subjectName;
     if (details) updates.details = details;
-    if (file) updates.image = await WriteImage(file);
+    if (file) updates.image_url = await WriteImage(file);
 
     if (Object.keys(updates).length === 0) {
       return NextResponse.json( { status: 400, statusText: 'No fields to update'});

@@ -8,13 +8,11 @@ import { redirect } from 'next/navigation';
 import { Layout, LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { TipTapEditor } from '@/components/note-editor/TipTapEditor';
 import { Header } from '@/components/ui/header/Header';
+import { Note } from '@/models/note';
 
-// Models (types)
-import { Dokument } from '@/models/document';
-
-async function fetchDocument(noteId: string, userId: string) {
+async function fetchNote(noteId: string, userId: string) {
   try {
-    const response = await fetch(`http://localhost:3000/api/core/note-editor`, {
+    const response = await fetch(`http://localhost:3000/api/core/home/notes/editor`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -25,7 +23,7 @@ async function fetchDocument(noteId: string, userId: string) {
 
     return await response.json();
   } catch (error) {
-    console.error('Failed to fetch dokument:', error);
+    console.error('Failed to fetch note:', error);
   }
 }
 
@@ -39,8 +37,10 @@ export default async function NoteEditor({
     redirect('/login');
   }
   const userId = session.user.id
-  //Karlo: Everything should be provided in this variable
-  const documentData: Dokument = await fetchDocument(params.noteId, userId);
+  //Karlo: Everything is provided in this variable, you need to pass it to TipTapEditor
+  //       you also can not change the title of the note
+  //       It would also be good if you could pass the note in the parameters of this function rather than fetching the note all over again
+  const noteData: Note = await fetchNote(params.noteId, userId);
 
   return (
     <NavigationGuardProvider>
@@ -49,10 +49,10 @@ export default async function NoteEditor({
         <LayoutRow className="h-[calc(100vh-116px-16px)] justify-center overflow-hidden 2xl:h-[calc(100vh-128px-32px)]">
           <LayoutColumn lg={9} xl2={10} className="flex h-full flex-col">
             <TipTapEditor
-              title={documentData.title}
-              content={documentData.content}
-              creatorId={documentData.creator_id}
-              noteId={documentData.id}
+              title={noteData.title}
+              content={noteData.content ?? ""}
+              creatorId={noteData.creator_id}
+              noteId={noteData.id}
             />
           </LayoutColumn>
         </LayoutRow>
