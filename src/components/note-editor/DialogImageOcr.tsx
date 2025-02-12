@@ -1,0 +1,1 @@
+// Create placeholder for image

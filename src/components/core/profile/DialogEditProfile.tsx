@@ -135,8 +135,8 @@ export const DialogEditProfile: React.FC<{
           onChange={(e) => setUsername(e.toString())}
         />
         <Input
-          type="text"
-          label="Password"
+          label="New password"
+          isPassword
           minLength={8}
           maxLength={16}
           isMdHorizontal
