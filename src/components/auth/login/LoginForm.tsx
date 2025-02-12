@@ -27,12 +27,13 @@ export const LoginForm = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await signIn('credentials', {
+      const response = await signIn('credentials', {
         email,
         password,
         redirect: false,
       });
-      if (!res?.ok) {
+
+      if (!response?.ok) {
         toast({
           title: 'Uhoh, something went wrong',
           content:
@@ -80,6 +81,7 @@ export const LoginForm = () => {
         label="Password"
         size="lg"
         type="password"
+        isPassword={password.length > 7}
         minLength={8}
         inputProps={{
           placeholder: '********',
