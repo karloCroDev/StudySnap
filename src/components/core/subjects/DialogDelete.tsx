@@ -80,12 +80,15 @@ export const DialogDelete: React.FC<{
           Are you sure you want to delete your subject
         </h4>
         <div className="mt-6 flex gap-6">
-          <Button className="uppercase" onPress={deleteNoteFn}>
+          <Button
+            className="uppercase"
+            iconRight={loading && <Spinner />}
+            onPress={deleteNoteFn}
+          >
             yes
           </Button>
           <Button
             onPress={() => setIsOpen(false)}
-            iconRight={loading && <Spinner />}
             variant="outline"
             colorScheme="light-blue"
             className="uppercase"

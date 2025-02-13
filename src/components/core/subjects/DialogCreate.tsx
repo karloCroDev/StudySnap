@@ -121,6 +121,7 @@ export const DialogCreate: React.FC<{
             <Input
               label="Image (optional)"
               isMdHorizontal
+              isReadOnly
               inputProps={{
                 placeholder: 'Enter thumbnail image (optional)',
                 value: image ? image?.name.toString() : '',
