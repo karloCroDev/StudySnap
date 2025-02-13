@@ -13,6 +13,7 @@ import { DialogQuizz } from '@/components/note-editor/DialogQuizz';
 import { DialogGenerateContent } from './DialogGenerateContent';
 import { Spinner } from '@/components/ui/Spinner';
 import { LikeComponent } from '@/components/core/LikeComponent';
+import { DialogImageOcr } from '@/components/note-editor/DialogImageOcr';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
@@ -51,40 +52,6 @@ export const ActionBar: React.FC<{
       });
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  // Getting notes
-  const [loading, setLoading] = React.useState(false);
-
-  const getNotesFromImage = async (image: File) => {
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append('file', image);
-      const response = await fetch('http://localhost:3000/api/ai/image-note', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        editor?.commands.insertContent(data);
-        toast({
-          title: 'Notes genearted',
-          content: 'Notes generated successfully from your image',
-          variant: 'success',
-        });
-      }
-    } catch (error) {
-      console.error('Upload failed:', error);
-      toast({
-        title: 'Failed to get notes',
-        content: 'Please try again later, problem with server',
-        variant: 'error',
-      });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -131,22 +98,7 @@ export const ActionBar: React.FC<{
           >
             Save
           </Button>
-          <FileTrigger
-            acceptedFileTypes={['.jpg,', '.jpeg', '.png']}
-            onSelect={(event) => {
-              event && getNotesFromImage(Array.from(event)[0]);
-            }}
-          >
-            <Button
-              colorScheme="light-blue"
-              rounded="full"
-              className="min-w-fit"
-              iconLeft={<CameraIcon className="size-5" />}
-              iconRight={loading && <Spinner />}
-            >
-              Image notes
-            </Button>
-          </FileTrigger>
+          <DialogImageOcr editor={editor} />
           <div className="hidden items-center gap-4 text-balance text-md text-gray-500 lg:flex">
             <p className="italic">Sentence complete:</p>
             {completionLoading ? (
