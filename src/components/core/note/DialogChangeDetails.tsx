@@ -2,7 +2,13 @@
 
 // External packages
 import * as React from 'react';
-import { RadioGroup, Radio, Form } from 'react-aria-components';
+import {
+  RadioGroup,
+  Radio,
+  Form,
+  FileTrigger,
+  Button as AriaButton,
+} from 'react-aria-components';
 import { twJoin } from 'tailwind-merge';
 import { Pencil1Icon } from '@radix-ui/react-icons';
 
@@ -26,10 +32,9 @@ export const DialogChangeDetails: React.FC<{
   const [isPublic, setIsPublic] = React.useState(false); // Provjeri da li ovo radi na backendu
   const [name, setName] = React.useState('');
   const [details, setDetails] = React.useState('');
+  const [image, setImage] = React.useState<File | null>(null);
+
   const [loading, setLoading] = React.useState(false);
-
-  console.log(isPublic);
-
   const toast = useToastStore((state) => state.setToast);
 
   const changeDetails = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -122,6 +127,24 @@ export const DialogChangeDetails: React.FC<{
           }}
           onChange={(val) => setDetails(val.toString())}
         />
+        <FileTrigger
+          acceptedFileTypes={['.jpg,', '.jpeg', '.png']}
+          onSelect={(event) => setImage(event && Array.from(event)[0])}
+        >
+          <AriaButton className="outline-none">
+            <Input
+              label="Image"
+              isMdHorizontal
+              isReadOnly
+              inputProps={{
+                placeholder: 'Enter thumbnail image ',
+                value: image ? image?.name.toString() : '',
+              }}
+              className="text-start"
+            />
+          </AriaButton>
+        </FileTrigger>
+
         <div className="flex flex-col items-start gap-2 md:flex-row md:items-center md:gap-0">
           <p className="text-end text-md md:flex-1">Make it public</p>
           <RadioGroup
@@ -150,6 +173,7 @@ export const DialogChangeDetails: React.FC<{
         <Button
           className="self-end"
           type="submit"
+          isDisabled={!image && !name && !details}
           iconRight={loading && <Spinner />}
         >
           Save
