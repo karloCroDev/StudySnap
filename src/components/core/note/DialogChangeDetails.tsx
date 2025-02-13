@@ -29,7 +29,7 @@ export const DialogChangeDetails: React.FC<{
 }> = ({ noteId, noteName, setNoteName, setNoteDetails }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const [isPublic, setIsPublic] = React.useState(false); // Provjeri da li ovo radi na backendu
+  const [isPublic, setIsPublic] = React.useState(false);
   const [name, setName] = React.useState('');
   const [details, setDetails] = React.useState('');
   const [image, setImage] = React.useState<File | null>(null);
