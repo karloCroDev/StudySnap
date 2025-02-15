@@ -4,8 +4,8 @@
 import * as React from 'react';
 import { Editor as EditorType } from '@tiptap/react';
 import { useSession } from 'next-auth/react';
-import { Pencil2Icon, FileTextIcon, CameraIcon } from '@radix-ui/react-icons';
-import { FileTrigger } from 'react-aria-components';
+
+import { Pencil2Icon, FileTextIcon } from '@radix-ui/react-icons';
 
 // Components
 import { Button } from '@/components/ui/Button';
@@ -17,6 +17,7 @@ import { DialogImageOcr } from '@/components/note-editor/DialogImageOcr';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
+import { DialogAskAI } from '@/components/note-editor/DialogAskAI';
 
 export const ActionBar: React.FC<{
   isEditing: boolean;
@@ -84,7 +85,10 @@ export const ActionBar: React.FC<{
           >
             Edit
           </Button>
-          <DialogQuizz editor={editor} />
+          <div className="flex gap-4">
+            <DialogQuizz editor={editor} />
+            <DialogAskAI editor={editor} />
+          </div>
         </>
       ) : (
         <>
