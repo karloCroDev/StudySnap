@@ -41,7 +41,8 @@ import { plus_jakarta_sans } from '@/lib/fonts';
 
 export const HeaderEditText: React.FC<{
   editor: EditorType;
-}> = ({ editor }) => {
+  title: string;
+}> = ({ editor, title }) => {
   const toolsHorizontalContainer = React.useRef<HTMLDivElement | null>(null);
 
   const scrollWithButtons = (direction: 'left' | 'right') => {
@@ -66,7 +67,7 @@ export const HeaderEditText: React.FC<{
           plus_jakarta_sans.className
         )}
       >
-        <p>History/WWII</p>
+        {title}
       </Link>
 
       <hr className="hidden h-full w-px rounded-full border-0 bg-blue-900 md:block" />

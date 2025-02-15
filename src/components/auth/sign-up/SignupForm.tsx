@@ -99,7 +99,7 @@ export const SignupForm = () => {
       <Input
         isRequired
         type="password"
-        isPassword={password.length > 7}
+        isPassword
         label="Password"
         size="lg"
         inputProps={{

@@ -18,7 +18,7 @@ export const Header: React.FC<{
   author: string;
 }> = ({ title, author, isEditing, editor }) =>
   isEditing ? (
-    <HeaderEditText editor={editor} />
+    <HeaderEditText editor={editor} title={title} />
   ) : (
     <div className="flex animate-header-initial-apperance items-center justify-between px-2">
       <h1

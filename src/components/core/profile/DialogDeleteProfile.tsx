@@ -72,15 +72,17 @@ export const DialogDeleteProfile = () => {
       triggerProps={{
         asChild: true,
         children: (
-          <Button
-            variant="outline"
-            colorScheme="red"
-            onPressStart={() => {
-              setIsOpen(true);
-            }}
-          >
-            Delete profile
-          </Button>
+          <>
+            <Button
+              variant="outline"
+              colorScheme="red"
+              onPress={() => {
+                setIsOpen(true);
+              }}
+            >
+              Delete profile
+            </Button>
+          </>
         ),
       }}
     >

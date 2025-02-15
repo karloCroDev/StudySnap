@@ -31,7 +31,7 @@ export const Input: React.FC<
   return (
     <AriaInput.TextField
       {...rest}
-      type={isPassword ? (showPassword ? 'password' : 'text') : rest.type}
+      type={isPassword ? (showPassword ? 'text' : 'password') : rest.type}
       className={twMerge(
         'flex flex-col-reverse gap-y-2 text-base outline-none',
         className
@@ -53,7 +53,8 @@ export const Input: React.FC<
           isMdHorizontal && 'md:flex-row-reverse md:items-center md:gap-x-6'
         )}
       >
-        <div className="relative">
+        <AriaInput.Label className="relative">
+          {/* Label here so that it reamins focused */}
           <AriaInput.Input
             {...inputProps}
             className={twMerge(
@@ -79,7 +80,7 @@ export const Input: React.FC<
               )}
             </AriaInput.Button>
           )}
-        </div>
+        </AriaInput.Label>
 
         <AriaInput.Label
           className={twJoin(

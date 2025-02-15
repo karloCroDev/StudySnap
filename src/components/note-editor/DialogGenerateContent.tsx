@@ -66,15 +66,18 @@ export const DialogGenerateContent: React.FC<{
       title="Generate content"
       triggerProps={{
         children: (
-          <Button
-            variant="solid"
-            rounded="full"
-            iconLeft={<MagicWandIcon className="size-5" />}
-            className="min-w-fit"
-            onPressStart={() => setIsOpen(true)}
-          >
-            Generate content
-          </Button>
+          <>
+            <Button
+              variant="solid"
+              rounded="full"
+              iconLeft={<MagicWandIcon className="size-5" />}
+              className="min-w-fit"
+              // onPressStart={() => setIsOpen(true)}
+              onPress={() => setIsOpen(true)}
+            >
+              Generate content
+            </Button>
+          </>
         ),
         asChild: true,
       }}

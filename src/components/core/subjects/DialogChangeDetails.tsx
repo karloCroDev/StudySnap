@@ -103,7 +103,7 @@ export const DialogChangeDetails: React.FC<{
         />
         <Input
           type="text"
-          label="Details (optional)"
+          label="Details"
           minLength={5}
           maxLength={40}
           isMdHorizontal
@@ -119,10 +119,11 @@ export const DialogChangeDetails: React.FC<{
         >
           <AriaButton className="outline-none">
             <Input
-              label="Image (optional)"
+              label="Image"
               isMdHorizontal
+              isReadOnly
               inputProps={{
-                placeholder: 'Enter thumbnail image (optional)',
+                placeholder: 'Enter thumbnail image',
                 value: image ? image?.name.toString() : '',
               }}
               className="text-start"
@@ -132,7 +133,7 @@ export const DialogChangeDetails: React.FC<{
         <Button
           className="self-end"
           type="submit"
-          isDisabled={!subjectName && !details}
+          isDisabled={!subjectName && !details && !image}
         >
           Save
         </Button>

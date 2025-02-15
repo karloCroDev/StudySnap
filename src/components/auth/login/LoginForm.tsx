@@ -80,8 +80,7 @@ export const LoginForm = () => {
         isRequired
         label="Password"
         size="lg"
-        type="password"
-        isPassword={password.length > 7}
+        isPassword
         minLength={8}
         inputProps={{
           placeholder: '********',
