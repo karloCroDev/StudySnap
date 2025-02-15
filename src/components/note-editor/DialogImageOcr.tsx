@@ -90,17 +90,19 @@ export const DialogImageOcr: React.FC<{
       title="Image OCR"
       triggerProps={{
         children: (
-          <Button
-            colorScheme="light-blue"
-            rounded="full"
-            className="min-w-fit"
-            iconLeft={<CameraIcon className="size-5" />}
-            iconRight={loading && <Spinner />}
-            onPress={() => setIsOpen(true)}
-            // onPressStart={() => setIsOpen(true)}
-          >
-            Analyse Image
-          </Button>
+          <>
+            <Button
+              colorScheme="light-blue"
+              rounded="full"
+              className="min-w-fit"
+              iconLeft={<CameraIcon className="size-5" />}
+              iconRight={loading && <Spinner />}
+              onPress={() => setIsOpen(true)}
+              // onPressStart={() => setIsOpen(true)}
+            >
+              Analyse Image
+            </Button>
+          </>
         ),
         asChild: true,
       }}

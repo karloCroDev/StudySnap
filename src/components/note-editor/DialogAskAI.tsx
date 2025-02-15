@@ -23,6 +23,7 @@ export const DialogAskAI: React.FC<{
   editor: EditorType;
 }> = ({ editor }) => {
   const toast = useToastStore((state) => state.setToast);
+  const [loading, setLoading] = React.useState(false);
 
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -34,9 +35,16 @@ export const DialogAskAI: React.FC<{
     }[]
   >([]);
 
-  const [loading, setLoading] = React.useState(false);
+  const chatContainerRef = React.useRef<null | HTMLDivElement>(null);
 
-  console.log(chatHistory);
+  React.useEffect(() => {
+    const scrollToTheResponse = () => {
+      const element = chatContainerRef.current;
+      if (element) element.scrollTop = element.scrollHeight;
+    };
+    scrollToTheResponse();
+  }, [chatHistory]);
+
   const getAskAiResponse = async () => {
     try {
       setLoading(true);
@@ -56,6 +64,7 @@ export const DialogAskAI: React.FC<{
           content: data.statusText, // This data is status text
           variant: 'error',
         });
+        setIsOpen(false);
         return;
       }
 
@@ -81,21 +90,23 @@ export const DialogAskAI: React.FC<{
       onOpenChange={setIsOpen}
       title="Ask AI"
       triggerProps={{
-        children: (
-          <Button
-            colorScheme="black"
-            variant="outline"
-            rounded="full"
-            className="min-w-fit"
-            iconLeft={<QuestionMarkCircledIcon className="size-5" />}
-            iconRight={loading && <Spinner />}
-            onPress={() => setIsOpen(true)}
-            // onPressStart={() => setIsOpen(true)}
-          >
-            Ask AI
-          </Button>
-        ),
         asChild: true,
+        children: (
+          <>
+            <Button
+              colorScheme="black"
+              variant="outline"
+              rounded="full"
+              className="min-w-fit"
+              iconLeft={<QuestionMarkCircledIcon className="size-5" />}
+              iconRight={loading && <Spinner />}
+              onPress={() => setIsOpen(true)}
+              // onPressStart={() => setIsOpen(true)}
+            >
+              Ask AI
+            </Button>
+          </>
+        ),
       }}
     >
       <Form
@@ -109,7 +120,7 @@ export const DialogAskAI: React.FC<{
           getAskAiResponse();
         }}
       >
-        <div className="overflow-scroll">
+        <div className="overflow-scroll scroll-smooth" ref={chatContainerRef}>
           {/* Was having render issues with font, so I need to do like this overflow scroll */}
           <div className="relative flex h-80 flex-col gap-4 rounded p-4">
             {chatHistory.length
@@ -130,13 +141,20 @@ export const DialogAskAI: React.FC<{
                   </p>
                 )}
             {loading && (
-              <div className="min-h-4 w-[75%] animate-pulse rounded-full bg-gray-700 text-gray-100"></div>
+              <div className="flex flex-col gap-2">
+                {[...Array(3)].map((_, i) => (
+                  <div
+                    className="min-h-4 w-[75%] animate-pulse rounded bg-gray-700 text-gray-100"
+                    key={i}
+                  ></div>
+                ))}
+              </div>
             )}
           </div>
         </div>
         <TextField
           isRequired
-          minLength={5}
+          minLength={2}
           className="mt-4 outline-none"
           onChange={(val) => setPrompt(val.toString())}
           value={prompt}
