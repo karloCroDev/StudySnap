@@ -173,7 +173,7 @@ export const TipTapEditor: React.FC<{
       />
       <div
         className={twJoin(
-          'relative mt-4 flex h-full flex-col overflow-hidden rounded-lg border border-blue-900 p-4 py-6 lg:p-8 2xl:mt-8',
+          'relative mt-4 flex h-full flex-col overflow-hidden rounded-lg border border-blue-900 p-4 pt-6 lg:p-8 lg:pb-6 2xl:mt-8',
           isEditing
             ? 'animate-text-editor-editing'
             : 'animate-text-editor-initial-apperance'

@@ -76,18 +76,20 @@ export const DialogQuizz: React.FC<{
       onOpenChange={setIsOpen}
       title="Quizz"
       triggerProps={{
-        // asChild: true,
+        asChild: true,
         children: (
-          <Button
-            rounded="full"
-            colorScheme="black"
-            variant="outline"
-            iconLeft={<MagicWandIcon className="size-5" />}
-            className="min-w-fit"
-            onPress={() => setIsOpen(!isOpen)}
-          >
-            Quizz yourself
-          </Button>
+          <>
+            <Button
+              rounded="full"
+              colorScheme="black"
+              variant="outline"
+              iconLeft={<MagicWandIcon className="size-5" />}
+              className="min-w-fit"
+              onPress={() => setIsOpen(true)}
+            >
+              Quizz yourself
+            </Button>
+          </>
           // Some problems when passing buttons from react aria components (mobile devices) --> (so need to do this with onPressStart )
         ),
       }}
