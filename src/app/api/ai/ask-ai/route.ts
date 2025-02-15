@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     } = await req.json();
 
     const chatHistoryExists = chatHistory.length
-      ? `Here is the whole conversation: ${chatHistory.map((message) => `Author: ${message.authorOfMessage}  Message: ${message.content}`)}`
+      ? `Here is the whole conversation that was between user and you: ${chatHistory.map((message) => `Author: ${message.authorOfMessage}  Message: ${message.content}`)}`
       : '';
 
     const completedSentence = await modelFlash.generateContent(

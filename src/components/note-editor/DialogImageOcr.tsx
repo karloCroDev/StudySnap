@@ -96,7 +96,8 @@ export const DialogImageOcr: React.FC<{
             className="min-w-fit"
             iconLeft={<CameraIcon className="size-5" />}
             iconRight={loading && <Spinner />}
-            onPressStart={() => setIsOpen(true)}
+            onPress={() => setIsOpen(true)}
+            // onPressStart={() => setIsOpen(true)}
           >
             Analyse Image
           </Button>
@@ -143,7 +144,7 @@ export const DialogImageOcr: React.FC<{
           }}
         >
           <FileTrigger
-            acceptedFileTypes={['.jpg,', '.jpeg', '.png']}
+            acceptedFileTypes={['.jpg,', '.jpeg', '.png']} // Users can access camera snapshot or select images from their phone
             onSelect={(event) => {
               event && setImage(Array.from(event)[0]);
             }}

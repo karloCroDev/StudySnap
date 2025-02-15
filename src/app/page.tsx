@@ -19,9 +19,19 @@ import { useToastStore } from '@/store/useToastStore';
 
 export default function Home() {
   const toast = useToastStore((state) => state.setToast);
+  const [image, setImage] = React.useState<File | null>(null);
+
+  const handleCapture = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
+    const file = event.target.files[0];
+    if (file) {
+      setImage(file);
+    }
+  };
 
   const [isOpen, setIsOpen] = React.useState(false);
   const [filledSrc, setFilledSrc] = React.useState('');
+
   return (
     <Layout>
       <div className="flex flex-col gap-4 p-6">
@@ -56,11 +66,6 @@ export default function Home() {
           asChild: true,
         }}
         title="Hello world"
-        footer={
-          <DialogClose>
-            <Button className="self-start">Close</Button>
-          </DialogClose>
-        }
       >
         <h3>Dialog</h3>
       </Dialog>
@@ -144,6 +149,33 @@ export default function Home() {
           </div>
         )}
       </DropZone>
+
+      <div className="flex flex-col items-center">
+        <input
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={handleCapture}
+          className="hidden"
+          id="cameraInput"
+        />
+        <label
+          htmlFor="cameraInput"
+          className="cursor-pointer rounded-lg bg-blue-500 px-4 py-2 text-white"
+        >
+          Take a Picture
+        </label>
+
+        {image && (
+          <Image
+            src={URL.createObjectURL(image)}
+            width={100}
+            height={100}
+            alt="Captured"
+            className="mt-4 rounded-lg object-cover"
+          />
+        )}
+      </div>
     </Layout>
   );
 }

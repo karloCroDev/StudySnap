@@ -36,6 +36,7 @@ export const DialogAskAI: React.FC<{
 
   const [loading, setLoading] = React.useState(false);
 
+  console.log(chatHistory);
   const getAskAiResponse = async () => {
     try {
       setLoading(true);
@@ -88,7 +89,8 @@ export const DialogAskAI: React.FC<{
             className="min-w-fit"
             iconLeft={<QuestionMarkCircledIcon className="size-5" />}
             iconRight={loading && <Spinner />}
-            onPressStart={() => setIsOpen(true)}
+            onPress={() => setIsOpen(true)}
+            // onPressStart={() => setIsOpen(true)}
           >
             Ask AI
           </Button>

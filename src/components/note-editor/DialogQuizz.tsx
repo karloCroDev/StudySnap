@@ -76,7 +76,7 @@ export const DialogQuizz: React.FC<{
       onOpenChange={setIsOpen}
       title="Quizz"
       triggerProps={{
-        asChild: true,
+        // asChild: true,
         children: (
           <Button
             rounded="full"
@@ -84,7 +84,7 @@ export const DialogQuizz: React.FC<{
             variant="outline"
             iconLeft={<MagicWandIcon className="size-5" />}
             className="min-w-fit"
-            onPressStart={() => setIsOpen(true)}
+            onPress={() => setIsOpen(!isOpen)}
           >
             Quizz yourself
           </Button>
