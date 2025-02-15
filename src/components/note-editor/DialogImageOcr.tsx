@@ -18,13 +18,13 @@ import {
   CameraIcon,
   PlusCircledIcon,
 } from '@radix-ui/react-icons';
+import Image from 'next/image';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { useToastStore } from '@/store/useToastStore';
 import { Spinner } from '@/components/ui/Spinner';
-import Image from 'next/image';
 
 export const DialogImageOcr: React.FC<{
   editor: EditorType;
@@ -119,10 +119,10 @@ export const DialogImageOcr: React.FC<{
           value={prompt}
         >
           <Input
-            className="h-12 w-full rounded border-2 border-blue-900 p-2"
+            className="h-12 w-full rounded border-2 border-blue-900 p-2 focus:border-blue-900"
             placeholder="Enter a prompt for image.."
           />
-          <FieldError className="text-red-400" />
+          <FieldError className="!mt-2 text-red-400" />
         </TextField>
         <DropZone
           getDropOperation={(types) =>
