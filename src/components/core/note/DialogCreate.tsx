@@ -2,7 +2,13 @@
 
 // External packages
 import * as React from 'react';
-import { RadioGroup, Radio, Form } from 'react-aria-components';
+import {
+  RadioGroup,
+  Radio,
+  Form,
+  FileTrigger,
+  Button as AriaButton,
+} from 'react-aria-components';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
@@ -26,8 +32,9 @@ export const DialogCreate: React.FC<{
 
   const [noteName, setNoteName] = React.useState('');
   const [details, setDetails] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
+  const [image, setImage] = React.useState<File | null>(null);
 
+  const [loading, setLoading] = React.useState(false);
   const toast = useToastStore((state) => state.setToast);
   const addNote = useGeneralInfo((state) => state.addNote);
 
@@ -61,6 +68,9 @@ export const DialogCreate: React.FC<{
         content: `You have succesfully created ${noteName}`,
         variant: 'success',
       });
+      setNoteName('');
+      setDetails('');
+      setImage(null);
     } catch (error) {
       console.error(error);
       toast({
@@ -111,6 +121,23 @@ export const DialogCreate: React.FC<{
           }}
           onChange={(val) => setDetails(val.toString())}
         />
+        <FileTrigger
+          acceptedFileTypes={['.jpg,', '.jpeg', '.png']}
+          onSelect={(event) => setImage(event && Array.from(event)[0])}
+        >
+          <AriaButton className="outline-none">
+            <Input
+              label="Image (optional)"
+              isReadOnly
+              isMdHorizontal
+              inputProps={{
+                placeholder: 'Enter thumbnail image (optional)',
+                value: image ? image?.name.toString() : '',
+              }}
+              className="text-start"
+            />
+          </AriaButton>
+        </FileTrigger>
         <div className="flex flex-col items-start gap-2 md:flex-row md:items-center md:gap-0">
           <p className="text-end text-md md:flex-1">Make it public</p>
           <RadioGroup

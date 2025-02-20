@@ -75,9 +75,10 @@ export const DialogDelete: React.FC<{}> = () => {
           <Button
             variant="outline"
             colorScheme="red"
-            onPressStart={() => {
-              setIsOpen(true);
-            }}
+            // onPressStart={() => {
+            //   setIsOpen(true);
+            // }}
+            onPress={() => setIsOpen(true)}
           >
             Delete profile
           </Button>
