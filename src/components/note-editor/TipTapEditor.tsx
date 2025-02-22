@@ -47,6 +47,7 @@ export const TipTapEditor: React.FC<{
   likeCount,
 }) => {
   const user = useSession();
+
   const allowEditing = React.useMemo(
     () => +user.data?.user.id! === +creatorId,
     [user, creatorId]
@@ -121,6 +122,7 @@ export const TipTapEditor: React.FC<{
 
   // Saving document
   const [loadingSaveDocument, setLoadingSaveDocument] = React.useState(false);
+  console.log(content);
 
   const saveDocument = async () => {
     try {
@@ -134,9 +136,8 @@ export const TipTapEditor: React.FC<{
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            title,
             content: editor?.getHTML(),
-            id: noteId,
+            id: documentId,
           }), // Luka: Title provided because it is put request, if this irritates you change it to patch
         }
       );

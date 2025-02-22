@@ -1,6 +1,6 @@
 'use client';
 
-//External packages
+// External packages
 import * as React from 'react';
 import { HeartIcon, HeartFilledIcon } from '@radix-ui/react-icons';
 import { Button as ReactAriaButton } from 'react-aria-components';
@@ -24,24 +24,47 @@ export const LikeComponent: React.FC<{
   const [isLiked, setIsLiked] = React.useState(hasBeenLiked);
   const [likeCount, setLikeCount] = React.useState(numberOfLikes);
 
+  // Optimistically updating the state
+  const [optimisticState, updateOptimisticState] = React.useOptimistic(
+    { isLiked, likeCount },
+    (state, action: boolean) => ({
+      isLiked: action,
+      likeCount: action ? state.likeCount + 1 : state.likeCount - 1,
+    })
+  );
+
   const likeAction = async () => {
+    const nextLikedState = !optimisticState.isLiked; // This is updating async, so this is work around --> that is why you will see in catch or !response.ok that I am calling the same state (which is not but the inital one before the update)
+    updateOptimisticState(nextLikedState);
+
     try {
-      await fetch('http://localhost:3000/api/core/home/notes/like', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          noteId,
-          userId,
-          exists: isLiked,
-        }), //image
-      });
+      const response = await fetch(
+        'http://localhost:3000/api/core/home/notes/like',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            noteId,
+            userId,
+            exists: isLiked, // Send real state before update
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        updateOptimisticState(optimisticState.isLiked);
+      }
+
+      setIsLiked(nextLikedState);
+      setLikeCount(nextLikedState ? likeCount + 1 : likeCount - 1);
     } catch (error) {
       console.error(error);
+      updateOptimisticState(optimisticState.isLiked);
     }
   };
-  // fix: Move action over here and get the crucial info that is needed
+
   return (
     <div
       className={twJoin(
@@ -52,16 +75,9 @@ export const LikeComponent: React.FC<{
     >
       <ReactAriaButton
         className="outline-none transition-transform duration-75 active:scale-75"
-        onPress={() => {
-          const syncLiked = !isLiked;
-          setIsLiked(syncLiked);
-          setLikeCount(syncLiked ? likeCount + 1 : likeCount - 1);
-          likeAction();
-
-          // Karlo: Use optimistic UI to update the like count
-        }}
+        onPress={likeAction}
       >
-        {isLiked ? (
+        {optimisticState.isLiked ? (
           <HeartFilledIcon
             className={twJoin(
               'text-red-400',
@@ -85,7 +101,7 @@ export const LikeComponent: React.FC<{
           size === 'lg' && 'text-md font-bold'
         )}
       >
-        {likeCount}
+        {optimisticState.likeCount}
       </p>
     </div>
   );

@@ -33,20 +33,16 @@ export class DokumentClass {
   }
 
   //Update user
-  static async Update(
-    title: string,
-    content: string,
-    id: string
-  ): Promise<void> {
+  static async Update(content: string, id: string): Promise<void> {
     try {
       await getPool().execute(
         `
       UPDATE document
-      SET title = ?, content = ?, date_modified = CURRENT_TIMESTAMP
+      SET content = ?, date_modified = CURRENT_TIMESTAMP
       WHERE id = ?;
     `,
         // I put timestamp up on title and date, not on id, I was getting error
-        [title, content, id]
+        [content, id]
       );
     } catch (err) {
       console.error('Error updating document:', err);

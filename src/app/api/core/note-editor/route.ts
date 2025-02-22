@@ -66,7 +66,7 @@ export async function PUT(req: NextRequest) {
   try {
     const { title, content, id } = await req.json();
 
-    if (!title || !id) {
+    if (!id) {
       return NextResponse.json('Title, content, noteId, and id are required', {
         status: 400,
       });
@@ -77,7 +77,7 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
     }
 
-    await DokumentClass.Update(title, content, id);
+    await DokumentClass.Update(content, id);
 
     return NextResponse.json({ status: 200, statusText: 'Saved' });
   } catch (error) {
