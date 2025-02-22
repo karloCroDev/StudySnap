@@ -40,7 +40,7 @@ export default async function Notes({
   const session = await getServerSession(authOptions);
   const userId = session.user.id;
   const notes: Note[] = await getNotes({ subjectId, session });
-
+  console.log(notes);
   return (
     <>
       <SearchableHeader title="Your notes" />
@@ -55,7 +55,7 @@ export default async function Notes({
             >
               <CreateNoteCard subject={subjectId} />
             </LayoutColumn>
-            <NoteMapping notesData={notes} userId={userId} />
+            <NoteMapping notesData={notes} />
           </LayoutRow>
         </LayoutColumn>
       </LayoutRow>

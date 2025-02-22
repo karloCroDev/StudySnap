@@ -12,7 +12,6 @@ import { SubjectMapping } from '@/components/core/subjects/SubjectMapping';
 import { Subject } from '@/models/subject';
 
 async function getSubjects(session: any) {
-
   const response = await fetch(
     `http://localhost:3000/api/core/home/subjects?userId=${session.user.id}`,
     {
@@ -32,7 +31,8 @@ async function getSubjects(session: any) {
 export default async function Subjects() {
   const session = await getServerSession(authOptions);
   const [subjects, images] = await getSubjects(session);
-
+  console.log(subjects);
+  console.log(images);
   return (
     <>
       <SearchableHeader title="Subjects" />

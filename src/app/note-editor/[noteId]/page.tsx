@@ -40,7 +40,7 @@ export default async function NoteEditor({
   }
 
   const documentData: Dokument = await fetchDocument(params.noteId);
-
+  console.log(documentData);
   return (
     <NavigationGuardProvider>
       <Header />
@@ -50,8 +50,12 @@ export default async function NoteEditor({
             <TipTapEditor
               title={documentData.title}
               content={documentData.content}
-              // creatorId={documentData.}
-              noteId={documentData.id}
+              author={documentData.author}
+              creatorId={documentData.creator_id}
+              noteId={documentData.note_id}
+              documentId={documentData.id}
+              isLiked={documentData.liked}
+              likeCount={documentData.likes}
             />
           </LayoutColumn>
         </LayoutRow>

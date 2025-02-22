@@ -5,22 +5,25 @@ export interface Dokument {
   id: string;
   title: string;
   content: string;
+  author: string;
   note_id: string;
+  creator_id: string;
+  likes: number;
+  liked: boolean;
 }
 
 export class DokumentClass {
   static async Insert(
-    title: string,
-    content: string,
-    note_id: string
+    note_id: string,
+    content: string
   ): Promise<string | null> {
     try {
       const [result]: any = await getPool().execute(
         `
-            INSERT INTO document (title, content, note_id)
-            VALUES (?, ?, ?);
+            INSERT INTO document (note_id, content)
+            VALUES (?, ?);
             `,
-        [title, content, note_id]
+        [note_id, content]
       );
       return result.insertId as string;
     } catch (err) {
@@ -30,20 +33,16 @@ export class DokumentClass {
   }
 
   //Update user
-  static async Update(
-    title: string,
-    content: string,
-    id: string
-  ): Promise<void> {
+  static async Update(content: string, id: string): Promise<void> {
     try {
       await getPool().execute(
         `
       UPDATE document
-      SET title = ?, content = ?, date_modified = CURRENT_TIMESTAMP
+      SET content = ?, date_modified = CURRENT_TIMESTAMP
       WHERE id = ?;
     `,
         // I put timestamp up on title and date, not on id, I was getting error
-        [title, content, id]
+        [content, id]
       );
     } catch (err) {
       console.error('Error updating document:', err);

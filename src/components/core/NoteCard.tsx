@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react';
 import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';
 import { DialogDelete } from '@/components/core/note/DialogDelete';
 import { Avatar } from '@/components/ui/Avatar';
-import { LikeComponent } from '@/components/core/LikeComponent';
+import { LikeComponent } from '@/components/ui/LikeComponent';
 // Karlo : Make sure that Notes types are here, fix this if we have time
 
 export const NoteCard: React.FC<{
@@ -35,24 +35,6 @@ export const NoteCard: React.FC<{
 }) => {
   // Karlo: TODO pass this to the like component
   const user = useSession();
-
-  const likeAction = async () => {
-    try {
-      await fetch('http://localhost:3000/api/core/home/notes/like', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          noteId,
-          userId: user.data?.user.id,
-          exists: liked,
-        }), //image
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const [noteName, setNoteName] = React.useState(title);
   const [noteDetails, setNoteDetails] = React.useState(description);
@@ -93,7 +75,8 @@ export const NoteCard: React.FC<{
             hasBeenLiked={liked}
             isOrderReversed
             numberOfLikes={numberOfLikes}
-            action={likeAction}
+            noteId={noteId}
+            userId={user.data?.user.id!}
           />
         </div>
       </div>
@@ -104,7 +87,9 @@ export const NoteCard: React.FC<{
             <DialogChangeDetails
               noteName={noteName}
               setNoteName={setNoteName}
+              noteDetails={noteDetails}
               setNoteDetails={setNoteDetails}
+              isNotePublic={isPublic}
               noteId={noteId}
             />
           </li>

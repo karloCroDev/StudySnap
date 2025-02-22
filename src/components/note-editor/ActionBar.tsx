@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/Button';
 import { DialogQuizz } from '@/components/note-editor/DialogQuizz';
 import { DialogGenerateContent } from './DialogGenerateContent';
 import { Spinner } from '@/components/ui/Spinner';
-import { LikeComponent } from '@/components/core/LikeComponent';
+import { LikeComponent } from '@/components/ui/LikeComponent';
 import { DialogImageOcr } from '@/components/note-editor/DialogImageOcr';
 
 // Store
@@ -20,71 +20,59 @@ import { useToastStore } from '@/store/useToastStore';
 import { DialogAskAI } from '@/components/note-editor/DialogAskAI';
 
 export const ActionBar: React.FC<{
+  noteId: string;
+  isLiked: boolean;
+  likeCount: number;
   isEditing: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   saveDocument: () => void;
   editor: EditorType;
   completionLoading: boolean;
-  noteId: string;
+  allowEditing: boolean;
 }> = ({
   noteId,
+  isLiked,
+  likeCount,
   isEditing,
   setIsEditing,
   editor,
   saveDocument,
   completionLoading,
+  allowEditing,
 }) => {
   const user = useSession();
-
   const toast = useToastStore((state) => state.setToast);
-
-  const likeAction = async () => {
-    try {
-      await fetch('http://localhost:3000/api/core/home/notes/like', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          noteId,
-          userId: user.data?.user.id,
-          // exists: liked,
-        }), //image
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <div className="flex items-center justify-between gap-4 overflow-scroll py-2">
       {!isEditing ? (
         <>
           <LikeComponent
-            hasBeenLiked={false}
-            numberOfLikes={330}
+            noteId={noteId}
+            userId={user.data?.user.id!} // Karlo: Create this to not be only visible to signed up users
+            numberOfLikes={likeCount}
+            hasBeenLiked={isLiked}
             size="lg"
-            action={() => {
-              console.log('Liked');
-            }}
           />
-          <Button
-            colorScheme="light-blue"
-            variant="solid"
-            iconRight={<Pencil2Icon className="size-5" />}
-            rounded="full"
-            onPress={() => {
-              toast({
-                title: 'Editing 🤔',
-                content: 'Your have entered editing mode',
-                variant: 'information',
-              });
-              setIsEditing(true);
-            }}
-            className="min-w-fit md:hidden"
-          >
-            Edit
-          </Button>
+          {allowEditing && (
+            <Button
+              colorScheme="light-blue"
+              variant="solid"
+              iconRight={<Pencil2Icon className="size-5" />}
+              rounded="full"
+              onPress={() => {
+                toast({
+                  title: 'Editing 🤔',
+                  content: 'Your have entered editing mode',
+                  variant: 'information',
+                });
+                setIsEditing(true);
+              }}
+              className="min-w-fit md:hidden"
+            >
+              Edit
+            </Button>
+          )}
           <div className="flex gap-4">
             <DialogQuizz editor={editor} />
             <DialogAskAI editor={editor} />
