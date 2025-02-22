@@ -40,7 +40,7 @@ export default async function NoteEditor({
   }
 
   const documentData: Dokument = await fetchDocument(params.noteId);
-
+  console.log(documentData);
   return (
     <NavigationGuardProvider>
       <Header />

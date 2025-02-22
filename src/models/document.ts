@@ -6,6 +6,9 @@ export interface Dokument {
   title: string;
   content: string;
   note_id: string;
+  creator_id: string;
+  likes: number;
+  liked: boolean;
 }
 
 export class DokumentClass {

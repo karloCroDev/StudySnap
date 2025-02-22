@@ -14,26 +14,46 @@ export async function POST(req: NextRequest) {
     const { noteId } = await req.json();
 
     if (!noteId) {
-      return NextResponse.json( { status: 400, statusText: 'Note ID is missing'});
+      return NextResponse.json({
+        status: 400,
+        statusText: 'Note ID is missing',
+      });
     }
 
+    // Luka: fix Added additional fields to the document
     let doc: Dokument = await GetDocumentsByNoteId(noteId);
+    const additonalData = await GetNoteNameById(noteId);
+    doc = {
+      ...doc,
+      creator_id: additonalData.creator_id,
+      likes: additonalData.likes,
+      liked: additonalData.liked,
+    };
 
     if (!doc) {
-      let title = await GetNoteNameById(noteId);
-      let id = await DokumentClass.Insert(title, '', noteId);
+      let id = await DokumentClass.Insert(additonalData.title, '', noteId);
+
       doc = {
-        id: id,
-        title: title,
+        id: id!,
+        title: additonalData.title,
         content: '',
         note_id: noteId,
-      } as Dokument;
+        creator_id: additonalData.creator_id,
+        likes: additonalData.likes,
+        liked: additonalData.liked,
+      };
     }
 
-    return NextResponse.json(doc, { status: 200, statusText: "Created successfully"});
+    return NextResponse.json(doc, {
+      status: 200,
+      statusText: 'Created successfully',
+    });
   } catch (error) {
     console.error('Error fetching document:', error);
-    return NextResponse.json({ status: 500, statusText: 'Failed to create document'});
+    return NextResponse.json({
+      status: 500,
+      statusText: 'Failed to create document',
+    });
   }
 }
 
@@ -50,14 +70,14 @@ export async function PUT(req: NextRequest) {
     const token = await getToken({ req, secret });
 
     if (!token) {
-      return NextResponse.json({ status: 401, statusText: 'Unauthorized'});
+      return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
     }
 
     await DokumentClass.Update(title, content, id);
 
-    return NextResponse.json( { status: 200, statusText: 'Saved'});
+    return NextResponse.json({ status: 200, statusText: 'Saved' });
   } catch (error) {
     console.error(error);
-    return NextResponse.json( { status: 500, statusText:'Failed to save' });
+    return NextResponse.json({ status: 500, statusText: 'Failed to save' });
   }
 }
