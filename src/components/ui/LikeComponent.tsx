@@ -8,19 +8,39 @@ import { twJoin } from 'tailwind-merge';
 
 export const LikeComponent: React.FC<{
   hasBeenLiked: boolean;
+  userId: string;
+  noteId: string;
   numberOfLikes: number;
   isOrderReversed?: boolean;
   size?: 'sm' | 'lg';
-  action: () => void;
 }> = ({
-  hasBeenLiked = false,
+  hasBeenLiked,
+  noteId,
+  userId,
   isOrderReversed = false,
   numberOfLikes,
   size = 'sm',
-  action,
 }) => {
   const [isLiked, setIsLiked] = React.useState(hasBeenLiked);
   const [likeCount, setLikeCount] = React.useState(numberOfLikes);
+
+  const likeAction = async () => {
+    try {
+      await fetch('http://localhost:3000/api/core/home/notes/like', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          noteId,
+          userId,
+          exists: isLiked,
+        }), //image
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   // fix: Move action over here and get the crucial info that is needed
   return (
     <div
@@ -36,7 +56,9 @@ export const LikeComponent: React.FC<{
           const syncLiked = !isLiked;
           setIsLiked(syncLiked);
           setLikeCount(syncLiked ? likeCount + 1 : likeCount - 1);
-          action();
+          likeAction();
+
+          // Karlo: Use optimistic UI to update the like count
         }}
       >
         {isLiked ? (

@@ -169,19 +169,17 @@ export async function GetNoteNameById(note_id: string): Promise<{
   const querySubject = resultSubject[0][0];
 
   const resultUser: [any, any] = await getPool().query(
-    `SELECT username FROM user WHERE id = ?`,
-    [querySubject.creator]
+    `SELECT username FROM user WHERE id = ${querySubject.creator}`
   );
   const queryUser = resultUser[0][0];
 
   const resultLike: [any, any] = await getPool().query(
     `
     SELECT COUNT(DISTINCT l.user_id) AS likes,
-    MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked
+    MAX(CASE WHEN l.user_id = ${querySubject.creator} THEN 1 ELSE 0 END) AS liked
     FROM \`likes\` l
-    WHERE l.note_id = ? AND l.user_id = ?
-    `,
-    [note_id, note_id, querySubject.creator]
+    WHERE l.note_id = ${note_id} AND l.user_id = ${querySubject.creator}
+    `
   );
   const queryLike = resultLike[0][0];
 

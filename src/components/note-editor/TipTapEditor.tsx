@@ -234,6 +234,8 @@ export const TipTapEditor: React.FC<{
         </div>
         <ActionBar
           noteId={noteId}
+          isLiked={isLiked}
+          likeCount={likeCount}
           editor={editor}
           isEditing={isEditing}
           setIsEditing={setIsEditing}
