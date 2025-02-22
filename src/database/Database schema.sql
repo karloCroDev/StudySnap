@@ -44,7 +44,7 @@ CREATE TABLE `document` (
   `id` INT auto_increment NOT NULL,
   `date_created` datetime default CURRENT_TIMESTAMP not null,
   `date_modified` datetime default NULL,
-  `title` varchar(255) NOT NULL,
+  -- `title` varchar(255) NOT NULL, Remove this because it is using title from note, and adapting that title to document
   `content` longtext NOT NULL,
   `note_id` int NOT NULL,
   PRIMARY KEY (`id`),

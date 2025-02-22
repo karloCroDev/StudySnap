@@ -26,6 +26,7 @@ export const ActionBar: React.FC<{
   editor: EditorType;
   completionLoading: boolean;
   noteId: string;
+  allowEditing: boolean;
 }> = ({
   noteId,
   isEditing,
@@ -33,6 +34,7 @@ export const ActionBar: React.FC<{
   editor,
   saveDocument,
   completionLoading,
+  allowEditing,
 }) => {
   const user = useSession();
 
@@ -68,23 +70,25 @@ export const ActionBar: React.FC<{
               console.log('Liked');
             }}
           />
-          <Button
-            colorScheme="light-blue"
-            variant="solid"
-            iconRight={<Pencil2Icon className="size-5" />}
-            rounded="full"
-            onPress={() => {
-              toast({
-                title: 'Editing 🤔',
-                content: 'Your have entered editing mode',
-                variant: 'information',
-              });
-              setIsEditing(true);
-            }}
-            className="min-w-fit md:hidden"
-          >
-            Edit
-          </Button>
+          {allowEditing && (
+            <Button
+              colorScheme="light-blue"
+              variant="solid"
+              iconRight={<Pencil2Icon className="size-5" />}
+              rounded="full"
+              onPress={() => {
+                toast({
+                  title: 'Editing 🤔',
+                  content: 'Your have entered editing mode',
+                  variant: 'information',
+                });
+                setIsEditing(true);
+              }}
+              className="min-w-fit md:hidden"
+            >
+              Edit
+            </Button>
+          )}
           <div className="flex gap-4">
             <DialogQuizz editor={editor} />
             <DialogAskAI editor={editor} />

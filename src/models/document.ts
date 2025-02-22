@@ -5,6 +5,7 @@ export interface Dokument {
   id: string;
   title: string;
   content: string;
+  creatorName: string;
   note_id: string;
   creator_id: string;
   likes: number;
@@ -13,17 +14,16 @@ export interface Dokument {
 
 export class DokumentClass {
   static async Insert(
-    title: string,
-    content: string,
-    note_id: string
+    note_id: string,
+    content: string
   ): Promise<string | null> {
     try {
       const [result]: any = await getPool().execute(
         `
-            INSERT INTO document (title, content, note_id)
-            VALUES (?, ?, ?);
+            INSERT INTO document (note_id, content)
+            VALUES (?, ?);
             `,
-        [title, content, note_id]
+        [note_id, content]
       );
       return result.insertId as string;
     } catch (err) {

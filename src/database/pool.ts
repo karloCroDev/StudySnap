@@ -149,6 +149,7 @@ export async function GetDocumentsByNoteId(note_id: string): Promise<Dokument> {
 // Luka: fix I expanded queries to get fields I need for document (creatorId, likes, liked)
 export async function GetNoteNameById(note_id: string): Promise<{
   title: string;
+  creatorName: string;
   creator_id: string;
   likes: number;
   liked: boolean;
@@ -161,7 +162,7 @@ export async function GetNoteNameById(note_id: string): Promise<{
 
   const queryNote = resultNote[0][0];
   const resultSubject: [any, any] = await getPool().query(`
-    SELECT creator
+    SELECT name, creator
     FROM subject 
     WHERE id = ${queryNote.subject_id}
 `);
@@ -180,6 +181,7 @@ export async function GetNoteNameById(note_id: string): Promise<{
 
   return {
     title: queryNote.title,
+    creatorName: querySubject.creator,
     creator_id: querySubject.creator,
     likes: queryLike.likes,
     liked: queryLike.liked,

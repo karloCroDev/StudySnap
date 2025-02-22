@@ -23,21 +23,25 @@ export async function POST(req: NextRequest) {
     // Luka: fix Added additional fields to the document
     let doc: Dokument = await GetDocumentsByNoteId(noteId);
     const additonalData = await GetNoteNameById(noteId);
-    doc = {
-      ...doc,
-      creator_id: additonalData.creator_id,
-      likes: additonalData.likes,
-      liked: additonalData.liked,
-    };
 
     if (!doc) {
-      let id = await DokumentClass.Insert(additonalData.title, '', noteId);
+      let id = await DokumentClass.Insert(noteId, '');
 
       doc = {
         id: id!,
         title: additonalData.title,
         content: '',
+        creatorName: additonalData.creatorName,
         note_id: noteId,
+        creator_id: additonalData.creator_id,
+        likes: additonalData.likes,
+        liked: additonalData.liked,
+      };
+    } else {
+      doc = {
+        ...doc,
+        title: additonalData.title,
+        creatorName: additonalData.creatorName,
         creator_id: additonalData.creator_id,
         likes: additonalData.likes,
         liked: additonalData.liked,

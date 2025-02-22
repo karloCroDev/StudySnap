@@ -50,8 +50,12 @@ export default async function NoteEditor({
             <TipTapEditor
               title={documentData.title}
               content={documentData.content}
-              // creatorId={documentData.}
-              noteId={documentData.id}
+              creatorName={documentData.creatorName}
+              creatorId={documentData.creator_id}
+              noteId={documentData.note_id}
+              documentId={documentData.id}
+              isLiked={documentData.liked}
+              likeCount={documentData.likes}
             />
           </LayoutColumn>
         </LayoutRow>
