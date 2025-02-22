@@ -25,13 +25,22 @@ export const DialogChangeDetails: React.FC<{
   noteId: string;
   noteName: string;
   setNoteName: React.Dispatch<React.SetStateAction<string>>;
+  noteDetails: string;
   setNoteDetails: React.Dispatch<React.SetStateAction<string>>;
-}> = ({ noteId, noteName, setNoteName, setNoteDetails }) => {
+  isNotePublic: boolean;
+}> = ({
+  noteId,
+  noteName,
+  setNoteName,
+  noteDetails,
+  setNoteDetails,
+  isNotePublic,
+}) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const [isPublic, setIsPublic] = React.useState(false);
-  const [name, setName] = React.useState('');
-  const [details, setDetails] = React.useState('');
+  const [isPublic, setIsPublic] = React.useState(Boolean(isNotePublic));
+  const [name, setName] = React.useState(noteName);
+  const [details, setDetails] = React.useState(noteDetails);
   const [image, setImage] = React.useState<File | null>(null);
 
   const [loading, setLoading] = React.useState(false);
@@ -61,6 +70,7 @@ export const DialogChangeDetails: React.FC<{
         });
         return;
       }
+      // Karlo: Get this from backend
       const syncName = name || noteName;
       toast({
         title: `${syncName} note updated`,
@@ -70,9 +80,6 @@ export const DialogChangeDetails: React.FC<{
 
       if (name) setNoteName(name);
       if (details) setNoteDetails(details);
-
-      setName('');
-      setDetails('');
     } catch (error) {
       console.error(error);
       toast({
@@ -149,7 +156,7 @@ export const DialogChangeDetails: React.FC<{
           <p className="text-end text-md md:flex-1">Make it public</p>
           <RadioGroup
             className="flex justify-center gap-6 self-center md:flex-[2] md:self-auto"
-            defaultValue="false"
+            defaultValue={isNotePublic ? 'true' : 'false'}
             onChange={(val) =>
               val === 'false' ? setIsPublic(false) : setIsPublic(true)
             }
@@ -173,7 +180,12 @@ export const DialogChangeDetails: React.FC<{
         <Button
           className="self-end"
           type="submit"
-          isDisabled={!image && !name && !details}
+          isDisabled={
+            !image &&
+            name === noteName &&
+            details === noteDetails &&
+            isPublic == isNotePublic
+          }
           iconRight={loading && <Spinner />}
         >
           Save

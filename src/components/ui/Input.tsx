@@ -66,17 +66,14 @@ export const Input: React.FC<
             )}
           />
           {isPassword && (
-            <AriaInput.Button className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-blue-400 outline-none transition-transform active:scale-75">
-              {showPassword ? (
-                <EyeOpenIcon
-                  className="size-5"
-                  onClick={() => setShowPassword(false)}
-                />
+            <AriaInput.Button
+              className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-blue-400 outline-none transition-transform active:scale-75"
+              onPress={() => setShowPassword(!showPassword)}
+            >
+              {!showPassword ? (
+                <EyeOpenIcon className="size-5" />
               ) : (
-                <EyeNoneIcon
-                  className="size-5"
-                  onClick={() => setShowPassword(true)}
-                />
+                <EyeNoneIcon className="size-5" />
               )}
             </AriaInput.Button>
           )}

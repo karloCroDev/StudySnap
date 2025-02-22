@@ -104,7 +104,9 @@ export const NoteCard: React.FC<{
             <DialogChangeDetails
               noteName={noteName}
               setNoteName={setNoteName}
+              noteDetails={noteDetails}
               setNoteDetails={setNoteDetails}
+              isNotePublic={isPublic}
               noteId={noteId}
             />
           </li>
