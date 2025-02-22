@@ -5,7 +5,7 @@ export interface Dokument {
   id: string;
   title: string;
   content: string;
-  creatorName: string;
+  author: string;
   note_id: string;
   creator_id: string;
   likes: number;

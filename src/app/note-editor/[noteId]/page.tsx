@@ -50,7 +50,7 @@ export default async function NoteEditor({
             <TipTapEditor
               title={documentData.title}
               content={documentData.content}
-              creatorName={documentData.creatorName}
+              author={documentData.author}
               creatorId={documentData.creator_id}
               noteId={documentData.note_id}
               documentId={documentData.id}

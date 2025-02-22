@@ -30,7 +30,7 @@ import { useNavigationGuard } from 'next-navigation-guard';
 export const TipTapEditor: React.FC<{
   title: string;
   content: string;
-  creatorName: string;
+  author: string;
   creatorId: string;
   noteId: string;
   documentId: string;
@@ -39,7 +39,7 @@ export const TipTapEditor: React.FC<{
 }> = ({
   title,
   content,
-  creatorName,
+  author,
   creatorId,
   noteId,
   documentId,
@@ -180,7 +180,7 @@ export const TipTapEditor: React.FC<{
     <>
       <Header
         title={title}
-        author={creatorName}
+        author={author}
         editor={editor}
         isEditing={isEditing}
       />

@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
         id: id!,
         title: additonalData.title,
         content: '',
-        creatorName: additonalData.creatorName,
+        author: additonalData.author,
         note_id: noteId,
         creator_id: additonalData.creator_id,
         likes: additonalData.likes,
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       doc = {
         ...doc,
         title: additonalData.title,
-        creatorName: additonalData.creatorName,
+        author: additonalData.author,
         creator_id: additonalData.creator_id,
         likes: additonalData.likes,
         liked: additonalData.liked,

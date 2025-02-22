@@ -149,7 +149,7 @@ export async function GetDocumentsByNoteId(note_id: string): Promise<Dokument> {
 // Luka: fix I expanded queries to get fields I need for document (creatorId, likes, liked)
 export async function GetNoteNameById(note_id: string): Promise<{
   title: string;
-  creatorName: string;
+  author: string;
   creator_id: string;
   likes: number;
   liked: boolean;
@@ -159,29 +159,35 @@ export async function GetNoteNameById(note_id: string): Promise<{
     FROM note 
     WHERE id = ${note_id}
 `);
-
   const queryNote = resultNote[0][0];
+
   const resultSubject: [any, any] = await getPool().query(`
     SELECT name, creator
     FROM subject 
     WHERE id = ${queryNote.subject_id}
 `);
-
   const querySubject = resultSubject[0][0];
 
+  const resultUser: [any, any] = await getPool().query(
+    `SELECT username FROM user WHERE id = ?`,
+    [querySubject.creator]
+  );
+  const queryUser = resultUser[0][0];
+
   const resultLike: [any, any] = await getPool().query(
-    `SELECT COUNT(DISTINCT l.user_id) AS likes,
-          MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked
-   FROM \`likes\` l
-   WHERE l.note_id = ? AND l.user_id = ?`,
+    `
+    SELECT COUNT(DISTINCT l.user_id) AS likes,
+    MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked
+    FROM \`likes\` l
+    WHERE l.note_id = ? AND l.user_id = ?
+    `,
     [note_id, note_id, querySubject.creator]
   );
-
   const queryLike = resultLike[0][0];
 
   return {
     title: queryNote.title,
-    creatorName: querySubject.creator,
+    author: queryUser.username,
     creator_id: querySubject.creator,
     likes: queryLike.likes,
     liked: queryLike.liked,
