@@ -11,7 +11,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 // Luka: Not mandatory, but GET with params, is maybe better
 export async function POST(req: NextRequest) {
   try {
-    const { noteId } = await req.json();
+    const { noteId, currentUserId } = await req.json();
 
     if (!noteId) {
       return NextResponse.json({
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
 
     // Luka: fix Added additional fields to the document
     let doc: Dokument = await GetDocumentsByNoteId(noteId);
-    const additonalData = await GetNoteNameById(noteId);
+    const additonalData = await GetNoteNameById(noteId, currentUserId);
 
     if (!doc) {
       let id = await DokumentClass.Insert(noteId, '');

@@ -42,7 +42,7 @@ export const ActionBar: React.FC<{
 }) => {
   const user = useSession();
   const toast = useToastStore((state) => state.setToast);
-
+  console.log(noteId);
   return (
     <div className="flex items-center justify-between gap-4 overflow-scroll py-2">
       {!isEditing ? (

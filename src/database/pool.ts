@@ -147,7 +147,10 @@ export async function GetDocumentsByNoteId(note_id: string): Promise<Dokument> {
 }
 
 // Luka: fix I expanded queries to get fields I need for document (creatorId, likes, liked)
-export async function GetNoteNameById(note_id: string): Promise<{
+export async function GetNoteNameById(
+  note_id: string,
+  current_user_id: string
+): Promise<{
   title: string;
   author: string;
   creator_id: string;
@@ -176,9 +179,9 @@ export async function GetNoteNameById(note_id: string): Promise<{
   const resultLike: [any, any] = await getPool().query(
     `
     SELECT COUNT(DISTINCT l.user_id) AS likes,
-    MAX(CASE WHEN l.user_id = ${querySubject.creator} THEN 1 ELSE 0 END) AS liked
+    MAX(CASE WHEN l.user_id = ${current_user_id} THEN 1 ELSE 0 END) AS liked
     FROM \`likes\` l
-    WHERE l.note_id = ${note_id} AND l.user_id = ${querySubject.creator}
+    WHERE l.note_id = ${note_id}
     `
   );
   const queryLike = resultLike[0][0];

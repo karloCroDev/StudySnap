@@ -12,14 +12,14 @@ import { Header } from '@/components/ui/header/Header';
 // Models (types)
 import { Dokument } from '@/models/document';
 
-async function fetchDocument(noteId: string) {
+async function fetchDocument(noteId: string, currentUserId: string) {
   try {
     const response = await fetch(`http://localhost:3000/api/core/note-editor`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ noteId }),
+      body: JSON.stringify({ noteId, currentUserId }),
     });
     if (!response.ok) throw new Error('Failed to fetch data');
 
@@ -39,7 +39,10 @@ export default async function NoteEditor({
     redirect('/login');
   }
 
-  const documentData: Dokument = await fetchDocument(params.noteId);
+  const documentData: Dokument = await fetchDocument(
+    params.noteId,
+    session.user.id
+  );
   console.log(documentData);
   return (
     <NavigationGuardProvider>

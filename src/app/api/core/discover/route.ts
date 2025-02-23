@@ -22,6 +22,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(notes, { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ status: 500, statusText: 'Failed to get notes' });
+    return NextResponse.json({
+      status: 500,
+      statusText: 'Failed to get notes',
+    });
   }
 }

@@ -18,8 +18,8 @@ async function getPublicNotes(userId: string) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ userId }), 
-    });
+    body: JSON.stringify({ userId }),
+  });
   if (!response.ok) throw new Error('Failed to fetch data');
 
   return await response.json();
