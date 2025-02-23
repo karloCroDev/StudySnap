@@ -19,6 +19,7 @@ export const NoteCard: React.FC<{
   author: string;
   isPublic: boolean;
   userImage?: string;
+  encoded_image: string|null;
   numberOfLikes: number;
   liked: boolean;
   creatorId: string;
@@ -27,6 +28,7 @@ export const NoteCard: React.FC<{
   title,
   description,
   userImage,
+  encoded_image,
   author,
   isPublic,
   numberOfLikes,
@@ -60,6 +62,8 @@ export const NoteCard: React.FC<{
   const authorCheck =
     creatorId.toString() === user.data?.user.id ? user.data.user.name : author;
 
+
+  //Karlo: Please add image to the note card
   return (
     <div className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400 text-blue-900">
       <div className="flex aspect-square flex-col p-6 pb-4">

@@ -28,17 +28,17 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
+
     const subjectId = formData.get('subjectId') as string;
     const noteName = formData.get('noteName') as string;
     const details = formData.get('details') as string | null;
-    const isPublic = formData.get('ispublic') === "true";
+    const isPublic = formData.get('isPublic') == "true";
     const file = formData.get('file');
 
     if (!noteName || isPublic == undefined || !subjectId) {
       return NextResponse.json( { status: 400, statusText: 'Missing required fields'});
     }
     const imagePath = await WriteImage(file);
-    
     const id = await NoteClass.Insert(
       noteName,
       details ? details : '',
@@ -53,7 +53,8 @@ export async function POST(req: NextRequest) {
     }
 
     const note = await GetNoteById(id, "0");
-
+    
+    console.log("NOTE:", note)
     return NextResponse.json(note, {
       status: 201,
       statusText: 'Created successfully',

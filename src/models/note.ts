@@ -16,14 +16,14 @@ export interface Note{
 }
 
 export class NoteClass {
-  static async Insert(title: string, details:  string, is_public: boolean, subject_id: string, image: string | null = null): Promise<string | null> {
+  static async Insert(title: string, details:  string, is_public: boolean, subject_id: string, imagePath: string | null = null): Promise<string | null> {
     try {
       const [result]: any = await getPool().execute(
         `
         INSERT INTO note (title, details, is_public, subject_id, image_url)
         VALUES (?, ?, ?, ?, ?);
       `,
-        [title, details, is_public, subject_id, image]
+        [title, details, is_public, subject_id, imagePath]
       );
       return result.insertId as string
     } catch (err) {

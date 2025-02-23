@@ -175,7 +175,8 @@ export async function GetNoteById(note_id: string, user_id: string): Promise<Not
             n.subject_id,
             u.username
     `);
-    return result[0][0] as Note;
+  result[0][0].encoded_image = await GetImage(result[0][0].image_url);
+  return result[0][0] as Note;
 }
 
 // Luka: fix I expanded queries to get fields I need for document (creatorId, likes, liked)

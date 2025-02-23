@@ -45,19 +45,16 @@ export const DialogCreate: React.FC<{
       
       const formData = new FormData();
       formData.append('subjectId', subjectId)
-      if (noteName) formData.append('subjectName', noteName);
+      if (noteName) formData.append('noteName', noteName);
       if (details) formData.append('details', details);
       formData.append('isPublic', isPublic.toString());
       if (image) formData.append('file', image)
 
-      const response = await fetch(
+        const response = await fetch(
         'http://localhost:3000/api/core/home/notes',
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ formData }),
+          body: formData
         }
       );
       const data = await response.json();
@@ -70,8 +67,7 @@ export const DialogCreate: React.FC<{
         });
         return;
       }
-      //Karlo: When i Create note, the data that i provide to update page turns into undefined in the process and the error occures
-      addNote(data[0] as Note);
+      addNote(data as Note);
       toast({
         title: `${noteName} note created`,
         content: `You have succesfully created ${noteName}`,
