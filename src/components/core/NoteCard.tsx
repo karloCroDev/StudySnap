@@ -93,7 +93,6 @@ export const NoteCard: React.FC<{
             isOrderReversed
             numberOfLikes={numberOfLikes}
             noteId={noteId}
-            userId={user.data?.user.id!}
           />
         </div>
       </div>

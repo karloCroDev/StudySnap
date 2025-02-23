@@ -2,7 +2,6 @@
 import { NavigationGuardProvider } from 'next-navigation-guard';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
 
 // Components
 import { Layout, LayoutColumn, LayoutRow } from '@/components/ui/Layout';
@@ -35,13 +34,9 @@ export default async function NoteEditor({
   params: { noteId: string };
 }) {
   const session = await getServerSession(authOptions);
-  if (!session) {
-    redirect('/login');
-  }
-
   const documentData: Dokument = await fetchDocument(
     params.noteId,
-    session.user.id
+    session?.user.id || 0 // Luka: I don't think this will be neccessary when you fetch with note (but if it is important, just add some example id that 100% won't be in db - like zero)
   );
   console.log(documentData);
   return (

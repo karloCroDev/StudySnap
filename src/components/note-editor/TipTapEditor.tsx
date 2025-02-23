@@ -27,6 +27,7 @@ import { useToastStore } from '@/store/useToastStore';
 import { ActionBar } from './ActionBar';
 import { useNavigationGuard } from 'next-navigation-guard';
 
+// Fix types since they are integers
 export const TipTapEditor: React.FC<{
   title: string;
   content: string;
@@ -49,7 +50,7 @@ export const TipTapEditor: React.FC<{
   const user = useSession();
 
   const allowEditing = React.useMemo(
-    () => +user.data?.user.id! === +creatorId,
+    () => user.data?.user.id!.toString() === creatorId.toString(),
     [user, creatorId]
   );
 

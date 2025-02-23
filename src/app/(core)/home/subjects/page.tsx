@@ -1,6 +1,7 @@
 // External packages
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { redirect } from 'next/navigation';
 
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
@@ -30,6 +31,10 @@ async function getSubjects(session: any) {
 
 export default async function Subjects() {
   const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect('/login');
+  }
   const [subjects, images] = await getSubjects(session);
   console.log(subjects);
   console.log(images);

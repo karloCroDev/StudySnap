@@ -14,10 +14,10 @@ import { DialogGenerateContent } from './DialogGenerateContent';
 import { Spinner } from '@/components/ui/Spinner';
 import { LikeComponent } from '@/components/ui/LikeComponent';
 import { DialogImageOcr } from '@/components/note-editor/DialogImageOcr';
+import { DialogAskAI } from '@/components/note-editor/DialogAskAI';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
-import { DialogAskAI } from '@/components/note-editor/DialogAskAI';
 
 export const ActionBar: React.FC<{
   noteId: string;
@@ -49,7 +49,6 @@ export const ActionBar: React.FC<{
         <>
           <LikeComponent
             noteId={noteId}
-            userId={user.data?.user.id!} // Karlo: Create this to not be only visible to signed up users
             numberOfLikes={likeCount}
             hasBeenLiked={isLiked}
             size="lg"

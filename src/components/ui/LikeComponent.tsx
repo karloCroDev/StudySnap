@@ -5,10 +5,12 @@ import * as React from 'react';
 import { HeartIcon, HeartFilledIcon } from '@radix-ui/react-icons';
 import { Button as ReactAriaButton } from 'react-aria-components';
 import { twJoin } from 'tailwind-merge';
+import { useSession } from 'next-auth/react';
+
+import { useToastStore } from '@/store/useToastStore';
 
 export const LikeComponent: React.FC<{
   hasBeenLiked: boolean;
-  userId: string;
   noteId: string;
   numberOfLikes: number;
   isOrderReversed?: boolean;
@@ -16,11 +18,13 @@ export const LikeComponent: React.FC<{
 }> = ({
   hasBeenLiked,
   noteId,
-  userId,
   isOrderReversed = false,
   numberOfLikes,
   size = 'sm',
 }) => {
+  const user = useSession();
+
+  const toast = useToastStore((state) => state.setToast);
   const [isLiked, setIsLiked] = React.useState(hasBeenLiked);
   const [likeCount, setLikeCount] = React.useState(numberOfLikes);
 
@@ -34,6 +38,14 @@ export const LikeComponent: React.FC<{
   );
 
   const likeAction = async () => {
+    if (!user.data) {
+      toast({
+        title: 'Uhuh not able to like note!',
+        content: 'Please log in order to like this note',
+        variant: 'error',
+      });
+      return;
+    }
     const nextLikedState = !optimisticState.isLiked; // This is updating async, so this is work around --> that is why you will see in catch or !response.ok that I am calling the same state (which is not but the inital one before the update)
     updateOptimisticState(nextLikedState);
 
@@ -47,7 +59,7 @@ export const LikeComponent: React.FC<{
           },
           body: JSON.stringify({
             noteId,
-            userId,
+            userId: user.data?.user.id,
             exists: isLiked, // Send real state before update
           }),
         }

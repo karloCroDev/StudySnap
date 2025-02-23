@@ -11,7 +11,7 @@ import {
 } from 'react-aria-components';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 
 // Components
 import { LinkAsButton } from '@/components/ui/LinkAsButton';
@@ -23,11 +23,15 @@ import { DialogEditProfile } from '@/components/core/profile/DialogEditProfile';
 import { useToastStore } from '@/store/useToastStore';
 import { useRouter } from 'next/navigation';
 
-export const Menu = () => {
+export const Menu: React.FC<{
+  userId: number;
+  username: string;
+  pfpImage: string;
+  // Better to have this from server, looks much better when rendered on frontend (in this scenario)
+}> = ({ userId, username, pfpImage }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
-  const user = useSession();
   const router = useRouter();
   const toast = useToastStore((state) => state.setToast);
 
@@ -49,6 +53,22 @@ export const Menu = () => {
       });
     }
   };
+
+  if (!userId)
+    return (
+      <div className="flex gap-4">
+        <LinkAsButton colorScheme="black" variant="outline" href="/login">
+          Login
+        </LinkAsButton>
+        <LinkAsButton
+          colorScheme="light-blue"
+          variant="outline"
+          href="/sign-up"
+        >
+          Sign up
+        </LinkAsButton>
+      </div>
+    );
   return (
     <MenuTrigger isOpen={isMenuOpen}>
       <Button
@@ -57,18 +77,18 @@ export const Menu = () => {
         iconLeft={
           <Avatar
             imageProps={{
-              src: user.data?.user?.image || '',
+              src: pfpImage || '',
               alt: '',
             }}
             size="md"
           >
-            {user.data?.user?.name}
+            {username}
           </Avatar>
         }
         className="text-lg font-medium 2xl:text-xl"
         onPress={() => setIsMenuOpen(!isMenuOpen)}
       >
-        {user.data?.user?.name}
+        {username}
       </Button>
       <Popover
         className="!z-20 w-[var(--trigger-width)] outline-none data-[exiting]:pointer-events-none data-[entering]:pointer-events-auto data-[entering]:animate-menu-open data-[exiting]:animate-menu-closed"
@@ -95,7 +115,7 @@ export const Menu = () => {
             onAction={() => setIsMenuOpen(false)}
           >
             <Link
-              href={`/public-profile/${user.data?.user.id}`}
+              href={`/public-profile/${userId}`}
               className="flex items-center gap-2"
             >
               <PersonIcon /> Public profile
