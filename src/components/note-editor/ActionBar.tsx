@@ -4,120 +4,79 @@
 import * as React from 'react';
 import { Editor as EditorType } from '@tiptap/react';
 import { useSession } from 'next-auth/react';
-import { Pencil2Icon, FileTextIcon, CameraIcon } from '@radix-ui/react-icons';
-import { FileTrigger } from 'react-aria-components';
+
+import { Pencil2Icon, FileTextIcon } from '@radix-ui/react-icons';
 
 // Components
 import { Button } from '@/components/ui/Button';
 import { DialogQuizz } from '@/components/note-editor/DialogQuizz';
 import { DialogGenerateContent } from './DialogGenerateContent';
 import { Spinner } from '@/components/ui/Spinner';
-import { LikeComponent } from '@/components/core/LikeComponent';
+import { LikeComponent } from '@/components/ui/LikeComponent';
+import { DialogImageOcr } from '@/components/note-editor/DialogImageOcr';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
+import { DialogAskAI } from '@/components/note-editor/DialogAskAI';
 
 export const ActionBar: React.FC<{
+  noteId: string;
+  isLiked: boolean;
+  likeCount: number;
   isEditing: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   saveDocument: () => void;
   editor: EditorType;
   completionLoading: boolean;
-  noteId: string;
+  allowEditing: boolean;
 }> = ({
   noteId,
+  isLiked,
+  likeCount,
   isEditing,
   setIsEditing,
   editor,
   saveDocument,
   completionLoading,
+  allowEditing,
 }) => {
   const user = useSession();
-
   const toast = useToastStore((state) => state.setToast);
-
-  const likeAction = async () => {
-    try {
-      await fetch('http://localhost:3000/api/core/home/notes/like', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          noteId,
-          userId: user.data?.user.id,
-          // exists: liked,
-        }), //image
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // Getting notes
-  const [loading, setLoading] = React.useState(false);
-
-  const getNotesFromImage = async (image: File) => {
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append('file', image);
-      const response = await fetch('http://localhost:3000/api/ai/image-note', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        editor?.commands.insertContent(data);
-        toast({
-          title: 'Notes genearted',
-          content: 'Notes generated successfully from your image',
-          variant: 'success',
-        });
-      }
-    } catch (error) {
-      console.error('Upload failed:', error);
-      toast({
-        title: 'Failed to get notes',
-        content: 'Please try again later, problem with server',
-        variant: 'error',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="flex items-center justify-between gap-4 overflow-scroll py-2">
       {!isEditing ? (
         <>
           <LikeComponent
-            hasBeenLiked={false}
-            numberOfLikes={330}
+            noteId={noteId}
+            userId={user.data?.user.id!} // Karlo: Create this to not be only visible to signed up users
+            numberOfLikes={likeCount}
+            hasBeenLiked={isLiked}
             size="lg"
-            action={() => {
-              console.log('Liked');
-            }}
           />
-          <Button
-            colorScheme="light-blue"
-            variant="solid"
-            iconRight={<Pencil2Icon className="size-5" />}
-            rounded="full"
-            onPress={() => {
-              toast({
-                title: 'Editing 🤔',
-                content: 'Your have entered editing mode',
-                variant: 'information',
-              });
-              setIsEditing(true);
-            }}
-            className="min-w-fit md:hidden"
-          >
-            Edit
-          </Button>
-          <DialogQuizz editor={editor} />
+          {allowEditing && (
+            <Button
+              colorScheme="light-blue"
+              variant="solid"
+              iconRight={<Pencil2Icon className="size-5" />}
+              rounded="full"
+              onPress={() => {
+                toast({
+                  title: 'Editing 🤔',
+                  content: 'Your have entered editing mode',
+                  variant: 'information',
+                });
+                setIsEditing(true);
+              }}
+              className="min-w-fit md:hidden"
+            >
+              Edit
+            </Button>
+          )}
+          <div className="flex gap-4">
+            <DialogQuizz editor={editor} />
+            <DialogAskAI editor={editor} />
+          </div>
         </>
       ) : (
         <>
@@ -131,22 +90,7 @@ export const ActionBar: React.FC<{
           >
             Save
           </Button>
-          <FileTrigger
-            acceptedFileTypes={['.jpg,', '.jpeg', '.png']}
-            onSelect={(event) => {
-              event && getNotesFromImage(Array.from(event)[0]);
-            }}
-          >
-            <Button
-              colorScheme="light-blue"
-              rounded="full"
-              className="min-w-fit"
-              iconLeft={<CameraIcon className="size-5" />}
-              iconRight={loading && <Spinner />}
-            >
-              Image notes
-            </Button>
-          </FileTrigger>
+          <DialogImageOcr editor={editor} />
           <div className="hidden items-center gap-4 text-balance text-md text-gray-500 lg:flex">
             <p className="italic">Sentence complete:</p>
             {completionLoading ? (

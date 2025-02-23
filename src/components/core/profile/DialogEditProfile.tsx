@@ -135,8 +135,8 @@ export const DialogEditProfile: React.FC<{
           onChange={(e) => setUsername(e.toString())}
         />
         <Input
-          type="text"
-          label="Password"
+          label="New password"
+          isPassword
           minLength={8}
           maxLength={16}
           isMdHorizontal
@@ -146,7 +146,6 @@ export const DialogEditProfile: React.FC<{
           }}
           onChange={(e) => setPassword(e.toString())}
         />
-
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <DialogDeleteProfile />
           <Button

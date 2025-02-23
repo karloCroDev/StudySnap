@@ -28,20 +28,34 @@ import { ActionBar } from './ActionBar';
 import { useNavigationGuard } from 'next-navigation-guard';
 
 export const TipTapEditor: React.FC<{
-  creatorId: string; // NOT OPTIONAL
   title: string;
   content: string;
+  author: string;
+  creatorId: string;
   noteId: string;
-}> = ({ creatorId, title, content, noteId }) => {
+  documentId: string;
+  isLiked: boolean;
+  likeCount: number;
+}> = ({
+  title,
+  content,
+  author,
+  creatorId,
+  noteId,
+  documentId,
+  isLiked,
+  likeCount,
+}) => {
   const user = useSession();
+
+  const allowEditing = React.useMemo(
+    () => +user.data?.user.id! === +creatorId,
+    [user, creatorId]
+  );
 
   const toast = useToastStore((state) => state.setToast);
 
   const [isEditing, setIsEditing] = React.useState(false);
-
-  console.log('Logged in user:', user.data?.user.id);
-  console.log('Creator id:', creatorId);
-  console.log('Note id:', noteId);
 
   // Editor config
   const editor = useEditor({
@@ -108,6 +122,7 @@ export const TipTapEditor: React.FC<{
 
   // Saving document
   const [loadingSaveDocument, setLoadingSaveDocument] = React.useState(false);
+  console.log(content);
 
   const saveDocument = async () => {
     try {
@@ -167,21 +182,21 @@ export const TipTapEditor: React.FC<{
     <>
       <Header
         title={title}
-        author="ANA HORVAT"
+        author={author}
         editor={editor}
         isEditing={isEditing}
       />
       <div
         className={twJoin(
-          'relative mt-4 flex h-full flex-col overflow-hidden rounded-lg border border-blue-900 p-8 pb-6 2xl:mt-8',
+          'relative mt-4 flex h-full flex-col overflow-hidden rounded-lg border border-blue-900 p-4 pt-6 lg:p-8 lg:pb-6 2xl:mt-8',
           isEditing
             ? 'animate-text-editor-editing'
             : 'animate-text-editor-initial-apperance'
         )}
       >
         <div className="absolute right-6 top-6 z-10 rounded-lg bg-gray-100 p-2">
-          {true ? (
-            !isEditing ? (
+          {allowEditing &&
+            (!isEditing ? (
               <Button
                 colorScheme="light-blue"
                 variant="solid"
@@ -209,8 +224,7 @@ export const TipTapEditor: React.FC<{
               >
                 Save
               </Button>
-            )
-          ) : null}
+            ))}
         </div>
 
         <div className="prose h-full !max-w-none !overflow-scroll scroll-smooth">
@@ -222,16 +236,15 @@ export const TipTapEditor: React.FC<{
         </div>
         <ActionBar
           noteId={noteId}
+          isLiked={isLiked}
+          likeCount={likeCount}
           editor={editor}
           isEditing={isEditing}
           setIsEditing={setIsEditing}
           saveDocument={saveDocument}
           completionLoading={completionLoading}
+          allowEditing={allowEditing}
         />
-        {/* <div className={navGuard.active ? 'block' : 'hidden'}>
-          <p onClick={() => navGuard.reject}>no</p>
-          <p onClick={() => navGuard.reject}>yes</p>
-        </div> */}
       </div>
     </>
   );

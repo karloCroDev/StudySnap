@@ -61,6 +61,7 @@ export const SubjectCard: React.FC<{
           <DialogChangeDetails
             id={id}
             cardTitle={cardTitle}
+            cardDescription={cardDescription}
             setCardTitle={setCardTitle}
             setCardDescripton={setCardDescription}
           >

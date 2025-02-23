@@ -17,12 +17,20 @@ export const DialogChangeDetails: React.FC<{
   children: React.ReactNode;
   cardTitle: string;
   setCardTitle: React.Dispatch<React.SetStateAction<string>>;
+  cardDescription: string;
   setCardDescripton: React.Dispatch<React.SetStateAction<string>>;
-}> = ({ cardTitle, setCardTitle, setCardDescripton, id, children }) => {
+}> = ({
+  cardTitle,
+  setCardTitle,
+  cardDescription,
+  setCardDescripton,
+  id,
+  children,
+}) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const [subjectName, setSubjectName] = React.useState('');
-  const [details, setDetails] = React.useState('');
+  const [subjectName, setSubjectName] = React.useState(cardTitle);
+  const [details, setDetails] = React.useState(cardDescription);
   const [image, setImage] = React.useState<File | null>(null);
 
   const toast = useToastStore((state) => state.setToast);
@@ -55,6 +63,7 @@ export const DialogChangeDetails: React.FC<{
         return;
       }
 
+      // Karlo : Get this from backend
       const syncName = subjectName || cardTitle;
       toast({
         title: `${syncName} subject updated`,
@@ -64,9 +73,6 @@ export const DialogChangeDetails: React.FC<{
 
       if (subjectName) setCardTitle(subjectName);
       if (details) setCardDescripton(details);
-
-      setSubjectName('');
-      setDetails('');
     } catch (error) {
       console.error(error);
       toast({
@@ -103,7 +109,7 @@ export const DialogChangeDetails: React.FC<{
         />
         <Input
           type="text"
-          label="Details (optional)"
+          label="Details"
           minLength={5}
           maxLength={40}
           isMdHorizontal
@@ -119,10 +125,11 @@ export const DialogChangeDetails: React.FC<{
         >
           <AriaButton className="outline-none">
             <Input
-              label="Image (optional)"
+              label="Image"
               isMdHorizontal
+              isReadOnly
               inputProps={{
-                placeholder: 'Enter thumbnail image (optional)',
+                placeholder: 'Enter thumbnail image',
                 value: image ? image?.name.toString() : '',
               }}
               className="text-start"
@@ -132,7 +139,9 @@ export const DialogChangeDetails: React.FC<{
         <Button
           className="self-end"
           type="submit"
-          isDisabled={!subjectName && !details}
+          isDisabled={
+            subjectName === cardTitle && details === cardDescription && !image
+          }
         >
           Save
         </Button>

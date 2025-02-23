@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react';
 import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';
 import { DialogDelete } from '@/components/core/note/DialogDelete';
 import { Avatar } from '@/components/ui/Avatar';
-import { LikeComponent } from '@/components/core/LikeComponent';
+import { LikeComponent } from '@/components/ui/LikeComponent';
 // Karlo : Make sure that Notes types are here, fix this if we have time
 
 export const NoteCard: React.FC<{
@@ -92,7 +92,8 @@ export const NoteCard: React.FC<{
             hasBeenLiked={liked}
             isOrderReversed
             numberOfLikes={numberOfLikes}
-            action={likeAction}
+            noteId={noteId}
+            userId={user.data?.user.id!}
           />
         </div>
       </div>
@@ -102,7 +103,9 @@ export const NoteCard: React.FC<{
             <DialogChangeDetails
               noteName={noteName}
               setNoteName={setNoteName}
+              noteDetails={noteDetails}
               setNoteDetails={setNoteDetails}
+              isNotePublic={isPublic}
               noteId={noteId}
             />
           </li>
