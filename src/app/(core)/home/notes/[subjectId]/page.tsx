@@ -21,7 +21,6 @@ async function getNotes({ session, subjectId }: any) {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${session.accessToken}`, // I think this is not neccessary, will fix it after I am done with everything
       },
     }
   );

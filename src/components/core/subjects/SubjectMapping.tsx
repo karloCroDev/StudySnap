@@ -18,14 +18,11 @@ import { Subject } from '@/models/subject';
 import { ImageObject } from '@/database/ImageHandler';
 
 export const SubjectMapping: React.FC<{
-  /*subjects: Subject[];
-  images: string[]
-}> = ({ subjects, images }) => {
-*/
-  //const search = useGeneralInfo((state) => state.search);
   subjectsData: Subject[];
-  images: ImageObject[]; // Passing the fetched data to this object
+  images: ImageObject[];
 }> = ({ subjectsData, images }) => {
+
+  //Karlo: When creating the subject, new subject sard is mapped without an image so the card is white
   const { search, subjects, setSubjects } = useGeneralInfo(
     useShallow((state) => ({
       search: state.search,
@@ -61,7 +58,7 @@ export const SubjectMapping: React.FC<{
           image={
             <div className="absolute left-0 top-0 -z-10 h-full w-full">
               <Image
-                src={subject.image != null ? `data:image/jpeg;base64,${images.find(image => image.url === subject.image)?.encodedImage}` : ImageExample}
+                src={subject.image_url != null ? `data:image/jpeg;base64,${images.find(image => image.url === subject.image_url)?.encodedImage}` : ImageExample}
                 alt="Informative image about subject"
                 className="h-full object-cover brightness-50"
                 width = "500"
@@ -74,5 +71,3 @@ export const SubjectMapping: React.FC<{
       </LayoutColumn>
     ));
 };
-
-// NOT IN USE, import it in page when I get data (use from the page directory )

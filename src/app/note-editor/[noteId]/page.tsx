@@ -8,24 +8,22 @@ import { redirect } from 'next/navigation';
 import { Layout, LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { TipTapEditor } from '@/components/note-editor/TipTapEditor';
 import { Header } from '@/components/ui/header/Header';
+import { Note } from '@/models/note';
 
-// Models (types)
-import { Dokument } from '@/models/document';
-
-async function fetchDocument(noteId: string) {
+async function fetchNote(noteId: string, userId: string) {
   try {
-    const response = await fetch(`http://localhost:3000/api/core/note-editor`, {
+    const response = await fetch(`http://localhost:3000/api/core/home/notes/editor`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ noteId }),
+      body: JSON.stringify({ noteId, userId }),
     });
     if (!response.ok) throw new Error('Failed to fetch data');
 
     return await response.json();
   } catch (error) {
-    console.error('Failed to fetch dokument:', error);
+    console.error('Failed to fetch note:', error);
   }
 }
 
@@ -38,9 +36,12 @@ export default async function NoteEditor({
   if (!session) {
     redirect('/login');
   }
+  const userId = session.user.id
+  //Karlo: Everything is provided in this variable, you need to pass it to TipTapEditor
+  //       you also can not change the title of the note
+  //       It would also be good if you could pass the note in the parameters of this function rather than fetching the note all over again
+  const noteData: Note = await fetchNote(params.noteId, userId);
 
-  const documentData: Dokument = await fetchDocument(params.noteId);
-  console.log(documentData);
   return (
     <NavigationGuardProvider>
       <Header />

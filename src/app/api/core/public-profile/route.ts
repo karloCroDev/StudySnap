@@ -2,7 +2,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import bcrypt from 'bcryptjs';
-import { GetNotesByUserId, GetUserById } from '@/database/pool';
+import { GetNotesByCreatorId, GetUserById } from '@/database/pool';
 
 // Models
 import { UserClass } from '@/models/user';
@@ -21,14 +21,14 @@ export async function POST(req: NextRequest) {
 
     //if (!await getToken({ req, secret })) return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
 
-    const { userId } = await req.json();
+    const { creatorId, userId } = await req.json();
 
-    if (!userId) {
+    if (!userId || !creatorId) {
       return NextResponse.json({ status: 400, statusText: 'Insufficient data provided'});
     }
 
-    let notes = await GetNotesByUserId(userId);
-    let user = await GetUserById(userId)
+    let notes = await GetNotesByCreatorId(creatorId, userId);
+    let user = await GetUserById(creatorId)
 
     return NextResponse.json([notes, user], { status: 201, statusText: "Success"});
   } catch (error) {
@@ -40,8 +40,7 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     //if (!await getToken({ req, secret })) return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
-    const token = await getToken({ req, secret });
-    console.log("This in my Patch token \n", token, " \n")
+
     const formData = await req.formData();
 
     const userId = formData.get('user.Id') as string

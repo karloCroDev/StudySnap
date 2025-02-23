@@ -24,15 +24,15 @@ export const NoteMapping: React.FC<{
       setNotes: state.setNotes,
     }))
   );
-
   React.useEffect(() => {
     setNotes(notesData);
   }, []);
 
   if (!notes.length) return;
-  return notes
+
+  return notes 
     .filter(
-      (note) =>
+      (note) =>//Look at dialogCreate Note for Error
         note.title.toLowerCase().includes(search) ||
         note.creator_name.toLowerCase().includes(search) ||
         note.details.toLowerCase().includes(search)
@@ -59,5 +59,3 @@ export const NoteMapping: React.FC<{
       </LayoutColumn>
     ));
 };
-
-// NOT IN USE, import it in page when I get data

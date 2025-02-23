@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     if (!notes) {
       return NextResponse.json({ status: 400, statusText: "No notes found" });
     }
-    return NextResponse.json(notes, { status: 200, statusText: "Note successfully created"});
+    return NextResponse.json(notes, { status: 200});
   } catch (error) {
     console.error(error);
     return NextResponse.json({ status: 500, statusText: 'Error occoured' });
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ status: 500, statusText: 'Failed to get id from inserted note' });
     }
 
-    const note = await GetNoteById(id);
+    const note = await GetNoteById(id, "0");
 
     return NextResponse.json(note, {
       status: 201,
@@ -72,7 +72,9 @@ export async function DELETE(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const { noteName, details, isPublic, noteId } = await req.json();
+    const { noteName, details, isPublic, noteId, content } = await req.json();
+
+    console.log(noteName, details, isPublic, noteId, content)
 
     if (!noteId) {
       return NextResponse.json({
@@ -84,14 +86,10 @@ export async function PATCH(req: NextRequest) {
     const updates: { [key: string]: any } = {};
     if (noteName) updates.title = noteName;
     if (details) updates.details = details;
+    if (content) updates.content = content;
     updates.is_Public = isPublic ? 1 : 0;
 
-    if (Object.keys(updates).length === 0) {
-      return NextResponse.json({
-        status: 400,
-        statusText: 'No fields to update',
-      });
-    }
+    console.log(updates)
 
     await NoteClass.Update(noteId, updates);
 

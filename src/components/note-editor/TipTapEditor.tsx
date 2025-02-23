@@ -129,16 +129,17 @@ export const TipTapEditor: React.FC<{
       setLoadingSaveDocument(true);
       console.log(editor);
       const response = await fetch(
-        'http://localhost:3000/api/core/note-editor',
+        'http://localhost:3000/api/core/home/notes',
         {
-          method: 'PUT',
+          method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
+            title: title,
             content: editor?.getHTML(),
-            id: documentId,
-          }), // Luka: Title provided because it is put request, if this irritates you change it to patch
+            noteId: noteId,
+          }),
         }
       );
       if (!response.ok) {

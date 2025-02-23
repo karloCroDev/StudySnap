@@ -33,8 +33,25 @@ export const NoteCard: React.FC<{
   liked,
   creatorId,
 }) => {
-  // Karlo: TODO pass this to the like component
   const user = useSession();
+
+  const likeAction = async () => {
+    try {
+      await fetch('http://localhost:3000/api/core/home/notes/like', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          noteId,
+          userId: user.data?.user.id,
+          exists: liked,
+        }),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const [noteName, setNoteName] = React.useState(title);
   const [noteDetails, setNoteDetails] = React.useState(description);
@@ -80,8 +97,7 @@ export const NoteCard: React.FC<{
           />
         </div>
       </div>
-      {/* Luka: What do you think to let user directly change our notes on discover (This under user can only change his notes udner discover) */}
-      {user.data?.user.id === creatorId.toString() && ( // Could make this to check if that user is registered
+      {user.data?.user.id === creatorId.toString() && (
         <ul className="absolute right-5 top-8 z-10 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
           <li>
             <DialogChangeDetails
