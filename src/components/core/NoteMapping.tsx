@@ -2,6 +2,7 @@
 
 // External packages
 import * as React from 'react';
+import Image from 'next/image';
 import { useShallow } from 'zustand/shallow';
 
 // Components
@@ -10,6 +11,9 @@ import { NoteCard } from '@/components/core/NoteCard';
 
 // Store
 import { useGeneralInfo } from '@/store/useGeneralInfo';
+
+// Images
+import ImageExample from '@/public/images/login-image.png';
 
 // Models (types)
 import { Note } from '@/models/note';
@@ -52,9 +56,19 @@ export const NoteMapping: React.FC<{
           isPublic={note.is_public}
           author={note.creator_name}
           liked={note.liked}
-          // userId={userId}
           creatorId={note.creator_id}
           key={note.id}
+          image={
+            <div className="absolute left-0 top-0 -z-10 h-full w-full">
+              <Image
+                src={ImageExample}
+                alt="Informative image about subject"
+                className="h-full object-cover brightness-[45%]"
+                width="500"
+                height="500"
+              />
+            </div>
+          }
         />
       </LayoutColumn>
     ));

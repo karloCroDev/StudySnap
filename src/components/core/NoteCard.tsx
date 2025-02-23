@@ -4,12 +4,14 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { twJoin } from 'tailwind-merge';
 
 // Components
 import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';
 import { DialogDelete } from '@/components/core/note/DialogDelete';
 import { Avatar } from '@/components/ui/Avatar';
 import { LikeComponent } from '@/components/ui/LikeComponent';
+import { Pencil1Icon, TrashIcon } from '@radix-ui/react-icons';
 // Karlo : Make sure that Notes types are here, fix this if we have time
 
 export const NoteCard: React.FC<{
@@ -18,6 +20,7 @@ export const NoteCard: React.FC<{
   description: string;
   author: string;
   isPublic: boolean;
+  image?: React.ReactNode;
   userImage?: string;
   numberOfLikes: number;
   liked: boolean;
@@ -26,6 +29,7 @@ export const NoteCard: React.FC<{
   noteId,
   title,
   description,
+  image,
   userImage,
   author,
   isPublic,
@@ -33,7 +37,6 @@ export const NoteCard: React.FC<{
   liked,
   creatorId,
 }) => {
-  // Karlo: TODO pass this to the like component
   const user = useSession();
 
   const [noteName, setNoteName] = React.useState(title);
@@ -44,13 +47,27 @@ export const NoteCard: React.FC<{
     creatorId.toString() === user.data?.user.id ? user.data.user.name : author;
 
   return (
-    <div className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400 text-blue-900">
+    <div
+      className={twJoin(
+        'group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400',
+        image ? 'text-gray-100' : 'text-blue-900'
+      )}
+    >
       <div className="flex aspect-square flex-col p-6 pb-4">
         <div>
           <h3 className="w-3/5 break-words text-xl font-semibold">
             {noteName}
           </h3>
-          {description && <p className="text-xs font-medium">{noteDetails}</p>}
+          {description && (
+            <p
+              className={twJoin(
+                'text-xs font-medium',
+                image ? 'text-gray-200' : 'text-gray-400'
+              )}
+            >
+              {noteDetails}
+            </p>
+          )}
         </div>
         <div className="z-10 mt-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -91,14 +108,30 @@ export const NoteCard: React.FC<{
               setNoteDetails={setNoteDetails}
               isNotePublic={isPublic}
               noteId={noteId}
-            />
+            >
+              <Pencil1Icon
+                className={twJoin(
+                  'size-9 transition-colors lg:size-7',
+                  image ? 'hover:text-gray-200' : 'hover:text-blue-400'
+                )}
+              />
+            </DialogChangeDetails>
           </li>
           <li>
-            <DialogDelete noteId={noteId} noteName={noteName} />
+            <DialogDelete noteId={noteId} noteName={noteName}>
+              <TrashIcon
+                className={twJoin(
+                  'size-9 transition-colors lg:size-7',
+                  image ? 'hover:text-gray-200' : 'hover:text-blue-400'
+                )}
+              />
+            </DialogDelete>
           </li>
         </ul>
       )}
-      <Link href={`/note-editor/${noteId}`} className="absolute inset-0" />
+      <Link href={`/note-editor/${noteId}`} className="absolute inset-0">
+        {image}
+      </Link>
     </div>
   );
 };

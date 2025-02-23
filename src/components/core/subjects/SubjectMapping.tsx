@@ -18,11 +18,6 @@ import { Subject } from '@/models/subject';
 import { ImageObject } from '@/database/ImageHandler';
 
 export const SubjectMapping: React.FC<{
-  /*subjects: Subject[];
-  images: string[]
-}> = ({ subjects, images }) => {
-*/
-  //const search = useGeneralInfo((state) => state.search);
   subjectsData: Subject[];
   images: ImageObject[]; // Passing the fetched data to this object
 }> = ({ subjectsData, images }) => {
@@ -39,7 +34,7 @@ export const SubjectMapping: React.FC<{
   }, []);
 
   if (!subjects.length) return;
-  
+
   return subjects
     .filter(
       (subject) =>
@@ -59,15 +54,17 @@ export const SubjectMapping: React.FC<{
           title={subject.name}
           description={subject.details}
           image={
-            <div className="absolute left-0 top-0 -z-10 h-full w-full">
-              <Image
-                src={subject.image != null ? `data:image/jpeg;base64,${images.find(image => image.url === subject.image)?.encodedImage}` : ImageExample}
-                alt="Informative image about subject"
-                className="h-full object-cover brightness-50"
-                width = "500"
-                height = "500"
-              />
-            </div>
+            subject.image && (
+              <div className="absolute left-0 top-0 -z-10 h-full w-full">
+                <Image
+                  src={`data:image/jpeg;base64,${images.find((image) => image.url === subject.image)?.encodedImage}`}
+                  alt="Informative image about subject"
+                  className="h-full object-cover brightness-50"
+                  width="500"
+                  height="500"
+                />
+              </div>
+            )
           }
           key={subject.id}
         />

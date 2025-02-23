@@ -64,13 +64,14 @@ export async function POST(req: NextRequest) {
 // Luka: Change to PATCH, not mandatory because I can just pass title every time
 export async function PUT(req: NextRequest) {
   try {
-    const { title, content, id } = await req.json();
+    const { content, id } = await req.json();
 
     if (!id) {
       return NextResponse.json('Title, content, noteId, and id are required', {
         status: 400,
       });
     }
+
     const token = await getToken({ req, secret });
 
     if (!token) {

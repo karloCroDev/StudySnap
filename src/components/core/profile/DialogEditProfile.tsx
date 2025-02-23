@@ -146,11 +146,12 @@ export const DialogEditProfile: React.FC<{
           }}
           onChange={(e) => setPassword(e.toString())}
         />
-        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+        <div className="flex flex-row items-start justify-between gap-4 sm:items-center">
           <DialogDeleteProfile />
           <Button
             isDisabled={!username && !password && !image}
             type="submit"
+            className="text-base md:text-md"
             iconRight={loading && <Spinner />}
           >
             Save changes

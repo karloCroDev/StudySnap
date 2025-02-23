@@ -15,9 +15,10 @@ import { useToastStore } from '@/store/useToastStore';
 import { useGeneralInfo } from '@/store/useGeneralInfo';
 
 export const DialogDelete: React.FC<{
+  children: React.ReactNode;
   noteName: string;
   noteId: string;
-}> = ({ noteName, noteId }) => {
+}> = ({ children, noteName, noteId }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
@@ -81,13 +82,7 @@ export const DialogDelete: React.FC<{
       onOpenChange={setIsOpen}
       title="Delete note"
       triggerProps={{
-        children: (
-          <TrashIcon
-            className={twJoin(
-              'size-9 transition-colors hover:text-blue-400 lg:size-7'
-            )}
-          />
-        ),
+        children,
       }}
     >
       <div className="flex flex-col items-center">
