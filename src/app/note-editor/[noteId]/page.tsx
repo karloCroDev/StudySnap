@@ -49,14 +49,14 @@ export default async function NoteEditor({
         <LayoutRow className="h-[calc(100vh-116px-16px)] justify-center overflow-hidden 2xl:h-[calc(100vh-128px-32px)]">
           <LayoutColumn lg={9} xl2={10} className="flex h-full flex-col">
             <TipTapEditor
-              title={documentData.title}
-              content={documentData.content}
-              author={documentData.author}
-              creatorId={documentData.creator_id}
-              noteId={documentData.note_id}
-              documentId={documentData.id}
-              isLiked={documentData.liked}
-              likeCount={documentData.likes}
+              title={noteData.title}
+              content={noteData.content}
+              author={noteData.creator_name}
+              creatorId={noteData.creator_id}
+              noteId={noteData.id}
+              documentId={noteData.id}
+              isLiked={noteData.liked}
+              likeCount={noteData.likes}
             />
           </LayoutColumn>
         </LayoutRow>

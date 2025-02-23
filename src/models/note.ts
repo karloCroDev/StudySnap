@@ -8,6 +8,7 @@ export interface Note{
   is_public: boolean;
   subject_id: string;
   image_url: string | null;
+  encoded_image: string | null;
   likes: number;
   liked: boolean
   creator_name: string;

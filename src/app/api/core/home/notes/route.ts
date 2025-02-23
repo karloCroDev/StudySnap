@@ -4,6 +4,7 @@ import { getToken } from 'next-auth/jwt';
 // Models
 import { GetNoteById, GetNotesBySubjectId } from '@/database/pool';
 import { NoteClass } from '@/models/note';
+import { WriteImage } from '@/database/ImageHandler';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
@@ -26,17 +27,24 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { noteName, details, isPublic, subjectId } = await req.json();
+    const formData = await req.formData();
+    const subjectId = formData.get('subjectId') as string;
+    const noteName = formData.get('noteName') as string;
+    const details = formData.get('details') as string | null;
+    const isPublic = formData.get('ispublic') === "true";
+    const file = formData.get('file');
 
     if (!noteName || isPublic == undefined || !subjectId) {
       return NextResponse.json( { status: 400, statusText: 'Missing required fields'});
     }
-
+    const imagePath = await WriteImage(file);
+    
     const id = await NoteClass.Insert(
       noteName,
       details ? details : '',
       isPublic,
-      subjectId
+      subjectId,
+      imagePath
     );
 
     if (!id) {
