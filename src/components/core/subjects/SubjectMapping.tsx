@@ -15,14 +15,11 @@ import ImageExample from '@/public/images/login-image.png';
 
 // Models (types)
 import { Subject } from '@/models/subject';
-import { ImageObject } from '@/database/ImageHandler';
 
 export const SubjectMapping: React.FC<{
   subjectsData: Subject[];
-  images: ImageObject[];
-}> = ({ subjectsData, images }) => {
+}> = ({ subjectsData }) => {
 
-  //Karlo: When creating the subject, new subject sard is mapped without an image so the card is white
   const { search, subjects, setSubjects } = useGeneralInfo(
     useShallow((state) => ({
       search: state.search,
@@ -38,13 +35,14 @@ export const SubjectMapping: React.FC<{
   if (!subjects.length) return;
   
   return subjects
+    .filter((subject) => subject !== null && subject !== undefined)
     .filter(
       (subject) =>
         subject.name.toLowerCase().includes(search) ||
         subject.details.toLowerCase().includes(search)
     )
 
-    .map((subject) => (
+    .map((subject: Subject) => (
       <LayoutColumn
         sm={6}
         lg={4}
@@ -58,7 +56,7 @@ export const SubjectMapping: React.FC<{
           image={
             <div className="absolute left-0 top-0 -z-10 h-full w-full">
               <Image
-                src={subject.image_url != null ? `data:image/jpeg;base64,${images.find(image => image.url === subject.image_url)?.encodedImage}` : ImageExample}
+                src={subject.encoded_image != null ? `data:image/jpeg;base64,${subject.encoded_image}` : ImageExample}
                 alt="Informative image about subject"
                 className="h-full object-cover brightness-50"
                 width = "500"

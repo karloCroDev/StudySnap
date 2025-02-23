@@ -1,11 +1,8 @@
 // External packages
 import { writeFile, readFile } from 'fs/promises';
 import path from 'path';
-/*
-export interface ImageObject{
-    url: string;
-    encodedImage: string;
-}*/
+
+
 //use this to crop image and save storage: https://cloudinary.com/documentation/resizing_and_cropping || react-easy-crop
 export async function WriteImage(image: FormDataEntryValue | null ): Promise<string | null> {
     if (image == null) return null
@@ -24,7 +21,7 @@ export async function WriteImage(image: FormDataEntryValue | null ): Promise<str
         return null
     }
     catch (error) {
-        console.error("Failed to write image into uploads folder")
+        console.error("Failed to write image into uploads folder", error)
         return null
     }   
 }

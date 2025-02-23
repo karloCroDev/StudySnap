@@ -3,6 +3,7 @@ import { databaseConnectionObject } from '../../Secrets';
 import { User } from '../models/user';
 import { Subject } from '../models/subject';
 import { Note } from '../models/note';
+import { GetImage } from './ImageHandler';
 
 //Kada idem na localhost 3000 baci me na onu test stranicu
 //edit profile page jos ne radi
@@ -47,15 +48,23 @@ export async function GetSubjectByCreatorId(creatorId: string): Promise<Array<Su
     const result: [any[], any] = await getPool().query(`
         SELECT * FROM subject WHERE creator_id = ${creatorId}
     `);
-  return result[0] as Subject[];
+  const subjectsWithImages = await Promise.all(result[0].map(async subject => {
+    const image = await GetImage(subject.image_url);
+    return {
+      ...subject, "encoded_image": image
+    };
+  }));
+  return subjectsWithImages as Subject[];
 }
 
 export async function GetSubjectById(id: string): Promise<Subject> {
   const result: [any, any] = await getPool().query(`
         SELECT * FROM subject WHERE id = ${id} LIMIT 1
     `);
-  return result[0] as Subject;
-}
+    result[0][0].encoded_image =  await GetImage(result[0][0].image_url);
+    return result[0][0] as Subject;
+  }
+
 
 export async function GetNotesBySubjectId(
   subject_id: string

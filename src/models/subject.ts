@@ -7,6 +7,7 @@ export interface Subject{
     date_modified: Date,
     details: string,
     image_url: string | null,
+    encoded_image: string | null;
     creator_id: string,
 }
 

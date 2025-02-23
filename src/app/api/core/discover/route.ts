@@ -9,9 +9,7 @@ import { GetImage } from '@/database/ImageHandler';
 const secret = process.env.NEXTAUTH_SECRET;
 
 export async function POST(req: NextRequest) {
-  // Luka:
-  // Why does this need user.id I don't get it.   -- Because I need to see if the user liked the note
-  // Provide me with userId for each note (author --> then his id) + it is under creator_id
+
   try {
     const { userId } = await req.json();
 

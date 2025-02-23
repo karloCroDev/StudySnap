@@ -57,8 +57,7 @@ export const DialogCreate: React.FC<{
         });
         return;
       }
-
-      addSubject(data[0] as Subject);
+      addSubject(data as Subject);
       toast({
         title: `${subjectName} subject created`,
         content: `You have succesfully created ${subjectName}`,
