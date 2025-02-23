@@ -1,8 +1,6 @@
 // External packages
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { writeFile } from 'fs/promises';
-import path from 'path';
 
 // Models
 import { SubjectClass } from '@/models/subject';
@@ -19,6 +17,7 @@ export async function GET(req: NextRequest) {
     const userId = searchParams.get('userId');
 
     const subjects = await GetSubjectByCreatorId(userId as string);
+
     if (!subjects) {
       return NextResponse.json({
         status: 404,
@@ -26,13 +25,7 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    const images = (
-      await Promise.all(
-        subjects.map(async (subject) => await GetImage(subject.image))
-      )
-    ).filter((imageObject) => imageObject != null);
-
-    return NextResponse.json([subjects, images], {
+    return NextResponse.json(subjects, {
       status: 200,
       statusText: 'Fetched successfully',
     });
@@ -49,7 +42,6 @@ export async function POST(req: NextRequest) {
   try {
     // Extract and verify the JWT
     const token = await getToken({ req, secret });
-    console.log('This in my POST token \n', token, ' \n');
 
     if (!token) {
       return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
@@ -156,7 +148,7 @@ export async function PATCH(req: NextRequest) {
     const updates: { [key: string]: any } = {};
     if (subjectName) updates.name = subjectName;
     if (details) updates.details = details;
-    if (file) updates.image = await WriteImage(file);
+    if (file) updates.image_url = await WriteImage(file);
 
     if (Object.keys(updates).length === 0) {
       return NextResponse.json({

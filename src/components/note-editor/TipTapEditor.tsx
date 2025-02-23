@@ -30,7 +30,7 @@ import { useNavigationGuard } from 'next-navigation-guard';
 // Fix types since they are integers
 export const TipTapEditor: React.FC<{
   title: string;
-  content: string;
+  content: string | null;
   author: string;
   creatorId: string;
   noteId: string;

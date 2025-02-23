@@ -1,6 +1,6 @@
 
-DELETE DATABASE studysnap;
-CREATE DATABASE studysnap;
+##DROP DATABASE IF EXISTS studysnap;
+CREATE DATABASE IF NOT EXISTS studysnap;
 
 CREATE TABLE IF NOT EXISTS `user` (
   `id` INT auto_increment NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` text NOT NULL,
-  `profile_picture` varchar(255) DEFAULT NULL,
+  `profile_picture_url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -18,12 +18,12 @@ CREATE TABLE `subject` (
   `date_created` datetime default CURRENT_TIMESTAMP not null,
   `date_modified` datetime default NULL,
   `name` varchar(255) NOT NULL,
-  `details` text NOT NULL,
-  `creator` int NOT NULL,
-  `image` varchar(255) DEFAULT NULL,
+  `details` text DEFAULT NULL,
+  `creator_id` int NOT NULL,
+  `image_url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `subject_creator_foreign` (`creator`),
-  CONSTRAINT `subject_creator_foreign` FOREIGN KEY (`creator`) REFERENCES `user` (`id`) ON DELETE CASCADE
+  KEY `subject_creator_foreign` (`creator_id`),
+  CONSTRAINT `subject_creator_foreign` FOREIGN KEY (`creator_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `note` (
@@ -31,9 +31,10 @@ CREATE TABLE `note` (
   `date_created` datetime default CURRENT_TIMESTAMP not null,
   `date_modified` datetime default NULL,
   `title` varchar(255) NOT NULL,
-  `details` mediumtext NOT NULL,
+  `details` mediumtext DEFAULT NULL,
+  `content` longtext DEFAULT NULL,
   `is_public` tinyint(1) NOT NULL,
-  `image` varchar(255) DEFAULT NULL,
+  `image_url` varchar(255) DEFAULT NULL,
   `subject_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `section_subject_id_foreign` (`subject_id`),

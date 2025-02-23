@@ -28,18 +28,18 @@ export const NoteMapping: React.FC<{
       setNotes: state.setNotes,
     }))
   );
-
   React.useEffect(() => {
     setNotes(notesData);
   }, []);
 
   if (!notes.length) return;
-  return notes
+
+  return notes 
     .filter(
-      (note) =>
+      (note) =>//Look at dialogCreate Note for Error
         note.title.toLowerCase().includes(search) ||
         note.creator_name.toLowerCase().includes(search) ||
-        note.details.toLowerCase().includes(search)
+        (note.details?.toLowerCase().includes(search) ?? false)
     )
     .map((note) => (
       <LayoutColumn
@@ -51,12 +51,13 @@ export const NoteMapping: React.FC<{
         <NoteCard
           noteId={note.id}
           title={note.title}
-          description={note.details}
+          description={note.details ?? ""}
           numberOfLikes={note.likes}
           isPublic={note.is_public}
           author={note.creator_name}
           liked={note.liked}
           creatorId={note.creator_id}
+          encoded_image={note.encoded_image}
           key={note.id}
           image={
             <div className="absolute left-0 top-0 -z-10 h-full w-full">
@@ -73,5 +74,3 @@ export const NoteMapping: React.FC<{
       </LayoutColumn>
     ));
 };
-
-// NOT IN USE, import it in page when I get data

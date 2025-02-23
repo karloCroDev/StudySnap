@@ -59,7 +59,7 @@ export default async function Subjects() {
             >
               <CreateSubjectCard />
             </LayoutColumn>
-            <SubjectMapping subjectsData={subjects} images={images} />
+            <SubjectMapping subjectsData={subjects} />
           </LayoutRow>
         </LayoutColumn>
       </LayoutRow>

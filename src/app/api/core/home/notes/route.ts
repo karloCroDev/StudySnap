@@ -4,6 +4,7 @@ import { getToken } from 'next-auth/jwt';
 // Models
 import { GetNoteById, GetNotesBySubjectId } from '@/database/pool';
 import { NoteClass } from '@/models/note';
+import { WriteImage } from '@/database/ImageHandler';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
@@ -29,7 +30,13 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { noteName, details, isPublic, subjectId } = await req.json();
+    const formData = await req.formData();
+
+    const subjectId = formData.get('subjectId') as string;
+    const noteName = formData.get('noteName') as string;
+    const details = formData.get('details') as string | null;
+    const isPublic = formData.get('isPublic') == 'true';
+    const file = formData.get('file');
 
     if (!noteName || isPublic == undefined || !subjectId) {
       return NextResponse.json({
@@ -37,12 +44,13 @@ export async function POST(req: NextRequest) {
         statusText: 'Missing required fields',
       });
     }
-
+    const imagePath = await WriteImage(file);
     const id = await NoteClass.Insert(
       noteName,
       details ? details : '',
       isPublic,
-      subjectId
+      subjectId,
+      imagePath
     );
 
     if (!id) {
@@ -53,8 +61,9 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const note = await GetNoteById(id);
+    const note = await GetNoteById(id, '0');
 
+    console.log('NOTE:', note);
     return NextResponse.json(note, {
       status: 201,
       statusText: `You have succesfully updated ${note.title}`,
@@ -90,7 +99,9 @@ export async function DELETE(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const { noteName, details, isPublic, noteId } = await req.json();
+    const { noteName, details, isPublic, noteId, content } = await req.json();
+
+    console.log(noteName, details, isPublic, noteId, content);
 
     if (!noteId) {
       return NextResponse.json({
@@ -102,14 +113,10 @@ export async function PATCH(req: NextRequest) {
     const updates: { [key: string]: any } = {};
     if (noteName) updates.title = noteName;
     if (details) updates.details = details;
+    if (content) updates.content = content;
     updates.is_Public = isPublic ? 1 : 0;
 
-    if (Object.keys(updates).length === 0) {
-      return NextResponse.json({
-        status: 400,
-        statusText: 'No fields to update',
-      });
-    }
+    console.log(updates);
 
     await NoteClass.Update(noteId, updates);
 

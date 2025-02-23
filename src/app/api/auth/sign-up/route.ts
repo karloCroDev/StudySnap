@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await UserClass.Insert(username, email, hashedPassword, null)
+    await UserClass.Insert(username, email, hashedPassword)
 
     return NextResponse.json({ status: 201, statusText: 'User registred' });
   } catch (error) {

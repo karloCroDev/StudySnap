@@ -42,14 +42,19 @@ export const DialogCreate: React.FC<{
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await fetch(
+      
+      const formData = new FormData();
+      formData.append('subjectId', subjectId)
+      if (noteName) formData.append('noteName', noteName);
+      if (details) formData.append('details', details);
+      formData.append('isPublic', isPublic.toString());
+      if (image) formData.append('file', image)
+
+        const response = await fetch(
         'http://localhost:3000/api/core/home/notes',
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ noteName, details, isPublic, subjectId }),
+          body: formData
         }
       );
       const data = await response.json();
@@ -62,7 +67,7 @@ export const DialogCreate: React.FC<{
         });
         return;
       }
-      addNote(data[0] as Note);
+      addNote(data as Note);
       toast({
         title: `${noteName} note created`,
         content: `You have succesfully created ${noteName}`,
