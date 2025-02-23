@@ -60,21 +60,19 @@ export const DialogChangeDetails: React.FC<{
           body: JSON.stringify({ noteName: name, details, isPublic, noteId }),
         }
       );
-
+      const data = await response.json();
       if (!response.ok) {
         toast({
           title: 'Missing required fields',
-          content:
-            'Please make sure you have entered all the credentials correctly and try again',
+          content: data.statusText,
           variant: 'error',
         });
         return;
       }
-      // Karlo: Get this from backend
-      const syncName = name || noteName;
+
       toast({
-        title: `${syncName} note updated`,
-        content: `You have succesfully updated ${syncName}`,
+        title: `${name} note updated`,
+        content: data.statusText,
         variant: 'success',
       });
 

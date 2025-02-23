@@ -1,4 +1,5 @@
 // External packages
+import { type Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
@@ -11,6 +12,12 @@ import { SubjectMapping } from '@/components/core/subjects/SubjectMapping';
 
 // Models (types)
 import { Subject } from '@/models/subject';
+
+// Metadata
+export const metadata: Metadata = {
+  title: 'Notes',
+  description: 'See all your desired notes in one place',
+};
 
 async function getSubjects(session: any) {
   const response = await fetch(

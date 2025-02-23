@@ -57,12 +57,18 @@ export const Menu: React.FC<{
   if (!userId)
     return (
       <div className="flex gap-4">
-        <LinkAsButton colorScheme="black" variant="outline" href="/login">
+        <LinkAsButton
+          colorScheme="black"
+          variant="outline"
+          rounded="full"
+          href="/login"
+        >
           Login
         </LinkAsButton>
         <LinkAsButton
           colorScheme="light-blue"
           variant="outline"
+          rounded="full"
           href="/sign-up"
         >
           Sign up

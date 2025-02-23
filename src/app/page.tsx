@@ -179,6 +179,7 @@ export default function Home() {
       <Form>
         <Button type="reset">dwqpdpwqkd</Button>
       </Form>
+      <Image src="/images/FaviconLogo.png" alt="df" width={500} height={500} />
     </Layout>
   );
 }

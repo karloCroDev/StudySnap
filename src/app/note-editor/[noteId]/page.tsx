@@ -1,4 +1,5 @@
 // External packages
+import { type Metadata } from 'next';
 import { NavigationGuardProvider } from 'next-navigation-guard';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { getServerSession } from 'next-auth';
@@ -11,6 +12,21 @@ import { Header } from '@/components/ui/header/Header';
 // Models (types)
 import { Dokument } from '@/models/document';
 
+// Metadata
+export const metadata: Metadata = {
+  title: 'Document',
+  description:
+    'Learn and study faster with help of an AI only with StudySnap 🔮',
+  openGraph: {
+    title: 'Document',
+    description:
+      'Learn and study faster with help of an AI only with StudySnap 🔮',
+    siteName: 'StudySnap',
+    images: {
+      url: '/images/FaviconLogo.png',
+    },
+  },
+};
 async function fetchDocument(noteId: string, currentUserId: string) {
   try {
     const response = await fetch(`http://localhost:3000/api/core/note-editor`, {

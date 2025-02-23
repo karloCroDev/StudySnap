@@ -56,7 +56,7 @@ export const SignupForm = () => {
         content: data.statusText,
         variant: 'success',
       });
-      router.replace('/home/subjects');
+      router.push('/home/subjects');
     } catch (error) {
       console.error(error);
       toast({

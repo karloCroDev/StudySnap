@@ -15,6 +15,15 @@ export const metadata: Metadata = {
   title: 'Log in',
   description:
     'Quick, log in to StudySnap! The faster you fill up, the closer you will be to a revolutionary way of handling studies',
+  openGraph: {
+    title: 'Log in',
+    description:
+      'Quick, log in to StudySnap! The faster you fill up, the closer you will be to a revolutionary way of handling studies',
+    siteName: 'StudySnap',
+    images: {
+      url: '/images/FaviconLogo.png',
+    },
+  },
 };
 
 export default function Login() {

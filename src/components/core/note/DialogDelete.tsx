@@ -38,28 +38,22 @@ export const DialogDelete: React.FC<{
           body: JSON.stringify({ noteId }),
         }
       );
+      const data = await response.json();
       if (!response.ok) {
         toast({
-          title: 'Missing required fields',
-          content:
-            'Please make sure you have entered all the credentials correctly and try again',
+          title: `Uhoh couldn't delete ${noteName}`,
+          content: data.statusText,
           variant: 'error',
         });
         return;
       }
-
-      toast({
-        title: 'Note deleted',
-        content: 'You have succesfully delete your note',
-        variant: 'success',
-      });
 
       setTimeout(() => {
         // This is inside the set timeout because the dialog needs to complete the animation, and I am completly removing the subject from the list which means that it doesn't exist anymore --> dialog immediatelly closes without animation
         deleteNote(noteId); // Client deletion
         toast({
           title: `${noteName} subject deleted`,
-          content: `You have succesfully deleted ${noteName} subject`,
+          content: data.statusText,
           variant: 'success',
         });
         // Animation duration

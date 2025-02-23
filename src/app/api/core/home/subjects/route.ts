@@ -20,15 +20,28 @@ export async function GET(req: NextRequest) {
 
     const subjects = await GetSubjectByCreatorId(userId as string);
     if (!subjects) {
-      return NextResponse.json({ status: 404, statusText: 'Subjects not found' });
+      return NextResponse.json({
+        status: 404,
+        statusText: 'Subjects not found',
+      });
     }
 
-    const images = (await Promise.all(subjects.map(async (subject) => await GetImage(subject.image)))).filter((imageObject) => imageObject != null);
+    const images = (
+      await Promise.all(
+        subjects.map(async (subject) => await GetImage(subject.image))
+      )
+    ).filter((imageObject) => imageObject != null);
 
-    return NextResponse.json([subjects, images], { status: 200, statusText: "Fetched successfully" });
+    return NextResponse.json([subjects, images], {
+      status: 200,
+      statusText: 'Fetched successfully',
+    });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ status: 500, statusText: 'Failed to get subjects'});
+    return NextResponse.json({
+      status: 500,
+      statusText: 'Failed to get subjects',
+    });
   }
 }
 
@@ -36,7 +49,7 @@ export async function POST(req: NextRequest) {
   try {
     // Extract and verify the JWT
     const token = await getToken({ req, secret });
-    console.log("This in my POST token \n", token, " \n")
+    console.log('This in my POST token \n', token, ' \n');
 
     if (!token) {
       return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
@@ -49,7 +62,10 @@ export async function POST(req: NextRequest) {
     const file = formData.get('file');
 
     if (!subjectName || !creator) {
-      return NextResponse.json({ status: 400, statusText: 'Missing required fields'});
+      return NextResponse.json({
+        status: 400,
+        statusText: 'Missing required fields',
+      });
     }
 
     const imagePath = await WriteImage(file);
@@ -63,16 +79,25 @@ export async function POST(req: NextRequest) {
 
     if (id === null) {
       console.error('Creating Subject in database did not return id');
-      return NextResponse.json({ status: 500, statusText: 'Creating Subject in database did not return id' });
+      return NextResponse.json({
+        status: 500,
+        statusText: 'Creating Subject in database did not return id',
+      });
     }
 
     const subject = await GetSubjectById(id);
     // Luka: +
     // I need to get subjectId (and subjectName, details, image) as a response, in order to create it on client (instead of refreshing the page)
-    return NextResponse.json(subject, { status: 201, statusText: "Created successfully"});
+    return NextResponse.json(subject, {
+      status: 201,
+      statusText: `You have succesfully updated ${subject.name}`,
+    });
   } catch (error) {
     console.error(error);
-    return NextResponse.json( { status: 500, statusText: 'Failed to create subject'});
+    return NextResponse.json({
+      status: 500,
+      statusText: 'Failed to create subject',
+    });
   }
 }
 
@@ -81,19 +106,28 @@ export async function DELETE(req: NextRequest) {
     // Extract and verify the JWT
     const token = await getToken({ req, secret });
     if (!token) {
-      return NextResponse.json({ status: 401, statusText: 'Unauthorized'});
+      return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
     }
 
     const { id } = await req.json();
     if (!id) {
-      return NextResponse.json({ status: 400, statusText: 'Missing required fields'});
+      return NextResponse.json({
+        status: 400,
+        statusText: 'Missing required fields',
+      });
     }
 
     await SubjectClass.Delete(id);
-    return NextResponse.json({ status: 200, statusText: 'Subject deleted successfully'});
+    return NextResponse.json({
+      status: 200,
+      statusText: 'Subject deleted successfully',
+    });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ status: 500, statusText: 'Failed to delete subject'});
+    return NextResponse.json({
+      status: 500,
+      statusText: 'Failed to delete subject',
+    });
   }
 }
 
@@ -102,7 +136,7 @@ export async function PATCH(req: NextRequest) {
     // Extract and verify the JWT
     const token = await getToken({ req, secret });
     if (!token) {
-      return NextResponse.json({ status: 401, statusText: 'Unauthorized'});
+      return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
     }
 
     const formData = await req.formData();
@@ -125,15 +159,23 @@ export async function PATCH(req: NextRequest) {
     if (file) updates.image = await WriteImage(file);
 
     if (Object.keys(updates).length === 0) {
-      return NextResponse.json( { status: 400, statusText: 'No fields to update'});
+      return NextResponse.json({
+        status: 400,
+        statusText: 'No fields to update',
+      });
     }
 
     await SubjectClass.Update(subjectId, updates);
 
-    
-    return NextResponse.json( { status: 200, statusText: 'Subject updated successfully'});
+    return NextResponse.json({
+      status: 200,
+      statusText: 'Subject updated successfully',
+    });
   } catch (error) {
     console.error(error);
-    return NextResponse.json( { status: 500, statusText: 'Failed to update subject'});
+    return NextResponse.json({
+      status: 500,
+      statusText: 'Failed to update subject',
+    });
   }
 }
