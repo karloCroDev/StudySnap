@@ -40,7 +40,6 @@ export const SubjectMapping: React.FC<{
         subject.name.toLowerCase().includes(search) ||
         subject.details.toLowerCase().includes(search)
     )
-
     .map((subject: Subject) => (
       <LayoutColumn
         sm={6}
@@ -53,19 +52,18 @@ export const SubjectMapping: React.FC<{
           title={subject.name}
           description={subject.details}
           image={
-            <div className="absolute left-0 top-0 -z-10 h-full w-full">
-              <Image
-                src={
-                  subject.encoded_image != null
-                    ? `data:image/jpeg;base64,${subject.encoded_image}`
-                    : ImageExample
-                }
-                alt="Informative image about subject"
-                className="h-full object-cover brightness-50"
-                width="500"
-                height="500"
-              />
-            </div>
+            // There is no need to set default images!
+            subject.encoded_image && (
+              <div className="absolute left-0 top-0 -z-10 h-full w-full">
+                <Image
+                  src={`data:image/jpeg;base64,${subject.encoded_image}`}
+                  alt="Informative image about subject"
+                  className="h-full object-cover brightness-50"
+                  width="500"
+                  height="500"
+                />
+              </div>
+            )
           }
           key={subject.id}
         />

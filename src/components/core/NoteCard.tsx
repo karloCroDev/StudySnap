@@ -22,7 +22,7 @@ export const NoteCard: React.FC<{
   isPublic: boolean;
   image?: React.ReactNode;
   userImage?: string;
-  encoded_image: string|null;
+  encoded_image: string | null;
   numberOfLikes: number;
   liked: boolean;
   creatorId: string;
@@ -41,24 +41,6 @@ export const NoteCard: React.FC<{
 }) => {
   const user = useSession();
 
-  const likeAction = async () => {
-    try {
-      await fetch('http://localhost:3000/api/core/home/notes/like', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          noteId,
-          userId: user.data?.user.id,
-          exists: liked,
-        }),
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const [noteName, setNoteName] = React.useState(title);
   const [noteDetails, setNoteDetails] = React.useState(description);
 
@@ -66,8 +48,6 @@ export const NoteCard: React.FC<{
   const authorCheck =
     creatorId.toString() === user.data?.user.id ? user.data.user.name : author;
 
-
-  //Karlo: Please add image to the note card
   return (
     <div
       className={twJoin(

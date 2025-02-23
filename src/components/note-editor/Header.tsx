@@ -20,7 +20,7 @@ export const Header: React.FC<{
   isEditing ? (
     <HeaderEditText editor={editor} title={title} />
   ) : (
-    <div className="flex animate-header-initial-apperance items-center justify-between px-2">
+    <div className="flex animate-header-initial-apperance items-center justify-between">
       <h1
         className={twJoin(
           'text-3xl font-bold !italic underline underline-offset-4',

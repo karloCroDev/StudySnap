@@ -42,9 +42,9 @@ export default async function Subjects() {
   if (!session) {
     redirect('/login');
   }
-  const [subjects, images] = await getSubjects(session);
+  const subjects = await getSubjects(session);
   console.log(subjects);
-  console.log(images);
+
   return (
     <>
       <SearchableHeader title="Subjects" />

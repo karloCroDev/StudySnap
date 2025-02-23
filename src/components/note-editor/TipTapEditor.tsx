@@ -60,6 +60,7 @@ export const TipTapEditor: React.FC<{
 
   // Editor config
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit,
       Underline,
@@ -72,7 +73,7 @@ export const TipTapEditor: React.FC<{
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
     editable: isEditing,
-    content: `${!content ? `<h1>${title}<h1/>` : ''}${content}`, // Have to put emptry string instead of && because it puts false to string
+    content: `${!content ? `<h1>${title}<h1/>` : ''}${content || ''}`, // Have to put emptry string instead of && because it puts false to string
   });
 
   // Sentence completion
@@ -128,18 +129,18 @@ export const TipTapEditor: React.FC<{
   const saveDocument = async () => {
     try {
       setLoadingSaveDocument(true);
-      console.log(editor);
+
       const response = await fetch(
-        'http://localhost:3000/api/core/note-editor',
+        'http://localhost:3000/api/core/home/notes',
         {
-          method: 'PUT',
+          method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             content: editor?.getHTML(),
-            id: documentId,
-          }), // Luka: Title provided because it is put request, if this irritates you change it to patch
+            noteId: documentId,
+          }),
         }
       );
       if (!response.ok) {
