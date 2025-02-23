@@ -35,7 +35,7 @@ export const NoteMapping: React.FC<{
       (note) =>//Look at dialogCreate Note for Error
         note.title.toLowerCase().includes(search) ||
         note.creator_name.toLowerCase().includes(search) ||
-        note.details.toLowerCase().includes(search)
+        (note.details?.toLowerCase().includes(search) ?? false)
     )
     .map((note) => (
       <LayoutColumn
@@ -47,7 +47,7 @@ export const NoteMapping: React.FC<{
         <NoteCard
           noteId={note.id}
           title={note.title}
-          description={note.details}
+          description={note.details ?? ""}
           numberOfLikes={note.likes}
           isPublic={note.is_public}
           author={note.creator_name}

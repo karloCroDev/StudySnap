@@ -42,6 +42,14 @@ export const DialogCreate: React.FC<{
     e.preventDefault();
     try {
       setLoading(true);
+      
+      const formData = new FormData();
+      formData.append('subjectId', subjectId)
+      if (noteName) formData.append('subjectName', noteName);
+      if (details) formData.append('details', details);
+      formData.append('isPublic', isPublic.toString());
+      if (image) formData.append('file', image)
+
       const response = await fetch(
         'http://localhost:3000/api/core/home/notes',
         {
@@ -49,7 +57,7 @@ export const DialogCreate: React.FC<{
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ noteName, details, isPublic, subjectId, }),
+          body: JSON.stringify({ formData }),
         }
       );
       const data = await response.json();
