@@ -63,6 +63,9 @@ export const DialogCreate: React.FC<{
         content: `You have succesfully created ${subjectName}`,
         variant: 'success',
       });
+      setSubjectName('');
+      setDetails('');
+      setImage(null);
     } catch (error) {
       console.error(error);
       toast({

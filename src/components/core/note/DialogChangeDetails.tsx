@@ -9,8 +9,6 @@ import {
   FileTrigger,
   Button as AriaButton,
 } from 'react-aria-components';
-import { twJoin } from 'tailwind-merge';
-import { Pencil1Icon } from '@radix-ui/react-icons';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
@@ -22,6 +20,7 @@ import { Spinner } from '@/components/ui/Spinner';
 import { useToastStore } from '@/store/useToastStore';
 
 export const DialogChangeDetails: React.FC<{
+  children: React.ReactNode;
   noteId: string;
   noteName: string;
   setNoteName: React.Dispatch<React.SetStateAction<string>>;
@@ -29,6 +28,7 @@ export const DialogChangeDetails: React.FC<{
   setNoteDetails: React.Dispatch<React.SetStateAction<string>>;
   isNotePublic: boolean;
 }> = ({
+  children,
   noteId,
   noteName,
   setNoteName,
@@ -60,21 +60,19 @@ export const DialogChangeDetails: React.FC<{
           body: JSON.stringify({ noteName: name, details, isPublic, noteId }),
         }
       );
-
+      const data = await response.json();
       if (!response.ok) {
         toast({
           title: 'Missing required fields',
-          content:
-            'Please make sure you have entered all the credentials correctly and try again',
+          content: data.statusText,
           variant: 'error',
         });
         return;
       }
-      // Karlo: Get this from backend
-      const syncName = name || noteName;
+
       toast({
-        title: `${syncName} note updated`,
-        content: `You have succesfully updated ${syncName}`,
+        title: `${name} note updated`,
+        content: data.statusText,
         variant: 'success',
       });
 
@@ -98,13 +96,7 @@ export const DialogChangeDetails: React.FC<{
       onOpenChange={setIsOpen}
       title="Change note's details"
       triggerProps={{
-        children: (
-          <Pencil1Icon
-            className={twJoin(
-              'size-9 transition-colors hover:text-blue-400 lg:size-7'
-            )}
-          />
-        ),
+        children,
       }}
     >
       <Form className="flex flex-col gap-5" onSubmit={changeDetails}>

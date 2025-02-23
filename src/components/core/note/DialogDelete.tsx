@@ -15,9 +15,10 @@ import { useToastStore } from '@/store/useToastStore';
 import { useGeneralInfo } from '@/store/useGeneralInfo';
 
 export const DialogDelete: React.FC<{
+  children: React.ReactNode;
   noteName: string;
   noteId: string;
-}> = ({ noteName, noteId }) => {
+}> = ({ children, noteName, noteId }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
@@ -37,28 +38,22 @@ export const DialogDelete: React.FC<{
           body: JSON.stringify({ noteId }),
         }
       );
+      const data = await response.json();
       if (!response.ok) {
         toast({
-          title: 'Missing required fields',
-          content:
-            'Please make sure you have entered all the credentials correctly and try again',
+          title: `Uhoh couldn't delete ${noteName}`,
+          content: data.statusText,
           variant: 'error',
         });
         return;
       }
-
-      toast({
-        title: 'Note deleted',
-        content: 'You have succesfully delete your note',
-        variant: 'success',
-      });
 
       setTimeout(() => {
         // This is inside the set timeout because the dialog needs to complete the animation, and I am completly removing the subject from the list which means that it doesn't exist anymore --> dialog immediatelly closes without animation
         deleteNote(noteId); // Client deletion
         toast({
           title: `${noteName} subject deleted`,
-          content: `You have succesfully deleted ${noteName} subject`,
+          content: data.statusText,
           variant: 'success',
         });
         // Animation duration
@@ -81,13 +76,7 @@ export const DialogDelete: React.FC<{
       onOpenChange={setIsOpen}
       title="Delete note"
       triggerProps={{
-        children: (
-          <TrashIcon
-            className={twJoin(
-              'size-9 transition-colors hover:text-blue-400 lg:size-7'
-            )}
-          />
-        ),
+        children,
       }}
     >
       <div className="flex flex-col items-center">

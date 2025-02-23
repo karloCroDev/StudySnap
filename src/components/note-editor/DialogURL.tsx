@@ -34,9 +34,13 @@ export const DialogURL: React.FC<{
           isMdHorizontal
           inputProps={{
             placeholder: 'Enter image URL',
+            className: 'md:w-full',
           }}
           onChange={(val) => setImageUrl(val.toString())}
-          className="justify-start"
+          className="md:w-full"
+          inputWrapperProps={{
+            className: 'md:flex-1',
+          }}
         />
         <Button
           onPress={() => {

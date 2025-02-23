@@ -4,12 +4,14 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { twJoin } from 'tailwind-merge';
 
 // Components
 import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';
 import { DialogDelete } from '@/components/core/note/DialogDelete';
 import { Avatar } from '@/components/ui/Avatar';
 import { LikeComponent } from '@/components/ui/LikeComponent';
+import { Pencil1Icon, TrashIcon } from '@radix-ui/react-icons';
 // Karlo : Make sure that Notes types are here, fix this if we have time
 
 export const NoteCard: React.FC<{
@@ -18,8 +20,9 @@ export const NoteCard: React.FC<{
   description: string;
   author: string;
   isPublic: boolean;
+  image?: React.ReactNode;
   userImage?: string;
-  encoded_image: string|null;
+  encoded_image: string | null;
   numberOfLikes: number;
   liked: boolean;
   creatorId: string;
@@ -27,6 +30,7 @@ export const NoteCard: React.FC<{
   noteId,
   title,
   description,
+  image,
   userImage,
   encoded_image,
   author,
@@ -37,24 +41,6 @@ export const NoteCard: React.FC<{
 }) => {
   const user = useSession();
 
-  const likeAction = async () => {
-    try {
-      await fetch('http://localhost:3000/api/core/home/notes/like', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          noteId,
-          userId: user.data?.user.id,
-          exists: liked,
-        }),
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const [noteName, setNoteName] = React.useState(title);
   const [noteDetails, setNoteDetails] = React.useState(description);
 
@@ -62,16 +48,28 @@ export const NoteCard: React.FC<{
   const authorCheck =
     creatorId.toString() === user.data?.user.id ? user.data.user.name : author;
 
-
-  //Karlo: Please add image to the note card
   return (
-    <div className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400 text-blue-900">
+    <div
+      className={twJoin(
+        'group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400',
+        image ? 'text-gray-100' : 'text-blue-900'
+      )}
+    >
       <div className="flex aspect-square flex-col p-6 pb-4">
         <div>
           <h3 className="w-3/5 break-words text-xl font-semibold">
             {noteName}
           </h3>
-          {description && <p className="text-xs font-medium">{noteDetails}</p>}
+          {description && (
+            <p
+              className={twJoin(
+                'text-xs font-medium',
+                image ? 'text-gray-200' : 'text-gray-400'
+              )}
+            >
+              {noteDetails}
+            </p>
+          )}
         </div>
         <div className="z-10 mt-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -97,7 +95,6 @@ export const NoteCard: React.FC<{
             isOrderReversed
             numberOfLikes={numberOfLikes}
             noteId={noteId}
-            userId={user.data?.user.id!}
           />
         </div>
       </div>
@@ -111,14 +108,30 @@ export const NoteCard: React.FC<{
               setNoteDetails={setNoteDetails}
               isNotePublic={isPublic}
               noteId={noteId}
-            />
+            >
+              <Pencil1Icon
+                className={twJoin(
+                  'size-9 transition-colors lg:size-7',
+                  image ? 'hover:text-gray-200' : 'hover:text-blue-400'
+                )}
+              />
+            </DialogChangeDetails>
           </li>
           <li>
-            <DialogDelete noteId={noteId} noteName={noteName} />
+            <DialogDelete noteId={noteId} noteName={noteName}>
+              <TrashIcon
+                className={twJoin(
+                  'size-9 transition-colors lg:size-7',
+                  image ? 'hover:text-gray-200' : 'hover:text-blue-400'
+                )}
+              />
+            </DialogDelete>
           </li>
         </ul>
       )}
-      <Link href={`/note-editor/${noteId}`} className="absolute inset-0" />
+      <Link href={`/note-editor/${noteId}`} className="absolute inset-0">
+        {image}
+      </Link>
     </div>
   );
 };

@@ -37,11 +37,11 @@ export const DialogDelete: React.FC<{
           body: JSON.stringify({ id }),
         }
       );
+      const data = await response.json();
       if (!response.ok) {
         toast({
-          title: 'Missing required fields',
-          content:
-            'Please make sure you have entered all the credentials correctly and try again',
+          title: `Uhoh couldn't delete ${name}`,
+          content: data.statusText,
           variant: 'error',
         });
         return;
@@ -51,7 +51,7 @@ export const DialogDelete: React.FC<{
         deleteSubject(id); // Client deletion
         toast({
           title: `${name} subject deleted`,
-          content: `You have succesfully deleted ${name} subject`,
+          content: data.statusText,
           variant: 'success',
         });
       }, 500);

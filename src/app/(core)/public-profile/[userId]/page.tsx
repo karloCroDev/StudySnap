@@ -1,4 +1,5 @@
 // Etxenral packages
+import { type Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
@@ -11,8 +12,20 @@ import { NoteMapping } from '@/components/core/NoteMapping';
 // Models (types)
 import { Note } from '@/models/note';
 
+// Metadata
+export const metadata: Metadata = {
+  title: 'Public profile',
+  description: 'Lets see contributions from your colleauges and friends 🕵️',
+  openGraph: {
+    title: 'Public profile',
+    description: 'Lets see contributions from your colleauges and friends 🕵️',
+    siteName: 'StudySnap',
+    images: {
+      url: '/images/FaviconLogo.png',
+    },
+  },
+};
 async function getPublicProfileNotes(creatorId: string, userId: string) {
-
   const response = await fetch(
     `http://localhost:3000/api/core/public-profile`,
     {
@@ -34,10 +47,10 @@ export default async function PublicProfile({
 }: {
   params: { userId: string };
 }) {
-  const creatorId  = params.userId;
+  const creatorId = params.userId;
   const session = await getServerSession(authOptions);
   const token = session?.accessToken;
-  const userId = session.user.id // Assuming the token is stored in the session
+  const userId = session.user.id; // Assuming the token is stored in the session
   //const creatorId: string = await session.user.id; // Handle immediate changes on client if user updates his data
 
   const [notes, user] = await getPublicProfileNotes(creatorId, userId);

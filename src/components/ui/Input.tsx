@@ -13,6 +13,7 @@ export const Input: React.FC<
       size?: 'sm' | 'lg';
       isMdHorizontal?: boolean;
       isPassword?: boolean;
+      inputWrapperProps?: React.ComponentPropsWithoutRef<'div'>;
       inputProps?: React.ComponentPropsWithoutRef<'input'> &
         AriaInput.InputProps;
       fieldErrorProps?: AriaInput.FieldErrorProps;
@@ -22,6 +23,7 @@ export const Input: React.FC<
   size = 'sm',
   isMdHorizontal = false,
   isPassword = false,
+  inputWrapperProps,
   inputProps,
   fieldErrorProps,
   className,
@@ -49,19 +51,21 @@ export const Input: React.FC<
       />
       <div
         className={twJoin(
-          'flex w-full flex-col-reverse gap-y-2',
+          'relative flex w-full flex-col-reverse gap-y-2',
           isMdHorizontal && 'md:flex-row-reverse md:items-center md:gap-x-6'
         )}
       >
-        <AriaInput.Label className="relative">
-          {/* Label here so that it reamins focused */}
+        <div
+          {...inputWrapperProps}
+          className={twMerge('relative', inputWrapperProps?.className)}
+        >
           <AriaInput.Input
             {...inputProps}
             className={twMerge(
-              'peer w-full border border-gray-400 bg-inherit outline-none transition-colors placeholder:text-gray-400 focus:border-blue-400 data-[invalid]:border-red-700',
+              'peer relative w-full border border-gray-400 bg-inherit outline-none transition-colors placeholder:text-gray-400 focus:border-blue-400 data-[invalid]:border-red-700',
               size === 'sm' && 'h-12 p-3',
               size === 'lg' && 'h-14 p-4',
-              isMdHorizontal && 'w-72',
+              isMdHorizontal && 'md:w-72',
               inputProps?.className
             )}
           />
@@ -77,7 +81,7 @@ export const Input: React.FC<
               )}
             </AriaInput.Button>
           )}
-        </AriaInput.Label>
+        </div>
 
         <AriaInput.Label
           className={twJoin(

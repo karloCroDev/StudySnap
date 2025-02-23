@@ -1,6 +1,8 @@
 // External packages
+import { type Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { redirect } from 'next/navigation';
 
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
@@ -13,6 +15,12 @@ import ImageExample from '@/public/images/login-image.png';
 
 // Models (types)
 import { Note } from '@/models/note';
+
+// Metadata
+export const metadata: Metadata = {
+  title: 'Subjects',
+  description: 'See all your desired subjects in one place',
+};
 
 async function getNotes({ session, subjectId }: any) {
   const response = await fetch(
@@ -37,9 +45,10 @@ export default async function Notes({
 }) {
   const { subjectId } = params;
   const session = await getServerSession(authOptions);
-  const userId = session.user.id;
+  if (!session) {
+    redirect('/login');
+  }
   const notes: Note[] = await getNotes({ subjectId, session });
-  console.log(notes);
   return (
     <>
       <SearchableHeader title="Your notes" />

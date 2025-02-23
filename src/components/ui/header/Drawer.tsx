@@ -105,6 +105,7 @@ export const Drawer = () => {
             <DialogEditProfile>
               <Button
                 colorScheme="white"
+                type="submit"
                 iconLeft={<GearIcon className="size-6" />}
                 className="w-full justify-start"
               >

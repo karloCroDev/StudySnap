@@ -76,6 +76,7 @@ export const DialogDeleteProfile = () => {
             <Button
               variant="outline"
               colorScheme="red"
+              className="text-base md:text-md"
               onPress={() => {
                 setIsOpen(true);
               }}

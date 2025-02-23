@@ -1,6 +1,8 @@
 // External packages
+import { type Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { redirect } from 'next/navigation';
 
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
@@ -10,6 +12,12 @@ import { SubjectMapping } from '@/components/core/subjects/SubjectMapping';
 
 // Models (types)
 import { Subject } from '@/models/subject';
+
+// Metadata
+export const metadata: Metadata = {
+  title: 'Notes',
+  description: 'See all your desired notes in one place',
+};
 
 async function getSubjects(session: any) {
   const response = await fetch(
@@ -30,7 +38,12 @@ async function getSubjects(session: any) {
 
 export default async function Subjects() {
   const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect('/login');
+  }
   const subjects = await getSubjects(session);
+  console.log(subjects);
 
   return (
     <>
