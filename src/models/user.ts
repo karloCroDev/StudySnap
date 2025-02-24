@@ -9,6 +9,7 @@ export interface User {
   password: string;
   email: string;
   profile_picture_url: string | null;
+  encoded_image: string;
 }
 
 export class UserClass {
@@ -17,7 +18,7 @@ export class UserClass {
     email: string,
     hashedPassword: string,
   ): Promise< string | null> {
-    console.log("inserting+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+
     try {
       const [result]: any = await getPool().execute(
         `

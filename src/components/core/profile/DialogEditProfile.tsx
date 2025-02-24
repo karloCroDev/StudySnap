@@ -45,7 +45,7 @@ export const DialogEditProfile: React.FC<{
       setLoading(true);
 
       const formData = new FormData();
-      formData.append('userId', user.data!.user.id);
+      if (user.data?.user.id) formData.append('userId', user.data.user.id);
       if (username) formData.append('username', username);
       if (password) formData.append('password', password);
       if (image) formData.append('file', image);
@@ -54,13 +54,11 @@ export const DialogEditProfile: React.FC<{
         'http://localhost:3000/api/core/public-profile',
         {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: formData,
         }
       );
       const data = await response.json();
+
       if (!response.ok) {
         toast({
           title: 'Missing required fields',
@@ -69,9 +67,8 @@ export const DialogEditProfile: React.FC<{
         });
         return;
       }
-
-      // if (image) await user.update({ image: '' }); // We need to handle upload of images
       if (username) await user.update({ name: username });
+      if (data.pfpEncoded) await user.update({ image: data.pfpEncoded });
 
       toast({
         title: 'Profile updated',

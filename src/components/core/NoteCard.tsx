@@ -22,7 +22,6 @@ export const NoteCard: React.FC<{
   isPublic: boolean;
   image?: React.ReactNode;
   userImage?: string;
-  encoded_image: string | null;
   numberOfLikes: number;
   liked: boolean;
   creatorId: string;
@@ -32,7 +31,6 @@ export const NoteCard: React.FC<{
   description,
   image,
   userImage,
-  encoded_image,
   author,
   isPublic,
   numberOfLikes,
@@ -75,7 +73,9 @@ export const NoteCard: React.FC<{
           <div className="flex items-center gap-2">
             <Avatar
               imageProps={{
-                src: userImage,
+                src:
+                  `data:image/jpeg;base64,${user.data?.user.image}` ||
+                  `data:image/jpeg;base64,${userImage}`,
                 alt: '',
               }}
             >

@@ -37,7 +37,7 @@ export const Menu: React.FC<{
   const user = useSession();
   const router = useRouter();
   const toast = useToastStore((state) => state.setToast);
-
+  console.log(user.data);
   const logOut = async () => {
     try {
       toast({
@@ -102,7 +102,7 @@ export const Menu: React.FC<{
         iconLeft={
           <Avatar
             imageProps={{
-              src: user.data.user.image || '',
+              src: `data:image/jpeg;base64,${user?.data?.user.image}` || '',
               alt: '',
             }}
             size="md"

@@ -7,12 +7,16 @@ export interface Note {
   content: string | null;
   is_public: boolean;
   subject_id: string;
-  image_url: string | null;
-  encoded_image: string | null;
+
   likes: number;
   liked: boolean;
   creator_name: string;
   creator_id: string;
+
+  image_url: string | null;
+  encoded_image: string | null;
+  profile_image_url: string | null;
+  encoded_profile_image: string | null;
 }
 
 export class NoteClass {

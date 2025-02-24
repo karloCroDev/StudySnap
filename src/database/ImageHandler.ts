@@ -1,16 +1,21 @@
 // External packages
 import { writeFile, readFile } from 'fs/promises';
 import path from 'path';
+import sharp from 'sharp';
 
-//use this to crop image and save storage: https://cloudinary.com/documentation/resizing_and_cropping || react-easy-crop
 export async function WriteImage(
   image: FormDataEntryValue | null
 ): Promise<string | null> {
-  if (image == null) return null;
-  let imageUrl = null;
   try {
+    let imageUrl = null;
+
     if (image && typeof image !== 'string') {
-      const buffer = Buffer.from(await image.arrayBuffer());
+      //Creates buffer from the image and resizes it
+      const buffer = await sharp(Buffer.from(await image.arrayBuffer())).resize(
+        312,
+        312
+      );
+
       const filename = Date.now() + image.name.replaceAll(' ', '_');
       const filePath = path.join(process.cwd(), 'public/uploads', filename);
 
@@ -32,6 +37,24 @@ export async function GetImage(
   if (imageUrl) {
     try {
       const imageBuffer = await readFile(imageUrl);
+      const base64Image = imageBuffer.toString('base64');
+      return base64Image;
+    } catch (error) {
+      console.error('Error reading image:', error);
+      return null;
+    }
+  }
+  return null;
+}
+
+export async function GetProfileImage(
+  imageUrl: string | null
+): Promise<string | null> {
+  if (imageUrl) {
+    try {
+      const imageBuffer = await sharp(await readFile(imageUrl))
+        .resize(128, 128)
+        .toBuffer();
       const base64Image = imageBuffer.toString('base64');
       return base64Image;
     } catch (error) {

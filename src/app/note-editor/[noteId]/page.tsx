@@ -61,7 +61,7 @@ export default async function NoteEditor({
   //       you also can not change the title of the note
   //       It would also be good if you could pass the note in the parameters of this function rather than fetching the note all over again
   const noteData: Note = await fetchNote(params.noteId, userId);
-  console.log(noteData);
+
   return (
     <NavigationGuardProvider>
       <Header />

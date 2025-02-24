@@ -7,7 +7,7 @@ import { GetNotesByCreatorId, GetUserById } from '@/database/pool';
 // Models
 import { UserClass } from '@/models/user';
 
-import { WriteImage } from '@/database/ImageHandler';
+import { GetProfileImage, WriteImage } from '@/database/ImageHandler';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
@@ -67,7 +67,7 @@ export async function PATCH(req: NextRequest) {
     const updates: { [key: string]: any } = {};
     if (username) updates.username = username;
     if (password) updates.password = await bcrypt.hash(password, 10);
-    if (file) updates.image = await WriteImage(file);
+    if (file) updates.profile_picture_url = await WriteImage(file);
 
     if (Object.keys(updates).length === 0) {
       return NextResponse.json({
@@ -77,11 +77,17 @@ export async function PATCH(req: NextRequest) {
     }
 
     await UserClass.Update(userId, updates);
-
-    return NextResponse.json({
-      status: 200,
-      statusText: 'User updated successfully',
-    });
+    let pfpEncoded;
+    if (file) pfpEncoded = await GetProfileImage(updates.profile_picture_url);
+    return NextResponse.json(
+      {
+        pfpEncoded,
+        statusText: 'User updated successfully',
+      },
+      {
+        status: 200,
+      }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json({
