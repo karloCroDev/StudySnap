@@ -3,11 +3,12 @@ import { databaseConnectionObject } from '../../Secrets';
 import { User } from '../models/user';
 import { Subject } from '../models/subject';
 import { Note } from '../models/note';
-import { GetImage } from './ImageHandler';
+import { GetImage, GetProfileImage } from './ImageHandler';
 
 //Kada idem na localhost 3000 baci me na onu test stranicu
 //Need to verify token every time
 //popravi fetch koji je Karlo napravio
+//Check updating
 let pool = createPool(databaseConnectionObject).promise()
 
 export function getPool() {
@@ -81,7 +82,8 @@ export async function GetNotesBySubjectId(
             COUNT(DISTINCT l.user_id) AS likes,
             MAX(CASE WHEN l.user_id = u.id THEN 1 ELSE 0 END) AS liked,
             u.username AS creator_name,
-            u.id AS creator_id
+            u.id AS creator_id,
+            u.profile_picture_url as profile_image_url
         FROM
             note n
         JOIN
@@ -103,8 +105,9 @@ export async function GetNotesBySubjectId(
   );
   const notesWithImages = await Promise.all(result[0].map(async note => {
     const image = await GetImage(note.image_url);
+    const encoded_profile_image = await GetProfileImage(note.profile_image_url)
     return {
-      ...note, "encoded_image": image
+      ...note, "encoded_image": image, "encoded_profile_image": encoded_profile_image
     };
   }));
   return notesWithImages as Note[];
@@ -127,7 +130,8 @@ export async function GetPublicNotes(
             COUNT(DISTINCT l.user_id) AS likes,
             MAX(CASE WHEN l.user_id = ${userId} THEN 1 ELSE 0 END) AS liked,
             u.username AS creator_name,
-            u.id AS creator_id
+            u.id AS creator_id,
+            u.profile_picture_url as profile_image_url
         FROM
             note n
         JOIN
@@ -149,8 +153,9 @@ export async function GetPublicNotes(
     `);
     const notesWithImages = await Promise.all(result[0].map(async note => {
       const image = await GetImage(note.image_url);
+      const encoded_profile_image = await GetProfileImage(note.profile_image_url)
       return {
-        ...note, "encoded_image": image
+        ...note, "encoded_image": image, "encoded_profile_image": encoded_profile_image
       };
     }));
     return notesWithImages as Note[];
@@ -170,7 +175,9 @@ export async function GetNoteById(note_id: string, user_id: string): Promise<Not
             COUNT(DISTINCT l.user_id) AS likes,
             MAX(CASE WHEN l.user_id = ${user_id} THEN 1 ELSE 0 END) AS liked,
             u.username AS creator_name,
-            u.id AS creator_id
+            u.id AS creator_id,
+            u.profile_picture_url as profile_image_url
+
         FROM
             note n
         JOIN
@@ -189,6 +196,7 @@ export async function GetNoteById(note_id: string, user_id: string): Promise<Not
             u.username
     `);
   result[0][0].encoded_image = await GetImage(result[0][0].image_url);
+  result[0][0].encoded_profile_image = await GetProfileImage(result[0][0].profile_image_url)
   return result[0][0] as Note;
 }
 
@@ -254,7 +262,8 @@ export async function GetNotesByCreatorId(creator_id: string, user_id: string): 
             COUNT(DISTINCT l.user_id) AS likes,
             MAX(CASE WHEN l.user_id = ${user_id} THEN 1 ELSE 0 END) AS liked,
             u.username AS creator_name,
-            u.id AS creator_id
+            u.id AS creator_id,
+            u.profile_picture_url as profile_image_url
         FROM
             note n
         JOIN
@@ -272,11 +281,13 @@ export async function GetNotesByCreatorId(creator_id: string, user_id: string): 
             n.subject_id,
             u.username
     `);
-  const notesWithImages = await Promise.all(result[0].map(async note => {
-    const image = await GetImage(note.image_url);
-    return {
-      ...note, "encoded_image": image
-    };
-  }));
-  return notesWithImages as Note[];}
+    const notesWithImages = await Promise.all(result[0].map(async note => {
+      const image = await GetImage(note.image_url);
+      const encoded_profile_image = await GetProfileImage(note.profile_image_url)
+      return {
+        ...note, "encoded_image": image, "encoded_profile_image": encoded_profile_image
+      };
+    }));
+    return notesWithImages as Note[];
+  }
 

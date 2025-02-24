@@ -40,3 +40,17 @@ export async function GetImage(imageUrl: string | null): Promise<string | null>{
     } 
     return null
 }
+
+export async function GetProfileImage(imageUrl: string | null): Promise<string | null>{
+    if (imageUrl) {
+        try {
+            const imageBuffer = await sharp(await readFile(imageUrl)).resize(128,128).toBuffer();
+            const base64Image = imageBuffer.toString('base64');
+            return base64Image;
+        } catch (error) {
+            console.error('Error reading image:', error);
+            return null
+        }
+    } 
+    return null
+}
