@@ -20,9 +20,9 @@ export const metadata: Metadata = {
     description:
       'Welcome to StudySnap! The faster you fill up, the closer you will be to a revolutionary way of handling studies',
     siteName: 'StudySnap',
-    images: {
-      url: '/images/FaviconLogo.png',
-    },
+    // images: {
+    //   url: '/images/FaviconLogo.png',
+    // },
   },
 };
 

@@ -43,6 +43,13 @@ export const DialogEditProfile: React.FC<{
     e.preventDefault();
     try {
       setLoading(true);
+
+      const formData = new FormData();
+      formData.append('userId', user.data!.user.id);
+      if (username) formData.append('username', username);
+      if (password) formData.append('password', password);
+      if (image) formData.append('file', image);
+
       const response = await fetch(
         'http://localhost:3000/api/core/public-profile',
         {
@@ -50,19 +57,14 @@ export const DialogEditProfile: React.FC<{
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            userId: user.data?.user.id,
-            username,
-            password,
-          }),
+          body: formData,
         }
       );
-
+      const data = await response.json();
       if (!response.ok) {
         toast({
           title: 'Missing required fields',
-          content:
-            'Please make sure you have entered all the credentials correctly and try again',
+          content: data.statusText,
           variant: 'error',
         });
         return;
@@ -73,7 +75,7 @@ export const DialogEditProfile: React.FC<{
 
       toast({
         title: 'Profile updated',
-        content: 'You have succesfully updated your profile',
+        content: data.statusText,
         variant: 'success',
       });
     } catch (error) {

@@ -22,9 +22,9 @@ export const metadata: Metadata = {
     description:
       'Explore the wonderlands of users notes, that will boost your studies to the sky 🚀',
     siteName: 'StudySnap',
-    images: {
-      url: '/images/FaviconLogo.png',
-    },
+    // images: {
+    //   url: '/images/FaviconLogo.png',
+    // },
   },
 };
 

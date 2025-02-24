@@ -138,7 +138,7 @@ export const TipTapEditor: React.FC<{
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            content: editor?.getHTML(),
+            content: editor?.getHTML().replace(/"/g, "'"), // Replacing this to single quotes because of overlaping link with links
             noteId: documentId,
           }),
         }

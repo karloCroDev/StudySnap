@@ -24,16 +24,25 @@ export async function POST(req: NextRequest) {
     const { creatorId, userId } = await req.json();
 
     if (!userId || !creatorId) {
-      return NextResponse.json({ status: 400, statusText: 'Insufficient data provided'});
+      return NextResponse.json({
+        status: 400,
+        statusText: 'Insufficient data provided',
+      });
     }
 
     let notes = await GetNotesByCreatorId(creatorId, userId);
-    let user = await GetUserById(creatorId)
+    let user = await GetUserById(creatorId);
 
-    return NextResponse.json([notes, user], { status: 201, statusText: "Success"});
+    return NextResponse.json([notes, user], {
+      status: 201,
+      statusText: 'Success',
+    });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ status: 500, statusText: 'Failed to load notes'});
+    return NextResponse.json({
+      status: 500,
+      statusText: 'Failed to load notes',
+    });
   }
 }
 
@@ -43,13 +52,16 @@ export async function PATCH(req: NextRequest) {
 
     const formData = await req.formData();
 
-    const userId = formData.get('user.Id') as string
-    const username = formData.get('username') as string | null ;
+    const userId = formData.get('userId') as string;
+    const username = formData.get('username') as string | null;
     const password = formData.get('password') as string | null;
     const file = formData.get('file');
 
     if (!userId) {
-      return NextResponse.json({ status: 400, statusText: 'User id is missing'});
+      return NextResponse.json({
+        status: 400,
+        statusText: 'User id is missing',
+      });
     }
 
     const updates: { [key: string]: any } = {};
@@ -58,15 +70,24 @@ export async function PATCH(req: NextRequest) {
     if (file) updates.image = await WriteImage(file);
 
     if (Object.keys(updates).length === 0) {
-      return NextResponse.json({ status: 400, statusText: 'No fields to update'});
+      return NextResponse.json({
+        status: 400,
+        statusText: 'No fields to update',
+      });
     }
 
     await UserClass.Update(userId, updates);
 
-    return NextResponse.json( { status: 200, statusText: 'User updated successfully'});
+    return NextResponse.json({
+      status: 200,
+      statusText: 'User updated successfully',
+    });
   } catch (error) {
     console.error(error);
-    return NextResponse.json( { status: 500, statusText: 'Failed to update user'});
+    return NextResponse.json({
+      status: 500,
+      statusText: 'Failed to update user',
+    });
   }
 }
 
@@ -76,14 +97,22 @@ export async function DELETE(req: NextRequest) {
 
     const { userId } = await req.json();
     if (!userId) {
-      return NextResponse.json( { status: 400, statusText: 'Missing required fields'});
+      return NextResponse.json({
+        status: 400,
+        statusText: 'Missing required fields',
+      });
     }
 
     await UserClass.Delete(userId);
-    return NextResponse.json({ status: 200, statusText: 'Subject deleted successfully'});
+    return NextResponse.json({
+      status: 200,
+      statusText: 'Subject deleted successfully',
+    });
   } catch (error) {
     console.error(error);
-    return NextResponse.json( { status: 500, statusText: 'Failed to delete subject'});
+    return NextResponse.json({
+      status: 500,
+      statusText: 'Failed to delete subject',
+    });
   }
 }
-
