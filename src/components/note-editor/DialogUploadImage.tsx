@@ -16,8 +16,9 @@ import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { PlusCircledIcon } from '@radix-ui/react-icons';
+import { Spinner } from '@/components/ui/Spinner';
 
-export const DialogURL: React.FC<{
+export const DialogUploadImage: React.FC<{
   children: React.ReactNode;
   editor: EditorType;
 }> = ({ editor, children }) => {
@@ -31,7 +32,7 @@ export const DialogURL: React.FC<{
 
   const [loading, setLoading] = React.useState(false);
 
-  const completeSentence = async () => {
+  const uploadUsersImage = async () => {
     try {
       setLoading(true);
       const formData = new FormData();
@@ -45,11 +46,7 @@ export const DialogURL: React.FC<{
       );
 
       const data = await response.json();
-      editor
-        .chain()
-        .focus()
-        .setImage({ src: `data:image/jpeg;base64,${data}` })
-        .run();
+      editor.chain().focus().setImage({ src: data }).run();
       setIsOpen(false);
     } catch (error) {
       console.error('Failed to complete sentence:', error);
@@ -68,7 +65,16 @@ export const DialogURL: React.FC<{
         children,
       }}
     >
-      <Form className="flex flex-col gap-5">
+      <Form
+        className="flex flex-col gap-5"
+        onSubmit={() => {
+          if (image) uploadUsersImage();
+          if (imageUrl) {
+            editor.chain().focus().setImage({ src: imageUrl }).run();
+            setIsOpen(false);
+          }
+        }}
+      >
         <Input
           isRequired
           type="text"
@@ -129,14 +135,9 @@ export const DialogURL: React.FC<{
           </FileTrigger>
         </DropZone>
         <Button
-          onPress={
-            completeSentence
-            //   () => {
-            //   // editor.chain().focus().setImage({ src: imageUrl }).run();
-            //   // setIsOpen(false);
-            // }
-          }
           className="self-end"
+          iconRight={loading && <Spinner />}
+          isDisabled={!!(imageUrl && image)}
         >
           Add image
         </Button>

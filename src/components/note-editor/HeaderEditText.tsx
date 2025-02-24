@@ -34,7 +34,7 @@ import { LuSubscript } from 'react-icons/lu';
 import { LuSuperscript } from 'react-icons/lu';
 
 // Components
-import { DialogURL } from '@/components/note-editor/DialogURL';
+import { DialogUploadImage } from '@/components/note-editor/DialogUploadImage';
 
 // Libs
 import { plus_jakarta_sans } from '@/lib/fonts';
@@ -189,9 +189,9 @@ export const HeaderEditText: React.FC<{
           <LuSuperscript className="size-8" />
         </ReactAriaButton>
 
-        <DialogURL editor={editor}>
+        <DialogUploadImage editor={editor}>
           <LuImage className="size-8" />
-        </DialogURL>
+        </DialogUploadImage>
         <ReactAriaButton
           onPress={() => editor.chain().focus().toggleBulletList().run()}
           className={
