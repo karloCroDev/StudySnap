@@ -63,7 +63,6 @@ export async function POST(req: NextRequest) {
 
     const note = await GetNoteById(id, '0');
 
-    console.log('NOTE:', note);
     return NextResponse.json(note, {
       status: 201,
       statusText: `You have succesfully updated ${note.title}`,
@@ -101,8 +100,6 @@ export async function PATCH(req: NextRequest) {
   try {
     const { noteName, details, isPublic, noteId, content } = await req.json();
 
-    console.log(noteName, details, isPublic, noteId, content);
-
     if (!noteId) {
       return NextResponse.json({
         status: 400,
@@ -115,8 +112,6 @@ export async function PATCH(req: NextRequest) {
     if (details) updates.details = details;
     if (content) updates.content = content;
     updates.is_Public = isPublic ? 1 : 0;
-
-    console.log(updates);
 
     await NoteClass.Update(noteId, updates);
 

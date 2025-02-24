@@ -12,9 +12,6 @@ import { NoteCard } from '@/components/core/NoteCard';
 // Store
 import { useGeneralInfo } from '@/store/useGeneralInfo';
 
-// Images
-import ImageExample from '@/public/images/login-image.png';
-
 // Models (types)
 import { Note } from '@/models/note';
 
@@ -37,7 +34,7 @@ export const NoteMapping: React.FC<{
   return notes
     .filter(
       (
-        note //Look at dialogCreate Note for Error
+        note
       ) =>
         note.title.toLowerCase().includes(search) ||
         note.creator_name.toLowerCase().includes(search) ||
@@ -59,11 +56,10 @@ export const NoteMapping: React.FC<{
           author={note.creator_name}
           liked={note.liked}
           creatorId={note.creator_id}
-          encoded_image={note.encoded_image}
+          userImage= {note.encoded_image ?? undefined}
           key={note.id}
           image={
             note.encoded_image && (
-              // Luka: Don't put this image to default (just and example here)
               <div className="absolute left-0 top-0 -z-10 h-full w-full">
                 <Image
                   src={`data:image/jpeg;base64,${note.encoded_image}`}

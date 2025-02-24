@@ -6,11 +6,8 @@ import { Note } from '../models/note';
 import { GetImage } from './ImageHandler';
 
 //Kada idem na localhost 3000 baci me na onu test stranicu
-//edit profile page jos ne radi
-//When creating a note the app breaks
 //Need to verify token every time
-//When creating new subjectr image does not load so the tab is empty
-//Delete document
+//popravi fetch koji je Karlo napravio
 let pool = createPool(databaseConnectionObject).promise()
 
 export function getPool() {
@@ -21,17 +18,19 @@ export function getPool() {
 }
 
 export async function GetUserByEmail(email: string): Promise<User> {
-  const [rows]: [any, any] = await getPool().query(`
+  const result: [any, any] = await getPool().query(`
         SELECT * FROM user WHERE email = "${email}" LIMIT 1
     `);
-  return rows[0] as User;
+  result[0][0].encoded_image =  await GetImage(result[0][0].profile_picture_url);
+  return result[0][0] as User;
 }
 
 export async function GetUserById(id: string): Promise<User> {
-  const [rows]: [any, any] = await getPool().query(`
+  const result: [any, any] = await getPool().query(`
         SELECT * FROM user WHERE id = "${id}" LIMIT 1
     `);
-  return rows[0] as User;
+  result[0][0].encoded_image = await GetImage(result[0][0].profile_picture_url);
+  return result[0][0] as User;
 }
 
 export async function IsUsernameOrEmailTaken(
@@ -102,7 +101,13 @@ export async function GetNotesBySubjectId(
     `,
     [subject_id]
   );
-  return result[0] as Note[];
+  const notesWithImages = await Promise.all(result[0].map(async note => {
+    const image = await GetImage(note.image_url);
+    return {
+      ...note, "encoded_image": image
+    };
+  }));
+  return notesWithImages as Note[];
 }
 
 export async function GetPublicNotes(
@@ -142,8 +147,16 @@ export async function GetPublicNotes(
         LIMIT ${limit}
         OFFSET ${offset}
     `);
-    return result[0] as Note[];
-}
+    const notesWithImages = await Promise.all(result[0].map(async note => {
+      const image = await GetImage(note.image_url);
+      return {
+        ...note, "encoded_image": image
+      };
+    }));
+    return notesWithImages as Note[];
+  }
+
+
 export async function GetNoteById(note_id: string, user_id: string): Promise<Note> {
     const result: [any, any] = await getPool().query(`
         SELECT
@@ -259,6 +272,11 @@ export async function GetNotesByCreatorId(creator_id: string, user_id: string): 
             n.subject_id,
             u.username
     `);
-    return result[0] as Note[];
-}
+  const notesWithImages = await Promise.all(result[0].map(async note => {
+    const image = await GetImage(note.image_url);
+    return {
+      ...note, "encoded_image": image
+    };
+  }));
+  return notesWithImages as Note[];}
 

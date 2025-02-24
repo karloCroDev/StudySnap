@@ -43,18 +43,18 @@ export const DialogEditProfile: React.FC<{
     e.preventDefault();
     try {
       setLoading(true);
+
+      const formData = new FormData();
+      if (user.data?.user.id) formData.append('userId', user.data.user.id);
+      if (username) formData.append('username', username);
+      if (password) formData.append('password', password);
+      if (image) formData.append('file', image);
+
       const response = await fetch(
         'http://localhost:3000/api/core/public-profile',
         {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userId: user.data?.user.id,
-            username,
-            password,
-          }),
+          body: formData
         }
       );
 

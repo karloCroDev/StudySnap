@@ -43,7 +43,7 @@ export async function PATCH(req: NextRequest) {
 
     const formData = await req.formData();
 
-    const userId = formData.get('user.Id') as string
+    const userId = formData.get('userId') as string
     const username = formData.get('username') as string | null ;
     const password = formData.get('password') as string | null;
     const file = formData.get('file');
@@ -55,13 +55,15 @@ export async function PATCH(req: NextRequest) {
     const updates: { [key: string]: any } = {};
     if (username) updates.username = username;
     if (password) updates.password = await bcrypt.hash(password, 10);
-    if (file) updates.image = await WriteImage(file);
+    if (file) updates.profile_picture_url = await WriteImage(file);
 
     if (Object.keys(updates).length === 0) {
       return NextResponse.json({ status: 400, statusText: 'No fields to update'});
     }
 
     await UserClass.Update(userId, updates);
+
+    console.log(updates, file)
 
     return NextResponse.json( { status: 200, statusText: 'User updated successfully'});
   } catch (error) {

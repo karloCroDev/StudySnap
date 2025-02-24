@@ -43,7 +43,7 @@ export default async function Subjects() {
     redirect('/login');
   }
   const subjects = await getSubjects(session);
-  console.log(subjects);
+
 
   return (
     <>
