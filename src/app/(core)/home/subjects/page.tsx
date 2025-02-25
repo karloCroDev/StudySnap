@@ -15,8 +15,8 @@ import { Subject } from '@/models/subject';
 
 // Metadata
 export const metadata: Metadata = {
-  title: 'Notes',
-  description: 'See all your desired notes in one place',
+  title: 'Subjects',
+  description: 'See all your desired subjects in one place',
 };
 
 async function getSubjects(session: any) {
@@ -43,7 +43,6 @@ export default async function Subjects() {
     redirect('/login');
   }
   const subjects = await getSubjects(session);
-
 
   return (
     <>

@@ -15,19 +15,13 @@ import { Note } from '@/models/note';
 
 // Metadata
 export const metadata: Metadata = {
-  title: 'Subjects',
-  description: 'See all your desired subjects in one place',
+  title: 'Notes',
+  description: 'See all your desired notes in one place',
 };
 
-async function getNotes({ session, subjectId }: any) {
+async function getNotes(subjectId: string) {
   const response = await fetch(
-    `http://localhost:3000/api/core/home/notes?subjectId=${subjectId}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
+    `http://localhost:3000/api/core/home/notes?subjectId=${subjectId}`
   );
 
   if (!response.ok) throw new Error('Failed to fetch data');
@@ -45,7 +39,7 @@ export default async function Notes({
   if (!session) {
     redirect('/login');
   }
-  const notes: Note[] = await getNotes({ subjectId, session });
+  const notes: Note[] = await getNotes(subjectId);
   return (
     <>
       <SearchableHeader title="Your notes" />

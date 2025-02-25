@@ -68,7 +68,7 @@ export const DialogEditProfile: React.FC<{
         return;
       }
       if (username) await user.update({ name: username });
-      if (data.pfpEncoded) await user.update({ image: data });
+      if (data.pfpEncoded) await user.update({ image: data.pfpEncoded });
 
       toast({
         title: 'Profile updated',
