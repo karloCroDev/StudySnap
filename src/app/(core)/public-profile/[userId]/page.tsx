@@ -49,9 +49,7 @@ export default async function PublicProfile({
 }) {
   const creatorId = params.userId;
   const session = await getServerSession(authOptions);
-  const token = session?.accessToken;
-  const userId = session.user.id; // Assuming the token is stored in the session
-  //const creatorId: string = await session.user.id; // Handle immediate changes on client if user updates his data
+  const userId = session?.user.id || 0; // Assuming the token is stored in the session
 
   const [notes, user] = await getPublicProfileNotes(creatorId, userId);
   return (

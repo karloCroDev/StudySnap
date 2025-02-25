@@ -109,7 +109,7 @@ export const DialogImageOcr: React.FC<{
       }}
     >
       <Form
-        className="flex flex-col"
+        className="flex flex-col gap-4"
         onSubmit={(e) => {
           e.preventDefault();
           getNotesFromImage();
@@ -162,7 +162,7 @@ export const DialogImageOcr: React.FC<{
               event && setImage(Array.from(event)[0]);
             }}
           >
-            <AriaButton className="my-4 flex h-64 w-full cursor-pointer items-center justify-center overflow-hidden rounded border-2 border-dashed border-blue-400">
+            <AriaButton className="flex h-64 w-full cursor-pointer items-center justify-center overflow-hidden rounded border-2 border-dashed border-blue-400">
               {clientImage ? (
                 <Image
                   className="h-full w-full object-cover"

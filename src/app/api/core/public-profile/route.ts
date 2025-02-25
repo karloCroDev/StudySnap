@@ -23,7 +23,8 @@ export async function POST(req: NextRequest) {
 
     const { creatorId, userId } = await req.json();
 
-    if (!userId || !creatorId) {
+    // Luka: Removed userId
+    if (!creatorId) {
       return NextResponse.json({
         status: 400,
         statusText: 'Insufficient data provided',
