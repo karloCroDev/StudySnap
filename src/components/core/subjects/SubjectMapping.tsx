@@ -51,20 +51,7 @@ export const SubjectMapping: React.FC<{
           id={subject.id}
           title={subject.name}
           description={subject.details}
-          image={
-            // There is no need to set default images!
-            subject.encoded_image && (
-              <div className="absolute left-0 top-0 -z-10 h-full w-full">
-                <Image
-                  src={`data:image/jpeg;base64,${subject.encoded_image}`}
-                  alt="Informative image about subject"
-                  className="h-full object-cover brightness-50"
-                  width="500"
-                  height="500"
-                />
-              </div>
-            )
-          }
+          encodedImage={subject.encoded_image}
           key={subject.id}
         />
       </LayoutColumn>

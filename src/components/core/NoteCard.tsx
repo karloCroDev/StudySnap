@@ -5,6 +5,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { twJoin } from 'tailwind-merge';
+import Image from 'next/image';
 
 // Components
 import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';
@@ -20,8 +21,8 @@ export const NoteCard: React.FC<{
   description: string;
   author: string;
   isPublic: boolean;
-  image?: React.ReactNode;
-  userImage?: string;
+  encodedImage?: string | null;
+  encodedUserImage?: string;
   numberOfLikes: number;
   liked: boolean;
   creatorId: string;
@@ -29,8 +30,8 @@ export const NoteCard: React.FC<{
   noteId,
   title,
   description,
-  image,
-  userImage,
+  encodedImage,
+  encodedUserImage,
   author,
   isPublic,
   numberOfLikes,
@@ -41,16 +42,22 @@ export const NoteCard: React.FC<{
 
   const [noteName, setNoteName] = React.useState(title);
   const [noteDetails, setNoteDetails] = React.useState(description);
+  const [noteImage, setNoteImage] = React.useState('');
 
   // Real time updating if user chnages his name (instead of refreshing)
   const authorCheck =
     creatorId.toString() === user.data?.user.id ? user.data.user.name : author;
 
+  const pfpCheck =
+    creatorId.toString() === user.data?.user.id
+      ? `data:image/jpeg;base64,${user.data?.user.image}`
+      : `data:image/jpeg;base64,${encodedUserImage}`;
+
   return (
     <div
       className={twJoin(
         'group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400',
-        image ? 'text-gray-100' : 'text-blue-900'
+        noteImage || encodedImage ? 'text-gray-100' : 'text-blue-900'
       )}
     >
       <div className="flex aspect-square flex-col p-6 pb-4">
@@ -62,7 +69,7 @@ export const NoteCard: React.FC<{
             <p
               className={twJoin(
                 'text-xs font-medium',
-                image ? 'text-gray-200' : 'text-gray-400'
+                noteImage || encodedImage ? 'text-gray-200' : 'text-gray-400'
               )}
             >
               {noteDetails}
@@ -73,9 +80,7 @@ export const NoteCard: React.FC<{
           <div className="flex items-center gap-2">
             <Avatar
               imageProps={{
-                src:
-                  `data:image/jpeg;base64,${user.data?.user.image}` ||
-                  `data:image/jpeg;base64,${userImage}`,
+                src: pfpCheck,
                 alt: '',
               }}
             >
@@ -108,11 +113,14 @@ export const NoteCard: React.FC<{
               setNoteDetails={setNoteDetails}
               isNotePublic={isPublic}
               noteId={noteId}
+              setNoteImage={setNoteImage}
             >
               <Pencil1Icon
                 className={twJoin(
                   'size-9 transition-colors lg:size-7',
-                  image ? 'hover:text-gray-200' : 'hover:text-blue-400'
+                  noteImage || encodedImage
+                    ? 'hover:text-gray-200'
+                    : 'hover:text-blue-400'
                 )}
               />
             </DialogChangeDetails>
@@ -122,7 +130,9 @@ export const NoteCard: React.FC<{
               <TrashIcon
                 className={twJoin(
                   'size-9 transition-colors lg:size-7',
-                  image ? 'hover:text-gray-200' : 'hover:text-blue-400'
+                  noteImage || encodedImage
+                    ? 'hover:text-gray-200'
+                    : 'hover:text-blue-400'
                 )}
               />
             </DialogDelete>
@@ -130,7 +140,21 @@ export const NoteCard: React.FC<{
         </ul>
       )}
       <Link href={`/note-editor/${noteId}`} className="absolute inset-0">
-        {image}
+        {(noteImage || encodedImage) && (
+          <div className="absolute left-0 top-0 -z-10 h-full w-full">
+            <Image
+              src={
+                noteImage ||
+                (encodedImage && `data:image/jpeg;base64,${encodedImage}`) ||
+                ''
+              }
+              alt="Informative image about subject"
+              className="h-full object-cover brightness-[45%]"
+              width="500"
+              height="500"
+            />
+          </div>
+        )}
       </Link>
     </div>
   );

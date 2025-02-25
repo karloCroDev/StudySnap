@@ -10,12 +10,16 @@ import {
 } from 'react-aria-components';
 import { Editor as EditorType } from '@tiptap/react';
 import Image from 'next/image';
+import {
+  PlusCircledIcon,
+  UploadIcon,
+  CrossCircledIcon,
+} from '@radix-ui/react-icons';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { PlusCircledIcon } from '@radix-ui/react-icons';
 import { Spinner } from '@/components/ui/Spinner';
 
 export const DialogUploadImage: React.FC<{
@@ -66,7 +70,7 @@ export const DialogUploadImage: React.FC<{
       }}
     >
       <Form
-        className="flex flex-col gap-5"
+        className="flex flex-col gap-4"
         onSubmit={() => {
           if (image) uploadUsersImage();
           if (imageUrl) {
@@ -76,7 +80,6 @@ export const DialogUploadImage: React.FC<{
         }}
       >
         <Input
-          isRequired
           type="text"
           label="URL"
           isMdHorizontal
@@ -93,6 +96,7 @@ export const DialogUploadImage: React.FC<{
 
         {/* Karlo: todo create component from this */}
         <DropZone
+          className="relative"
           getDropOperation={(types) =>
             types.has('image/png') || types.has('image/jpeg')
               ? 'copy'
@@ -110,16 +114,24 @@ export const DialogUploadImage: React.FC<{
             });
           }}
         >
+          {clientImage && (
+            <AriaButton
+              className="absolute right-4 top-4 z-[999999] text-gray-50"
+              onPress={() => setImage(null)}
+            >
+              <CrossCircledIcon className="size-8" />
+            </AriaButton>
+          )}
           <FileTrigger
             acceptedFileTypes={['.jpg,', '.jpeg', '.png']} // Users can access camera snapshot or select images from their phone
             onSelect={(event) => {
               event && setImage(Array.from(event)[0]);
             }}
           >
-            <AriaButton className="my-4 flex h-64 w-full cursor-pointer items-center justify-center overflow-hidden rounded border-2 border-dashed border-blue-400">
+            <AriaButton className="relative flex h-64 w-full cursor-pointer items-center justify-center overflow-hidden rounded border-2 border-dashed border-blue-400">
               {clientImage ? (
                 <Image
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover brightness-75"
                   alt="Image to analyse"
                   src={clientImage}
                   width={10}
@@ -137,7 +149,7 @@ export const DialogUploadImage: React.FC<{
         <Button
           className="self-end"
           iconRight={loading && <Spinner />}
-          isDisabled={!!(imageUrl && image)}
+          isDisabled={!!(image && imageUrl) || (!image && !imageUrl)} // There can't be an image and url, and atleast something must be completed in order to complete the dialog
         >
           Add image
         </Button>

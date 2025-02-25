@@ -45,7 +45,7 @@ export const DialogEditProfile: React.FC<{
       setLoading(true);
 
       const formData = new FormData();
-      if (user.data?.user.id) formData.append('userId', user.data.user.id);
+      formData.append('userId', user.data!.user.id);
       if (username) formData.append('username', username);
       if (password) formData.append('password', password);
       if (image) formData.append('file', image);
@@ -68,7 +68,7 @@ export const DialogEditProfile: React.FC<{
         return;
       }
       if (username) await user.update({ name: username });
-      if (data.pfpEncoded) await user.update({ image: data.pfpEncoded });
+      if (data.pfpEncoded) await user.update({ image: data });
 
       toast({
         title: 'Profile updated',
@@ -107,7 +107,10 @@ export const DialogEditProfile: React.FC<{
               className="cursor-pointer"
               size="lg"
               imageProps={{
-                src: clientImage || user.data?.user?.image || '',
+                src:
+                  clientImage ||
+                  `data:image/jpeg;base64,${user.data?.user?.image}` ||
+                  '',
                 alt: 'Your pfp',
               }}
             >

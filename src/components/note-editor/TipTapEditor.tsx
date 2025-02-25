@@ -129,18 +129,14 @@ export const TipTapEditor: React.FC<{
   const saveDocument = async () => {
     try {
       setLoadingSaveDocument(true);
-
+      const formData = new FormData();
+      formData.append('content', editor!.getHTML().replace(/"/g, "'")); // Replacing this to single quotes because of overlaping link with links
+      formData.append('noteId', documentId);
       const response = await fetch(
         'http://localhost:3000/api/core/home/notes',
         {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            content: editor?.getHTML().replace(/"/g, "'"), // Replacing this to single quotes because of overlaping link with links
-            noteId: documentId,
-          }),
+          body: formData,
         }
       );
       if (!response.ok) {

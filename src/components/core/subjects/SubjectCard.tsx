@@ -8,6 +8,7 @@ import {
   Pencil1Icon,
 } from '@radix-ui/react-icons';
 import Link from 'next/link';
+import Image from 'next/image';
 import { twJoin } from 'tailwind-merge';
 
 // Components
@@ -18,23 +19,38 @@ export const SubjectCard: React.FC<{
   id: string;
   title: string;
   description?: string;
-  image?: React.ReactNode;
-}> = ({ id, title, description = '', image }) => {
+  encodedImage?: string | null;
+}> = ({ id, title, description = '', encodedImage }) => {
   const [cardTitle, setCardTitle] = React.useState(title);
   const [cardDescription, setCardDescription] = React.useState(description);
+  const [cardImage, setCardImage] = React.useState<string>('');
 
   return (
     <div
       className={twJoin(
         'group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400',
-        image ? 'text-gray-100' : 'text-blue-900'
+        cardImage || encodedImage ? 'text-gray-100' : 'text-blue-900'
       )}
     >
       <Link
         href={`/home/notes/${id}`}
         className="flex aspect-square flex-col p-6 pb-4"
       >
-        {image}
+        {(encodedImage || cardImage) && (
+          <div className="absolute left-0 top-0 -z-10 h-full w-full">
+            <Image
+              src={
+                cardImage ||
+                (encodedImage && `data:image/jpeg;base64,${encodedImage}`) ||
+                ''
+              }
+              alt="Informative image about subject"
+              className="h-full object-cover brightness-50"
+              width="500"
+              height="500"
+            />
+          </div>
+        )}
         <div>
           <h3 className="w-3/5 break-words text-xl font-semibold">
             {cardTitle}
@@ -43,7 +59,7 @@ export const SubjectCard: React.FC<{
             <p
               className={twJoin(
                 'text-xs font-medium',
-                image ? 'text-gray-200' : 'text-gray-400'
+                cardImage || encodedImage ? 'text-gray-200' : 'text-gray-400'
               )}
             >
               {cardDescription}
@@ -64,11 +80,14 @@ export const SubjectCard: React.FC<{
             cardDescription={cardDescription}
             setCardTitle={setCardTitle}
             setCardDescripton={setCardDescription}
+            setCardImage={setCardImage}
           >
             <Pencil1Icon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',
-                image ? 'hover:text-gray-200' : 'hover:text-blue-400'
+                cardImage || encodedImage
+                  ? 'hover:text-gray-200'
+                  : 'hover:text-blue-400'
               )}
             />
           </DialogChangeDetails>
@@ -78,7 +97,9 @@ export const SubjectCard: React.FC<{
             <TrashIcon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',
-                image ? 'hover:text-gray-200' : 'hover:text-blue-400'
+                cardImage || encodedImage
+                  ? 'hover:text-gray-200'
+                  : 'hover:text-blue-400'
               )}
             />
           </DialogDelete>

@@ -19,11 +19,13 @@ export const DialogChangeDetails: React.FC<{
   setCardTitle: React.Dispatch<React.SetStateAction<string>>;
   cardDescription: string;
   setCardDescripton: React.Dispatch<React.SetStateAction<string>>;
+  setCardImage: React.Dispatch<React.SetStateAction<string>>;
 }> = ({
   cardTitle,
   setCardTitle,
   cardDescription,
   setCardDescripton,
+  setCardImage,
   id,
   children,
 }) => {
@@ -70,6 +72,7 @@ export const DialogChangeDetails: React.FC<{
 
       if (subjectName) setCardTitle(subjectName);
       if (details) setCardDescripton(details);
+      if (image) setCardImage(URL.createObjectURL(image));
     } catch (error) {
       console.error(error);
       toast({
