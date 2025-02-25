@@ -20,9 +20,9 @@ export const metadata: Metadata = {
     title: 'Public profile',
     description: 'Lets see contributions from your colleauges and friends 🕵️',
     siteName: 'StudySnap',
-    // images: {
-    //   url: '/images/FaviconLogo.png',
-    // },
+    images: {
+      url: '/images/FaviconLogo.png',
+    },
   },
 };
 async function getPublicProfileNotes(creatorId: string, userId: string) {

@@ -16,7 +16,8 @@ import { Editor as EditorType } from '@tiptap/react';
 import {
   MagicWandIcon,
   CameraIcon,
-  PlusCircledIcon,
+  UploadIcon,
+  CrossCircledIcon,
 } from '@radix-ui/react-icons';
 import Image from 'next/image';
 
@@ -128,6 +129,7 @@ export const DialogImageOcr: React.FC<{
           <FieldError className="!mt-2 text-red-400" />
         </TextField>
         <DropZone
+          className="relative"
           getDropOperation={(types) =>
             types.has('image/png') || types.has('image/jpeg')
               ? 'copy'
@@ -145,6 +147,15 @@ export const DialogImageOcr: React.FC<{
             });
           }}
         >
+          {clientImage && (
+            <AriaButton
+              className="absolute right-4 top-4 z-[999999] text-gray-50"
+              onPress={() => setImage(null)}
+            >
+              <CrossCircledIcon className="size-8" />
+            </AriaButton>
+          )}
+
           <FileTrigger
             acceptedFileTypes={['.jpg,', '.jpeg', '.png']} // Users can access camera snapshot or select images from their phone
             onSelect={(event) => {
@@ -157,13 +168,12 @@ export const DialogImageOcr: React.FC<{
                   className="h-full w-full object-cover"
                   alt="Image to analyse"
                   src={clientImage}
-                  width={10}
-                  height={10}
+                  fill
                 />
               ) : (
                 <div className="flex items-center gap-4 text-gray-400">
                   <p className="text-lg">Add image </p>
-                  <PlusCircledIcon className="size-8" />
+                  <UploadIcon className="size-8" />
                 </div>
               )}
             </AriaButton>

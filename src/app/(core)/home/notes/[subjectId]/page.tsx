@@ -10,9 +10,6 @@ import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { CreateNoteCard } from '@/components/core/note/CreateNoteCard';
 import { NoteMapping } from '@/components/core/NoteMapping';
 
-// Images
-import ImageExample from '@/public/images/login-image.png';
-
 // Models (types)
 import { Note } from '@/models/note';
 

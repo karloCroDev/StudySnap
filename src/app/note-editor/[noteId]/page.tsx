@@ -24,9 +24,9 @@ export const metadata: Metadata = {
     description:
       'Learn and study faster with help of an AI only with StudySnap 🔮',
     siteName: 'StudySnap',
-    // images: {
-    //   url: '/images/FaviconLogo.png',
-    // },
+    images: {
+      url: '/images/FaviconLogo.png',
+    },
   },
 };
 async function fetchNote(noteId: string, userId: string) {

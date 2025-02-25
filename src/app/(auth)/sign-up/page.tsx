@@ -8,9 +8,6 @@ import { Logo } from '@/components/ui/Logo';
 import { Layout, LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { SignupForm } from '@/components/auth/sign-up/SignupForm';
 
-// Images
-import ImageSignup from '@/public/images/sign-up-image.png';
-
 export const metadata: Metadata = {
   title: 'Sign up',
   description:
@@ -20,9 +17,9 @@ export const metadata: Metadata = {
     description:
       'Welcome to StudySnap! The faster you fill up, the closer you will be to a revolutionary way of handling studies',
     siteName: 'StudySnap',
-    // images: {
-    //   url: '/images/FaviconLogo.png',
-    // },
+    images: {
+      url: '/images/FaviconLogo.png',
+    },
   },
 };
 
@@ -59,8 +56,9 @@ export default function Signup() {
         {/* note: Hacky way of doing this, but want to pursue the layout in the app */}
         <div className="absolute bottom-0 right-0 hidden h-screen w-1/2 lg:block">
           <Image
-            src={ImageSignup}
+            src="/images/sign-up-image.png"
             alt="Login thumbnail"
+            fill
             className="h-full w-full object-cover"
           />
         </div>

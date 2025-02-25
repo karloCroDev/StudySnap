@@ -10,11 +10,7 @@ import {
 } from 'react-aria-components';
 import { Editor as EditorType } from '@tiptap/react';
 import Image from 'next/image';
-import {
-  PlusCircledIcon,
-  UploadIcon,
-  CrossCircledIcon,
-} from '@radix-ui/react-icons';
+import { UploadIcon, CrossCircledIcon } from '@radix-ui/react-icons';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
@@ -36,7 +32,8 @@ export const DialogUploadImage: React.FC<{
 
   const [loading, setLoading] = React.useState(false);
 
-  const uploadUsersImage = async () => {
+  const uploadUsersImage = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       setLoading(true);
       const formData = new FormData();
@@ -71,8 +68,9 @@ export const DialogUploadImage: React.FC<{
     >
       <Form
         className="flex flex-col gap-4"
-        onSubmit={() => {
-          if (image) uploadUsersImage();
+        onSubmit={(e) => {
+          console.log('Something');
+          if (image) uploadUsersImage(e);
           if (imageUrl) {
             editor.chain().focus().setImage({ src: imageUrl }).run();
             setIsOpen(false);
@@ -134,13 +132,12 @@ export const DialogUploadImage: React.FC<{
                   className="h-full w-full object-cover brightness-75"
                   alt="Image to analyse"
                   src={clientImage}
-                  width={10}
-                  height={10}
+                  fill
                 />
               ) : (
                 <div className="flex items-center gap-4 text-gray-400">
                   <p className="text-lg">Add image </p>
-                  <PlusCircledIcon className="size-8" />
+                  <UploadIcon className="size-8" />
                 </div>
               )}
             </AriaButton>
@@ -148,6 +145,7 @@ export const DialogUploadImage: React.FC<{
         </DropZone>
         <Button
           className="self-end"
+          type="submit"
           iconRight={loading && <Spinner />}
           isDisabled={!!(image && imageUrl) || (!image && !imageUrl)} // There can't be an image and url, and atleast something must be completed in order to complete the dialog
         >

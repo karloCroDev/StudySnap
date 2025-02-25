@@ -120,6 +120,7 @@ export default function Home() {
       </Button>
 
       <DropZone
+        className="relative"
         getDropOperation={(types) =>
           types.has('image/png') || types.has('image/jpeg') ? 'copy' : 'cancel'
         }
@@ -140,8 +141,7 @@ export default function Home() {
             className="object-contain"
             alt="Image to analyse"
             src={filledSrc}
-            width={160}
-            height={160}
+            fill
           />
         ) : (
           <div className="size-40 rounded border border-dashed border-blue-400">

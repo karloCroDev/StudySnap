@@ -150,8 +150,7 @@ export const NoteCard: React.FC<{
               }
               alt="Informative image about subject"
               className="h-full object-cover brightness-[45%]"
-              width="500"
-              height="500"
+              fill
             />
           </div>
         )}

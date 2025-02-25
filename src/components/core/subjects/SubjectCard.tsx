@@ -46,8 +46,7 @@ export const SubjectCard: React.FC<{
               }
               alt="Informative image about subject"
               className="h-full object-cover brightness-50"
-              width="500"
-              height="500"
+              fill
             />
           </div>
         )}
