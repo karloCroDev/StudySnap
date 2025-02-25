@@ -43,7 +43,7 @@ async function getPublicNotes(userId: string) {
 
 export default async function Disover() {
   const session = await getServerSession(authOptions);
-
+  console.log(session);
   const userId: string = session?.user.id || 0;
   const publicNotes: Note[] = await getPublicNotes(userId);
 

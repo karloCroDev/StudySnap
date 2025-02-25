@@ -2,7 +2,12 @@
 
 // External packages
 import * as React from 'react';
-import { GearIcon, PersonIcon, ExitIcon } from '@radix-ui/react-icons';
+import {
+  GearIcon,
+  PersonIcon,
+  ExitIcon,
+  ArrowRightIcon,
+} from '@radix-ui/react-icons';
 import {
   Menu as AriaMenu,
   MenuTrigger,
@@ -11,7 +16,7 @@ import {
 } from 'react-aria-components';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { signOut } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 
 // Components
 import { LinkAsButton } from '@/components/ui/LinkAsButton';
@@ -24,17 +29,15 @@ import { useToastStore } from '@/store/useToastStore';
 import { useRouter } from 'next/navigation';
 
 export const Menu: React.FC<{
-  userId: number;
-  username: string;
-  pfpImage: string;
   // Better to have this from server, looks much better when rendered on frontend (in this scenario)
-}> = ({ userId, username, pfpImage }) => {
+}> = ({}) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
+  const user = useSession();
   const router = useRouter();
   const toast = useToastStore((state) => state.setToast);
-
+  console.log(user.data);
   const logOut = async () => {
     try {
       toast({
@@ -54,26 +57,42 @@ export const Menu: React.FC<{
     }
   };
 
-  if (!userId)
+  if (!user.data?.user.id)
     return (
-      <div className="flex gap-4">
-        <LinkAsButton
-          colorScheme="black"
-          variant="outline"
-          rounded="full"
-          href="/login"
+      <MenuTrigger>
+        <Button
+          colorScheme="white"
+          size="lg"
+          iconLeft={
+            <Avatar
+              imageProps={{
+                src: '',
+                alt: '',
+              }}
+              size="md"
+            >
+              Anonymous
+            </Avatar>
+          }
+          className="text-lg font-medium 2xl:text-xl"
         >
-          Login
-        </LinkAsButton>
-        <LinkAsButton
-          colorScheme="light-blue"
-          variant="outline"
-          rounded="full"
-          href="/sign-up"
-        >
-          Sign up
-        </LinkAsButton>
-      </div>
+          Anonymous
+        </Button>
+        <Popover className="!z-20 w-[var(--trigger-width)] outline-none data-[exiting]:pointer-events-none data-[entering]:pointer-events-auto data-[entering]:animate-menu-open data-[exiting]:animate-menu-closed">
+          <AriaMenu className="overflow-hidden rounded-md border border-gray-900">
+            <MenuItem className="cursor-pointer border-b border-gray-900 bg-gray-100 p-2 outline-none hover:brightness-90">
+              <Link href="/login" className="flex items-center gap-2">
+                <PersonIcon /> Login
+              </Link>
+            </MenuItem>
+            <MenuItem className="flex cursor-pointer items-center gap-2 bg-blue-400 p-2 text-gray-100 outline-none hover:brightness-90">
+              <Link href="/sign-up" className="flex items-center gap-2">
+                <ArrowRightIcon /> Sign up
+              </Link>
+            </MenuItem>
+          </AriaMenu>
+        </Popover>
+      </MenuTrigger>
     );
   return (
     <MenuTrigger isOpen={isMenuOpen}>
@@ -83,18 +102,18 @@ export const Menu: React.FC<{
         iconLeft={
           <Avatar
             imageProps={{
-              src: pfpImage || '',
+              src: `data:image/jpeg;base64,${user?.data?.user.image}` || '',
               alt: '',
             }}
             size="md"
           >
-            {username}
+            {user.data.user.name}
           </Avatar>
         }
         className="text-lg font-medium 2xl:text-xl"
         onPress={() => setIsMenuOpen(!isMenuOpen)}
       >
-        {username}
+        {user.data.user.name}
       </Button>
       <Popover
         className="!z-20 w-[var(--trigger-width)] outline-none data-[exiting]:pointer-events-none data-[entering]:pointer-events-auto data-[entering]:animate-menu-open data-[exiting]:animate-menu-closed"
@@ -121,7 +140,7 @@ export const Menu: React.FC<{
             onAction={() => setIsMenuOpen(false)}
           >
             <Link
-              href={`/public-profile/${userId}`}
+              href={`/public-profile/${user.data.user.id}`}
               className="flex items-center gap-2"
             >
               <PersonIcon /> Public profile

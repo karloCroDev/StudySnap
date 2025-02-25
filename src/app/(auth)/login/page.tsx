@@ -8,9 +8,6 @@ import { Logo } from '@/components/ui/Logo';
 import { Layout, LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { LoginForm } from '@/components/auth/login/LoginForm';
 
-// Images
-import ImageLogin from '@/public/images/login-image.png';
-
 export const metadata: Metadata = {
   title: 'Log in',
   description:
@@ -59,8 +56,9 @@ export default function Login() {
         {/* note: Hacky way of doing this, but want to pursue the layout in the app */}
         <div className="absolute bottom-0 right-0 hidden h-screen w-1/2 lg:block">
           <Image
-            src={ImageLogin}
+            src="/images/login-image.png"
             alt="Login thumbnail"
+            fill
             className="h-full w-full object-cover"
           />
         </div>

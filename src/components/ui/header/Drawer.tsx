@@ -59,7 +59,10 @@ export const Drawer = () => {
         <div className="flex flex-col items-center">
           <Avatar
             size="lg"
-            imageProps={{ src: user?.data?.user?.image || '', alt: '' }}
+            imageProps={{
+              src: `data:image/jpeg;base64,${user?.data?.user.image}` || '',
+              alt: '',
+            }}
           >
             {user?.data?.user?.name}
           </Avatar>

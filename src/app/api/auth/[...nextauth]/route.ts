@@ -4,7 +4,6 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { GetUserByEmail } from '../../../../database/pool';
 
-
 /*
 
 */
@@ -40,9 +39,12 @@ export const authOptions = {
       if (trigger === 'update' && session?.name) {
         token.name = session.name;
       }
+      if (trigger === 'update' && session?.image) {
+        token.image = session.image;
+      }
       if (user) {
         token.uid = user.id;
-        token.image = user.profile_picture;
+        token.image = user.image || '';
         token.name = user.username;
       }
       return token;
@@ -51,7 +53,7 @@ export const authOptions = {
     session: async ({ session, token }: any) => {
       if (session?.user) {
         session.user.id = token.sub;
-        session.user.image = token.image;
+        session.user.image = token.image || '';
         session.user.name = token.name;
       }
       return session;

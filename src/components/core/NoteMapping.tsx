@@ -33,9 +33,7 @@ export const NoteMapping: React.FC<{
 
   return notes
     .filter(
-      (
-        note
-      ) =>
+      (note) =>
         note.title.toLowerCase().includes(search) ||
         note.creator_name.toLowerCase().includes(search) ||
         (note.details?.toLowerCase().includes(search) ?? false)
@@ -56,21 +54,9 @@ export const NoteMapping: React.FC<{
           author={note.creator_name}
           liked={note.liked}
           creatorId={note.creator_id}
-          userImage= {note.encoded_profile_image ?? undefined}
+          encodedUserImage={note.encoded_profile_image ?? undefined}
+          encodedImage={note.encoded_image}
           key={note.id}
-          image={
-            note.encoded_image && (
-              <div className="absolute left-0 top-0 -z-10 h-full w-full">
-                <Image
-                  src={`data:image/jpeg;base64,${note.encoded_image}`}
-                  alt="Informative image about subject"
-                  className="h-full object-cover brightness-[45%]"
-                  width="500"
-                  height="500"
-                />
-              </div>
-            )
-          }
         />
       </LayoutColumn>
     ));

@@ -96,9 +96,48 @@ export async function DELETE(req: NextRequest) {
   }
 }
 
+// export async function PATCH(req: NextRequest) {
+//   try {
+//     const { noteName, details, isPublic, noteId, content } = await req.json();
+
+//     if (!noteId) {
+//       return NextResponse.json({
+//         status: 400,
+//         statusText: 'Note Id is requiered',
+//       });
+//     }
+
+//     const updates: { [key: string]: any } = {};
+//     if (noteName) updates.title = noteName;
+//     if (details) updates.details = details;
+//     if (content) updates.content = content;
+//     updates.is_Public = isPublic ? 1 : 0;
+
+//     await NoteClass.Update(noteId, updates);
+
+//     return NextResponse.json({
+//       status: 201,
+//       statusText: 'Note updated successfully',
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     return NextResponse.json({
+//       status: 500,
+//       statusText: 'Failed to update note',
+//     });
+//   }
+// }
+
 export async function PATCH(req: NextRequest) {
   try {
-    const { noteName, details, isPublic, noteId, content } = await req.json();
+    const formData = await req.formData();
+
+    const noteName = formData.get('noteName') as string;
+    const details = formData.get('details') as string | null;
+    const isPublic = formData.get('isPublic') as unknown as boolean;
+    const noteId = formData.get('noteId') as string;
+    const content = formData.get('content') as string;
+    const image = formData.get('file');
 
     if (!noteId) {
       return NextResponse.json({
@@ -111,6 +150,7 @@ export async function PATCH(req: NextRequest) {
     if (noteName) updates.title = noteName;
     if (details) updates.details = details;
     if (content) updates.content = content;
+    if (image) updates.image_url = await WriteImage(image);
     updates.is_Public = isPublic ? 1 : 0;
 
     await NoteClass.Update(noteId, updates);

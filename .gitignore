@@ -27,6 +27,7 @@ yarn-error.log*
 
 # local env files
 .env
+.env*.local
 
 # vercel
 .vercel
@@ -40,3 +41,4 @@ next-env.d.ts
 
 # Ignore all files in the public/uploads directory
 src/public/uploads/*
+public/uploads/*

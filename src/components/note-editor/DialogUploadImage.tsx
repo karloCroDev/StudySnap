@@ -3,38 +3,27 @@
 // External packages
 import * as React from 'react';
 import {
-  TextField,
-  FieldError,
-  TextArea,
   DropZone,
-  Input,
   FileTrigger,
-  Button as AriaButton,
   Form,
+  Button as AriaButton,
 } from 'react-aria-components';
 import { Editor as EditorType } from '@tiptap/react';
-import {
-  MagicWandIcon,
-  CameraIcon,
-  UploadIcon,
-  CrossCircledIcon,
-} from '@radix-ui/react-icons';
 import Image from 'next/image';
+import { UploadIcon, CrossCircledIcon } from '@radix-ui/react-icons';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
-import { useToastStore } from '@/store/useToastStore';
+import { Input } from '@/components/ui/Input';
 import { Spinner } from '@/components/ui/Spinner';
 
-export const DialogImageOcr: React.FC<{
+export const DialogUploadImage: React.FC<{
+  children: React.ReactNode;
   editor: EditorType;
-}> = ({ editor }) => {
-  const toast = useToastStore((state) => state.setToast);
-
+}> = ({ editor, children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
-
-  const [prompt, setPrompt] = React.useState('');
+  const [imageUrl, setImageUrl] = React.useState('');
   const [image, setImage] = React.useState<null | File>(null);
   const clientImage = React.useMemo(
     () => image && URL.createObjectURL(image),
@@ -43,41 +32,25 @@ export const DialogImageOcr: React.FC<{
 
   const [loading, setLoading] = React.useState(false);
 
-  const getNotesFromImage = async () => {
+  const uploadUsersImage = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       setLoading(true);
       const formData = new FormData();
-      formData.append('prompt', prompt);
-      formData.append('file', image!);
-      const response = await fetch('http://localhost:3000/api/ai/image-note', {
-        method: 'POST',
-        body: formData,
-      });
+      if (image) formData.append('file', image); // Karlo: Add better insight while checking
+      const response = await fetch(
+        'http://localhost:3000/api/core/home/notes/editor-image-upload',
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
 
       const data = await response.json();
-      if (!response.ok) {
-        toast({
-          title: 'Failed to get notes',
-          content: data, // This data is status text
-          variant: 'error',
-        });
-        return;
-      }
-      editor?.commands.insertContent(data);
-      toast({
-        title: 'Notes genearted',
-        content: 'Notes generated successfully from your image',
-        variant: 'success',
-      });
-      setPrompt('');
-      setImage(null);
+      editor.chain().focus().setImage({ src: data }).run();
+      setIsOpen(false);
     } catch (error) {
-      console.error('Upload failed:', error);
-      toast({
-        title: 'Failed to get notes',
-        content: 'Please try again later, problem with server',
-        variant: 'error',
-      });
+      console.error('Failed to complete sentence:', error);
     } finally {
       setLoading(false);
       setIsOpen(false);
@@ -88,46 +61,38 @@ export const DialogImageOcr: React.FC<{
     <Dialog
       open={isOpen}
       onOpenChange={setIsOpen}
-      title="Image OCR"
+      title="Add image to document"
       triggerProps={{
-        children: (
-          <>
-            <Button
-              colorScheme="light-blue"
-              rounded="full"
-              className="min-w-fit"
-              iconLeft={<CameraIcon className="size-5" />}
-              iconRight={loading && <Spinner />}
-              onPress={() => setIsOpen(true)}
-              // onPressStart={() => setIsOpen(true)}
-            >
-              Analyse Image
-            </Button>
-          </>
-        ),
-        asChild: true,
+        children,
       }}
     >
       <Form
-        className="flex flex-col"
+        className="flex flex-col gap-4"
         onSubmit={(e) => {
-          e.preventDefault();
-          getNotesFromImage();
+          console.log('Something');
+          if (image) uploadUsersImage(e);
+          if (imageUrl) {
+            editor.chain().focus().setImage({ src: imageUrl }).run();
+            setIsOpen(false);
+          }
         }}
       >
-        <TextField
-          isRequired
-          minLength={5}
-          className="outline-none"
-          onChange={(val) => setPrompt(val.toString())}
-          value={prompt}
-        >
-          <Input
-            className="h-12 w-full rounded border-2 border-blue-900 p-2 focus:border-blue-900"
-            placeholder="Enter a prompt for image.."
-          />
-          <FieldError className="!mt-2 text-red-400" />
-        </TextField>
+        <Input
+          type="text"
+          label="URL"
+          isMdHorizontal
+          inputProps={{
+            placeholder: 'Enter image URL',
+            className: 'md:w-full',
+          }}
+          onChange={(val) => setImageUrl(val.toString())}
+          className="md:w-full"
+          inputWrapperProps={{
+            className: 'md:flex-1',
+          }}
+        />
+
+        {/* Karlo: todo create component from this */}
         <DropZone
           className="relative"
           getDropOperation={(types) =>
@@ -155,17 +120,16 @@ export const DialogImageOcr: React.FC<{
               <CrossCircledIcon className="size-8" />
             </AriaButton>
           )}
-
           <FileTrigger
             acceptedFileTypes={['.jpg,', '.jpeg', '.png']} // Users can access camera snapshot or select images from their phone
             onSelect={(event) => {
               event && setImage(Array.from(event)[0]);
             }}
           >
-            <AriaButton className="my-4 flex h-64 w-full cursor-pointer items-center justify-center overflow-hidden rounded border-2 border-dashed border-blue-400">
+            <AriaButton className="relative flex h-64 w-full cursor-pointer items-center justify-center overflow-hidden rounded border-2 border-dashed border-blue-400">
               {clientImage ? (
                 <Image
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover brightness-75"
                   alt="Image to analyse"
                   src={clientImage}
                   fill
@@ -180,13 +144,12 @@ export const DialogImageOcr: React.FC<{
           </FileTrigger>
         </DropZone>
         <Button
+          className="self-end"
           type="submit"
-          isDisabled={!prompt && !image}
-          iconLeft={<CameraIcon className="size-5" />}
           iconRight={loading && <Spinner />}
-          className="mt-2 self-end"
+          isDisabled={!!(image && imageUrl) || (!image && !imageUrl)} // There can't be an image and url, and atleast something must be completed in order to complete the dialog
         >
-          Analyse
+          Add image
         </Button>
       </Form>
     </Dialog>

@@ -27,6 +27,7 @@ export const DialogChangeDetails: React.FC<{
   noteDetails: string;
   setNoteDetails: React.Dispatch<React.SetStateAction<string>>;
   isNotePublic: boolean;
+  setNoteImage: React.Dispatch<React.SetStateAction<string>>;
 }> = ({
   children,
   noteId,
@@ -35,6 +36,7 @@ export const DialogChangeDetails: React.FC<{
   noteDetails,
   setNoteDetails,
   isNotePublic,
+  setNoteImage,
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -50,14 +52,18 @@ export const DialogChangeDetails: React.FC<{
     e.preventDefault();
     try {
       setLoading(true);
+      const formData = new FormData();
+      formData.append('noteName', name);
+      formData.append('details', details);
+      formData.append('isPublic', isPublic.toString());
+      formData.append('noteId', noteId);
+
+      if (image) formData.append('file', image);
       const response = await fetch(
         'http://localhost:3000/api/core/home/notes',
         {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ noteName: name, details, isPublic, noteId }),
+          body: formData,
         }
       );
       const data = await response.json();
@@ -78,6 +84,7 @@ export const DialogChangeDetails: React.FC<{
 
       if (name) setNoteName(name);
       if (details) setNoteDetails(details);
+      if (image) setNoteImage(URL.createObjectURL(image));
     } catch (error) {
       console.error(error);
       toast({
