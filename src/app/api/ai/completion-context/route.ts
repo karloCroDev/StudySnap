@@ -9,9 +9,9 @@ export async function POST(req: Request) {
     const { prompt, context } = await req.json();
 
     const completedSentence = await modelFlash.generateContent(
-      `Your given a context of the document with text, and users reponse about how he wants his text to be generated. Return him the whole text with context based on his response. Generate me text in a MARKDOWN format 
+      `Your given a context of the document with text, and users reponse about how he wants his text to be generated. Return him the whole text with context based on his response.
       Here is the users response: ${prompt}
-      Here is the context of the document: ${context}`
+      Here is the context of the document (ignore that there are HTML tags): ${context}`
     );
 
     return NextResponse.json(completedSentence.response.text(), {
