@@ -10,6 +10,9 @@ import {
   HomeIcon,
   FrameIcon,
   ExitIcon,
+  ArrowRightIcon,
+  ArrowLeftIcon,
+  ExternalLinkIcon,
 } from '@radix-ui/react-icons';
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
@@ -64,10 +67,10 @@ export const Drawer = () => {
               alt: '',
             }}
           >
-            {user?.data?.user?.name}
+            {user?.data?.user?.name || 'Anonymous'}
           </Avatar>
           <h4 className="mt-6 text-lg font-semibold">
-            {user?.data?.user?.name}
+            {user?.data?.user?.name || 'Anonymous'}
           </h4>
         </div>
         <hr className="mt-3 h-px w-full border-0 bg-gray-900" />
@@ -104,6 +107,21 @@ export const Drawer = () => {
         <hr className="mt-auto h-px w-full border-0 bg-gray-900" />
 
         <ul className="mt-6 flex flex-col gap-4">
+          {user.data?.user.id && (
+            <li>
+              <DialogEditProfile>
+                <Button
+                  colorScheme="white"
+                  type="submit"
+                  iconLeft={<GearIcon className="size-6" />}
+                  className="w-full justify-start"
+                >
+                  Edit profile
+                </Button>
+              </DialogEditProfile>
+            </li>
+          )}
+
           <li>
             <DialogEditProfile>
               <Button
@@ -116,6 +134,20 @@ export const Drawer = () => {
               </Button>
             </DialogEditProfile>
           </li>
+          {!user.data?.user.id && (
+            <li>
+              <RadixDialog.Close asChild>
+                <LinkAsButton
+                  colorScheme="white"
+                  href="/login"
+                  iconLeft={<ExternalLinkIcon className="size-6" />}
+                  className="justify-start"
+                >
+                  Login
+                </LinkAsButton>
+              </RadixDialog.Close>
+            </li>
+          )}
           <li>
             <RadixDialog.Close asChild>
               <LinkAsButton
