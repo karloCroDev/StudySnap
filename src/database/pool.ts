@@ -8,6 +8,7 @@ import { Note } from '../models/note';
 import { GetImage, GetProfileImage } from './ImageHandler';
 //Object with credentials for connecting to the database
 import { databaseConnectionObject } from '../../Secrets';
+import {  noteCache } from '../lib/caching';
 
 
 let pool = createPool(databaseConnectionObject).promise()
@@ -72,6 +73,11 @@ export async function GetSubjectById(id: string): Promise<Subject> {
 export async function GetNotesBySubjectId(
   subject_id: string
 ): Promise<Array<Note>> {
+  //Trying to find notes in cache
+  const cacheKey = `GetNotesBySubjectId_${subject_id}`
+  const cachedNotes = await noteCache.get(cacheKey)
+ // if (cachedNotes){return cachedNotes as Note[]}
+
   const result: [any[], any] = await getPool().query(
     `
         SELECT
@@ -113,6 +119,9 @@ export async function GetNotesBySubjectId(
       ...note, "encoded_image": image, "encoded_profile_image": encoded_profile_image
     };
   }));
+  //Adding notes ot cache 
+  noteCache?.put(cacheKey, notesWithImages)
+
   return notesWithImages as Note[];
 }
 
@@ -166,6 +175,7 @@ export async function GetPublicNotes(
 
 
 export async function GetNoteById(note_id: string, user_id: string): Promise<Note> {
+
     const result: [any, any] = await getPool().query(`
         SELECT
             n.id,
@@ -253,6 +263,11 @@ export async function GetNoteNameById(
 }
 
 export async function GetNotesByCreatorId(creator_id: string, user_id: string): Promise<Array<Note>> {
+
+  const cacheKey = `GetNotesByCreatorId_${creator_id}_${user_id}`
+  const cachedNotes = await noteCache.get(cacheKey)
+  //if (cachedNotes){return cachedNotes as Note[]}
+
     const result: [any[], any] = await getPool().query(`
         SELECT
             n.id,
@@ -291,6 +306,9 @@ export async function GetNotesByCreatorId(creator_id: string, user_id: string): 
         ...note, "encoded_image": image, "encoded_profile_image": encoded_profile_image
       };
     }));
+
+    noteCache?.put(cacheKey, notesWithImages)
+
     return notesWithImages as Note[];
   }
 

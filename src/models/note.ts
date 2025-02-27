@@ -1,4 +1,5 @@
 import { getPool } from '../database/pool';
+import { noteCache } from '@/lib/caching';
 
 export interface Note {
   id: string;
@@ -35,6 +36,9 @@ export class NoteClass {
       `,
         [title, details, is_public, subject_id, imagePath]
       );
+
+      noteCache.clear()
+
       return result.insertId as string;
     } catch (err) {
       console.error('Error inserting note:', err);
@@ -58,6 +62,9 @@ export class NoteClass {
         SET ${values.join(', ')}, date_modified = CURRENT_TIMESTAMP
         WHERE id = ${id};
       `);
+      noteCache.clear()
+
+
     } catch (err) {
       console.error('Error updating note:', err);
     }
@@ -71,6 +78,7 @@ export class NoteClass {
       `,
         [id]
       );
+      noteCache.clear()
     } catch (err) {
       console.error('Error deleting note:', err);
     }
