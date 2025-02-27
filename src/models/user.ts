@@ -1,6 +1,5 @@
 import { getPool } from '../database/pool';
 
-//Todo add cascade delete
 export interface User {
   id: string;
   date_created: Date;

@@ -4,6 +4,7 @@ import { NextResponse, NextRequest } from 'next/server';
 // Models
 import { GetImage, WriteImage } from '@/database/ImageHandler';
 
+//Function writes the image
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const image = formData.get('file');
@@ -15,10 +16,10 @@ export async function POST(req: NextRequest) {
     });
   }
   const imagePath = await WriteImage(image);
-  const correctedImagePath = '/' + imagePath?.split('/').slice(1).join('/');
+//  const correctedImagePath = '/' + imagePath?.split('/').slice(1).join('/');
   // const encodedImage = await GetImage(imagePath);
 
-  return NextResponse.json(correctedImagePath, {
+  return NextResponse.json(imagePath, {
     status: 201,
     statusText: 'Successfully uploaded image',
   });

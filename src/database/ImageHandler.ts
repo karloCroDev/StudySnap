@@ -1,8 +1,9 @@
 // External packages
-import { writeFile, readFile } from 'fs/promises';
+import { writeFile, readFile } from 'fs/promises'; 
 import path from 'path';
 import sharp from 'sharp';
 
+// Function to write an image to the file system
 export async function WriteImage(
   image: FormDataEntryValue | null
 ): Promise<string | null> {
@@ -10,18 +11,22 @@ export async function WriteImage(
     let imageUrl = null;
 
     if (image && typeof image !== 'string') {
-      //Creates buffer from the image and resizes it
+      // Creates a buffer from the image and resizes it to 312x312 pixels
       const buffer = await sharp(Buffer.from(await image.arrayBuffer())).resize(
         312,
         312
-      );
+      ).toBuffer();
 
+      // Generates a unique filename using the current timestamp and the original image name
       const filename = Date.now() + image.name.replaceAll(' ', '_');
-      const filePath = path.join(process.cwd(), 'public/uploads', filename);
+      // Constructs the file path where the image will be saved
+      const filePath = path.join(process.cwd(), 'src/public/uploads', filename);
 
+      // Writes the resized image buffer to the specified file path
       await writeFile(filePath, buffer);
 
-      imageUrl = `public/uploads/${filename}`; // Store the relative path to the image
+      // Stores the relative path to the image
+      imageUrl = `src/public/uploads/${filename}`;
       return imageUrl;
     }
     return null;
@@ -31,12 +36,15 @@ export async function WriteImage(
   }
 }
 
+// Function to read an image from the file system and return it as a base64 encoded string
 export async function GetImage(
   imageUrl: string | null
 ): Promise<string | null> {
   if (imageUrl) {
     try {
+      // Reads the image file from the specified path
       const imageBuffer = await readFile(imageUrl);
+      // Converts the image buffer to a base64 encoded string
       const base64Image = imageBuffer.toString('base64');
       return base64Image;
     } catch (error) {
@@ -47,14 +55,17 @@ export async function GetImage(
   return null;
 }
 
+// Function to read a profile image, resize it, and return it as a base64 encoded string
 export async function GetProfileImage(
   imageUrl: string | null
 ): Promise<string | null> {
   if (imageUrl) {
     try {
+      // Reads the image file from the specified path, resizes it to 128x128 pixels, and converts it to a buffer
       const imageBuffer = await sharp(await readFile(imageUrl))
         .resize(128, 128)
         .toBuffer();
+      // Converts the resized image buffer to a base64 encoded string
       const base64Image = imageBuffer.toString('base64');
       return base64Image;
     } catch (error) {

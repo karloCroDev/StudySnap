@@ -2,11 +2,10 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 // Models
-import { GetNoteById, GetNotesBySubjectId } from '@/database/pool';
-import { Note, NoteClass } from '@/models/note';
+import { GetNoteById } from '@/database/pool';
+import { Note } from '@/models/note';
 
-const secret = process.env.NEXTAUTH_SECRET;
-
+//Function gets the note
 export async function POST(req: NextRequest) {
   try {
     const { noteId, userId } = await req.json();

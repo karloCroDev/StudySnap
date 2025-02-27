@@ -4,15 +4,15 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { GetUserByEmail } from '../../../../database/pool';
 
-/*
-
-*/
+// Configuration options for NextAuth
 export const authOptions = {
   providers: [
+    // Credentials provider for authentication
     CredentialsProvider({
       name: 'credentials',
       credentials: {},
 
+      // Function to authorize users based on credentials
       async authorize(credentials: any) {
         const { email, password } = credentials;
         try {
@@ -24,24 +24,28 @@ export const authOptions = {
           }
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
-
           if (passwordsMatch) return user;
           else return null;
+
         } catch (error) {
-          console.log('Error: ', error);
+          console.error('Error: ', error);
           return null;
         }
       },
     }),
   ],
   callbacks: {
+    // Callback to handle JWT token
     jwt: async ({ token, user, session, trigger }: any) => {
+      // Update token with session name if triggered by 'update'
       if (trigger === 'update' && session?.name) {
         token.name = session.name;
       }
+      // Update token with session image if triggered by 'update'
       if (trigger === 'update' && session?.image) {
         token.image = session.image;
       }
+      // If user is present, update token with user details
       if (user) {
         token.uid = user.id;
         token.image = user.image || '';
@@ -50,7 +54,9 @@ export const authOptions = {
       return token;
     },
 
+    // Callback to handle session
     session: async ({ session, token }: any) => {
+      // Update session with token details
       if (session?.user) {
         session.user.id = token.sub;
         session.user.image = token.image || '';
@@ -60,15 +66,17 @@ export const authOptions = {
     },
   },
   session: {
-    strategy: 'jwt' as 'jwt',
+    strategy: 'jwt' as 'jwt', // Use JWT strategy for sessions
   },
 
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET, // Secret for NextAuth
   pages: {
     signIn: '/',
   },
 };
 
+// Create a NextAuth handler with the specified options
 const handler = NextAuth(authOptions);
 
+// Export the handler for GET and POST requests
 export { handler as GET, handler as POST };

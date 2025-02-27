@@ -57,10 +57,7 @@ export default async function NoteEditor({
   const session = await getServerSession(authOptions);
 
   const userId = session?.user.id || 0;
-  //Karlo: Everything is provided in this variable, you need to pass it to TipTapEditor
-  //       you also can not change the title of the note
-  //       It would also be good if you could pass the note in the parameters of this function rather than fetching the note all over again
-  const noteData: Note = await fetchNote(params.noteId, userId);
+ const noteData: Note = await fetchNote(params.noteId, userId);
 
   return (
     <NavigationGuardProvider>

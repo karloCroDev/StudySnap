@@ -7,10 +7,11 @@ import { SubjectClass } from '@/models/subject';
 import { GetSubjectByCreatorId, GetSubjectById } from '@/database/pool';
 
 //Internal functions
-import { GetImage, WriteImage } from '@/database/ImageHandler';
+import {  WriteImage } from '@/database/ImageHandler';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
+//Function gets all users subjects
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -38,6 +39,8 @@ export async function GET(req: NextRequest) {
   }
 }
 
+
+//Function creates a new subject
 export async function POST(req: NextRequest) {
   try {
     // Extract and verify the JWT
@@ -78,8 +81,7 @@ export async function POST(req: NextRequest) {
     }
 
     const subject = await GetSubjectById(id);
-    // Luka: +
-    // I need to get subjectId (and subjectName, details, image) as a response, in order to create it on client (instead of refreshing the page)
+
     return NextResponse.json(subject, {
       status: 201,
       statusText: `You have succesfully updated ${subject.name}`,
@@ -93,9 +95,10 @@ export async function POST(req: NextRequest) {
   }
 }
 
+//Function deletes subjetcs
 export async function DELETE(req: NextRequest) {
   try {
-    // Extract and verify the JWT
+
     const token = await getToken({ req, secret });
     if (!token) {
       return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
@@ -123,6 +126,8 @@ export async function DELETE(req: NextRequest) {
   }
 }
 
+
+//Function chenges subjects
 export async function PATCH(req: NextRequest) {
   try {
     // Extract and verify the JWT

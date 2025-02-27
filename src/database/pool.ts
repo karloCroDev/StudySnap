@@ -1,14 +1,15 @@
+//External libraries
 import { createPool } from 'mysql2';
-import { databaseConnectionObject } from '../../Secrets';
+//Models
 import { User } from '../models/user';
 import { Subject } from '../models/subject';
 import { Note } from '../models/note';
+//Handling of images
 import { GetImage, GetProfileImage } from './ImageHandler';
+//Object with credentials for connecting to the database
+import { databaseConnectionObject } from '../../Secrets';
 
-//Kada idem na localhost 3000 baci me na onu test stranicu
-//Need to verify token every time
-//popravi fetch koji je Karlo napravio
-//Check updating
+
 let pool = createPool(databaseConnectionObject).promise()
 
 export function getPool() {
@@ -26,10 +27,12 @@ export async function GetUserByEmail(email: string): Promise<User> {
   return result[0][0] as User;
 }
 
-export async function GetUserById(id: string): Promise<User> {
+export async function GetUserById(id: string): Promise<User | null> {
   const result: [any, any] = await getPool().query(`
         SELECT * FROM user WHERE id = "${id}" LIMIT 1
     `);
+  if (!result[0]) return null
+
   result[0][0].encoded_image = await GetImage(result[0][0].profile_picture_url);
   return result[0][0] as User;
 }

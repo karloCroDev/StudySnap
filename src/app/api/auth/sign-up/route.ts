@@ -5,6 +5,7 @@ import { IsUsernameOrEmailTaken } from '@/database/pool';
 // Models
 import  { UserClass }  from '@/models/user';
 
+//Function to create a new user
 export async function POST(req: Request) {
   try {
     const { username, email, password } = await req.json();

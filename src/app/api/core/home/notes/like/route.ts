@@ -1,14 +1,9 @@
 // External packages
 import { NextResponse, NextRequest } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 // Models
-
-
 import { LikeClass } from '@/models/like';
 
-const secret = process.env.NEXTAUTH_SECRET;
-
-//This request is responsible for liking and disliking notes
+//Function for liking and disliking the notes
 
 export async function POST(req: NextRequest) {
     try {

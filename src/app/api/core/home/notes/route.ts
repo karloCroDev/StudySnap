@@ -1,13 +1,11 @@
 // External packages
 import { NextResponse, NextRequest } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 // Models
 import { GetNoteById, GetNotesBySubjectId } from '@/database/pool';
 import { NoteClass } from '@/models/note';
 import { WriteImage } from '@/database/ImageHandler';
 
-const secret = process.env.NEXTAUTH_SECRET;
-
+//Function gets all of the notes under a subject
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -28,6 +26,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
+//Function creates a new note
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -44,6 +43,7 @@ export async function POST(req: NextRequest) {
         statusText: 'Missing required fields',
       });
     }
+
     const imagePath = await WriteImage(file);
     const id = await NoteClass.Insert(
       noteName,
@@ -76,6 +76,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
+//Function deletes note
 export async function DELETE(req: NextRequest) {
   try {
     const { noteId } = await req.json();
@@ -96,38 +97,7 @@ export async function DELETE(req: NextRequest) {
   }
 }
 
-// export async function PATCH(req: NextRequest) {
-//   try {
-//     const { noteName, details, isPublic, noteId, content } = await req.json();
-
-//     if (!noteId) {
-//       return NextResponse.json({
-//         status: 400,
-//         statusText: 'Note Id is requiered',
-//       });
-//     }
-
-//     const updates: { [key: string]: any } = {};
-//     if (noteName) updates.title = noteName;
-//     if (details) updates.details = details;
-//     if (content) updates.content = content;
-//     updates.is_Public = isPublic ? 1 : 0;
-
-//     await NoteClass.Update(noteId, updates);
-
-//     return NextResponse.json({
-//       status: 201,
-//       statusText: 'Note updated successfully',
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     return NextResponse.json({
-//       status: 500,
-//       statusText: 'Failed to update note',
-//     });
-//   }
-// }
-
+//Function updates the notes
 export async function PATCH(req: NextRequest) {
   try {
     const formData = await req.formData();

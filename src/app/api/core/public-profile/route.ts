@@ -9,21 +9,11 @@ import { UserClass } from '@/models/user';
 
 import { GetProfileImage, WriteImage } from '@/database/ImageHandler';
 
-const secret = process.env.NEXTAUTH_SECRET;
-
+// Function to handle POST requests for retrieving public profile data
 export async function POST(req: NextRequest) {
   try {
-    /*const token = await getToken({ req, secret });
-        console.log("\n\n\n I am here", token)
-    if (!token) {
-          return NextResponse.json({ status: 401 });
-        }*/
-
-    //if (!await getToken({ req, secret })) return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
-
     const { creatorId, userId } = await req.json();
 
-    // Luka: Removed userId
     if (!creatorId) {
       return NextResponse.json({
         status: 400,
@@ -47,12 +37,10 @@ export async function POST(req: NextRequest) {
   }
 }
 
+// Function to handle PATCH requests for updating user profile data
 export async function PATCH(req: NextRequest) {
   try {
-    //if (!await getToken({ req, secret })) return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
-
     const formData = await req.formData();
-
     const userId = formData.get('userId') as string;
     const username = formData.get('username') as string | null;
     const password = formData.get('password') as string | null;
@@ -78,8 +66,10 @@ export async function PATCH(req: NextRequest) {
     }
 
     await UserClass.Update(userId, updates);
+
     let pfpEncoded;
     if (file) pfpEncoded = await GetProfileImage(updates.profile_picture_url);
+
     return NextResponse.json(
       {
         pfpEncoded,
@@ -98,11 +88,11 @@ export async function PATCH(req: NextRequest) {
   }
 }
 
+// Function to handle DELETE requests for deleting a user
 export async function DELETE(req: NextRequest) {
   try {
-    //if (!await getToken({ req, secret })) return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
-
     const { userId } = await req.json();
+
     if (!userId) {
       return NextResponse.json({
         status: 400,
@@ -111,15 +101,16 @@ export async function DELETE(req: NextRequest) {
     }
 
     await UserClass.Delete(userId);
+
     return NextResponse.json({
       status: 200,
-      statusText: 'Subject deleted successfully',
+      statusText: 'User deleted successfully',
     });
   } catch (error) {
     console.error(error);
     return NextResponse.json({
       status: 500,
-      statusText: 'Failed to delete subject',
+      statusText: 'Failed to delete user',
     });
   }
 }
