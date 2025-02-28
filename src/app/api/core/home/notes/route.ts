@@ -104,7 +104,7 @@ export async function PATCH(req: NextRequest) {
 
     const noteName = formData.get('noteName') as string;
     const details = formData.get('details') as string | null;
-    const isPublic = formData.get('isPublic') as unknown as boolean;
+    const isPublic = formData.get('isPublic') as string;
     const noteId = formData.get('noteId') as string;
     const content = formData.get('content') as string;
     const image = formData.get('file');
@@ -115,14 +115,16 @@ export async function PATCH(req: NextRequest) {
         statusText: 'Note Id is requiered',
       });
     }
-
+    console.log(isPublic)
     const updates: { [key: string]: any } = {};
     if (noteName) updates.title = noteName;
     if (details) updates.details = details;
     if (content) updates.content = content;
     if (image) updates.image_url = await WriteImage(image);
-    updates.is_Public = isPublic ? 1 : 0;
+    console.log(isPublic)
+    if (isPublic != null) updates.is_Public = (isPublic === "true"? 1:0)
 
+    console.log(updates)
     await NoteClass.Update(noteId, updates);
 
     return NextResponse.json({

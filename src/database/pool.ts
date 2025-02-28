@@ -22,16 +22,16 @@ export function getPool() {
 
 export async function GetUserByEmail(email: string): Promise<User> {
   const result: [any, any] = await getPool().query(`
-        SELECT * FROM user WHERE email = "${email}" LIMIT 1
-    `);
+        SELECT * FROM user WHERE email = ? LIMIT 1
+    `,[email]);
   result[0][0].encoded_image =  await GetImage(result[0][0].profile_picture_url);
   return result[0][0] as User;
 }
 
 export async function GetUserById(id: string): Promise<User | null> {
   const result: [any, any] = await getPool().query(`
-        SELECT * FROM user WHERE id = "${id}" LIMIT 1
-    `);
+        SELECT * FROM user WHERE id = ? LIMIT 1
+    `,[id]);
   if (!result[0]) return null
 
   result[0][0].encoded_image = await GetImage(result[0][0].profile_picture_url);
@@ -43,15 +43,15 @@ export async function IsUsernameOrEmailTaken(
   email: string
 ): Promise<boolean> {
   const result: [Array<any>, any] = await getPool().query(`
-        SELECT * FROM user WHERE username = "${username}" OR email = "${email}" LIMIT 1
-    `);
+        SELECT * FROM user WHERE username = ? OR email = ? LIMIT 1
+    `,[username, email]);
   return result[0].length > 0;
 }
 
 export async function GetSubjectByCreatorId(creatorId: string): Promise<Array<Subject>> {
     const result: [any[], any] = await getPool().query(`
-        SELECT * FROM subject WHERE creator_id = ${creatorId}
-    `);
+        SELECT * FROM subject WHERE creator_id = ?
+    `,[creatorId]);
   const subjectsWithImages = await Promise.all(result[0].map(async subject => {
     const image = await GetImage(subject.image_url);
     return {
@@ -63,8 +63,8 @@ export async function GetSubjectByCreatorId(creatorId: string): Promise<Array<Su
 
 export async function GetSubjectById(id: string): Promise<Subject> {
   const result: [any, any] = await getPool().query(`
-        SELECT * FROM subject WHERE id = ${id} LIMIT 1
-    `);
+        SELECT * FROM subject WHERE id = ? LIMIT 1
+    `,[id]);
     result[0][0].encoded_image =  await GetImage(result[0][0].image_url);
     return result[0][0] as Subject;
   }
@@ -140,7 +140,7 @@ export async function GetPublicNotes(
             n.subject_id,
             n.image_url,
             COUNT(DISTINCT l.user_id) AS likes,
-            MAX(CASE WHEN l.user_id = ${userId} THEN 1 ELSE 0 END) AS liked,
+            MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked,
             u.username AS creator_name,
             u.id AS creator_id,
             u.profile_picture_url as profile_image_url
@@ -160,9 +160,9 @@ export async function GetPublicNotes(
             n.is_public,
             n.subject_id,
             u.username 
-        LIMIT ${limit}
-        OFFSET ${offset}
-    `);
+        LIMIT ?
+        OFFSET ?
+    `,[userId,limit,offset]);
     const notesWithImages = await Promise.all(result[0].map(async note => {
       const image = await GetImage(note.image_url);
       const encoded_profile_image = await GetProfileImage(note.profile_image_url)
@@ -186,7 +186,7 @@ export async function GetNoteById(note_id: string, user_id: string): Promise<Not
             n.subject_id,
             n.image_url,
             COUNT(DISTINCT l.user_id) AS likes,
-            MAX(CASE WHEN l.user_id = ${user_id} THEN 1 ELSE 0 END) AS liked,
+            MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked,
             u.username AS creator_name,
             u.id AS creator_id,
             u.profile_picture_url as profile_image_url
@@ -199,7 +199,7 @@ export async function GetNoteById(note_id: string, user_id: string): Promise<Not
             user u ON s.creator_id = u.id
         LEFT JOIN
             likes l ON n.id = l.note_id
-        WHERE n.id = ${note_id}
+        WHERE n.id = ?
         GROUP BY
             n.id,
             n.title,
@@ -207,13 +207,12 @@ export async function GetNoteById(note_id: string, user_id: string): Promise<Not
             n.is_public,
             n.subject_id,
             u.username
-    `);
+    `,[user_id,note_id]);
   result[0][0].encoded_image = await GetImage(result[0][0].image_url);
   result[0][0].encoded_profile_image = await GetProfileImage(result[0][0].profile_image_url)
   return result[0][0] as Note;
 }
 
-// Luka: fix I expanded queries to get fields I need for document (creatorId, likes, liked)
 export async function GetNoteNameById(
   note_id: string,
   current_user_id: string
@@ -224,41 +223,36 @@ export async function GetNoteNameById(
   likes: number;
   liked: boolean;
 }> {
-  const resultNote: [any, any] = await getPool().query(`
-    SELECT title, subject_id 
-    FROM note 
-    WHERE id = ${note_id}
-`);
-  const queryNote = resultNote[0][0];
-
-  const resultSubject: [any, any] = await getPool().query(`
-    SELECT name, creator
-    FROM subject 
-    WHERE id = ${queryNote.subject_id}
-`);
-  const querySubject = resultSubject[0][0];
-
-  const resultUser: [any, any] = await getPool().query(
-    `SELECT username FROM user WHERE id = ${querySubject.creator}`
-  );
-  const queryUser = resultUser[0][0];
-
-  const resultLike: [any, any] = await getPool().query(
-    `
-    SELECT COUNT(DISTINCT l.user_id) AS likes,
-    MAX(CASE WHEN l.user_id = ${current_user_id} THEN 1 ELSE 0 END) AS liked
-    FROM \`likes\` l
-    WHERE l.note_id = ${note_id}
-    `
-  );
-  const queryLike = resultLike[0][0];
-
+  const result: [any, any] = await getPool().query(`
+    SELECT
+        n.title,
+        COUNT(DISTINCT l.user_id) AS likes,
+        MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked,
+        u.username AS author,
+        u.id AS creator_id,
+    FROM
+        note n
+    JOIN
+        subject s ON n.subject_id = s.id
+    JOIN
+        user u ON s.creator_id = u.id
+    LEFT JOIN
+        likes l ON n.id = l.note_id
+    WHERE n.id = ?
+    GROUP BY
+        n.id,
+        n.title,
+        n.details,
+        n.is_public,
+        n.subject_id,
+        u.username
+`,[current_user_id,note_id]);
   return {
-    title: queryNote.title,
-    author: queryUser.username,
-    creator_id: querySubject.creator,
-    likes: queryLike.likes,
-    liked: queryLike.liked,
+    title: result[0][0].title,
+    author: result[0][0].username,
+    creator_id: result[0][0].creator,
+    likes: result[0][0].likes,
+    liked: result[0][0].liked,
   };
 }
 
@@ -278,7 +272,7 @@ export async function GetNotesByCreatorId(creator_id: string, user_id: string): 
             n.subject_id,
             n.image_url,
             COUNT(DISTINCT l.user_id) AS likes,
-            MAX(CASE WHEN l.user_id = ${user_id} THEN 1 ELSE 0 END) AS liked,
+            MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked,
             u.username AS creator_name,
             u.id AS creator_id,
             u.profile_picture_url as profile_image_url
@@ -290,7 +284,7 @@ export async function GetNotesByCreatorId(creator_id: string, user_id: string): 
             user u ON s.creator_id = u.id
         LEFT JOIN
             likes l ON n.id = l.note_id
-        WHERE u.id = ${creator_id} AND n.is_public = true
+        WHERE u.id = ? AND n.is_public = true
         GROUP BY
             n.id,
             n.title,
@@ -298,7 +292,7 @@ export async function GetNotesByCreatorId(creator_id: string, user_id: string): 
             n.is_public,
             n.subject_id,
             u.username
-    `);
+    `,[user_id,creator_id]);
     const notesWithImages = await Promise.all(result[0].map(async note => {
       const image = await GetImage(note.image_url);
       const encoded_profile_image = await GetProfileImage(note.profile_image_url)
