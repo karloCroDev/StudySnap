@@ -1,17 +1,22 @@
-//External libraries
+//External packages
 import { createPool } from 'mysql2';
+
 //Models
-import { User } from '../models/user';
-import { Subject } from '../models/subject';
-import { Note } from '../models/note';
-//Handling of images
+import { User } from '@/models/user';
+import { Subject } from '@/models/subject';
+import { Note } from '@/models/note';
+
+// Database (handling the images)
 import { GetImage, GetProfileImage } from './ImageHandler';
-//Object with credentials for connecting to the database
+
+// Lib
+import { noteCache } from '@/lib/caching';
+import { rankNotes } from '@/lib/alogirthm';
+
+// Object with credentials for connecting to the database
 import { databaseConnectionObject } from '../../Secrets';
-import {  noteCache } from '../lib/caching';
 
-
-let pool = createPool(databaseConnectionObject).promise()
+let pool = createPool(databaseConnectionObject).promise();
 
 export function getPool() {
   if (!pool) {
@@ -21,18 +26,24 @@ export function getPool() {
 }
 
 export async function GetUserByEmail(email: string): Promise<User> {
-  const result: [any, any] = await getPool().query(`
+  const result: [any, any] = await getPool().query(
+    `
         SELECT * FROM user WHERE email = ? LIMIT 1
-    `,[email]);
-  result[0][0].encoded_image =  await GetImage(result[0][0].profile_picture_url);
+    `,
+    [email]
+  );
+  result[0][0].encoded_image = await GetImage(result[0][0].profile_picture_url);
   return result[0][0] as User;
 }
 
 export async function GetUserById(id: string): Promise<User | null> {
-  const result: [any, any] = await getPool().query(`
+  const result: [any, any] = await getPool().query(
+    `
         SELECT * FROM user WHERE id = ? LIMIT 1
-    `,[id]);
-  if (!result[0]) return null
+    `,
+    [id]
+  );
+  if (!result[0]) return null;
 
   result[0][0].encoded_image = await GetImage(result[0][0].profile_picture_url);
   return result[0][0] as User;
@@ -42,41 +53,54 @@ export async function IsUsernameOrEmailTaken(
   username: string,
   email: string
 ): Promise<boolean> {
-  const result: [Array<any>, any] = await getPool().query(`
+  const result: [Array<any>, any] = await getPool().query(
+    `
         SELECT * FROM user WHERE username = ? OR email = ? LIMIT 1
-    `,[username, email]);
+    `,
+    [username, email]
+  );
   return result[0].length > 0;
 }
 
-export async function GetSubjectByCreatorId(creatorId: string): Promise<Array<Subject>> {
-    const result: [any[], any] = await getPool().query(`
+export async function GetSubjectByCreatorId(
+  creatorId: string
+): Promise<Array<Subject>> {
+  const result: [any[], any] = await getPool().query(
+    `
         SELECT * FROM subject WHERE creator_id = ?
-    `,[creatorId]);
-  const subjectsWithImages = await Promise.all(result[0].map(async subject => {
-    const image = await GetImage(subject.image_url);
-    return {
-      ...subject, "encoded_image": image
-    };
-  }));
+    `,
+    [creatorId]
+  );
+  const subjectsWithImages = await Promise.all(
+    result[0].map(async (subject) => {
+      const image = await GetImage(subject.image_url);
+      return {
+        ...subject,
+        encoded_image: image,
+      };
+    })
+  );
   return subjectsWithImages as Subject[];
 }
 
 export async function GetSubjectById(id: string): Promise<Subject> {
-  const result: [any, any] = await getPool().query(`
+  const result: [any, any] = await getPool().query(
+    `
         SELECT * FROM subject WHERE id = ? LIMIT 1
-    `,[id]);
-    result[0][0].encoded_image =  await GetImage(result[0][0].image_url);
-    return result[0][0] as Subject;
-  }
-
+    `,
+    [id]
+  );
+  result[0][0].encoded_image = await GetImage(result[0][0].image_url);
+  return result[0][0] as Subject;
+}
 
 export async function GetNotesBySubjectId(
   subject_id: string
 ): Promise<Array<Note>> {
   //Trying to find notes in cache
-  const cacheKey = `GetNotesBySubjectId_${subject_id}`
-  const cachedNotes = await noteCache.get(cacheKey)
- // if (cachedNotes){return cachedNotes as Note[]}
+  const cacheKey = `GetNotesBySubjectId_${subject_id}`;
+  const cachedNotes = await noteCache.get(cacheKey);
+  // if (cachedNotes){return cachedNotes as Note[]}
 
   const result: [any[], any] = await getPool().query(
     `
@@ -112,15 +136,21 @@ export async function GetNotesBySubjectId(
     `,
     [subject_id]
   );
-  const notesWithImages = await Promise.all(result[0].map(async note => {
-    const image = await GetImage(note.image_url);
-    const encoded_profile_image = await GetProfileImage(note.profile_image_url)
-    return {
-      ...note, "encoded_image": image, "encoded_profile_image": encoded_profile_image
-    };
-  }));
-  //Adding notes ot cache 
-  noteCache?.put(cacheKey, notesWithImages)
+  const notesWithImages = await Promise.all(
+    result[0].map(async (note) => {
+      const image = await GetImage(note.image_url);
+      const encoded_profile_image = await GetProfileImage(
+        note.profile_image_url
+      );
+      return {
+        ...note,
+        encoded_image: image,
+        encoded_profile_image: encoded_profile_image,
+      };
+    })
+  );
+  //Adding notes ot cache
+  noteCache?.put(cacheKey, notesWithImages);
 
   return notesWithImages as Note[];
 }
@@ -130,7 +160,8 @@ export async function GetPublicNotes(
   offset: number = 0,
   userId: string
 ): Promise<Array<Note>> {
-  const result: [any[], any] = await getPool().query(`
+  const result: [any[], any] = await getPool().query(
+    `
         SELECT
             n.id,
             n.title,
@@ -139,6 +170,8 @@ export async function GetPublicNotes(
             n.is_public,
             n.subject_id,
             n.image_url,
+            n.date_created,
+            n.date_modified,
             COUNT(DISTINCT l.user_id) AS likes,
             MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked,
             u.username AS creator_name,
@@ -162,21 +195,32 @@ export async function GetPublicNotes(
             u.username 
         LIMIT ?
         OFFSET ?
-    `,[userId,limit,offset]);
-    const notesWithImages = await Promise.all(result[0].map(async note => {
+    `,
+    [userId, limit, offset]
+  );
+  const notesWithImages = await Promise.all(
+    result[0].map(async (note) => {
       const image = await GetImage(note.image_url);
-      const encoded_profile_image = await GetProfileImage(note.profile_image_url)
+      const encoded_profile_image = await GetProfileImage(
+        note.profile_image_url
+      );
       return {
-        ...note, "encoded_image": image, "encoded_profile_image": encoded_profile_image
+        ...note,
+        encoded_image: image,
+        encoded_profile_image: encoded_profile_image,
       };
-    }));
-    return notesWithImages as Note[];
-  }
+    })
+  );
+  const algorithmValue = rankNotes(notesWithImages);
+  return algorithmValue;
+}
 
-
-export async function GetNoteById(note_id: string, user_id: string): Promise<Note> {
-
-    const result: [any, any] = await getPool().query(`
+export async function GetNoteById(
+  note_id: string,
+  user_id: string
+): Promise<Note> {
+  const result: [any, any] = await getPool().query(
+    `
         SELECT
             n.id,
             n.title,
@@ -207,9 +251,13 @@ export async function GetNoteById(note_id: string, user_id: string): Promise<Not
             n.is_public,
             n.subject_id,
             u.username
-    `,[user_id,note_id]);
+    `,
+    [user_id, note_id]
+  );
   result[0][0].encoded_image = await GetImage(result[0][0].image_url);
-  result[0][0].encoded_profile_image = await GetProfileImage(result[0][0].profile_image_url)
+  result[0][0].encoded_profile_image = await GetProfileImage(
+    result[0][0].profile_image_url
+  );
   return result[0][0] as Note;
 }
 
@@ -223,7 +271,8 @@ export async function GetNoteNameById(
   likes: number;
   liked: boolean;
 }> {
-  const result: [any, any] = await getPool().query(`
+  const result: [any, any] = await getPool().query(
+    `
     SELECT
         n.title,
         COUNT(DISTINCT l.user_id) AS likes,
@@ -246,7 +295,9 @@ export async function GetNoteNameById(
         n.is_public,
         n.subject_id,
         u.username
-`,[current_user_id,note_id]);
+`,
+    [current_user_id, note_id]
+  );
   return {
     title: result[0][0].title,
     author: result[0][0].username,
@@ -256,13 +307,16 @@ export async function GetNoteNameById(
   };
 }
 
-export async function GetNotesByCreatorId(creator_id: string, user_id: string): Promise<Array<Note>> {
-
-  const cacheKey = `GetNotesByCreatorId_${creator_id}_${user_id}`
-  const cachedNotes = await noteCache.get(cacheKey)
+export async function GetNotesByCreatorId(
+  creator_id: string,
+  user_id: string
+): Promise<Array<Note>> {
+  const cacheKey = `GetNotesByCreatorId_${creator_id}_${user_id}`;
+  const cachedNotes = await noteCache.get(cacheKey);
   //if (cachedNotes){return cachedNotes as Note[]}
 
-    const result: [any[], any] = await getPool().query(`
+  const result: [any[], any] = await getPool().query(
+    `
         SELECT
             n.id,
             n.title,
@@ -292,17 +346,24 @@ export async function GetNotesByCreatorId(creator_id: string, user_id: string): 
             n.is_public,
             n.subject_id,
             u.username
-    `,[user_id,creator_id]);
-    const notesWithImages = await Promise.all(result[0].map(async note => {
+    `,
+    [user_id, creator_id]
+  );
+  const notesWithImages = await Promise.all(
+    result[0].map(async (note) => {
       const image = await GetImage(note.image_url);
-      const encoded_profile_image = await GetProfileImage(note.profile_image_url)
+      const encoded_profile_image = await GetProfileImage(
+        note.profile_image_url
+      );
       return {
-        ...note, "encoded_image": image, "encoded_profile_image": encoded_profile_image
+        ...note,
+        encoded_image: image,
+        encoded_profile_image: encoded_profile_image,
       };
-    }));
+    })
+  );
 
-    noteCache?.put(cacheKey, notesWithImages)
+  noteCache?.put(cacheKey, notesWithImages);
 
-    return notesWithImages as Note[];
-  }
-
+  return notesWithImages as Note[];
+}

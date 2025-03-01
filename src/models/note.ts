@@ -8,9 +8,11 @@ export interface Note {
   content: string | null;
   is_public: boolean;
   subject_id: string;
+  date_created: Date;
+  date_modified: Date;
 
   likes: number;
-  liked: boolean;
+  liked: number;
   creator_name: string;
   creator_id: string;
 

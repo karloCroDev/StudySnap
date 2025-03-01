@@ -4,11 +4,9 @@ import { getToken } from 'next-auth/jwt';
 
 // Models
 import { GetPublicNotes } from '@/database/pool';
-import { GetImage } from '@/database/ImageHandler';
 
 //Function that gets all of the notes that are avalible to the public
 export async function POST(req: NextRequest) {
-
   try {
     const { userId } = await req.json();
 
@@ -18,7 +16,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ status: 400, statusText: 'No notes found' });
     }
     return NextResponse.json(notes, { status: 200 });
-    
   } catch (error) {
     console.error(error);
     return NextResponse.json({
