@@ -1,5 +1,5 @@
 // External packages
-import { writeFile, readFile } from 'fs/promises'; 
+import { writeFile, readFile } from 'fs/promises';
 import path from 'path';
 import sharp from 'sharp';
 
@@ -12,21 +12,20 @@ export async function WriteImage(
 
     if (image && typeof image !== 'string') {
       // Creates a buffer from the image and resizes it to 312x312 pixels
-      const buffer = await sharp(Buffer.from(await image.arrayBuffer())).resize(
-        312,
-        312
-      ).toBuffer();
+      const buffer = await sharp(Buffer.from(await image.arrayBuffer()))
+        .resize(312, 312)
+        .toBuffer();
 
       // Generates a unique filename using the current timestamp and the original image name
       const filename = Date.now() + image.name.replaceAll(' ', '_');
       // Constructs the file path where the image will be saved
-      const filePath = path.join(process.cwd(), 'src/public/uploads', filename);
+      const filePath = path.join(process.cwd(), 'public/uploads', filename);
 
       // Writes the resized image buffer to the specified file path
       await writeFile(filePath, buffer);
 
       // Stores the relative path to the image
-      imageUrl = `src/public/uploads/${filename}`;
+      imageUrl = `public/uploads/${filename}`;
       return imageUrl;
     }
     return null;

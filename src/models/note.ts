@@ -37,7 +37,7 @@ export class NoteClass {
         [title, details, is_public, subject_id, imagePath]
       );
 
-      noteCache.clear()
+      noteCache.clear();
 
       return result.insertId as string;
     } catch (err) {
@@ -51,20 +51,30 @@ export class NoteClass {
     updates: { [key: string]: any }
   ): Promise<void> {
     try {
-      let values = [];
+      let setClauses: string[] = [];
+      let values: any[] = [];
+
       for (const [key, value] of Object.entries(updates)) {
-        typeof value === 'number'
-          ? values.push(`${key} = ${value}`)
-          : values.push(`${key} = "${value}"`);
+        setClauses.push(`${key} = ?`);
+        values.push(value);
       }
-      await getPool().execute(`
-        UPDATE note
-        SET ${values.join(', ')}, date_modified = CURRENT_TIMESTAMP
-        WHERE id = ${id};
-      `);
-      noteCache.clear()
 
+      // Add timestamp update
+      setClauses.push('date_modified = CURRENT_TIMESTAMP');
 
+      // Ensure `id` is safely parameterized
+      values.push(id);
+
+      const query = `
+            UPDATE note
+            SET ${setClauses.join(', ')}
+            WHERE id = ?;
+        `;
+
+      await getPool().execute(query, values);
+
+      // Clear cache after a successful update
+      noteCache.clear();
     } catch (err) {
       console.error('Error updating note:', err);
     }
@@ -78,7 +88,7 @@ export class NoteClass {
       `,
         [id]
       );
-      noteCache.clear()
+      noteCache.clear();
     } catch (err) {
       console.error('Error deleting note:', err);
     }

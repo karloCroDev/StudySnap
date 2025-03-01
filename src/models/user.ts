@@ -15,9 +15,8 @@ export class UserClass {
   static async Insert(
     username: string,
     email: string,
-    hashedPassword: string,
-  ): Promise< string | null> {
-
+    hashedPassword: string
+  ): Promise<string | null> {
     try {
       const [result]: any = await getPool().execute(
         `
@@ -26,27 +25,35 @@ export class UserClass {
       `,
         [username, email, hashedPassword]
       );
-      return result.insertId as string
+      return result.insertId as string;
     } catch (err) {
       console.error('Error inserting document:', err);
-      return null
+      return null;
     }
   }
 
-  static async Update(id: string, updates: { [key: string]: any }): Promise<void> {
+  static async Update(
+    id: string,
+    updates: { [key: string]: any }
+  ): Promise<void> {
     try {
-      let values = [];
+      let setClauses: string[] = [];
+      let values: any[] = [];
 
       for (const [key, value] of Object.entries(updates)) {
-        typeof value === 'number' ? values.push(`${key} = ${value}`) : values.push(`${key} = "${value}"`);
+        setClauses.push(`${key} = ?`);
+        values.push(value);
       }
+      setClauses.push('date_modified = CURRENT_TIMESTAMP');
+      values.push(id);
 
-      await getPool().execute( `
-        UPDATE user
-        SET ${values.join(', ')}, date_modified = CURRENT_TIMESTAMP
-        WHERE id = ${id};
-      `);
+      const query = `
+            UPDATE user
+            SET ${setClauses.join(', ')}
+            WHERE id = ?;
+        `;
 
+      await getPool().execute(query, values);
     } catch (err) {
       console.error('Error updating user:', err);
     }

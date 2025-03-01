@@ -181,7 +181,7 @@ export const DialogImageOcr: React.FC<{
         </DropZone>
         <Button
           type="submit"
-          isDisabled={!prompt && !image}
+          isDisabled={!prompt || !image}
           iconLeft={<CameraIcon className="size-5" />}
           iconRight={loading && <Spinner />}
           className="mt-2 self-end"

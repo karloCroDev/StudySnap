@@ -43,7 +43,7 @@ export async function POST(req: Request) {
       },
     });
     const quizzData = await model.generateContent(
-      `Create me a quizz simmilar to the show who wants to be a millionaire. I will give you the context, and based on the length of the context generate me a quizz between 3 and 10 questions (question must be maxiumum one sentence, while answers need to be about one to two words, you choose the number of questions). Please recoginze the language and then give in the same language, also follow the schema you have been given. Here is the context: ${context}.`
+      `Create me a quizz simmilar to the show who wants to be a millionaire. I will give you the context, and based on the length of the context generate me a quizz between 3 and 10 questions (question must be maxiumum one sentence, while answers need to be about one to two words, you choose the number of questions). Please recoginze the language that the context is written and then based on same language return a response, also follow the schema you have been given. Here is the context: ${context}.`
     );
 
     return NextResponse.json(quizzData.response.text(), { status: 200 });

@@ -10,6 +10,7 @@ import Underline from '@tiptap/extension-underline';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import Superscript from '@tiptap/extension-superscript';
 import Subscript from '@tiptap/extension-subscript';
+import ImageResize from 'tiptap-extension-resize-image';
 
 import Image from '@tiptap/extension-image';
 import { Pencil2Icon, FileTextIcon } from '@radix-ui/react-icons';
@@ -70,6 +71,7 @@ export const TipTapEditor: React.FC<{
       Markdown,
       Subscript,
       Superscript,
+      ImageResize,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
     editable: isEditing,

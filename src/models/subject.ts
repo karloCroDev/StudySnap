@@ -1,64 +1,78 @@
 import { getPool } from '../database/pool';
 
-export interface Subject{
-    id: string,
-    name: string,
-    date_created: Date,
-    date_modified: Date,
-    details: string,
-    image_url: string | null,
-    encoded_image: string | null;
-    creator_id: string,
+export interface Subject {
+  id: string;
+  name: string;
+  date_created: Date;
+  date_modified: Date;
+  details: string;
+  image_url: string | null;
+  encoded_image: string | null;
+  creator_id: string;
 }
 
 export class SubjectClass {
-    static async Insert(name: string, details: string, creator: string, image: string | null,): Promise<string | null> {
-         try {
-            console.log(creator)
-             const [result]: any = await getPool().execute(
-                `
+  static async Insert(
+    name: string,
+    details: string,
+    creator: string,
+    image: string | null
+  ): Promise<string | null> {
+    try {
+      console.log(creator);
+      const [result]: any = await getPool().execute(
+        `
                 INSERT INTO subject ( name, details, creator_id, image_url)
                 VALUES (?, ?, ?, ?);
-                `,[name, details, creator, image]
-            );
-            return result.insertId as string
-        } catch (err) {
-            console.error('Error inserting subject:', err);
-            return null
-        }
+                `,
+        [name, details, creator, image]
+      );
+      return result.insertId as string;
+    } catch (err) {
+      console.error('Error inserting subject:', err);
+      return null;
     }
+  }
 
-    static async Update(id: string, updates: { [key: string]: any }): Promise<void> {
-        try {
-            let values = [];
+  static async Update(
+    id: string,
+    updates: { [key: string]: any }
+  ): Promise<void> {
+    try {
+      let setClauses: string[] = [];
+      let values: any[] = [];
 
-            for (const [key, value] of Object.entries(updates)) {
-                typeof value === 'number' ? values.push(`${key} = ${value}`) : values.push(`${key} = "${value}"`);
-            }
+      for (const [key, value] of Object.entries(updates)) {
+        setClauses.push(`${key} = ?`);
+        values.push(value);
+      }
 
-            await getPool().execute(`
-                UPDATE subject
-                SET ${values.join(', ')}, date_modified = CURRENT_TIMESTAMP
-                WHERE id = ${id};
-            `);
+      setClauses.push('date_modified = CURRENT_TIMESTAMP');
 
-        } catch (err) {
-            console.error('Error updating subject:', err);
-        }
+      values.push(id);
+
+      const query = `
+            UPDATE subject
+            SET ${setClauses.join(', ')}
+            WHERE id = ?;
+        `;
+
+      await getPool().execute(query, values);
+    } catch (err) {
+      console.error('Error updating subject:', err);
     }
+  }
 
-
-
-    static async Delete(id: string): Promise<void> {
-        try {
-            await getPool().execute(
-                `
+  static async Delete(id: string): Promise<void> {
+    try {
+      await getPool().execute(
+        `
         DELETE FROM subject WHERE id = ?;
       `,
-                [id]
-            );
-        } catch (err) {
-            console.error('Error deleting subject:', err);
-        }
+        [id]
+      );
+    } catch (err) {
+      console.error('Error deleting subject:', err);
     }
+  }
 }

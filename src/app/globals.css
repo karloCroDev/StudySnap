@@ -453,7 +453,7 @@
 }
 
 .text-editor img {
-  @apply !rounded-2xl;
+  @apply rounded-lg object-cover;
 }
 .is-given-option-active {
   @apply snap-start rounded bg-gray-200 p-1.5;
