@@ -367,3 +367,64 @@ export async function GetNotesByCreatorId(
 
   return notesWithImages as Note[];
 }
+
+
+export async function GetLikedNotes(
+  user_id: string,
+): Promise<Array<Note>> {
+  const cacheKey = `GetLikedNotes_${user_id}`;
+  const cachedNotes = await noteCache.get(cacheKey);
+  //if (cachedNotes){return cachedNotes as Note[]}
+
+  const result: [any[], any] = await getPool().query(
+    `
+        SELECT
+            n.id,
+            n.title,
+            n.details,
+            n.content,
+            n.is_public,
+            n.subject_id,
+            n.image_url,
+            COUNT(DISTINCT l.user_id) AS likes,
+            1 AS liked,
+            u.username AS creator_name,
+            u.id AS creator_id,
+            u.profile_picture_url as profile_image_url
+        FROM
+            note n
+        JOIN
+            subject s ON n.subject_id = s.id
+        JOIN
+            user u ON s.creator_id = u.id
+        LEFT JOIN
+            likes l ON n.id = l.note_id
+        WHERE l.user_id = u.id
+        GROUP BY
+            n.id,
+            n.title,
+            n.details,
+            n.is_public,
+            n.subject_id,
+            u.username
+    `,
+    [user_id]
+  );
+  const notesWithImages = await Promise.all(
+    result[0].map(async (note) => {
+      const image = await GetImage(note.image_url);
+      const encoded_profile_image = await GetProfileImage(
+        note.profile_image_url
+      );
+      return {
+        ...note,
+        encoded_image: image,
+        encoded_profile_image: encoded_profile_image,
+      };
+    })
+  );
+
+  noteCache?.put(cacheKey, notesWithImages);
+
+  return notesWithImages as Note[];
+}
