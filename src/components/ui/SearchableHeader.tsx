@@ -26,14 +26,14 @@ export const SearchableHeader: React.FC<{
     setSearch('');
   }, []);
 
-  // Mobile only
+  // Mobile only animations and access to search
   const toggleSearch = () => {
     const searchElement = infoHeader.current;
 
     if (searchElement) {
       const currentValue = searchElement.getAttribute('data-search-visible');
       const newValue = currentValue === 'true' ? 'false' : 'true';
-      searchElement.setAttribute('data-search-visible', newValue); //note: Nisam htio toggleati attribute zbog konflikta pocetnih animacija koje ne bi trebale biti!
+      searchElement.setAttribute('data-search-visible', newValue);
     }
   };
   return (

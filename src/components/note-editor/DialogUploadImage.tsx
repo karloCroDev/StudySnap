@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Spinner } from '@/components/ui/Spinner';
 
+// Dialog for uploading image to document, or putting the url!
 export const DialogUploadImage: React.FC<{
   children: React.ReactNode;
   editor: EditorType;

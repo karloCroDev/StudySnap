@@ -1,4 +1,5 @@
-import { getPool } from '../database/pool';
+// Database
+import { getPool } from '@/database/pool';
 
 export interface User {
   id: string;
@@ -37,6 +38,7 @@ export class UserClass {
     updates: { [key: string]: any }
   ): Promise<void> {
     try {
+      // Updating DB using paramters
       let setClauses: string[] = [];
       let values: any[] = [];
 

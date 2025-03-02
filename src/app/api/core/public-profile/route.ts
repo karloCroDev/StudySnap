@@ -104,7 +104,7 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json({
       status: 200,
-      statusText: 'User deleted successfully',
+      statusText: 'You have succesfully deleted your profile',
     });
   } catch (error) {
     console.error(error);

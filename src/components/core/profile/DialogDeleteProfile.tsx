@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/Button';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
+// Confirmation dialog for deleting the profile
 export const DialogDeleteProfile = () => {
   const user = useSession();
 
@@ -39,7 +40,7 @@ export const DialogDeleteProfile = () => {
       if (!response.ok) {
         toast({
           title: 'Uhoh',
-          content: 'Please login again, and then try to delete profile',
+          content: data.statusText,
           variant: 'error',
         });
         return;
@@ -49,7 +50,7 @@ export const DialogDeleteProfile = () => {
       router.push('/login');
       toast({
         title: 'Profile deleted',
-        content: 'You have succesfully deleted your profile',
+        content: data.statusText,
         variant: 'success',
       });
     } catch (error) {

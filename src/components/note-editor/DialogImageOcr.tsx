@@ -27,6 +27,7 @@ import { Button } from '@/components/ui/Button';
 import { useToastStore } from '@/store/useToastStore';
 import { Spinner } from '@/components/ui/Spinner';
 
+// Dialog for asking AI information about the image, and also ability to deteect text from image and then analyse it
 export const DialogImageOcr: React.FC<{
   editor: EditorType;
 }> = ({ editor }) => {

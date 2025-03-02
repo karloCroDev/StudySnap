@@ -23,6 +23,7 @@ import { useGeneralInfo } from '@/store/useGeneralInfo';
 // Models (types)
 import { Note } from '@/models/note';
 
+// Dialog that activates after pressing the Create new Toast card. Enables user to create their new subject note inside the suvbject
 export const DialogCreate: React.FC<{
   children: React.ReactNode;
   subjectId: string;

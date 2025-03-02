@@ -36,6 +36,7 @@ export default async function Notes({
 }) {
   const { subjectId } = params;
   const session = await getServerSession(authOptions);
+  // Restricted access to only users that are already logged in!
   if (!session) {
     redirect('/login');
   }

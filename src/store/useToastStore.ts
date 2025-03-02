@@ -9,6 +9,8 @@ interface ToastStoreProps {
   variant: 'success' | 'error' | 'information';
 }
 
+// Created our custom Toast library using Radix toast. Toast component is being called in the root of the application (like other libraries implemented it), and to call it I need to set up state managment
+
 export const useToastStore = create<
   ToastStoreProps & {
     setToast: ({
@@ -36,5 +38,3 @@ export const useToastStore = create<
       variant,
     }),
 }));
-
-// note: I can't use radix props, because I want to create toast component in the root of an application (like how other lbaries implmented). Props were meant for creating a toast in certain component, since a lot of components will use toast component this approach with global state managment in my opinion seems

@@ -8,6 +8,7 @@ export default async function AuthLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Not allowing the user to register again if he is already logged in
   const session = await getServerSession(authOptions);
   if (session) {
     redirect('/home/subjects');

@@ -39,6 +39,7 @@ import { DialogUploadImage } from '@/components/note-editor/DialogUploadImage';
 // Libs
 import { plus_jakarta_sans } from '@/lib/fonts';
 
+// Header that has duty to edit text to the page
 export const HeaderEditText: React.FC<{
   editor: EditorType;
   title: string;

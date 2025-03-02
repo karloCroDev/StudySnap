@@ -42,7 +42,7 @@ export default async function Subjects() {
   if (!session) {
     redirect('/login');
   }
-  const subjects = await getSubjects(session);
+  const subjects: Subject[] = await getSubjects(session);
 
   return (
     <>

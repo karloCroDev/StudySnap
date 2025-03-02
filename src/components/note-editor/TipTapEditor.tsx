@@ -28,7 +28,6 @@ import { useToastStore } from '@/store/useToastStore';
 import { ActionBar } from './ActionBar';
 import { useNavigationGuard } from 'next-navigation-guard';
 
-// Fix types since they are integers
 export const TipTapEditor: React.FC<{
   title: string;
   content: string | null;
@@ -36,7 +35,7 @@ export const TipTapEditor: React.FC<{
   creatorId: string;
   noteId: string;
   documentId: string;
-  isLiked: boolean;
+  isLiked: number; // Boolean from db is represented in 0 or 1
   likeCount: number;
 }> = ({
   title,
@@ -101,7 +100,8 @@ export const TipTapEditor: React.FC<{
       setCompletionLoading(false);
     }
   };
-  // Autocompletion
+
+  // Autocompletion AI feature
   React.useEffect(() => {
     const handleKeyDown = async (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key === '/') {
@@ -167,7 +167,7 @@ export const TipTapEditor: React.FC<{
     }
   };
 
-  // Protection from not saving the note
+  // Protection from not saving the note, only active when editor is setted to true
   const navGuard = useNavigationGuard({
     enabled: isEditing,
     confirm: () =>

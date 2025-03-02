@@ -49,7 +49,7 @@ export default async function PublicProfile({
 }) {
   const creatorId = params.userId;
   const session = await getServerSession(authOptions);
-  const userId = session?.user.id || 0; // Assuming the token is stored in the session
+  const userId = session?.user.id || null;
 
   const [notes, user] = await getPublicProfileNotes(creatorId, userId);
   return (

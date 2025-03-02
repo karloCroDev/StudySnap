@@ -57,9 +57,12 @@ export default async function NoteEditor({
   const session = await getServerSession(authOptions);
 
   const userId = session?.user.id || 0;
- const noteData: Note = await fetchNote(params.noteId, userId);
+  const noteData: Note = await fetchNote(params.noteId, userId);
 
   return (
+    /* To optimize document fetching during editing, we created a      separate page with the same header.
+     This reduces fetches to just one instead of using debounce/throttle.
+     We used a navigation guard to alert users if they try to leave editing mode without saving,warning that unsaved changes won’t be restored if they close the tab, browser, or try to navigate away to other page inside the app. */
     <NavigationGuardProvider>
       <Header />
       <Layout className="mt-[104px] 2xl:mt-[128px]">

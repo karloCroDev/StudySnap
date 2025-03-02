@@ -19,6 +19,7 @@ import { Button } from '@/components/ui/Button';
 import { useToastStore } from '@/store/useToastStore';
 import { Spinner } from '@/components/ui/Spinner';
 
+// Dialog to ask AI information about document!
 export const DialogAskAI: React.FC<{
   editor: EditorType;
 }> = ({ editor }) => {

@@ -21,7 +21,7 @@ import { useToastStore } from '@/store/useToastStore';
 
 export const ActionBar: React.FC<{
   noteId: string;
-  isLiked: boolean;
+  isLiked: number; // Boolean from db is represented in 0 or 1
   likeCount: number;
   isEditing: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
@@ -50,7 +50,7 @@ export const ActionBar: React.FC<{
           <LikeComponent
             noteId={noteId}
             numberOfLikes={likeCount}
-            hasBeenLiked={isLiked}
+            hasBeenLiked={Boolean(isLiked)}
             size="lg"
           />
           {allowEditing && (

@@ -14,6 +14,7 @@ import { Spinner } from '@/components/ui/Spinner';
 import { useToastStore } from '@/store/useToastStore';
 import { useGeneralInfo } from '@/store/useGeneralInfo';
 
+// Confirmation dialog for removing a note
 export const DialogDelete: React.FC<{
   children: React.ReactNode;
   noteName: string;

@@ -19,9 +19,11 @@ import { Spinner } from '@/components/ui/Spinner';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
+// Dialog that changes details for each individual note card on frontend
 export const DialogChangeDetails: React.FC<{
   children: React.ReactNode;
   noteId: string;
+  // These are props that are needed in order to update the Note card on frontend
   noteName: string;
   setNoteName: React.Dispatch<React.SetStateAction<string>>;
   noteDetails: string;

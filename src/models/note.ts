@@ -1,4 +1,7 @@
-import { getPool } from '../database/pool';
+// Database
+import { getPool } from '@/database/pool';
+
+// Lib
 import { noteCache } from '@/lib/caching';
 
 export interface Note {
@@ -53,6 +56,7 @@ export class NoteClass {
     updates: { [key: string]: any }
   ): Promise<void> {
     try {
+      // Updating DB using paramters
       let setClauses: string[] = [];
       let values: any[] = [];
 

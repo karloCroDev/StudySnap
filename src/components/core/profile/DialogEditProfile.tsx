@@ -16,6 +16,7 @@ import { Spinner } from '@/components/ui/Spinner';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
+// Edit dialog for users profile
 export const DialogEditProfile: React.FC<{
   setIsDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   children: React.ReactNode;

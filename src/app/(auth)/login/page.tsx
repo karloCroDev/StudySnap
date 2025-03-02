@@ -8,6 +8,7 @@ import { Logo } from '@/components/ui/Logo';
 import { Layout, LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { LoginForm } from '@/components/auth/login/LoginForm';
 
+// Metadata
 export const metadata: Metadata = {
   title: 'Log in',
   description:
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
       'Quick, log in to StudySnap! The faster you fill up, the closer you will be to a revolutionary way of handling studies',
     siteName: 'StudySnap',
     images: {
-      url: '/images/FaviconLogo.png',
+      url: '/images/favicon-logo.png',
     },
   },
 };
@@ -53,7 +54,6 @@ export default function Login() {
             </p>
           </div>
         </LayoutColumn>
-        {/* note: Hacky way of doing this, but want to pursue the layout in the app */}
         <div className="absolute bottom-0 right-0 hidden h-screen w-1/2 lg:block">
           <Image
             src="/images/login-image.png"

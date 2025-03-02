@@ -7,6 +7,7 @@ import { Button as ReactAriaButton } from 'react-aria-components';
 import { twJoin } from 'tailwind-merge';
 import { useSession } from 'next-auth/react';
 
+// Store
 import { useToastStore } from '@/store/useToastStore';
 
 export const LikeComponent: React.FC<{

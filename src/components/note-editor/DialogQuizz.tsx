@@ -22,6 +22,7 @@ export const DialogQuizz: React.FC<{
 
   const [isOpen, setIsOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  // Handling the activation of creating a quizz when user enters the dialog, and not creating a new one, if he tries again to Quizz himself!
   const [hasBeenActivated, setHasBeenActivated] = React.useState(false);
   const [quizzData, setQuizzData] = React.useState<
     {
@@ -90,7 +91,6 @@ export const DialogQuizz: React.FC<{
               Quizz yourself
             </Button>
           </>
-          // Some problems when passing buttons from react aria components (mobile devices) --> (so need to do this with onPressStart )
         ),
       }}
     >

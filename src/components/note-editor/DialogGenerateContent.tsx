@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/Button';
 import { useToastStore } from '@/store/useToastStore';
 import { Spinner } from '@/components/ui/Spinner';
 
+// Dialog that adapts the text based on users input
 export const DialogGenerateContent: React.FC<{
   editor: EditorType;
 }> = ({ editor }) => {

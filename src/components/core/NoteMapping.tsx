@@ -2,7 +2,6 @@
 
 // External packages
 import * as React from 'react';
-import Image from 'next/image';
 import { useShallow } from 'zustand/shallow';
 
 // Components
@@ -15,6 +14,7 @@ import { useGeneralInfo } from '@/store/useGeneralInfo';
 // Models (types)
 import { Note } from '@/models/note';
 
+// Component that is responsible for mapping and searching all the notes
 export const NoteMapping: React.FC<{
   notesData: Note[];
 }> = ({ notesData }) => {

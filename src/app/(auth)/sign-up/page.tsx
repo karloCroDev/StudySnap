@@ -8,6 +8,7 @@ import { Logo } from '@/components/ui/Logo';
 import { Layout, LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { SignupForm } from '@/components/auth/sign-up/SignupForm';
 
+// Metadata
 export const metadata: Metadata = {
   title: 'Sign up',
   description:
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
       'Welcome to StudySnap! The faster you fill up, the closer you will be to a revolutionary way of handling studies',
     siteName: 'StudySnap',
     images: {
-      url: '/images/FaviconLogo.png',
+      url: '/images/favicon-logo.png',
     },
   },
 };

@@ -1,4 +1,5 @@
-import { getPool } from '../database/pool';
+// Database
+import { getPool } from '@/database/pool';
 
 export interface Subject {
   id: string;
@@ -39,6 +40,7 @@ export class SubjectClass {
     updates: { [key: string]: any }
   ): Promise<void> {
     try {
+      // Updating DB using paramters
       let setClauses: string[] = [];
       let values: any[] = [];
 

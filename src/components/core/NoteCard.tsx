@@ -13,7 +13,6 @@ import { DialogDelete } from '@/components/core/note/DialogDelete';
 import { Avatar } from '@/components/ui/Avatar';
 import { LikeComponent } from '@/components/ui/LikeComponent';
 import { Pencil1Icon, TrashIcon } from '@radix-ui/react-icons';
-// Karlo : Make sure that Notes types are here, fix this if we have time
 
 export const NoteCard: React.FC<{
   noteId: string;
@@ -24,7 +23,7 @@ export const NoteCard: React.FC<{
   encodedImage?: string | null;
   encodedUserImage?: string;
   numberOfLikes: number;
-  liked: boolean;
+  liked: number;
   creatorId: string;
 }> = ({
   noteId,
@@ -96,7 +95,7 @@ export const NoteCard: React.FC<{
           </div>
 
           <LikeComponent
-            hasBeenLiked={liked}
+            hasBeenLiked={Boolean(liked)}
             isOrderReversed
             numberOfLikes={numberOfLikes}
             noteId={noteId}

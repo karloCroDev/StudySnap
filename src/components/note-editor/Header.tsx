@@ -11,6 +11,7 @@ import { HeaderEditText } from '@/components/note-editor/HeaderEditText';
 // Libs
 import { plus_jakarta_sans } from '@/lib/fonts';
 
+// Header for showing who is author and title of document
 export const Header: React.FC<{
   isEditing: boolean;
   editor: EditorType;

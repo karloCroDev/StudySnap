@@ -12,6 +12,8 @@ import { Spinner } from '@/components/ui/Spinner';
 import { useToastStore } from '@/store/useToastStore';
 import { useGeneralInfo } from '@/store/useGeneralInfo';
 
+// Confirmation dialog for removing a subject
+
 export const DialogDelete: React.FC<{
   name: string;
   id: string;

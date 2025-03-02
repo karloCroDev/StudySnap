@@ -16,6 +16,7 @@ import ImageExample from '@/public/images/login-image.png';
 // Models (types)
 import { Subject } from '@/models/subject';
 
+// Component that is responsible for mapping and searching all the subjects
 export const SubjectMapping: React.FC<{
   subjectsData: Subject[];
 }> = ({ subjectsData }) => {
