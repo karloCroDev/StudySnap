@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     description: 'Lets see contributions from your colleauges and friends 🕵️',
     siteName: 'StudySnap',
     images: {
-      url: '/images/FaviconLogo.png',
+      url: '/images/favicon-logo.png',
     },
   },
 };

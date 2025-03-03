@@ -6,13 +6,13 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { twJoin } from 'tailwind-merge';
 import Image from 'next/image';
+import { Pencil1Icon, TrashIcon } from '@radix-ui/react-icons';
 
 // Components
 import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';
 import { DialogDelete } from '@/components/core/note/DialogDelete';
 import { Avatar } from '@/components/ui/Avatar';
 import { LikeComponent } from '@/components/ui/LikeComponent';
-import { Pencil1Icon, TrashIcon } from '@radix-ui/react-icons';
 
 // Note card that links to desired document
 export const NoteCard: React.FC<{

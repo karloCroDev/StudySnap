@@ -9,7 +9,7 @@ import {
   Input,
   TextField,
 } from 'react-aria-components';
-import { Editor as EditorType } from '@tiptap/react';
+import { type Editor as EditorType } from '@tiptap/react';
 import { QuestionMarkCircledIcon, PaperPlaneIcon } from '@radix-ui/react-icons';
 import ReactMarkdown from 'react-markdown';
 
@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/Button';
 import { useToastStore } from '@/store/useToastStore';
 import { Spinner } from '@/components/ui/Spinner';
 
-// Dialog to ask AI information about document!
+// Dialog to ask AI information about document, chat with AI
 export const DialogAskAI: React.FC<{
   editor: EditorType;
 }> = ({ editor }) => {
@@ -102,7 +102,6 @@ export const DialogAskAI: React.FC<{
               iconLeft={<QuestionMarkCircledIcon className="size-5" />}
               iconRight={loading && <Spinner />}
               onPress={() => setIsOpen(true)}
-              // onPressStart={() => setIsOpen(true)}
             >
               Ask AI
             </Button>

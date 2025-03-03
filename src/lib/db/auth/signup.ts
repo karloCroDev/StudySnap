@@ -1,4 +1,4 @@
-// Connection
+// Lib
 import { getPool } from '@/lib/db/db';
 
 export async function IsUsernameOrEmailTaken(

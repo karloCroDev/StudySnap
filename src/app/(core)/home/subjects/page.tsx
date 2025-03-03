@@ -11,7 +11,7 @@ import { CreateSubjectCard } from '@/components/core/subjects/CreateSubjectCard'
 import { SubjectMapping } from '@/components/core/subjects/SubjectMapping';
 
 // Models (types)
-import { Subject } from '@/models/subject';
+import { type Subject } from '@/models/subject';
 
 // Metadata
 export const metadata: Metadata = {

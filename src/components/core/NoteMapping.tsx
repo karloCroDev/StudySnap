@@ -12,7 +12,7 @@ import { NoteCard } from '@/components/core/NoteCard';
 import { useGeneralInfo } from '@/store/useGeneralInfo';
 
 // Models (types)
-import { Note } from '@/models/note';
+import { type Note } from '@/models/note';
 
 // Component that is responsible for mapping and searching all the notes
 export const NoteMapping: React.FC<{

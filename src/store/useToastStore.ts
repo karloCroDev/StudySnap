@@ -9,8 +9,7 @@ interface ToastStoreProps {
   variant: 'success' | 'error' | 'information';
 }
 
-// Created our custom Toast library using Radix toast. Toast component is being called in the root of the application (like other libraries implemented it), and to call it I need to set up state managment
-
+// Created our custom Toast library using Radix toast. Toast component is being called in the root of the application (like other libraries implemented it), and to call it I need to set up state managment (this file)
 export const useToastStore = create<
   ToastStoreProps & {
     setToast: ({

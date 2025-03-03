@@ -7,6 +7,7 @@ import { Note } from '@/models/note';
 // Database (handling the images)
 import { GetImage, GetProfileImage } from '@/lib/db/imageHandler';
 
+// Gets data for document
 export async function GetNoteById(
   note_id: string,
   user_id: string

@@ -4,16 +4,18 @@
 import * as React from 'react';
 import { TextField, FieldError, TextArea } from 'react-aria-components';
 import { Form } from 'react-aria-components';
-import { Editor as EditorType } from '@tiptap/react';
+import { type Editor as EditorType } from '@tiptap/react';
 import { MagicWandIcon } from '@radix-ui/react-icons';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
-import { useToastStore } from '@/store/useToastStore';
 import { Spinner } from '@/components/ui/Spinner';
 
-// Dialog that adapts the text based on users input
+// Store
+import { useToastStore } from '@/store/useToastStore';
+
+// Dialog that adapts the text based on users input using AI
 export const DialogGenerateContent: React.FC<{
   editor: EditorType;
 }> = ({ editor }) => {
@@ -73,7 +75,6 @@ export const DialogGenerateContent: React.FC<{
               rounded="full"
               iconLeft={<MagicWandIcon className="size-5" />}
               className="min-w-fit"
-              // onPressStart={() => setIsOpen(true)}
               onPress={() => setIsOpen(true)}
             >
               Generate content
@@ -86,6 +87,7 @@ export const DialogGenerateContent: React.FC<{
       <Form className="flex flex-col" onSubmit={(e) => generateText(e)}>
         <TextField
           isRequired
+          minLength={5}
           className="outline-none"
           onChange={(val) => setPrompt(val.toString())}
         >
@@ -97,6 +99,7 @@ export const DialogGenerateContent: React.FC<{
         </TextField>
         <Button
           type="submit"
+          isDisabled={!prompt}
           iconLeft={<MagicWandIcon className="size-5" />}
           iconRight={loading && <Spinner />}
           className="mt-2 self-end"

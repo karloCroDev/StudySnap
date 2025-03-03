@@ -23,7 +23,7 @@ import { useToastStore } from '@/store/useToastStore';
 export const DialogChangeDetails: React.FC<{
   children: React.ReactNode;
   noteId: string;
-  // These are props that are needed in order to update the Note card on frontend
+  // These are props (from note card) that are needed in order to update the Note card on frontend, and to display current details (title, desc...) in input fields etc.
   noteName: string;
   setNoteName: React.Dispatch<React.SetStateAction<string>>;
   noteDetails: string;

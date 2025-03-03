@@ -2,7 +2,7 @@
 
 // External packagess
 import * as React from 'react';
-import { Editor as EditorType } from '@tiptap/react';
+import { type Editor as EditorType } from '@tiptap/react';
 import { useSession } from 'next-auth/react';
 
 import { Pencil2Icon, FileTextIcon } from '@radix-ui/react-icons';
@@ -19,9 +19,10 @@ import { DialogAskAI } from '@/components/note-editor/DialogAskAI';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
+// Footer of the document for features, especially on mobile
 export const ActionBar: React.FC<{
   noteId: string;
-  isLiked: number; // Boolean from db is represented in 0 or 1
+  isLiked: number;
   likeCount: number;
   isEditing: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;

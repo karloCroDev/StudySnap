@@ -1,6 +1,6 @@
 // Lib
 import { getPool } from '@/lib/db/db';
-import { noteCache } from '@/lib/db/caching';
+import { noteCache } from '@/lib/db/algorithms/caching';
 
 //Models
 import { Note } from '@/models/note';
@@ -9,8 +9,9 @@ import { Note } from '@/models/note';
 import { GetImage, GetProfileImage } from '@/lib/db/imageHandler';
 
 //Models
-import { User } from '@/models/user';
+import { type User } from '@/models/user';
 
+// Gets all notes from creator
 export async function GetNotesByCreatorId(
   creator_id: string,
   user_id: string
@@ -72,6 +73,7 @@ export async function GetNotesByCreatorId(
   return notesWithImages as Note[];
 }
 
+// Gets data for wanted user by using the id
 export async function GetUserById(id: string): Promise<User | null> {
   const result: [any, any] = await getPool().query(
     `
@@ -85,6 +87,7 @@ export async function GetUserById(id: string): Promise<User | null> {
   return result[0][0] as User;
 }
 
+// Retrieve all notes that a user has liked, but only if they are currently public. If a note was previously public but has since been made private, it's no longer be included
 export async function GetLikedNotes(user_id: string): Promise<Array<Note>> {
   const cacheKey = `GetLikedNotes_${user_id}`;
   const cachedNotes = await noteCache.get(cacheKey);

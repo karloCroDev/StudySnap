@@ -2,7 +2,7 @@
 
 // Eternal packagess
 import * as React from 'react';
-import { Editor as EditorType } from '@tiptap/react';
+import { type Editor as EditorType } from '@tiptap/react';
 import { twJoin } from 'tailwind-merge';
 
 // Components
@@ -11,7 +11,7 @@ import { HeaderEditText } from '@/components/note-editor/HeaderEditText';
 // Libs
 import { plus_jakarta_sans } from '@/lib/fonts';
 
-// Header for showing who is author and title of document
+// Header for showing who is author and title of document (viewing mode of document - not header from core layout!)
 export const Header: React.FC<{
   isEditing: boolean;
   editor: EditorType;

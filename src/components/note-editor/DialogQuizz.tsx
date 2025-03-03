@@ -2,7 +2,7 @@
 
 // External packages
 import * as React from 'react';
-import { Editor as EditorType } from '@tiptap/react';
+import { type Editor as EditorType } from '@tiptap/react';
 import { Button as ReactAriaButton } from 'react-aria-components';
 import { CheckCircledIcon, MagicWandIcon } from '@radix-ui/react-icons';
 
@@ -22,7 +22,8 @@ export const DialogQuizz: React.FC<{
 
   const [isOpen, setIsOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-  // Handling the activation of creating a quizz when user enters the dialog, and not creating a new one, if he tries again to Quizz himself!
+
+  // Handling the activation of creating a quizz when user enters the dialog, creating only one, if he tries again Quizz himself!
   const [hasBeenActivated, setHasBeenActivated] = React.useState(false);
   const [quizzData, setQuizzData] = React.useState<
     {

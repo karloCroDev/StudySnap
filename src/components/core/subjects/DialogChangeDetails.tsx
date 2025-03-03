@@ -16,6 +16,7 @@ import { useToastStore } from '@/store/useToastStore';
 export const DialogChangeDetails: React.FC<{
   id: string;
   children: React.ReactNode;
+  // These are props (from subject card) that are needed in order to update the Subject card on frontend, and to display current details (title, desc...) etc.
   cardTitle: string;
   setCardTitle: React.Dispatch<React.SetStateAction<string>>;
   cardDescription: string;

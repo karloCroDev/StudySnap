@@ -132,7 +132,7 @@ export const TipTapEditor: React.FC<{
     try {
       setLoadingSaveDocument(true);
       const formData = new FormData();
-      formData.append('content', editor!.getHTML().replace(/"/g, "'")); // Replacing this to single quotes because of overlaping link with links
+      formData.append('content', editor!.getHTML());
       formData.append('noteId', documentId);
       const response = await fetch(
         'http://localhost:3000/api/core/home/notes',
@@ -167,7 +167,7 @@ export const TipTapEditor: React.FC<{
     }
   };
 
-  // Protection from not saving the note, only active when editor is setted to true
+  // Protection from not saving the note, only active when editor is setted to true. Look in page.tsx file in note-editor/[note-id]
   const navGuard = useNavigationGuard({
     enabled: isEditing,
     confirm: () =>

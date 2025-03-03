@@ -7,14 +7,12 @@ import { useShallow } from 'zustand/shallow';
 // Components
 import { LayoutColumn } from '@/components/ui/Layout';
 import { SubjectCard } from '@/components/core/subjects/SubjectCard';
-import Image from 'next/image';
 
 // Store
 import { useGeneralInfo } from '@/store/useGeneralInfo';
-import ImageExample from '@/public/images/login-image.png';
 
 // Models (types)
-import { Subject } from '@/models/subject';
+import { type Subject } from '@/models/subject';
 
 // Component that is responsible for mapping and searching all the subjects
 export const SubjectMapping: React.FC<{

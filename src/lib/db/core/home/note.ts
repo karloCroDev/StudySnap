@@ -1,6 +1,6 @@
 // Lib
 import { getPool } from '@/lib/db/db';
-import { noteCache } from '@/lib/db/caching';
+import { noteCache } from '@/lib/db/algorithms/caching';
 
 //Models
 import { type Note } from '@/models/note';

@@ -38,7 +38,7 @@ export class UserClass {
     updates: { [key: string]: any }
   ): Promise<void> {
     try {
-      // Updating DB using paramters
+      // Updating all values in DB using paramters
       let setClauses: string[] = [];
       let values: any[] = [];
 

@@ -10,12 +10,10 @@ import {
 } from '@radix-ui/react-icons';
 import {
   Button as AriaButton,
-  Label,
   ListBox,
   ListBoxItem,
   Popover,
   Select,
-  SelectValue,
 } from 'react-aria-components';
 
 // Libs
@@ -27,7 +25,7 @@ import { Search } from '@/components/ui/Search';
 import { Button } from '@/components/ui/Button';
 
 // Models (types)
-import { Note } from '@/models/note';
+import { type Note } from '@/models/note';
 
 // Store
 import { useGeneralInfo } from '@/store/useGeneralInfo';

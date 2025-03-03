@@ -1,6 +1,6 @@
 // Lib
 import { getPool } from '@/lib/db/db';
-import { noteCache } from '@/lib/db/caching';
+import { noteCache } from '@/lib/db/algorithms/caching';
 
 export interface Note {
   id: string;
@@ -54,7 +54,7 @@ export class NoteClass {
     updates: { [key: string]: any }
   ): Promise<void> {
     try {
-      // Updating DB using paramters
+      // Updating all values in DB using paramters
       let setClauses: string[] = [];
       let values: any[] = [];
 

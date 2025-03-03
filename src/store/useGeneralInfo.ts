@@ -2,8 +2,8 @@
 import { create } from 'zustand';
 
 // Models (types)
-import { Subject } from '@/models/subject';
-import { Note } from '@/models/note';
+import { type Subject } from '@/models/subject';
+import { type Note } from '@/models/note';
 
 // General state mnangment between components, mostly used to add, delete, or update subject or note on frontend.
 export const useGeneralInfo = create<{

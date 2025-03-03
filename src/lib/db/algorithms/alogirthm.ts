@@ -1,7 +1,7 @@
 // Models
 import { type Note } from '@/models/note';
 
-// Formula ranking = sqrt(L) × 2.5 + U×5 + T*3 +R
+// Formula ranking = sqrt(L) × 2.5 + U×5 + T*3 +R (better explained in documentation)
 export const rankNotes = (notes: Note[]) => {
   return notes
     .map((note) => {

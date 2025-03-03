@@ -6,11 +6,10 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
-// import { DiscoverMapping } from '@/components/core/discover/DiscoverMapping';
 import { NoteMapping } from '@/components/core/NoteMapping';
 
 // Models (types)
-import { Note } from '@/models/note';
+import { type Note } from '@/models/note';
 
 // Metadata
 export const metadata: Metadata = {
@@ -23,7 +22,7 @@ export const metadata: Metadata = {
       'Explore the wonderlands of users notes, that will boost your studies to the sky 🚀',
     siteName: 'StudySnap',
     images: {
-      url: '/images/FaviconLogo.png',
+      url: '/images/favicon-logo.png',
     },
   },
 };

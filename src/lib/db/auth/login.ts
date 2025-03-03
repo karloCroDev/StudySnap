@@ -1,11 +1,9 @@
-// Connection
+// Lib
 import { getPool } from '@/lib/db/db';
-
-//Models
-import { User } from '@/models/user';
-
-// Database (handling the images)
 import { GetImage } from '@/lib/db/imageHandler';
+
+// Models
+import { type User } from '@/models/user';
 
 export async function GetUserByEmail(email: string): Promise<User> {
   const result: [any, any] = await getPool().query(

@@ -2,14 +2,15 @@
 import { getPool } from '@/lib/db/db';
 
 //Models
-import { Note } from '@/models/note';
+import { type Note } from '@/models/note';
 
 // Database (handling the images)
 import { GetImage, GetProfileImage } from '@/lib/db/imageHandler';
 
 // Lib (algorithm)
-import { rankNotes } from '@/lib/db/alogirthm';
+import { rankNotes } from '@/lib/db/algorithms/alogirthm';
 
+// Gets all public notes for discover section
 export async function GetPublicNotes(
   limit: number,
   offset: number = 0,

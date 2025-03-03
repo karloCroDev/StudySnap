@@ -11,9 +11,6 @@ import { TipTapEditor } from '@/components/note-editor/TipTapEditor';
 import { Header } from '@/components/ui/header/Header';
 import { Note } from '@/models/note';
 
-// Models (types)
-// import { Dokument } from '@/models/document';
-
 // Metadata
 export const metadata: Metadata = {
   title: 'Document',
@@ -25,7 +22,7 @@ export const metadata: Metadata = {
       'Learn and study faster with help of an AI only with StudySnap 🔮',
     siteName: 'StudySnap',
     images: {
-      url: '/images/FaviconLogo.png',
+      url: '/images/favicon-logo.png',
     },
   },
 };
@@ -60,9 +57,8 @@ export default async function NoteEditor({
   const noteData: Note = await fetchNote(params.noteId, userId);
 
   return (
-    /* To optimize document fetching during editing, we created a      separate page with the same header.
-     This reduces fetches to just one instead of using debounce/throttle.
-     We used a navigation guard to alert users if they try to leave editing mode without saving,warning that unsaved changes won’t be restored if they close the tab, browser, or try to navigate away to other page inside the app. */
+    /* To improve document retrieval while editing, we developed a separate page featuring the same header. This minimizes fetches to just one, instead of relying on debounce or throttle methods. We implemented a navigation guard to notify users if they attempt to leave editing mode without saving, warning them that unsaved changes will be lost if they close the tab, browser, or navigate to another page within the app. We had to cover all exists of leaving the page, which is why the header appears here as well.
+     */
     <NavigationGuardProvider>
       <Header />
       <Layout className="mt-[104px] 2xl:mt-[128px]">

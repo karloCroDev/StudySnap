@@ -8,7 +8,7 @@ import {
   Form,
   Button as AriaButton,
 } from 'react-aria-components';
-import { Editor as EditorType } from '@tiptap/react';
+import { type Editor as EditorType } from '@tiptap/react';
 import Image from 'next/image';
 import { UploadIcon, CrossCircledIcon } from '@radix-ui/react-icons';
 

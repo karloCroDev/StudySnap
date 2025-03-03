@@ -97,7 +97,7 @@ export const LoginForm = () => {
         Log in
       </Button>
       {/* 
-      Placeholdre for OAuth provider
+      Placeholdre for OAuth provider (future)
        <div className="flex items-center gap-6">
       <hr className="h-px w-full border-0 bg-gray-900" />
       <p className="text-sm font-semibold">or</p>

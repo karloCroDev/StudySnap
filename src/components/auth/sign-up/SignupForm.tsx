@@ -118,7 +118,7 @@ export const SignupForm = () => {
         Sign up
       </Button>
       {/* 
-        Placeholder for future OAuth providers 
+        Placeholder for future OAuth providers (future)
        <div className="flex items-center gap-6">
       <hr className="h-px w-full border-0 bg-gray-900" />
       <p className="text-sm font-semibold">or</p>

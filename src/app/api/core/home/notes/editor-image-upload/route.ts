@@ -4,7 +4,7 @@ import { NextResponse, NextRequest } from 'next/server';
 // Lib
 import { WriteImage } from '@/lib/db/imageHandler';
 
-//Function writes the image
+//Function that writes the image
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const image = formData.get('file');

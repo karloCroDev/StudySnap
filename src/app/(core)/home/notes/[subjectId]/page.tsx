@@ -11,7 +11,7 @@ import { CreateNoteCard } from '@/components/core/note/CreateNoteCard';
 import { NoteMapping } from '@/components/core/NoteMapping';
 
 // Models (types)
-import { Note } from '@/models/note';
+import { type Note } from '@/models/note';
 
 // Metadata
 export const metadata: Metadata = {

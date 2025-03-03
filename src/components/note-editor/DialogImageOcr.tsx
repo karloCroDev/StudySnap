@@ -12,9 +12,8 @@ import {
   Button as AriaButton,
   Form,
 } from 'react-aria-components';
-import { Editor as EditorType } from '@tiptap/react';
+import { type Editor as EditorType } from '@tiptap/react';
 import {
-  MagicWandIcon,
   CameraIcon,
   UploadIcon,
   CrossCircledIcon,
@@ -44,6 +43,7 @@ export const DialogImageOcr: React.FC<{
 
   const [loading, setLoading] = React.useState(false);
 
+  // Getting data from AI after analysis of an image
   const getNotesFromImage = async () => {
     try {
       setLoading(true);
@@ -100,7 +100,6 @@ export const DialogImageOcr: React.FC<{
               iconLeft={<CameraIcon className="size-5" />}
               iconRight={loading && <Spinner />}
               onPress={() => setIsOpen(true)}
-              // onPressStart={() => setIsOpen(true)}
             >
               Analyse Image
             </Button>
@@ -158,7 +157,7 @@ export const DialogImageOcr: React.FC<{
           )}
 
           <FileTrigger
-            acceptedFileTypes={['.jpg,', '.jpeg', '.png']} // Users can access camera snapshot or select images from their phone
+            acceptedFileTypes={['.jpg,', '.jpeg', '.png']} // Users can access camera snapshot or select images from their phone, it is already built into this component
             onSelect={(event) => {
               event && setImage(Array.from(event)[0]);
             }}
@@ -182,7 +181,7 @@ export const DialogImageOcr: React.FC<{
         </DropZone>
         <Button
           type="submit"
-          isDisabled={!prompt || !image}
+          isDisabled={!prompt || !image} // User is not able to send request if he hasn't wrote anything and hasn't created a prompt
           iconLeft={<CameraIcon className="size-5" />}
           iconRight={loading && <Spinner />}
           className="mt-2 self-end"

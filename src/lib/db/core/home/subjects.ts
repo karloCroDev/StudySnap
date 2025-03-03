@@ -7,6 +7,7 @@ import { Subject } from '@/models/subject';
 // Database (handling the images)
 import { GetImage } from '@/lib/db/imageHandler';
 
+// Gets all subjects for the current user
 export async function GetSubjectByCreatorId(
   creatorId: string
 ): Promise<Array<Subject>> {
