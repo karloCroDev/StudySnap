@@ -15,7 +15,7 @@ import { twJoin } from 'tailwind-merge';
 import { DialogDelete } from '@/components/core/subjects/DialogDelete';
 import { DialogChangeDetails } from '@/components/core/subjects/DialogChangeDetails';
 
-// Subject card that contains notes
+// Subject card that links to belonging notes
 export const SubjectCard: React.FC<{
   id: string;
   title: string;

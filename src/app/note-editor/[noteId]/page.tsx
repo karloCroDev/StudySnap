@@ -56,7 +56,7 @@ export default async function NoteEditor({
 }) {
   const session = await getServerSession(authOptions);
 
-  const userId = session?.user.id || 0;
+  const userId = session?.user.id || null;
   const noteData: Note = await fetchNote(params.noteId, userId);
 
   return (

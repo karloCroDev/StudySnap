@@ -122,18 +122,6 @@ export const Drawer = () => {
             </li>
           )}
 
-          <li>
-            <DialogEditProfile>
-              <Button
-                colorScheme="white"
-                type="submit"
-                iconLeft={<GearIcon className="size-6" />}
-                className="w-full justify-start"
-              >
-                Edit profile
-              </Button>
-            </DialogEditProfile>
-          </li>
           {!user.data?.user.id && (
             <li>
               <RadixDialog.Close asChild>

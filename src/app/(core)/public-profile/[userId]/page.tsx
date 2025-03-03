@@ -8,9 +8,7 @@ import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { Avatar } from '@/components/ui/Avatar';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { NoteMapping } from '@/components/core/NoteMapping';
-
-// Models (types)
-import { Note } from '@/models/note';
+import { SelectOption } from '@/components/core/profile/SelectOption';
 
 // Metadata
 export const metadata: Metadata = {
@@ -25,6 +23,17 @@ export const metadata: Metadata = {
     },
   },
 };
+
+async function getAllLikedUsersPosts(creatorId: string) {
+  const response = await fetch(
+    `http://localhost:3000/api/core/public-profile?creatorId=${creatorId}`
+  );
+
+  if (!response.ok) throw new Error('Error with fetching');
+
+  return await response.json();
+}
+
 async function getPublicProfileNotes(creatorId: string, userId: string) {
   const response = await fetch(
     `http://localhost:3000/api/core/public-profile`,
@@ -51,7 +60,9 @@ export default async function PublicProfile({
   const session = await getServerSession(authOptions);
   const userId = session?.user.id || null;
 
+  const likedNotes = await getAllLikedUsersPosts(creatorId);
   const [notes, user] = await getPublicProfileNotes(creatorId, userId);
+
   return (
     <>
       <div className="mb-12 animate-public-profile-initial-apperance lg:mb-16">
@@ -69,7 +80,12 @@ export default async function PublicProfile({
           {user.username}
         </h1>
       </div>
-      <SearchableHeader title="All notes" />
+      {/* <SearchableHeader title="All notes" /> */}
+      <SelectOption
+        username={user.username}
+        likedNotes={likedNotes}
+        publicNotes={notes}
+      />
       <LayoutRow className="mt-8 justify-center xl:mt-12">
         <LayoutColumn xs={11} lg={10}>
           <LayoutRow className="pr-0 sm:-mr-4">

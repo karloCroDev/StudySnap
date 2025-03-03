@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/Input';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
+// Dialog for chaging details for subjects
 export const DialogChangeDetails: React.FC<{
   id: string;
   children: React.ReactNode;

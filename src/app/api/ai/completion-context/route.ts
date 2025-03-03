@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 // Config
 import { modelFlash } from '@/lib/ai';
 
+// API that generates content based on users preferences (generate content)
 export async function POST(req: Request) {
   try {
     const { prompt, context } = await req.json();

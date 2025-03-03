@@ -14,6 +14,7 @@ import { Avatar } from '@/components/ui/Avatar';
 import { LikeComponent } from '@/components/ui/LikeComponent';
 import { Pencil1Icon, TrashIcon } from '@radix-ui/react-icons';
 
+// Note card that links to desired document
 export const NoteCard: React.FC<{
   noteId: string;
   title: string;

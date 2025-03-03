@@ -368,45 +368,42 @@ export async function GetNotesByCreatorId(
   return notesWithImages as Note[];
 }
 
-
-export async function GetLikedNotes(
-  user_id: string,
-): Promise<Array<Note>> {
+// Retrieve all notes that a user has liked, but only if they are currently public. If a note was previously public but has since been made private, it's no longer be included
+export async function GetLikedNotes(user_id: string): Promise<Array<Note>> {
   const cacheKey = `GetLikedNotes_${user_id}`;
   const cachedNotes = await noteCache.get(cacheKey);
   //if (cachedNotes){return cachedNotes as Note[]}
 
   const result: [any[], any] = await getPool().query(
     `
-        SELECT
-            n.id,
-            n.title,
-            n.details,
-            n.content,
-            n.is_public,
-            n.subject_id,
-            n.image_url,
-            COUNT(DISTINCT l.user_id) AS likes,
-            1 AS liked,
-            u.username AS creator_name,
-            u.id AS creator_id,
-            u.profile_picture_url as profile_image_url
-        FROM
-            note n
-        JOIN
-            subject s ON n.subject_id = s.id
-        JOIN
-            user u ON s.creator_id = u.id
-        LEFT JOIN
-            likes l ON n.id = l.note_id
-        WHERE l.user_id = u.id
-        GROUP BY
-            n.id,
-            n.title,
-            n.details,
-            n.is_public,
-            n.subject_id,
-            u.username
+      SELECT
+      n.id,
+      n.title,
+      n.details,
+      n.content,
+      n.is_public,
+      n.subject_id,
+      n.image_url,
+      COUNT(DISTINCT l.user_id) AS likes,
+      1 AS liked,
+      u.username AS creator_name,
+      u.id AS creator_id,
+      u.profile_picture_url as profile_image_url
+  FROM
+      note n
+  JOIN
+      subject s ON n.subject_id = s.id
+  JOIN
+      user u ON s.creator_id = u.id
+  JOIN
+      likes l ON n.id = l.note_id
+  WHERE
+      l.user_id = ?  -- MySQL placeholder
+      AND n.is_public = TRUE
+  GROUP BY
+      n.id, n.title, n.details, n.content, n.is_public, n.subject_id, n.image_url, 
+      u.username, u.id, u.profile_picture_url;
+
     `,
     [user_id]
   );

@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 // Config
 import { modelPro } from '@/lib/ai';
 
+// API that analyses the image and can understand text.Also user gives him his own parameters on how he wants things to be done (Analyse image)
 export async function POST(req: Request) {
   try {
     const data = await req.formData();

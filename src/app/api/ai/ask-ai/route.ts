@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 // Config
 import { modelFlash } from '@/lib/ai';
 
+// API that returns data based on users prompts (ask ai)
 export async function POST(req: Request) {
   try {
     const {

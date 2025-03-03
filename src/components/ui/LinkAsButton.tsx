@@ -2,8 +2,7 @@
 import Link, { LinkProps as LinkProps } from 'next/link';
 import { twMerge, twJoin } from 'tailwind-merge';
 
-// Explanation: Shared styles and types between LinkAsButton.tsx component and Button.tsx component
-
+// Shared styles and types between LinkAsButton.tsx component and Button.tsx component
 export interface AdditionalButtonProps {
   variant?: 'solid' | 'outline';
   colorScheme?: 'light-blue' | 'dark-blue' | 'red' | 'white' | 'black';

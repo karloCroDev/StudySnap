@@ -1,13 +1,34 @@
 // External packages
 import { NextResponse, NextRequest } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 import bcrypt from 'bcryptjs';
-import { GetNotesByCreatorId, GetUserById } from '@/database/pool';
+import {
+  GetNotesByCreatorId,
+  GetUserById,
+  GetLikedNotes,
+} from '@/database/pool';
 
 // Models
 import { UserClass } from '@/models/user';
 
 import { GetProfileImage, WriteImage } from '@/database/ImageHandler';
+
+// Function to handle all liked posts from user
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const userId = searchParams.get('creatorId');
+  if (!userId) {
+    return NextResponse.json({
+      status: 400,
+      statusText: 'Insufficient data provided',
+    });
+  }
+
+  const likedNotes = await GetLikedNotes(userId);
+  return NextResponse.json(likedNotes, {
+    status: 201,
+    statusText: 'Success',
+  });
+}
 
 // Function to handle POST requests for retrieving public profile data
 export async function POST(req: NextRequest) {

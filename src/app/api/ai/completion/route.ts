@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 // Config
 import { modelFlash } from '@/lib/ai';
 
+// API that completes the sentence when user is out of ideas (complete sentence)
 export async function POST(req: Request) {
   try {
     const { context } = await req.json();
