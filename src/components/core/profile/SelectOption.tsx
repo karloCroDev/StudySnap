@@ -83,7 +83,7 @@ export const SelectOption: React.FC<{
               {popoverTitle}
               <ChevronDownIcon className="size-6" />
             </Button>
-            <Popover className="!z-20 outline-none data-[exiting]:pointer-events-none data-[entering]:pointer-events-auto data-[entering]:animate-menu-open data-[exiting]:animate-menu-closed">
+            <Popover className="!z-20 w-full outline-none data-[exiting]:pointer-events-none data-[entering]:pointer-events-auto data-[entering]:animate-menu-open data-[exiting]:animate-menu-closed md:w-[var(--trigger-width)]">
               <ListBox className="cursor-pointer overflow-hidden rounded border border-gray-900 bg-gray-100 !outline-none">
                 <ListBoxItem
                   className={twJoin(

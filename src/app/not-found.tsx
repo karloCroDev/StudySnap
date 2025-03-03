@@ -12,7 +12,7 @@ export default function NotFound() {
         <h1 className="text-3xl font-medium text-red-400 xl:text-5xl">
           404 page - not found 😑
         </h1>
-        <Link href="/login" className="text-md">
+        <Link href="/login" className="text-md underline underline-offset-4">
           Let's get you to the log in page?
         </Link>
       </div>
