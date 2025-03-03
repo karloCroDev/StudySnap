@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
       statusText: `Failed to get note`,
     });
   }
-  const imagePath = await WriteImage(image);
+  const imagePath = await WriteImage(image, false);
   const correctedImagePath = '/' + imagePath?.split('/').slice(1).join('/');
   // const encodedImage = await GetImage(correctedImagePath);
 

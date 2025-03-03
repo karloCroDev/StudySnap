@@ -5,17 +5,23 @@ import sharp from 'sharp';
 
 // Function to write an image to the file system
 export async function WriteImage(
-  image: FormDataEntryValue | null
+  image: FormDataEntryValue | null,
+  cropImage: boolean = true
 ): Promise<string | null> {
   try {
     let imageUrl = null;
 
     if (image && typeof image !== 'string') {
       // Creates a buffer from the image and resizes it to 312x312 pixels
-      const buffer = await sharp(Buffer.from(await image.arrayBuffer()))
-        .resize(312, 312)
-        .toBuffer();
-
+      let buffer
+      if (cropImage){
+        buffer = await sharp(Buffer.from(await image.arrayBuffer()))
+          .resize(312, 312)
+          .toBuffer();
+      }
+      else{
+        buffer = Buffer.from(await image.arrayBuffer())
+      }
       // Generates a unique filename using the current timestamp and the original image name
       const filename = Date.now() + image.name.replaceAll(' ', '_');
       // Constructs the file path where the image will be saved
