@@ -1,9 +1,8 @@
 // External packages
 import { NextResponse, NextRequest } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 
-// Models
-import { GetPublicNotes } from '@/database/pool';
+// Lib
+import { GetPublicNotes } from '@/lib/db/core/discover';
 
 //Function that gets all of the notes that are avalible to the public
 export async function POST(req: NextRequest) {

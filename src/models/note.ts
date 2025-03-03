@@ -1,8 +1,6 @@
-// Database
-import { getPool } from '@/database/pool';
-
 // Lib
-import { noteCache } from '@/lib/caching';
+import { getPool } from '@/lib/db/db';
+import { noteCache } from '@/lib/db/caching';
 
 export interface Note {
   id: string;

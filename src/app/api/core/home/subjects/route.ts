@@ -2,12 +2,15 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
+// Lib
+import {
+  GetSubjectByCreatorId,
+  GetSubjectById,
+} from '@/lib/db/core/home/subjects';
+import { WriteImage } from '@/lib/db/imageHandler';
+
 // Models
 import { SubjectClass } from '@/models/subject';
-import { GetSubjectByCreatorId, GetSubjectById } from '@/database/pool';
-
-//Internal functions
-import {  WriteImage } from '@/database/ImageHandler';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
@@ -38,7 +41,6 @@ export async function GET(req: NextRequest) {
     });
   }
 }
-
 
 //Function creates a new subject
 export async function POST(req: NextRequest) {
@@ -98,7 +100,6 @@ export async function POST(req: NextRequest) {
 //Function deletes subjetcs
 export async function DELETE(req: NextRequest) {
   try {
-
     const token = await getToken({ req, secret });
     if (!token) {
       return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
@@ -125,7 +126,6 @@ export async function DELETE(req: NextRequest) {
     });
   }
 }
-
 
 //Function chenges subjects
 export async function PATCH(req: NextRequest) {

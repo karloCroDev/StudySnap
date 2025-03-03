@@ -1,8 +1,10 @@
 // External packages
 import { NextResponse, NextRequest } from 'next/server';
-import { getToken } from 'next-auth/jwt';
+
+// Lib
+import { GetNoteById } from '@/lib/db/core/home/note/noteEditor';
+
 // Models
-import { GetNoteById } from '@/database/pool';
 import { Note } from '@/models/note';
 
 //Function gets the note
@@ -11,10 +13,13 @@ export async function POST(req: NextRequest) {
     const { noteId, userId } = await req.json();
 
     if (!noteId) {
-      return NextResponse.json( { status: 400, statusText: 'Missing required fields'});
+      return NextResponse.json({
+        status: 400,
+        statusText: 'Missing required fields',
+      });
     }
 
-    const note: Note = await GetNoteById(noteId, userId)
+    const note: Note = await GetNoteById(noteId, userId);
 
     return NextResponse.json(note, {
       status: 201,
@@ -22,6 +27,9 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ status: 500, statusText: 'Failed to create note'});
+    return NextResponse.json({
+      status: 500,
+      statusText: 'Failed to create note',
+    });
   }
 }

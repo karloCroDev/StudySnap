@@ -1,5 +1,5 @@
-// Database
-import { getPool } from '@/database/pool';
+// Lib
+import { getPool } from '@/lib/db/db';
 
 export interface User {
   id: string;

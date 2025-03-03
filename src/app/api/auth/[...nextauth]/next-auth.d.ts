@@ -1,7 +1,7 @@
 // External packages
 import NextAuth from 'next-auth';
 
-// This part is for fixing the default types, when using useSession. It works without this (but ts is signalizing this without any correct reason)
+// This part is for fixing the default types, when using useSession. It works without this (but ts is signalizing error in editor)
 
 declare module 'next-auth' {
   interface Session {

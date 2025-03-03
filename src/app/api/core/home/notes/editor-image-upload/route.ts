@@ -1,8 +1,8 @@
 // Etxernal packages
 import { NextResponse, NextRequest } from 'next/server';
 
-// Models
-import { GetImage, WriteImage } from '@/database/ImageHandler';
+// Lib
+import { WriteImage } from '@/lib/db/imageHandler';
 
 //Function writes the image
 export async function POST(req: NextRequest) {

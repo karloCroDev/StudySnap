@@ -1,29 +1,41 @@
 // External packages
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { IsUsernameOrEmailTaken } from '@/database/pool';
+
+// Lib
+import { IsUsernameOrEmailTaken } from '@/lib/db/auth/signup';
+
 // Models
-import  { UserClass }  from '@/models/user';
+import { UserClass } from '@/models/user';
 
 //Function to create a new user
 export async function POST(req: Request) {
   try {
     const { username, email, password } = await req.json();
-    
+
     if (!username || !email || !password) {
-      return NextResponse.json({ status: 400, statusText: 'Insufficient data provided' });
+      return NextResponse.json({
+        status: 400,
+        statusText: 'Insufficient data provided',
+      });
     }
     if (await IsUsernameOrEmailTaken(username, email)) {
-      return NextResponse.json({ status: 400, statusText: 'Email already in use' });
+      return NextResponse.json({
+        status: 400,
+        statusText: 'Email already in use',
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await UserClass.Insert(username, email, hashedPassword)
+    await UserClass.Insert(username, email, hashedPassword);
 
     return NextResponse.json({ status: 201, statusText: 'User registred' });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ status: 500, statusText: 'Error occoured on server' });
+    return NextResponse.json({
+      status: 500,
+      statusText: 'Error occoured on server',
+    });
   }
 }

@@ -1,9 +1,12 @@
 // External packages
 import { NextResponse, NextRequest } from 'next/server';
+
+// Lib
+import { WriteImage } from '@/lib/db/imageHandler';
+import { GetNoteById, GetNotesBySubjectId } from '@/lib/db/core/home/note/note';
+
 // Models
-import { GetNoteById, GetNotesBySubjectId } from '@/database/pool';
 import { NoteClass } from '@/models/note';
-import { WriteImage } from '@/database/ImageHandler';
 
 //Function gets all of the notes under a subject
 export async function GET(req: NextRequest) {
@@ -115,16 +118,16 @@ export async function PATCH(req: NextRequest) {
         statusText: 'Note Id is requiered',
       });
     }
-    console.log(isPublic)
+    console.log(isPublic);
     const updates: { [key: string]: any } = {};
     if (noteName) updates.title = noteName;
     if (details) updates.details = details;
     if (content) updates.content = content;
     if (image) updates.image_url = await WriteImage(image);
-    console.log(isPublic)
-    if (isPublic != null) updates.is_Public = (isPublic === "true"? 1:0)
+    console.log(isPublic);
+    if (isPublic != null) updates.is_Public = isPublic === 'true' ? 1 : 0;
 
-    console.log(updates)
+    console.log(updates);
     await NoteClass.Update(noteId, updates);
 
     return NextResponse.json({

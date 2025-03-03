@@ -6,12 +6,12 @@ import { User } from '@/models/user';
 import { Subject } from '@/models/subject';
 import { Note } from '@/models/note';
 
-// Database (handling the images)
-import { GetImage, GetProfileImage } from './ImageHandler';
+// Lib
+import { GetImage, GetProfileImage } from '@/lib/db/imageHandler';
 
 // Lib
-import { noteCache } from '@/lib/caching';
-import { rankNotes } from '@/lib/alogirthm';
+import { noteCache } from '@/lib/db/caching';
+import { rankNotes } from '@/lib/db/alogirthm';
 
 // Object with credentials for connecting to the database
 import { databaseConnectionObject } from '../../Secrets';

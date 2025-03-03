@@ -2,7 +2,7 @@
 import { Note } from '@/models/note';
 
 // Database
-import { GetNoteById } from '@/database/pool';
+import { GetNoteById } from '@/lib/db/core/home/note/note';
 
 export class cache<K, V extends { id: string }> {
   //number of values which this object will store

@@ -2,7 +2,9 @@
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
-import { GetUserByEmail } from '../../../../database/pool';
+
+// Lib
+import { GetUserByEmail } from '@/lib/db/auth/login';
 
 // Configuration options for NextAuth
 export const authOptions = {
@@ -26,7 +28,6 @@ export const authOptions = {
           const passwordsMatch = await bcrypt.compare(password, user.password);
           if (passwordsMatch) return user;
           else return null;
-
         } catch (error) {
           console.error('Error: ', error);
           return null;

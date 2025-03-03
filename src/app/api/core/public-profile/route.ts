@@ -1,16 +1,17 @@
 // External packages
 import { NextResponse, NextRequest } from 'next/server';
 import bcrypt from 'bcryptjs';
+
+// Lib
 import {
   GetNotesByCreatorId,
   GetUserById,
   GetLikedNotes,
-} from '@/database/pool';
+} from '@/lib/db/core/publicProfile';
+import { GetProfileImage, WriteImage } from '@/lib/db/imageHandler';
 
 // Models
 import { UserClass } from '@/models/user';
-
-import { GetProfileImage, WriteImage } from '@/database/ImageHandler';
 
 // Function to handle all liked posts from user
 export async function GET(req: NextRequest) {
