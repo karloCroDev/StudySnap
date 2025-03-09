@@ -6,7 +6,7 @@ export class LikeClass {
     try {
       await getPool().execute(
         `
-        INSERT INTO likes (user_id, note_id)
+        INSERT INTO likes (user_id, note_id) 
         VALUES (?, ?);
       `,
         [user_id, note_id]

@@ -41,18 +41,6 @@ CREATE TABLE `note` (
   CONSTRAINT `section_subject_id_foreign` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `document` (
-  `id` INT auto_increment NOT NULL,
-  `date_created` datetime default CURRENT_TIMESTAMP not null,
-  `date_modified` datetime default NULL,
-  -- `title` varchar(255) NOT NULL, Remove this because it is using title from note, and adapting that title to document
-  `content` longtext NOT NULL,
-  `note_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `note_section_id_foreign` (`note_id`),
-  CONSTRAINT `note_section_id_foreign` FOREIGN KEY (`note_id`) REFERENCES `note` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 CREATE TABLE `likes` (
   `date_created` datetime default CURRENT_TIMESTAMP not null,
   `user_id` int NOT NULL,
