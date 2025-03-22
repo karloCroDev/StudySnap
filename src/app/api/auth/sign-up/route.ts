@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 
 // Lib
-import { IsUsernameOrEmailTaken } from '@/lib/db/auth/signup';
+import { IsUsernameOrEmailTaken } from '@/db/auth/signup';
 
 // Models
 import { UserClass } from '@/models/user';

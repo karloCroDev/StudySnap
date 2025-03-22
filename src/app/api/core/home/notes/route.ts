@@ -2,8 +2,8 @@
 import { NextResponse, NextRequest } from 'next/server';
 
 // Lib
-import { WriteImage } from '@/lib/db/imageHandler';
-import { GetNoteById, GetNotesBySubjectId } from '@/lib/db/core/home/note';
+import { WriteImage } from '@/db/imageHandler';
+import { GetNoteById, GetNotesBySubjectId } from '@/db/core/home/note';
 
 // Models
 import { NoteClass } from '@/models/note';

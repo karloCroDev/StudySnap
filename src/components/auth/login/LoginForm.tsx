@@ -3,64 +3,17 @@
 // External packages
 import * as React from 'react';
 import { Form as AriaForm } from 'react-aria-components';
-import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
 
 // Components
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Spinner } from '@/components/ui/Spinner';
 
-// Store
-import { useToastStore } from '@/store/useToastStore';
+// Hooks
+import { useLoginForm } from '@/hooks/auth/login/useLoginForm';
 
 export const LoginForm = () => {
-  const [loading, setLoading] = React.useState(false);
-
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-
-  const toast = useToastStore((state) => state.setToast);
-  const router = useRouter();
-
-  const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const response = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (!response?.ok) {
-        toast({
-          title: 'Uhoh, something went wrong',
-          content:
-            'Please make sure you have entered all the credentials correctly and try again ',
-          variant: 'error',
-        });
-        return;
-      }
-      toast({
-        title: 'Logged in',
-        content: 'You have successfully logged in 🎉',
-        variant: 'success',
-      });
-      router.replace('/home/subjects');
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: 'Uhoh, something went wrong',
-        content:
-          'Please make sure you have entered all the credentials correctly and try again ',
-        variant: 'error',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  const { setEmail, setPassword, loading, loginUser } = useLoginForm();
   return (
     <AriaForm
       className="mt-4 flex flex-col gap-y-8 md:gap-y-6 2xl:mt-8"

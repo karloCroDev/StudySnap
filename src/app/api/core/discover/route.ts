@@ -2,7 +2,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 
 // Lib
-import { GetPublicNotes } from '@/lib/db/core/discover';
+import { GetPublicNotes } from '@/db/core/discover';
 
 //Function that gets all of the notes that are avalible to the public
 export async function POST(req: NextRequest) {

@@ -1,7 +1,7 @@
 // Lib
-import { getPool } from '@/lib/db/db';
-import { noteCache } from '@/lib/db/algorithms/caching';
-import { DeleteImage } from '@/lib/db/imageHandler';
+import { getPool } from '@/db/db';
+import { noteCache } from '@/db/algorithms/caching';
+import { DeleteImage } from '@/db/imageHandler';
 
 export interface Note {
   id: string;
@@ -85,7 +85,7 @@ export class NoteClass {
     }
   }
 
-  static async Delete(id: string, imageUrl: string|null): Promise<void> {
+  static async Delete(id: string, imageUrl: string | null): Promise<void> {
     try {
       await getPool().execute(
         `
@@ -93,7 +93,7 @@ export class NoteClass {
       `,
         [id]
       );
-      await DeleteImage(imageUrl)
+      await DeleteImage(imageUrl);
       noteCache.clear();
     } catch (err) {
       console.error('Error deleting note:', err);

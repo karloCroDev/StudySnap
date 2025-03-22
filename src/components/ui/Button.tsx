@@ -6,7 +6,7 @@ import {
 import { twMerge } from 'tailwind-merge';
 
 import {
-  AdditionalButtonProps,
+  type AdditionalButtonProps,
   getButtonClassNames,
 } from '@/components/ui/LinkAsButton';
 

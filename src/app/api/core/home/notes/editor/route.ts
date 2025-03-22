@@ -2,7 +2,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 
 // Lib
-import { GetNoteById } from '@/lib/db/core/home/noteEditor';
+import { GetNoteById } from '@/db/core/home/noteEditor';
 
 // Models
 import { Note } from '@/models/note';

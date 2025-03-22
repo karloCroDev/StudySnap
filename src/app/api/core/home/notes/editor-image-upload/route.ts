@@ -2,7 +2,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 
 // Lib
-import { WriteImage } from '@/lib/db/imageHandler';
+import { WriteImage } from '@/db/imageHandler';
 
 //Function that writes the image
 export async function POST(req: NextRequest) {

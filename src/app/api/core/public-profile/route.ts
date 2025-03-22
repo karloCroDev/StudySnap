@@ -7,8 +7,8 @@ import {
   GetNotesByCreatorId,
   GetUserById,
   GetLikedNotes,
-} from '@/lib/db/core/publicProfile';
-import { GetProfileImage, WriteImage } from '@/lib/db/imageHandler';
+} from '@/db/core/publicProfile';
+import { GetProfileImage, WriteImage } from '@/db/imageHandler';
 
 // Models
 import { UserClass } from '@/models/user';

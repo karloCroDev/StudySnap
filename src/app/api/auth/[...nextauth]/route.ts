@@ -4,7 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 
 // Lib
-import { GetUserByEmail } from '@/lib/db/auth/login';
+import { GetUserByEmail } from '@/db/auth/login';
 
 // Configuration options for NextAuth
 export const authOptions = {
@@ -52,7 +52,6 @@ export const authOptions = {
         token.image = user.image || '';
         token.name = user.username;
         token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24; // Token expires in 24 hours
-
       }
       return token;
     },

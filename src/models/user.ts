@@ -1,6 +1,6 @@
 // Lib
-import { getPool } from '@/lib/db/db';
-import { DeleteImage } from '@/lib/db/imageHandler';
+import { getPool } from '@/db/db';
+import { DeleteImage } from '@/db/imageHandler';
 
 export interface User {
   id: string;
@@ -70,9 +70,9 @@ export class UserClass {
       `,
         [id]
       );
-      console.log(imageUrl)
-      
-      DeleteImage(imageUrl[0].profile_picture_url)
+      console.log(imageUrl);
+
+      DeleteImage(imageUrl[0].profile_picture_url);
 
       await getPool().execute(
         `

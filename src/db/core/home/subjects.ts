@@ -1,11 +1,11 @@
 // Lib
-import { getPool } from '@/lib/db/db';
+import { getPool } from '@/db/db';
 
 //Models
 import { Subject } from '@/models/subject';
 
 // Database (handling the images)
-import { GetImage } from '@/lib/db/imageHandler';
+import { GetImage } from '@/db/imageHandler';
 
 // Gets all subjects for the current user
 export async function GetSubjectByCreatorId(

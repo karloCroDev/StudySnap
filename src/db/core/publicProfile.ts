@@ -1,12 +1,12 @@
 // Lib
-import { getPool } from '@/lib/db/db';
-import { noteCache } from '@/lib/db/algorithms/caching';
+import { getPool } from '@/db/db';
+import { noteCache } from '@/db/algorithms/caching';
 
 //Models
 import { Note } from '@/models/note';
 
 // Database (handling the images)
-import { GetImage, GetProfileImage } from '@/lib/db/imageHandler';
+import { GetImage, GetProfileImage } from '@/db/imageHandler';
 
 //Models
 import { type User } from '@/models/user';

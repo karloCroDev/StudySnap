@@ -3,11 +3,8 @@ import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
 // Lib
-import {
-  GetSubjectByCreatorId,
-  GetSubjectById,
-} from '@/lib/db/core/home/subjects';
-import { WriteImage } from '@/lib/db/imageHandler';
+import { GetSubjectByCreatorId, GetSubjectById } from '@/db/core/home/subjects';
+import { WriteImage } from '@/db/imageHandler';
 
 // Models
 import { SubjectClass } from '@/models/subject';

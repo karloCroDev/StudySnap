@@ -1,6 +1,6 @@
 // Lib
-import { getPool } from '@/lib/db/db';
-import { GetImage } from '@/lib/db/imageHandler';
+import { getPool } from '@/db/db';
+import { GetImage } from '@/db/imageHandler';
 
 // Models
 import { type User } from '@/models/user';
