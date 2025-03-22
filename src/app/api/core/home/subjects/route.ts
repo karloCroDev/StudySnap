@@ -105,7 +105,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
     }
 
-    const { id } = await req.json();
+    const { id, imageUrl } = await req.json();
     if (!id) {
       return NextResponse.json({
         status: 400,
@@ -113,7 +113,7 @@ export async function DELETE(req: NextRequest) {
       });
     }
 
-    await SubjectClass.Delete(id);
+    await SubjectClass.Delete(id, imageUrl);
     return NextResponse.json({
       status: 200,
       statusText: 'Subject deleted successfully',

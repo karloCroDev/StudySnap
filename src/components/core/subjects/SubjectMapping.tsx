@@ -51,6 +51,7 @@ export const SubjectMapping: React.FC<{
           title={subject.name}
           description={subject.details}
           encodedImage={subject.encoded_image}
+          imageUrl={subject.image_url}
           key={subject.id}
         />
       </LayoutColumn>

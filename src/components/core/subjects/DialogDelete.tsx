@@ -17,8 +17,9 @@ import { useGeneralInfo } from '@/store/useGeneralInfo';
 export const DialogDelete: React.FC<{
   name: string;
   id: string;
+  imageUrl: string|null;
   children: React.ReactNode;
-}> = ({ name, id, children }) => {
+}> = ({ name, id, children, imageUrl }) => {
   const [loading, setLoading] = React.useState(false);
 
   const [isOpen, setIsOpen] = React.useState(false);
@@ -36,7 +37,7 @@ export const DialogDelete: React.FC<{
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ id }),
+          body: JSON.stringify({ id, imageUrl }),
         }
       );
       const data = await response.json();

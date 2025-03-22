@@ -19,7 +19,8 @@ export const DialogDelete: React.FC<{
   children: React.ReactNode;
   noteName: string;
   noteId: string;
-}> = ({ children, noteName, noteId }) => {
+  imageUrl: string| null
+}> = ({ children, noteName, noteId, imageUrl }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
@@ -36,7 +37,7 @@ export const DialogDelete: React.FC<{
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ noteId }),
+          body: JSON.stringify({ noteId, imageUrl }),
         }
       );
       const data = await response.json();

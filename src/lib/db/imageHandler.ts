@@ -1,4 +1,5 @@
 // External packages
+import { unlink } from 'fs';
 import { writeFile, readFile } from 'fs/promises';
 import path from 'path';
 import sharp from 'sharp';
@@ -17,6 +18,7 @@ export async function WriteImage(
       if (cropImage){
         buffer = await sharp(Buffer.from(await image.arrayBuffer()))
           .resize(312, 312)
+          .jpeg({quality: 70})
           .toBuffer();
       }
       else{
@@ -79,4 +81,19 @@ export async function GetProfileImage(
     }
   }
   return null;
+}
+
+export async function DeleteImage(
+  imageUrl: string | null
+){
+  console.log(imageUrl)
+  if (!imageUrl){return}
+  try {
+    unlink(imageUrl, (error)=>{
+          console.error('Error deleting file:', error);
+    })
+  }catch (error) {
+    console.error('Error deleting file:', error);
+    return;
+  }
 }

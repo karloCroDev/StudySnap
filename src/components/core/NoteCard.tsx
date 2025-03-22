@@ -22,6 +22,7 @@ export const NoteCard: React.FC<{
   author: string;
   isPublic: boolean;
   encodedImage?: string | null;
+  imageUrl:string|null;
   encodedUserImage?: string;
   numberOfLikes: number;
   liked: number;
@@ -32,6 +33,7 @@ export const NoteCard: React.FC<{
   description,
   encodedImage,
   encodedUserImage,
+  imageUrl,
   author,
   isPublic,
   numberOfLikes,
@@ -126,7 +128,7 @@ export const NoteCard: React.FC<{
             </DialogChangeDetails>
           </li>
           <li>
-            <DialogDelete noteId={noteId} noteName={noteName}>
+            <DialogDelete noteId={noteId} noteName={noteName} imageUrl= {imageUrl}>
               <TrashIcon
                 className={twJoin(
                   'size-9 transition-colors lg:size-7',

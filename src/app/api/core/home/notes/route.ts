@@ -82,14 +82,14 @@ export async function POST(req: NextRequest) {
 //Function deletes note
 export async function DELETE(req: NextRequest) {
   try {
-    const { noteId } = await req.json();
+    const { noteId, imageUrl } = await req.json();
     if (!noteId) {
       return NextResponse.json({
         status: 400,
         statusText: 'Missing required fields',
       });
     }
-    await NoteClass.Delete(noteId);
+    await NoteClass.Delete(noteId, imageUrl);
     return NextResponse.json({
       status: 200,
       statusText: 'Deleted successfully',

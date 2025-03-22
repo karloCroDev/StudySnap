@@ -56,6 +56,7 @@ export const NoteMapping: React.FC<{
           creatorId={note.creator_id}
           encodedUserImage={note.encoded_profile_image ?? undefined}
           encodedImage={note.encoded_image}
+          imageUrl={note.image_url}
           key={note.id}
         />
       </LayoutColumn>

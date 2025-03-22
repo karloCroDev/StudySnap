@@ -21,7 +21,8 @@ export const SubjectCard: React.FC<{
   title: string;
   description?: string;
   encodedImage?: string | null;
-}> = ({ id, title, description = '', encodedImage }) => {
+  imageUrl: string|null;
+}> = ({ id, title, description = '', encodedImage, imageUrl }) => {
   const [cardTitle, setCardTitle] = React.useState(title);
   const [cardDescription, setCardDescription] = React.useState(description);
   const [cardImage, setCardImage] = React.useState<string>('');
@@ -93,7 +94,7 @@ export const SubjectCard: React.FC<{
           </DialogChangeDetails>
         </li>
         <li>
-          <DialogDelete id={id} name={cardTitle}>
+          <DialogDelete id={id} name={cardTitle} imageUrl = {imageUrl}>
             <TrashIcon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',

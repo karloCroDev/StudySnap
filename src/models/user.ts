@@ -1,5 +1,6 @@
 // Lib
 import { getPool } from '@/lib/db/db';
+import { DeleteImage } from '@/lib/db/imageHandler';
 
 export interface User {
   id: string;
@@ -63,6 +64,16 @@ export class UserClass {
 
   static async Delete(id: string): Promise<void> {
     try {
+      const [imageUrl] = await getPool().execute(
+        `
+        SELECT profile_picture_url FROM user WHERE id = ?;
+      `,
+        [id]
+      );
+      console.log(imageUrl)
+      
+      DeleteImage(imageUrl[0].profile_picture_url)
+
       await getPool().execute(
         `
         DELETE FROM user WHERE id = ?;

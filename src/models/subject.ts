@@ -1,5 +1,6 @@
 // Lib
 import { getPool } from '@/lib/db/db';
+import { DeleteImage } from '@/lib/db/imageHandler';
 
 export interface Subject {
   id: string;
@@ -65,7 +66,7 @@ export class SubjectClass {
     }
   }
 
-  static async Delete(id: string): Promise<void> {
+  static async Delete(id: string, imageUrl : string | null): Promise<void> {
     try {
       await getPool().execute(
         `
@@ -73,6 +74,7 @@ export class SubjectClass {
       `,
         [id]
       );
+      await DeleteImage(imageUrl)
     } catch (err) {
       console.error('Error deleting subject:', err);
     }
