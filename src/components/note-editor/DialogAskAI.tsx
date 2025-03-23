@@ -16,25 +16,26 @@ import ReactMarkdown from 'react-markdown';
 // Components
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
-import { useToastStore } from '@/store/useToastStore';
 import { Spinner } from '@/components/ui/Spinner';
 
-// Dialog to ask AI information about document, chat with AI
+// Hooks
+import { useAskAI } from '@/hooks/note-editor/useAskAI';
+
 export const DialogAskAI: React.FC<{
   editor: EditorType;
 }> = ({ editor }) => {
-  const toast = useToastStore((state) => state.setToast);
-  const [loading, setLoading] = React.useState(false);
-
   const [isOpen, setIsOpen] = React.useState(false);
-
-  const [prompt, setPrompt] = React.useState('');
-  const [chatHistory, setChatHistory] = React.useState<
-    {
-      authorOfMessage: 'ai' | 'user';
-      content: string;
-    }[]
-  >([]);
+  const {
+    getAskAiResponse,
+    loading,
+    prompt,
+    setPrompt,
+    chatHistory,
+    setChatHistory,
+  } = useAskAI({
+    editor,
+    setIsOpen,
+  });
 
   const chatContainerRef = React.useRef<null | HTMLDivElement>(null);
 
@@ -45,45 +46,6 @@ export const DialogAskAI: React.FC<{
     };
     scrollToTheResponse();
   }, [chatHistory]);
-
-  const getAskAiResponse = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch('http://localhost:3000/api/ai/ask-ai', {
-        method: 'POST',
-        body: JSON.stringify({
-          prompt,
-          editorContent: editor.getHTML(),
-          chatHistory,
-        }),
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        toast({
-          title: 'Failed to get response',
-          content: data.statusText, // This data is status text
-          variant: 'error',
-        });
-        setIsOpen(false);
-        return;
-      }
-
-      const { statusText, ...filtredResponse } = data;
-      console.log(statusText);
-      setChatHistory((prevValue) => [...prevValue, filtredResponse]);
-      setPrompt('');
-    } catch (error) {
-      console.error('Upload failed:', error);
-      toast({
-        title: 'Failed to get notes',
-        content: 'Please try again later, problem with server',
-        variant: 'error',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <Dialog

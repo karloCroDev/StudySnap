@@ -12,65 +12,21 @@ import { Button } from '@/components/ui/Button';
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { Spinner } from '@/components/ui/Spinner';
 
-// Store
-import { useToastStore } from '@/store/useToastStore';
+// Hooks
+import { useGenerateQuizz } from '@/hooks/note-editor/useGenerateQuizz';
 
 export const DialogQuizz: React.FC<{
   editor: EditorType;
 }> = ({ editor }) => {
-  const toast = useToastStore((state) => state.setToast);
-
   const [isOpen, setIsOpen] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
 
-  // Handling the activation of creating a quizz when user enters the dialog, creating only one, if he tries again Quizz himself!
-  const [hasBeenActivated, setHasBeenActivated] = React.useState(false);
-  const [quizzData, setQuizzData] = React.useState<
-    {
-      question: string;
-      content: string[];
-      correct: number;
-    }[]
-  >([]);
   const [questionCount, setQuestionCount] = React.useState(0);
   const [correctAnswers, setCorrectAnswers] = React.useState(0);
-  console.log(quizzData);
-  React.useEffect(() => {
-    const generateQuizzData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch('http://localhost:3000/api/ai/quizz', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            context: editor?.getText(),
-          }),
-        });
-        const data = await response.json();
-        if (response.ok) {
-          const dataJSON = JSON.parse(data);
-          setQuizzData(dataJSON);
-          setHasBeenActivated(true);
-        }
-      } catch (error) {
-        console.error('Failed to generate quizz:', error);
-        setIsOpen(false);
-        toast({
-          title: 'Failed to generate quizz',
-          content: 'Please try again later, problem with server',
-          variant: 'error',
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (isOpen && !hasBeenActivated) {
-      generateQuizzData();
-    }
-  }, [isOpen]);
+  const { isLoading, quizzData } = useGenerateQuizz({
+    isOpen,
+    editor,
+    setIsOpen,
+  });
 
   return (
     <Dialog

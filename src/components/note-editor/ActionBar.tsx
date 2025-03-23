@@ -3,8 +3,6 @@
 // External packagess
 import * as React from 'react';
 import { type Editor as EditorType } from '@tiptap/react';
-import { useSession } from 'next-auth/react';
-
 import { Pencil2Icon, FileTextIcon } from '@radix-ui/react-icons';
 
 // Components
@@ -41,9 +39,7 @@ export const ActionBar: React.FC<{
   completionLoading,
   allowEditing,
 }) => {
-  const user = useSession();
   const toast = useToastStore((state) => state.setToast);
-  console.log(noteId);
   return (
     <div className="flex items-center justify-between gap-4 overflow-scroll py-2">
       {!isEditing ? (

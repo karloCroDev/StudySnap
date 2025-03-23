@@ -13,6 +13,8 @@ import { Avatar } from '@/components/ui/Avatar';
 import { DialogDeleteProfile } from '@/components/core/profile/DialogDeleteProfile';
 import { Spinner } from '@/components/ui/Spinner';
 
+// Hooks
+import { useClientImage } from '@/hooks/useClientImage';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
@@ -33,10 +35,7 @@ export const DialogEditProfile: React.FC<{
   }, [isOpen]);
 
   const [image, setImage] = React.useState<File | null>(null);
-  const clientImage = React.useMemo(
-    () => image && URL.createObjectURL(image),
-    [image]
-  );
+  const clientImage = useClientImage(image!);
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
