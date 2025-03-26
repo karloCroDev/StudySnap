@@ -20,6 +20,7 @@ export class SubjectClass {
     creator: string,
     image: string | null
   ): Promise<string | null> {
+    console.log(name,details,creator,image)
     try {
       console.log(creator);
       const [result]: any = await getPool().execute(

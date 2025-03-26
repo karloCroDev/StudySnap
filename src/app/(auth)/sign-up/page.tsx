@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Logo } from '@/components/ui/Logo';
 import { Layout, LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { SignupForm } from '@/components/auth/sign-up/SignupForm';
+import { SignupWithGoogle } from '@/components/auth/sign-up/SignupWithGoogle';
 
 // Metadata
 export const metadata: Metadata = {
@@ -43,6 +44,7 @@ export default function Signup() {
               way of handling studies
             </p>
             <SignupForm />
+            <SignupWithGoogle/>
             <p className="mt-4 text-gray-400 xl:mt-12">
               Already have an account?{' '}
               <Link

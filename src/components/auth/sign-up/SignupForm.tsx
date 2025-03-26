@@ -13,6 +13,7 @@ import { Spinner } from '@/components/ui/Spinner';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
+import { FaGoogle } from 'react-icons/fa';
 
 export const SignupForm = () => {
   const [loading, setLoading] = React.useState(false);
@@ -45,6 +46,7 @@ export const SignupForm = () => {
         });
         return;
       }
+
       // Immediatelly signning in, after sign up
       await signIn('credentials', {
         email,
@@ -53,7 +55,7 @@ export const SignupForm = () => {
       });
       toast({
         title: `Welcome ${username} to StudySnap`,
-        content: data.statusText,
+        content: "Success",
         variant: 'success',
       });
       router.push('/home/subjects');
@@ -117,22 +119,6 @@ export const SignupForm = () => {
       >
         Sign up
       </Button>
-      {/* 
-        Placeholder for future OAuth providers (future)
-       <div className="flex items-center gap-6">
-      <hr className="h-px w-full border-0 bg-gray-900" />
-      <p className="text-sm font-semibold">or</p>
-      <hr className="h-px w-full border-0 bg-gray-900" />
-    </div>
-      <Button
-        variant="outline"
-        rounded="none"
-        colorScheme="black"
-        size="lg"
-        iconLeft={<FaGoogle className="text-blue-900" /> // Add image rather than icon}
-      >
-        Sign up with Google
-      </Button> */}
     </AriaForm>
   );
 };
