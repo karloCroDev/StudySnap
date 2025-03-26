@@ -16,12 +16,11 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Spinner } from '@/components/ui/Spinner';
 
-// Store
-import { useToastStore } from '@/store/useToastStore';
+// Hooks
+import { useDialogChangeDetails } from '@/hooks/core/home/notes/useDialogChangeDetails';
 
 // Dialog that changes details for each individual note card on frontend
 export const DialogChangeDetails: React.FC<{
-  children: React.ReactNode;
   noteId: string;
   // These are props (from note card) that are needed in order to update the Note card on frontend, and to display current details (title, desc...) in input fields etc.
   noteName: string;
@@ -30,6 +29,7 @@ export const DialogChangeDetails: React.FC<{
   setNoteDetails: React.Dispatch<React.SetStateAction<string>>;
   isNotePublic: boolean;
   setNoteImage: React.Dispatch<React.SetStateAction<string>>;
+  children: React.ReactNode;
 }> = ({
   children,
   noteId,
@@ -47,58 +47,18 @@ export const DialogChangeDetails: React.FC<{
   const [details, setDetails] = React.useState(noteDetails);
   const [image, setImage] = React.useState<File | null>(null);
 
-  const [loading, setLoading] = React.useState(false);
-  const toast = useToastStore((state) => state.setToast);
-
-  const changeDetails = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append('noteName', name);
-      formData.append('details', details);
-      formData.append('isPublic', isPublic.toString());
-      formData.append('noteId', noteId);
-
-      if (image) formData.append('file', image);
-      const response = await fetch(
-        'http://localhost:3000/api/core/home/notes',
-        {
-          method: 'PATCH',
-          body: formData,
-        }
-      );
-      const data = await response.json();
-      if (!response.ok) {
-        toast({
-          title: 'Missing required fields',
-          content: data.statusText,
-          variant: 'error',
-        });
-        return;
-      }
-
-      toast({
-        title: `${name} note updated`,
-        content: data.statusText,
-        variant: 'success',
-      });
-
-      if (name) setNoteName(name);
-      if (details) setNoteDetails(details);
-      if (image) setNoteImage(URL.createObjectURL(image));
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: 'Uhoh, something went wrong',
-        content: 'Failed to create note',
-        variant: 'error',
-      });
-    } finally {
-      setLoading(false);
-      setIsOpen(false);
-    }
-  };
+  // Since this is a dialog that changes details for each individual note card, we need to pass these props to the useChangeDetails hook in order to update the Note card on frontend, and to display current details (title, desc...) in input fields etc. That is the reason why this hook is robust and couldn't be more simplified
+  const { changeDetails, loading } = useDialogChangeDetails({
+    details,
+    image,
+    isPublic,
+    name,
+    noteId,
+    setNoteDetails,
+    setNoteImage,
+    setNoteName,
+    setIsOpen,
+  });
   return (
     <Dialog
       open={isOpen}

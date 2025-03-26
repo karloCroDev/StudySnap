@@ -35,8 +35,6 @@ import { useImageOcr } from '@/hooks/note-editor/useImageOcr';
 export const DialogImageOcr: React.FC<{
   editor: EditorType;
 }> = ({ editor }) => {
-  const toast = useToastStore((state) => state.setToast);
-
   const [isOpen, setIsOpen] = React.useState(false);
 
   const [prompt, setPrompt] = React.useState('');
