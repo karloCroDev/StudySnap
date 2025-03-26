@@ -25,9 +25,9 @@ export class SubjectClass {
       console.log(creator);
       const [result]: any = await getPool().execute(
         `
-                INSERT INTO subject ( name, details, creator_id, image_url)
-                VALUES (?, ?, ?, ?);
-                `,
+            INSERT INTO subject ( name, details, creator_id, image_url)
+            VALUES (?, ?, ?, ?);
+        `,
         [name, details, creator, image]
       );
       return result.insertId as string;

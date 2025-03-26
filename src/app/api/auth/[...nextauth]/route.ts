@@ -27,7 +27,7 @@ export const authOptions = {
           if (!user) {
             return null;
           }
-          console.log("AUTHOISING")
+
           const passwordsMatch = await bcrypt.compare(password, user.password);
           if (passwordsMatch) return user;
           else return null;
@@ -52,17 +52,18 @@ export const authOptions = {
       if (trigger === 'update' && session?.name) {
         token.name = session.name;
       }
-      // Update token with session image if triggered by 'update'
       if (trigger === 'update' && session?.image) {
         token.image = session.image;
       }
-      // If user is present, update token with user details
       if (user) {
-        token.uid = user.id;
-        token.image = user.image || '';
-        token.name = user.name ?? user.username;
+        let myUser = await GetUserByEmail(user.email)
+        token.uid = myUser!.id;
+        token.sub = myUser!.id;
+        token.image = myUser!.encoded_image || '';
+        token.name = myUser!.username
         token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24; // Token expires in 24 hours
       }
+
       return token;
     },
 
