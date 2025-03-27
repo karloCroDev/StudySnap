@@ -10,17 +10,17 @@ import {
 import { WriteImage } from '@/lib/db/imageHandler';
 
 // Models
-import { SubjectClass } from '@/models/subject';
+import { Subject, SubjectClass } from '@/models/subject';
 
 const secret = process.env.NEXTAUTH_SECRET;
-
 //Function gets all users subjects
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const userId = searchParams.get('userId');
+    const filter = searchParams.get('filter')
 
-    const subjects = await GetSubjectByCreatorId(userId as string);
+    let subjects: Subject[] = await GetSubjectByCreatorId(userId as string,  filter ?? "");
 
     if (!subjects) {
       return NextResponse.json({

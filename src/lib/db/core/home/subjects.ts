@@ -9,13 +9,15 @@ import { GetImage } from '@/lib/db/imageHandler';
 
 // Gets all subjects for the current user
 export async function GetSubjectByCreatorId(
-  creatorId: string
+  creatorId: string,
+  filter: string
 ): Promise<Array<Subject>> {
+  filter = `%${filter}%`
   const result: [any[], any] = await getPool().query(
     `
-        SELECT * FROM subject WHERE creator_id = ?
+        SELECT * FROM subject WHERE creator_id = ? AND (name LIKE ? OR details LIKE ?)
     `,
-    [creatorId]
+    [creatorId, filter, filter]
   );
   const subjectsWithImages = await Promise.all(
     result[0].map(async (subject) => {

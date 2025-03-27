@@ -37,7 +37,7 @@ export const Menu: React.FC<{
   const user = useSession();
   const router = useRouter();
   const toast = useToastStore((state) => state.setToast);
-  console.log(user.data);
+
   const logOut = async () => {
     try {
       toast({

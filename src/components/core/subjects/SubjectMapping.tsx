@@ -26,7 +26,7 @@ export const SubjectMapping: React.FC<{
     }))
   );
 
-  React.useEffect(() => {
+  React.useEffect(() =>  {
     setSubjects(subjectsData);
   }, []);
 

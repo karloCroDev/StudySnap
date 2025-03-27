@@ -14,8 +14,10 @@ import { rankNotes } from '@/lib/db/algorithms/alogirthm';
 export async function GetPublicNotes(
   limit: number,
   offset: number = 0,
-  userId: string
+  userId: string,
+  filter: string
 ): Promise<Array<Note>> {
+  filter = `%${filter}%`
   const result: [any[], any] = await getPool().query(
     `
         SELECT
@@ -41,7 +43,7 @@ export async function GetPublicNotes(
             user u ON s.creator_id = u.id
         LEFT JOIN
             likes l ON n.id = l.note_id
-        WHERE n.is_public = 1
+        WHERE n.is_public = 1 AND (n.title LIKE ? OR n.content LIKE ?)
         GROUP BY
             n.id,
             n.title,
@@ -52,7 +54,7 @@ export async function GetPublicNotes(
         LIMIT ?
         OFFSET ?
     `,
-    [userId, limit, offset]
+    [userId, limit, offset, filter, filter]
   );
   const notesWithImages = await Promise.all(
     result[0].map(async (note) => {

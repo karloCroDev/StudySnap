@@ -13,8 +13,9 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const subjectId = searchParams.get('subjectId');
+    const filter = searchParams.get("filter")
 
-    const notes = await GetNotesBySubjectId(subjectId as string);
+    const notes = await GetNotesBySubjectId(subjectId as string, filter ?? "");
 
     if (!notes) {
       return NextResponse.json({ status: 400, statusText: 'No notes found' });
