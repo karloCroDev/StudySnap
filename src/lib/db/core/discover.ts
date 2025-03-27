@@ -17,7 +17,7 @@ export async function GetPublicNotes(
   userId: string,
   filter: string
 ): Promise<Array<Note>> {
-  filter = `%${filter}%`
+  filter = "%%"//`%${filter}%`
   const result: [any[], any] = await getPool().query(
     `
         SELECT
@@ -54,7 +54,7 @@ export async function GetPublicNotes(
         LIMIT ?
         OFFSET ?
     `,
-    [userId, limit, offset, filter, filter]
+    [userId, filter, filter, limit, offset, ]
   );
   const notesWithImages = await Promise.all(
     result[0].map(async (note) => {

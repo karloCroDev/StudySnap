@@ -11,6 +11,7 @@ import { WriteImage } from '@/lib/db/imageHandler';
 
 // Models
 import { Subject, SubjectClass } from '@/models/subject';
+import { SQLSyntaxCheck } from '@/lib/db/algorithms/string verification';
 
 const secret = process.env.NEXTAUTH_SECRET;
 //Function gets all users subjects
@@ -20,6 +21,10 @@ export async function GET(req: NextRequest) {
     const userId = searchParams.get('userId');
     const filter = searchParams.get('filter')
 
+    if (SQLSyntaxCheck([userId,filter])) {
+      return NextResponse.json({ status: 400, statusText: 'Bad request' });
+    }
+    
     let subjects: Subject[] = await GetSubjectByCreatorId(userId as string,  filter ?? "");
 
     if (!subjects) {
@@ -28,6 +33,7 @@ export async function GET(req: NextRequest) {
         statusText: 'Subjects not found',
       });
     }
+
 
     return NextResponse.json(subjects, {
       status: 200,
@@ -58,11 +64,8 @@ export async function POST(req: NextRequest) {
     const details = formData.get('details') as string | null;
     const file = formData.get('file');
 
-    if (!subjectName || !creator) {
-      return NextResponse.json({
-        status: 400,
-        statusText: 'Missing required fields',
-      });
+    if (!subjectName || !creator || SQLSyntaxCheck([subjectName, details])) {
+      return NextResponse.json({ status: 400, statusText: 'Bad request' });
     }
 
     const imagePath = await WriteImage(file);
@@ -139,15 +142,12 @@ export async function PATCH(req: NextRequest) {
     const formData = await req.formData();
 
     const subjectId = formData.get('subjectId') as string;
-    const subjectName = formData.get('subjectName');
-    const details = formData.get('details');
+    const subjectName = formData.get('subjectName') as string;
+    const details = formData.get('details') as string;
     const file = formData.get('file');
 
-    if (!subjectId) {
-      return NextResponse.json({
-        status: 400,
-        statusText: 'Missing subject Id',
-      });
+    if (!subjectId || SQLSyntaxCheck([subjectId, subjectName, details])) {
+      return NextResponse.json({ status: 400, statusText: 'Bad request' });
     }
 
     const updates: { [key: string]: any } = {};
