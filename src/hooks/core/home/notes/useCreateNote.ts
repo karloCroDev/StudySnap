@@ -1,50 +1,55 @@
 'use client';
 
-// External packagess
+// External packages
 import * as React from 'react';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
+import { useGeneralInfo } from '@/store/useGeneralInfo';
 
-export const useDialogChangeDetails = ({
-  noteId,
+// Models (types)
+import { type Note } from '@/models/note';
+
+export const useCreateNote = ({
+  subjectId,
   isPublic,
-  name,
+  noteName,
   details,
   image,
   setNoteName,
-  setNoteDetails,
-  setNoteImage,
+  setDetails,
+  setImage,
   setIsOpen,
 }: {
-  noteId: string;
+  subjectId: string;
   isPublic: boolean;
-  name: string;
+  noteName: string;
   details: string;
   image: File | null;
   setNoteName: React.Dispatch<React.SetStateAction<string>>;
-  setNoteDetails: React.Dispatch<React.SetStateAction<string>>;
-  setNoteImage: React.Dispatch<React.SetStateAction<string>>;
+  setDetails: React.Dispatch<React.SetStateAction<string>>;
+  setImage: React.Dispatch<React.SetStateAction<File | null>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [loading, setLoading] = React.useState(false);
   const toast = useToastStore((state) => state.setToast);
+  const addNote = useGeneralInfo((state) => state.addNote);
 
-  const changeDetails = async (e: React.FormEvent<HTMLFormElement>) => {
+  const createNoteReq = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       setLoading(true);
       const formData = new FormData();
-      formData.append('noteName', name);
-      formData.append('details', details);
+      formData.append('subjectId', subjectId);
+      if (noteName) formData.append('noteName', noteName);
+      if (details) formData.append('details', details);
       formData.append('isPublic', isPublic.toString());
-      formData.append('noteId', noteId);
       if (image) formData.append('file', image);
 
       const response = await fetch(
         'http://localhost:3000/api/core/home/notes',
         {
-          method: 'PATCH',
+          method: 'POST',
           body: formData,
         }
       );
@@ -52,21 +57,21 @@ export const useDialogChangeDetails = ({
       if (!response.ok) {
         toast({
           title: 'Missing required fields',
-          content: data.statusText,
+          content:
+            'Please make sure you have entered all the credentials correctly and try again',
           variant: 'error',
         });
         return;
       }
-
+      addNote(data as Note);
       toast({
-        title: `${name} note updated`,
-        content: data.statusText,
+        title: `${noteName} note created`,
+        content: `You have succesfully created ${noteName}`,
         variant: 'success',
       });
-
-      if (name) setNoteName(name);
-      if (details) setNoteDetails(details);
-      if (image) setNoteImage(URL.createObjectURL(image));
+      setNoteName('');
+      setDetails('');
+      setImage(null);
     } catch (error) {
       console.error(error);
       toast({
@@ -75,12 +80,9 @@ export const useDialogChangeDetails = ({
         variant: 'error',
       });
     } finally {
-      setLoading(false);
       setIsOpen(false);
+      setLoading(false);
     }
   };
-  return {
-    loading,
-    changeDetails,
-  };
+  return { loading, createNoteReq };
 };

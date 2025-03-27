@@ -8,12 +8,12 @@ import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 
 // Hooks
-import { useDialogDelete } from '@/hooks/core/home/profile/useDialogDeleteProfile';
+import { useProfileDelete } from '@/hooks/core/home/profile/useDialogDeleteProfile';
 
 // Confirmation dialog for deleting the profile
 export const DialogDeleteProfile = () => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const deleteDialog = useDialogDelete(setIsOpen);
+  const deleteDialog = useProfileDelete(setIsOpen);
 
   return (
     <Dialog

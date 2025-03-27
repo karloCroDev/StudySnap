@@ -8,9 +8,10 @@ import { FileTrigger, Form, Button as AriaButton } from 'react-aria-components';
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { Spinner } from '@/components/ui/Spinner';
 
-// Store
-import { useToastStore } from '@/store/useToastStore';
+// Hooks
+import { useChangeDetailsSubject } from '@/hooks/core/home/subjects/useChangeDetailsSubject';
 
 // Dialog for chaging details for subjects
 export const DialogChangeDetails: React.FC<{
@@ -37,55 +38,16 @@ export const DialogChangeDetails: React.FC<{
   const [details, setDetails] = React.useState(cardDescription);
   const [image, setImage] = React.useState<File | null>(null);
 
-  const toast = useToastStore((state) => state.setToast);
-
-  const updateSubject = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    formData.append('subjectId', id);
-    if (subjectName) formData.append('subjectName', subjectName);
-    if (details) formData.append('details', details);
-    if (image) formData.append('file', image);
-    try {
-      const response = await fetch(
-        'http://localhost:3000/api/core/home/subjects',
-        {
-          method: 'PATCH',
-          headers: {},
-          body: formData,
-        }
-      );
-      const data = await response.json();
-      if (!response.ok) {
-        toast({
-          title: 'Missing required fields',
-          content: data.statusText,
-          variant: 'error',
-        });
-        return;
-      }
-
-      toast({
-        title: `${subjectName} subject updated`,
-        content: data.statusText,
-        variant: 'success',
-      });
-
-      if (subjectName) setCardTitle(subjectName);
-      if (details) setCardDescripton(details);
-      if (image) setCardImage(URL.createObjectURL(image));
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: 'Uhoh, something went wrong',
-        content: 'Failed to update subject',
-        variant: 'error',
-      });
-    } finally {
-      setIsOpen(false);
-    }
-  };
+  const { loading, updateSubjectReq } = useChangeDetailsSubject({
+    details,
+    id,
+    image,
+    setCardDescripton,
+    setCardImage,
+    setCardTitle,
+    setIsOpen,
+    subjectName,
+  });
 
   return (
     <Dialog
@@ -96,7 +58,7 @@ export const DialogChangeDetails: React.FC<{
         children,
       }}
     >
-      <Form className="flex flex-col gap-5" onSubmit={updateSubject}>
+      <Form className="flex flex-col gap-5" onSubmit={updateSubjectReq}>
         <Input
           type="text"
           label="Subject name"
@@ -144,6 +106,7 @@ export const DialogChangeDetails: React.FC<{
           isDisabled={
             subjectName === cardTitle && details === cardDescription && !image
           }
+          iconRight={loading && <Spinner />}
         >
           Save
         </Button>

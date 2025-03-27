@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Spinner } from '@/components/ui/Spinner';
 
 // Hooks
-import { useDialogDelete } from '@/hooks/core/home/notes/useDialogDelete';
+import { useDeleteNotes } from '@/hooks/core/home/notes/useDeleteNote';
 
 // Confirmation dialog for removing a note
 export const DialogDelete: React.FC<{
@@ -20,7 +20,7 @@ export const DialogDelete: React.FC<{
 }> = ({ children, noteName, noteId, imageUrl }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const { deleteNoteFn, loading } = useDialogDelete({
+  const { deleteNoteReq, loading } = useDeleteNotes({
     imageUrl,
     noteId,
     noteName,
@@ -42,7 +42,7 @@ export const DialogDelete: React.FC<{
         <div className="mt-6 flex gap-6">
           <Button
             className="uppercase"
-            onPress={deleteNoteFn}
+            onPress={deleteNoteReq}
             iconRight={loading && <Spinner />}
           >
             yes

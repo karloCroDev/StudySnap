@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/Input';
 import { Spinner } from '@/components/ui/Spinner';
 
 // Hooks
-import { useDialogCreate } from '@/hooks/core/home/notes/useDialogCreate';
+import { useCreateNote } from '@/hooks/core/home/notes/useCreateNote';
 
 // Dialog that activates after pressing the Create new Toast card. Enables user to create their new subject note inside the suvbject
 export const DialogCreate: React.FC<{
@@ -31,7 +31,7 @@ export const DialogCreate: React.FC<{
   const [details, setDetails] = React.useState('');
   const [image, setImage] = React.useState<File | null>(null);
 
-  const { createNoteFn, loading } = useDialogCreate({
+  const { createNoteReq, loading } = useCreateNote({
     details,
     image,
     isPublic,
@@ -52,7 +52,7 @@ export const DialogCreate: React.FC<{
         asChild: true,
       }}
     >
-      <Form className="flex flex-col gap-5" onSubmit={createNoteFn}>
+      <Form className="flex flex-col gap-5" onSubmit={createNoteReq}>
         <Input
           isRequired
           type="text"

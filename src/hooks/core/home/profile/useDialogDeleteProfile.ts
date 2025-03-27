@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
-export const useDialogDelete = (
+export const useProfileDelete = (
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const user = useSession();

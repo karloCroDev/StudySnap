@@ -8,46 +8,42 @@ import { useToastStore } from '@/store/useToastStore';
 import { useGeneralInfo } from '@/store/useGeneralInfo';
 
 // Models (types)
-import { type Note } from '@/models/note';
+import { type Subject } from '@/models/subject';
 
-export const useDialogCreate = ({
-  subjectId,
-  isPublic,
-  noteName,
+export const useCreateSubject = ({
+  subjectName,
   details,
   image,
-  setNoteName,
+  setSubjectName,
   setDetails,
   setImage,
   setIsOpen,
 }: {
-  subjectId: string;
-  isPublic: boolean;
-  noteName: string;
+  subjectName: string;
   details: string;
   image: File | null;
-  setNoteName: React.Dispatch<React.SetStateAction<string>>;
+  setSubjectName: React.Dispatch<React.SetStateAction<string>>;
   setDetails: React.Dispatch<React.SetStateAction<string>>;
   setImage: React.Dispatch<React.SetStateAction<File | null>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [loading, setLoading] = React.useState(false);
-  const toast = useToastStore((state) => state.setToast);
-  const addNote = useGeneralInfo((state) => state.addNote);
 
-  const createNoteFn = async (e: React.FormEvent<HTMLFormElement>) => {
+  const toast = useToastStore((state) => state.setToast);
+  const addSubject = useGeneralInfo((state) => state.addSubject);
+
+  const createSubjectReq = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    if (subjectName) formData.append('subjectName', subjectName);
+    if (details) formData.append('details', details);
+    if (image) formData.append('file', image);
+
     try {
       setLoading(true);
-      const formData = new FormData();
-      formData.append('subjectId', subjectId);
-      if (noteName) formData.append('noteName', noteName);
-      if (details) formData.append('details', details);
-      formData.append('isPublic', isPublic.toString());
-      if (image) formData.append('file', image);
-
       const response = await fetch(
-        'http://localhost:3000/api/core/home/notes',
+        'http://localhost:3000/api/core/home/subjects',
         {
           method: 'POST',
           body: formData,
@@ -63,20 +59,20 @@ export const useDialogCreate = ({
         });
         return;
       }
-      addNote(data as Note);
+      addSubject(data as Subject);
       toast({
-        title: `${noteName} note created`,
-        content: `You have succesfully created ${noteName}`,
+        title: `${subjectName} subject created`,
+        content: `You have succesfully created ${subjectName}`,
         variant: 'success',
       });
-      setNoteName('');
+      setSubjectName('');
       setDetails('');
       setImage(null);
     } catch (error) {
       console.error(error);
       toast({
         title: 'Uhoh, something went wrong',
-        content: 'Failed to create note',
+        content: 'Failed to create subject',
         variant: 'error',
       });
     } finally {
@@ -84,5 +80,5 @@ export const useDialogCreate = ({
       setLoading(false);
     }
   };
-  return { loading, createNoteFn };
+  return { loading, createSubjectReq };
 };
