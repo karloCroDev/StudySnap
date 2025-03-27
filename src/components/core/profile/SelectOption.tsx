@@ -27,6 +27,8 @@ import { Button } from '@/components/ui/Button';
 // Models (types)
 import { type Note } from '@/models/note';
 
+// Hooks
+import { useToggleSearch } from '@/hooks/core/home/useToggleSearch';
 // Store
 import { useGeneralInfo } from '@/store/useGeneralInfo';
 import { useShallow } from 'zustand/shallow';
@@ -36,8 +38,6 @@ export const SelectOption: React.FC<{
   likedNotes: Note[];
   publicNotes: Note[];
 }> = ({ username, likedNotes, publicNotes }) => {
-  const infoHeader = React.useRef<HTMLDivElement | null>(null);
-
   const { setSearch, setNotes } = useGeneralInfo(
     useShallow((state) => ({
       setSearch: state.setSerach,
@@ -50,16 +50,7 @@ export const SelectOption: React.FC<{
     setSearch('');
   }, []);
 
-  // Mobile only animations and access to search
-  const toggleSearch = () => {
-    const searchElement = infoHeader.current;
-
-    if (searchElement) {
-      const currentValue = searchElement.getAttribute('data-search-visible');
-      const newValue = currentValue === 'true' ? 'false' : 'true';
-      searchElement.setAttribute('data-search-visible', newValue);
-    }
-  };
+  const { infoHeader, toggleSearch } = useToggleSearch();
 
   const [popoverTitle, setPopoverTitle] = React.useState<
     'All notes' | `What ${string} likes`

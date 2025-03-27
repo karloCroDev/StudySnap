@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
+
 export const useLogout = () => {
   const toast = useToastStore((state) => state.setToast);
   const router = useRouter();
@@ -22,8 +23,8 @@ export const useLogout = () => {
     } catch (error) {
       console.error(error);
       toast({
-        title: 'Signed out',
-        content: 'Nooo, please come back 😢',
+        title: 'Error while signing out',
+        content: 'Failed to sign out, please try again',
         variant: 'error',
       });
     }

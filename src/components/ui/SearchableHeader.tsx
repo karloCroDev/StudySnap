@@ -9,6 +9,9 @@ import { Button as AriaButton } from 'react-aria-components';
 // Libs
 import { plus_jakarta_sans } from '@/lib/fonts';
 
+// Hooks
+import { useToggleSearch } from '@/hooks/core/home/useToggleSearch';
+
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { Search } from '@/components/ui/Search';
@@ -19,23 +22,13 @@ import { useGeneralInfo } from '@/store/useGeneralInfo';
 export const SearchableHeader: React.FC<{
   title: string;
 }> = ({ title }) => {
-  const infoHeader = React.useRef<HTMLDivElement | null>(null);
-
   const setSearch = useGeneralInfo((state) => state.setSerach);
   React.useEffect(() => {
     setSearch('');
   }, []);
 
-  // Mobile only animations and access to search
-  const toggleSearch = () => {
-    const searchElement = infoHeader.current;
+  const { infoHeader, toggleSearch } = useToggleSearch();
 
-    if (searchElement) {
-      const currentValue = searchElement.getAttribute('data-search-visible');
-      const newValue = currentValue === 'true' ? 'false' : 'true';
-      searchElement.setAttribute('data-search-visible', newValue);
-    }
-  };
   return (
     <LayoutRow className="justify-center">
       <LayoutColumn xs={11} lg={10}>

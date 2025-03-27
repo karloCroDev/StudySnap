@@ -1,3 +1,5 @@
+'use client';
+
 // External packagess
 import * as React from 'react';
 

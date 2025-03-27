@@ -1,54 +1,46 @@
 'use client';
 
-// External packagess
+// External packages
 import * as React from 'react';
+import { useSession } from 'next-auth/react';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
-export const useDialogChangeDetails = ({
-  noteId,
-  isPublic,
-  name,
-  details,
+export const useDialogEditProfile = ({
+  username,
+  password,
   image,
-  setNoteName,
-  setNoteDetails,
-  setNoteImage,
   setIsOpen,
 }: {
-  noteId: string;
-  isPublic: boolean;
-  name: string;
-  details: string;
+  username: string;
+  password: string;
   image: File | null;
-  setNoteName: React.Dispatch<React.SetStateAction<string>>;
-  setNoteDetails: React.Dispatch<React.SetStateAction<string>>;
-  setNoteImage: React.Dispatch<React.SetStateAction<string>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [loading, setLoading] = React.useState(false);
+  const user = useSession();
   const toast = useToastStore((state) => state.setToast);
-
-  const changeDetails = async (e: React.FormEvent<HTMLFormElement>) => {
+  const [loading, setLoading] = React.useState(false);
+  const saveChanges = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       setLoading(true);
+
       const formData = new FormData();
-      formData.append('noteName', name);
-      formData.append('details', details);
-      formData.append('isPublic', isPublic.toString());
-      formData.append('noteId', noteId);
+      formData.append('userId', user.data!.user.id);
+      if (username) formData.append('username', username);
+      if (password) formData.append('password', password);
       if (image) formData.append('file', image);
 
       const response = await fetch(
-        'http://localhost:3000/api/core/home/notes',
+        'http://localhost:3000/api/core/public-profile',
         {
           method: 'PATCH',
           body: formData,
         }
       );
       const data = await response.json();
+
       if (!response.ok) {
         toast({
           title: 'Missing required fields',
@@ -57,21 +49,19 @@ export const useDialogChangeDetails = ({
         });
         return;
       }
+      if (username) await user.update({ name: username });
+      if (data.pfpEncoded) await user.update({ image: data.pfpEncoded });
 
       toast({
-        title: `${name} note updated`,
+        title: 'Profile updated',
         content: data.statusText,
         variant: 'success',
       });
-
-      if (name) setNoteName(name);
-      if (details) setNoteDetails(details);
-      if (image) setNoteImage(URL.createObjectURL(image));
     } catch (error) {
       console.error(error);
       toast({
         title: 'Uhoh, something went wrong',
-        content: 'Failed to create note',
+        content: 'Failed to update profile',
         variant: 'error',
       });
     } finally {
@@ -79,8 +69,6 @@ export const useDialogChangeDetails = ({
       setIsOpen(false);
     }
   };
-  return {
-    loading,
-    changeDetails,
-  };
+
+  return { saveChanges, loading };
 };

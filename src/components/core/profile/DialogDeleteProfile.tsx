@@ -2,68 +2,18 @@
 
 // External packages
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
-import { signOut } from 'next-auth/react';
-import { useSession } from 'next-auth/react';
 
 // Components
 import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 
-// Store
-import { useToastStore } from '@/store/useToastStore';
+// Hooks
+import { useDialogDelete } from '@/hooks/core/home/profile/useDialogDeleteProfile';
 
 // Confirmation dialog for deleting the profile
 export const DialogDeleteProfile = () => {
-  const user = useSession();
-
   const [isOpen, setIsOpen] = React.useState(false);
-  const toast = useToastStore((state) => state.setToast);
-  const router = useRouter();
-
-  const deleteDialog = async () => {
-    try {
-      const response = await fetch(
-        'http://localhost:3000/api/core/public-profile',
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId: user.data?.user.id }),
-        }
-      );
-
-      const data = await response.json();
-      console.log(data);
-
-      if (!response.ok) {
-        toast({
-          title: 'Uhoh',
-          content: data.statusText,
-          variant: 'error',
-        });
-        return;
-      }
-
-      await signOut({ redirect: false });
-      router.push('/login');
-      toast({
-        title: 'Profile deleted',
-        content: data.statusText,
-        variant: 'success',
-      });
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: 'Uhoh, something went wrong',
-        content: 'Failed to delete profile',
-        variant: 'error',
-      });
-    } finally {
-      setIsOpen(false);
-    }
-  };
+  const deleteDialog = useDialogDelete(setIsOpen);
 
   return (
     <Dialog
