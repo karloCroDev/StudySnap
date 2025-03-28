@@ -20,13 +20,14 @@ export class SubjectClass {
     creator: string,
     image: string | null
   ): Promise<string | null> {
+    console.log(name,details,creator,image)
     try {
       console.log(creator);
       const [result]: any = await getPool().execute(
         `
-                INSERT INTO subject ( name, details, creator_id, image_url)
-                VALUES (?, ?, ?, ?);
-                `,
+            INSERT INTO subject ( name, details, creator_id, image_url)
+            VALUES (?, ?, ?, ?);
+        `,
         [name, details, creator, image]
       );
       return result.insertId as string;

@@ -8,18 +8,16 @@ import { signIn } from 'next-auth/react';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
-export const useSignup = (): {
-  loading: boolean;
-  setUsername: React.Dispatch<React.SetStateAction<string>>;
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
-  signupUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
-} => {
+export const useSignupWithCredentials = ({
+  username,
+  email,
+  password,
+}: {
+  username: string;
+  email: string;
+  password: string;
+}) => {
   const [loading, setLoading] = React.useState(false);
-
-  const [username, setUsername] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
 
   const router = useRouter();
   const toast = useToastStore((state) => state.setToast);
@@ -71,9 +69,6 @@ export const useSignup = (): {
   };
   return {
     loading,
-    setUsername,
-    setEmail,
-    setPassword,
     signupUser,
   };
 };

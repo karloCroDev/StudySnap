@@ -7,17 +7,23 @@ import { GetNoteById, GetNotesBySubjectId } from '@/db/core/home/note';
 
 // Models
 import { NoteClass } from '@/models/note';
+import { SQLSyntaxCheck } from '@/db/algorithms/stringVerification';
 
 //Function gets all of the notes under a subject
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const subjectId = searchParams.get('subjectId');
+    const filter = searchParams.get('filter');
 
-    const notes = await GetNotesBySubjectId(subjectId as string);
+    if (!SQLSyntaxCheck([subjectId, filter])) {
+      return NextResponse.json({ status: 400, statusText: 'Bad request' });
+    }
+
+    const notes = await GetNotesBySubjectId(subjectId as string, filter ?? '');
 
     if (!notes) {
-      return NextResponse.json({ status: 400, statusText: 'No notes found' });
+      return NextResponse.json({ status: 400, statusText: 'Bad request' });
     }
     return NextResponse.json(notes, {
       status: 200,
@@ -40,11 +46,13 @@ export async function POST(req: NextRequest) {
     const isPublic = formData.get('isPublic') == 'true';
     const file = formData.get('file');
 
-    if (!noteName || isPublic == undefined || !subjectId) {
-      return NextResponse.json({
-        status: 400,
-        statusText: 'Missing required fields',
-      });
+    if (
+      !noteName ||
+      isPublic == undefined ||
+      !subjectId ||
+      !SQLSyntaxCheck([subjectId, noteName, details])
+    ) {
+      return NextResponse.json({ status: 400, statusText: 'Bad request' });
     }
 
     const imagePath = await WriteImage(file);
@@ -112,22 +120,18 @@ export async function PATCH(req: NextRequest) {
     const content = formData.get('content') as string;
     const image = formData.get('file');
 
-    if (!noteId) {
-      return NextResponse.json({
-        status: 400,
-        statusText: 'Note Id is requiered',
-      });
+    if (!noteId || SQLSyntaxCheck([noteName, details, noteId, content])) {
+      return NextResponse.json({ status: 400, statusText: 'Bad request' });
     }
-    console.log(isPublic);
+
     const updates: { [key: string]: any } = {};
     if (noteName) updates.title = noteName;
     if (details) updates.details = details;
     if (content) updates.content = content;
     if (image) updates.image_url = await WriteImage(image);
-    console.log(isPublic);
+
     if (isPublic != null) updates.is_Public = isPublic === 'true' ? 1 : 0;
 
-    console.log(updates);
     await NoteClass.Update(noteId, updates);
 
     return NextResponse.json({

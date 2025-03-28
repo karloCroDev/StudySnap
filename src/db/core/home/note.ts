@@ -55,8 +55,11 @@ export async function GetNoteById(
 }
 
 export async function GetNotesBySubjectId(
-  subject_id: string
+  subject_id: string,
+  filter: string
 ): Promise<Array<Note>> {
+  filter = `%${filter}%`;
+
   //Trying to find notes in cache
   const cacheKey = `GetNotesBySubjectId_${subject_id}`;
   const cachedNotes = await noteCache.get(cacheKey);
@@ -85,7 +88,7 @@ export async function GetNotesBySubjectId(
             user u ON s.creator_id = u.id
         LEFT JOIN
             likes l ON n.id = l.note_id
-        WHERE s.id = ?
+        WHERE s.id = ? AND (n.title LIKE ? OR n.content LIKE ?)
         GROUP BY
             n.id,
             n.title,
@@ -94,7 +97,7 @@ export async function GetNotesBySubjectId(
             n.subject_id,
             u.username
     `,
-    [subject_id]
+    [subject_id, filter, filter]
   );
   const notesWithImages = await Promise.all(
     result[0].map(async (note) => {

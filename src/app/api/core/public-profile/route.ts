@@ -12,16 +12,15 @@ import { GetProfileImage, WriteImage } from '@/db/imageHandler';
 
 // Models
 import { UserClass } from '@/models/user';
+import { SQLSyntaxCheck } from '@/db/algorithms/stringVerification';
 
 // Function to handle all liked posts from user
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const userId = searchParams.get('creatorId');
-  if (!userId) {
-    return NextResponse.json({
-      status: 400,
-      statusText: 'Insufficient data provided',
-    });
+
+  if (!userId || SQLSyntaxCheck([userId])) {
+    return NextResponse.json({ status: 400, statusText: 'Bad request' });
   }
 
   const likedNotes = await GetLikedNotes(userId);
@@ -36,11 +35,8 @@ export async function POST(req: NextRequest) {
   try {
     const { creatorId, userId } = await req.json();
 
-    if (!creatorId) {
-      return NextResponse.json({
-        status: 400,
-        statusText: 'Insufficient data provided',
-      });
+    if (!creatorId || SQLSyntaxCheck([userId, creatorId])) {
+      return NextResponse.json({ status: 400, statusText: 'Bad request' });
     }
 
     let notes = await GetNotesByCreatorId(creatorId, userId);
@@ -68,11 +64,8 @@ export async function PATCH(req: NextRequest) {
     const password = formData.get('password') as string | null;
     const file = formData.get('file');
 
-    if (!userId) {
-      return NextResponse.json({
-        status: 400,
-        statusText: 'User id is missing',
-      });
+    if (!userId || SQLSyntaxCheck([userId, username, password])) {
+      return NextResponse.json({ status: 400, statusText: 'Bad request' });
     }
 
     const updates: { [key: string]: any } = {};
