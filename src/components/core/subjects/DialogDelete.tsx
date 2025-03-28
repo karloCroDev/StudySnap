@@ -15,7 +15,7 @@ import { useDeleteSubject } from '@/hooks/core/home/subjects/useDeleteSubject';
 
 export const DialogDelete: React.FC<{
   name: string;
-  id: string;
+  id: number;
   imageUrl: string | null;
   children: React.ReactNode;
 }> = ({ name, id, children, imageUrl }) => {

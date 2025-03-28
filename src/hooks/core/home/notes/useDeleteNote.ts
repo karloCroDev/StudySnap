@@ -14,7 +14,7 @@ export const useDeleteNotes = ({
   setIsOpen,
 }: {
   noteName: string;
-  noteId: string;
+  noteId: number;
   imageUrl: string | null;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {

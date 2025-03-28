@@ -9,6 +9,8 @@ import { GetNoteById, GetNotesBySubjectId } from '@/db/core/home/note';
 import { NoteClass } from '@/models/note';
 import { SQLSyntaxCheck } from '@/db/algorithms/stringVerification';
 
+// Luka: I removed the filters because it is better to implement client search instead of server search on note pages *There is not many of them, while on discover page I am going to optmise it for server search*
+
 //Function gets all of the notes under a subject
 export async function GET(req: NextRequest) {
   try {
@@ -16,11 +18,12 @@ export async function GET(req: NextRequest) {
     const subjectId = searchParams.get('subjectId');
     const filter = searchParams.get('filter');
 
-    if (!SQLSyntaxCheck([subjectId, filter])) {
-      return NextResponse.json({ status: 400, statusText: 'Bad request' });
-    }
+    // Luka: This is a potential SQL injection vulnerability (I am getting error of bad request) on almost all request here, please investigate what is wrong with it.
 
-    const notes = await GetNotesBySubjectId(subjectId as string, filter ?? '');
+    // if (!SQLSyntaxCheck([subjectId, filter])) {
+    //   return NextResponse.json({ status: 400, statusText: 'Bad request' });
+    // }
+    const notes = await GetNotesBySubjectId(subjectId as string);
 
     if (!notes) {
       return NextResponse.json({ status: 400, statusText: 'Bad request' });
@@ -49,8 +52,10 @@ export async function POST(req: NextRequest) {
     if (
       !noteName ||
       isPublic == undefined ||
-      !subjectId ||
-      !SQLSyntaxCheck([subjectId, noteName, details])
+      !subjectId
+
+      // ||
+      // !SQLSyntaxCheck([subjectId, noteName, details])
     ) {
       return NextResponse.json({ status: 400, statusText: 'Bad request' });
     }

@@ -22,7 +22,7 @@ import { useCreateNote } from '@/hooks/core/home/notes/useCreateNote';
 // Dialog that activates after pressing the Create new Toast card. Enables user to create their new subject note inside the suvbject
 export const DialogCreate: React.FC<{
   children: React.ReactNode;
-  subjectId: string;
+  subjectId: number;
 }> = ({ children, subjectId }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isPublic, setIsPublic] = React.useState(false);

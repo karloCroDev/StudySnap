@@ -14,13 +14,13 @@ export const useGeneralInfo = create<{
   subjects: Subject[];
   setSubjects: (val: Subject[]) => void;
   addSubject: (val: Subject) => void;
-  deleteSubject: (val: string) => void;
+  deleteSubject: (val: number) => void;
 
   // Notes
   notes: Note[];
   setNotes: (val: Note[]) => void;
   addNote: (val: Note) => void;
-  deleteNote: (val: string) => void;
+  deleteNote: (val: number) => void;
 }>((set) => ({
   search: '',
   setSerach: (val) => set({ search: val.toLowerCase() }),

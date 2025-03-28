@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
 };
 
-async function getPublicNotes(userId: string, filter: string) {
+async function getPublicNotes(userId: number, filter: string) {
   const response = await fetch(`http://localhost:3000/api/core/discover`, {
     method: 'POST',
     headers: {
@@ -43,7 +43,7 @@ async function getPublicNotes(userId: string, filter: string) {
 export default async function Disover() {
   const session = await getServerSession(authOptions);
   // Handling the anonymous user inside the application
-  const userId: string = session?.user.id || null;
+  const userId: number = session?.user.id || null;
   const publicNotes: Note[] = await getPublicNotes(userId, 'filter');
 
   return (

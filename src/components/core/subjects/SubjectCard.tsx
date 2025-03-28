@@ -17,11 +17,11 @@ import { DialogChangeDetails } from '@/components/core/subjects/DialogChangeDeta
 
 // Subject card that links to belonging notes
 export const SubjectCard: React.FC<{
-  id: string;
+  id: number;
   title: string;
   description?: string;
   encodedImage?: string | null;
-  imageUrl: string|null;
+  imageUrl: string | null;
 }> = ({ id, title, description = '', encodedImage, imageUrl }) => {
   const [cardTitle, setCardTitle] = React.useState(title);
   const [cardDescription, setCardDescription] = React.useState(description);
@@ -94,7 +94,7 @@ export const SubjectCard: React.FC<{
           </DialogChangeDetails>
         </li>
         <li>
-          <DialogDelete id={id} name={cardTitle} imageUrl = {imageUrl}>
+          <DialogDelete id={id} name={cardTitle} imageUrl={imageUrl}>
             <TrashIcon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',

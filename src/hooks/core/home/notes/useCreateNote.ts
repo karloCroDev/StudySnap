@@ -21,7 +21,7 @@ export const useCreateNote = ({
   setImage,
   setIsOpen,
 }: {
-  subjectId: string;
+  subjectId: number;
   isPublic: boolean;
   noteName: string;
   details: string;
@@ -40,7 +40,7 @@ export const useCreateNote = ({
     try {
       setLoading(true);
       const formData = new FormData();
-      formData.append('subjectId', subjectId);
+      formData.append('subjectId', subjectId.toString());
       if (noteName) formData.append('noteName', noteName);
       if (details) formData.append('details', details);
       formData.append('isPublic', isPublic.toString());
@@ -63,6 +63,7 @@ export const useCreateNote = ({
         });
         return;
       }
+      console.log(data);
       addNote(data as Note);
       toast({
         title: `${noteName} note created`,

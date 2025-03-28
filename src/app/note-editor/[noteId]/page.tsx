@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     },
   },
 };
-async function fetchNote(noteId: string, userId: string) {
+async function fetchNote(noteId: number, userId: number) {
   try {
     const response = await fetch(
       `http://localhost:3000/api/core/home/notes/editor`,
@@ -48,7 +48,7 @@ async function fetchNote(noteId: string, userId: string) {
 export default async function NoteEditor({
   params,
 }: {
-  params: { noteId: string };
+  params: { noteId: number };
 }) {
   const session = await getServerSession(authOptions);
 

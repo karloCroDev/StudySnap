@@ -35,9 +35,9 @@ export const TipTapEditor: React.FC<{
   title: string;
   content: string | null;
   author: string;
-  creatorId: string;
-  noteId: string;
-  documentId: string;
+  creatorId: number;
+  noteId: number;
+  documentId: number;
   isLiked: number; // Boolean from db is represented in 0 or 1
   likeCount: number;
 }> = ({
@@ -53,7 +53,7 @@ export const TipTapEditor: React.FC<{
   const user = useSession();
 
   const allowEditing = React.useMemo(
-    () => user.data?.user.id!.toString() === creatorId.toString(),
+    () => user.data?.user.id! === creatorId,
     [user, creatorId]
   );
 
@@ -163,7 +163,6 @@ export const TipTapEditor: React.FC<{
           editor={editor}
           isEditing={isEditing}
           setIsEditing={setIsEditing}
-          saveDocument={saveDocument}
           completionLoading={completionLoading}
           allowEditing={allowEditing}
         />

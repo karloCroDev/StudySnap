@@ -12,7 +12,7 @@ import { useToastStore } from '@/store/useToastStore';
 
 export const LikeComponent: React.FC<{
   hasBeenLiked: boolean;
-  noteId: string;
+  noteId: number;
   numberOfLikes: number;
   isOrderReversed?: boolean;
   size?: 'sm' | 'lg';

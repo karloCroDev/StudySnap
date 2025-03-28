@@ -17,7 +17,7 @@ export const useChangeDetailsNote = ({
   setNoteImage,
   setIsOpen,
 }: {
-  noteId: string;
+  noteId: number;
   isPublic: boolean;
   name: string;
   details: string;
@@ -38,7 +38,7 @@ export const useChangeDetailsNote = ({
       formData.append('noteName', name);
       formData.append('details', details);
       formData.append('isPublic', isPublic.toString());
-      formData.append('noteId', noteId);
+      formData.append('noteId', noteId.toString());
       if (image) formData.append('file', image);
 
       const response = await fetch(

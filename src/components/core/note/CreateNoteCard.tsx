@@ -5,7 +5,7 @@ import { DoubleArrowRightIcon, FilePlusIcon } from '@radix-ui/react-icons';
 import { DialogCreate } from '@/components/core/note/DialogCreate';
 
 export const CreateNoteCard: React.FC<{
-  subject: string;
+  subject: number;
 }> = ({ subject }) => {
   return (
     <DialogCreate subjectId={subject}>

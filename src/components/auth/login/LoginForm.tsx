@@ -16,6 +16,7 @@ export const LoginForm = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const { loading, loginUser } = useLoginForm({ email, password });
+
   return (
     <AriaForm
       className="mt-4 flex flex-col gap-y-8 md:gap-y-6 2xl:mt-8"

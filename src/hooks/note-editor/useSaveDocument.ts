@@ -13,19 +13,19 @@ export const useSaveDocument = ({
   setIsEditing,
   editor,
 }: {
-  documentId: string;
+  documentId: number;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   editor: EditorType;
 }) => {
   const [loadingSaveDocument, setLoadingSaveDocument] = React.useState(false);
   const toast = useToastStore((state) => state.setToast);
-
+  console.log(documentId);
   const saveDocument = async () => {
     try {
       setLoadingSaveDocument(true);
       const formData = new FormData();
       formData.append('content', editor!.getHTML());
-      formData.append('noteId', documentId);
+      formData.append('noteId', documentId.toString());
       const response = await fetch(
         'http://localhost:3000/api/core/home/notes',
         {

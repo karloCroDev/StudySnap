@@ -4,7 +4,7 @@ import { noteCache } from '@/db/algorithms/caching';
 import { DeleteImage } from '@/db/imageHandler';
 
 export interface Note {
-  id: string;
+  id: number;
   title: string;
   details: string | null;
   content: string | null;
@@ -16,7 +16,7 @@ export interface Note {
   likes: number;
   liked: number;
   creator_name: string;
-  creator_id: string;
+  creator_id: number;
 
   image_url: string | null;
   encoded_image: string | null;

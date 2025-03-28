@@ -19,9 +19,9 @@ export const metadata: Metadata = {
   description: 'See all your desired notes in one place',
 };
 
-async function getNotes(subjectId: string, filter: string) {
+async function getNotes(subjectId: number) {
   const response = await fetch(
-    `http://localhost:3000/api/core/home/note?subjectId=${subjectId}&filter=${filter}`
+    `http://localhost:3000/api/core/home/notes?subjectId=${subjectId}`
   );
 
   if (!response.ok) throw new Error('Failed to fetch data');
@@ -32,7 +32,7 @@ async function getNotes(subjectId: string, filter: string) {
 export default async function Notes({
   params,
 }: {
-  params: { subjectId: string };
+  params: { subjectId: number };
 }) {
   const { subjectId } = params;
   const session = await getServerSession(authOptions);
@@ -41,7 +41,7 @@ export default async function Notes({
     redirect('/login');
   }
 
-  const notes: Note[] = await getNotes(subjectId, 'filter');
+  const notes: Note[] = await getNotes(subjectId);
   return (
     <>
       <SearchableHeader title="Your notes" />

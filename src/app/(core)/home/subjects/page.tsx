@@ -1,4 +1,3 @@
-
 // External packages
 import { type Metadata } from 'next';
 import { getServerSession } from 'next-auth';
@@ -13,8 +12,6 @@ import { SubjectMapping } from '@/components/core/subjects/SubjectMapping';
 
 // Models (types)
 import { type Subject } from '@/models/subject';
-import { useGeneralInfo } from '@/store/useGeneralInfo';
-import { useShallow } from 'zustand/shallow';
 
 // Metadata
 export const metadata: Metadata = {
@@ -23,16 +20,16 @@ export const metadata: Metadata = {
 };
 
 export async function getSubjects(session: any, filter: string) {
-  console.log(filter)
+  console.log(filter);
   const response = await fetch(
-    `http://localhost:3000/api/core/home/subjects?userId=${session.user.id}&filter=${filter}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session.accessToken}`,
-      },
-    }
+    `http://localhost:3000/api/core/home/subjects?userId=${session.user.id}&filter=${filter}`
+    // {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Authorization: `Bearer ${session.accessToken}`,
+    //   },
+    // }
   );
 
   if (!response.ok) throw new Error('Failed to fetch data');
@@ -41,12 +38,12 @@ export async function getSubjects(session: any, filter: string) {
 }
 
 export default async function Subjects() {
-  const session: any = await getServerSession(authOptions); 
+  const session: any = await getServerSession(authOptions);
   if (!session) {
     redirect('/login');
   }
   //Karlo: Provide me with filter string here, discover and in notes
-  const subjects: Subject[] = await getSubjects(session, "");
+  const subjects: Subject[] = await getSubjects(session, '');
 
   return (
     <>

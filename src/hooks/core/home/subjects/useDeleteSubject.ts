@@ -13,7 +13,7 @@ export const useDeleteSubject = ({
   imageUrl,
   setIsOpen,
 }: {
-  id: string;
+  id: number;
   name: string;
   imageUrl: string | null;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;

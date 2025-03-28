@@ -15,7 +15,7 @@ import { useDeleteNotes } from '@/hooks/core/home/notes/useDeleteNote';
 export const DialogDelete: React.FC<{
   children: React.ReactNode;
   noteName: string;
-  noteId: string;
+  noteId: number;
   imageUrl: string | null;
 }> = ({ children, noteName, noteId, imageUrl }) => {
   const [isOpen, setIsOpen] = React.useState(false);

@@ -21,7 +21,7 @@ import { useChangeDetailsNote } from '@/hooks/core/home/notes/useChangeDetailsNo
 
 // Dialog that changes details for each individual note card on frontend
 export const DialogChangeDetails: React.FC<{
-  noteId: string;
+  noteId: number;
   // These are props (from note card) that are needed in order to update the Note card on frontend, and to display current details (title, desc...) in input fields etc.
   noteName: string;
   setNoteName: React.Dispatch<React.SetStateAction<string>>;

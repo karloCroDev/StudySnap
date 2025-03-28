@@ -16,7 +16,7 @@ export const useChangeDetailsSubject = ({
   setCardImage,
   setIsOpen,
 }: {
-  id: string;
+  id: number;
   subjectName: string;
   details: string;
   image: File | null;
@@ -32,7 +32,7 @@ export const useChangeDetailsSubject = ({
     e.preventDefault();
     try {
       const formData = new FormData();
-      formData.append('subjectId', id);
+      formData.append('subjectId', id.toString());
       if (subjectName) formData.append('subjectName', subjectName);
       if (details) formData.append('details', details);
       if (image) formData.append('file', image);

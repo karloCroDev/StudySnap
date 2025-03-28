@@ -15,7 +15,7 @@ import { useChangeDetailsSubject } from '@/hooks/core/home/subjects/useChangeDet
 
 // Dialog for chaging details for subjects
 export const DialogChangeDetails: React.FC<{
-  id: string;
+  id: number;
   children: React.ReactNode;
   // These are props (from subject card) that are needed in order to update the Subject card on frontend, and to display current details (title, desc...) etc.
   cardTitle: string;
