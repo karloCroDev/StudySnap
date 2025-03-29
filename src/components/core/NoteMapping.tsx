@@ -60,7 +60,6 @@ export const NoteMapping: React.FC<{
           imageUrl={note.image_url}
           key={note.id}
         />
-        <LoadingSkeletonNote />
       </LayoutColumn>
     ));
 };

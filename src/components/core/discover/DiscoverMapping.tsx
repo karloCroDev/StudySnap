@@ -9,6 +9,7 @@ import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { NoteCard } from '@/components/core/NoteCard';
 import { LoadingSkeletonNote } from '@/components/core/discover/LoadingSkeletonNote';
 import { Button } from '@/components/ui/Button';
+import { Spinner } from '@/components/ui/Spinner';
 
 // Hooks
 import { useDebounce } from '@/hooks/useDebounce';
@@ -36,6 +37,7 @@ export const DisocverMapping: React.FC<{
     setNotes(notesData);
   }, [notesData]);
 
+  // Server side search logic
   const search = useGeneralInfo((state) => state.search);
   const debouncedSearch = useDebounce(search);
 
@@ -45,7 +47,6 @@ export const DisocverMapping: React.FC<{
   React.useEffect(() => {
     const noteQuery = async () => {
       try {
-        // setLoading(true);
         const response = await fetch(
           `http://localhost:3000/api/core/discover`,
           {
@@ -69,20 +70,21 @@ export const DisocverMapping: React.FC<{
   }, [debouncedSearch]);
 
   React.useEffect(() => {
-    if (!debouncedSearch) setLoading(false);
     if (search !== debouncedSearch) setLoading(true);
+    if (!debouncedSearch && !search) {
+      setLoading(false);
+      setNotesQuery([]);
+    }
   }, [search, debouncedSearch]);
+
+  // Explore more
+  const [loadingExploreMore, setLoadingExploreMore] = React.useState(false);
 
   if (loading) {
     return (
-      <LayoutRow className="sm:-mr-4">
-        {[...Array(3)].map((_, index) => (
-          <LayoutColumn
-            sm={6}
-            lg={4}
-            xl2={3}
-            className="mb-8 animate-card-apperance sm:pr-4"
-          >
+      <LayoutRow className="animate-card-apperance sm:-mr-4">
+        {[...Array(4)].map((_, index) => (
+          <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
             <LoadingSkeletonNote key={index} />
           </LayoutColumn>
         ))}
@@ -92,14 +94,9 @@ export const DisocverMapping: React.FC<{
 
   if (notesQuery.length) {
     return (
-      <LayoutRow className="sm:-mr-4">
+      <LayoutRow className="animate-card-apperance sm:-mr-4">
         {notesQuery.map((note) => (
-          <LayoutColumn
-            sm={6}
-            lg={4}
-            xl2={3}
-            className="mb-8 animate-card-apperance sm:pr-4"
-          >
+          <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
             <NoteCard
               noteId={note.id}
               title={note.title}
@@ -130,14 +127,9 @@ export const DisocverMapping: React.FC<{
 
   return (
     <>
-      <LayoutRow className="sm:-mr-4">
+      <LayoutRow className="animate-card-apperance sm:-mr-4">
         {notes.map((note) => (
-          <LayoutColumn
-            sm={6}
-            lg={4}
-            xl2={3}
-            className="mb-8 animate-card-apperance sm:pr-4"
-          >
+          <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
             <NoteCard
               noteId={note.id}
               title={note.title}
@@ -155,7 +147,38 @@ export const DisocverMapping: React.FC<{
           </LayoutColumn>
         ))}
       </LayoutRow>
-      <Button rounded="full" colorScheme="light-blue" className="mx-auto">
+      <Button
+        rounded="full"
+        colorScheme="light-blue"
+        className="mx-auto mb-16"
+        iconRight={loadingExploreMore && <Spinner />}
+        onPress={async () => {
+          const moreNotes = async () => {
+            try {
+              setLoadingExploreMore(true);
+              const response = await fetch(
+                `http://localhost:3000/api/core/discover`,
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ userId, filter: '' }),
+                }
+              );
+              if (!response.ok) throw new Error('Failed to fetch data');
+              const data = await response.json();
+              addFetchedNotes(data);
+            } catch (error) {
+              console.error(error);
+            } finally {
+              setLoadingExploreMore(false);
+            }
+          };
+
+          moreNotes();
+        }}
+      >
         Explore more
       </Button>
     </>
