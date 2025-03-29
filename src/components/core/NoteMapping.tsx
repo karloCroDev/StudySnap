@@ -7,6 +7,7 @@ import { useShallow } from 'zustand/shallow';
 // Components
 import { LayoutColumn } from '@/components/ui/Layout';
 import { NoteCard } from '@/components/core/NoteCard';
+import { LoadingSkeletonNote } from './discover/LoadingSkeletonNote';
 
 // Store
 import { useGeneralInfo } from '@/store/useGeneralInfo';
@@ -59,6 +60,7 @@ export const NoteMapping: React.FC<{
           imageUrl={note.image_url}
           key={note.id}
         />
+        <LoadingSkeletonNote />
       </LayoutColumn>
     ));
 };

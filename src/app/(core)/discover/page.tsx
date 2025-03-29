@@ -44,7 +44,7 @@ export default async function Disover() {
   const session = await getServerSession(authOptions);
   // Handling the anonymous user inside the application
   const userId: number = session?.user.id || null;
-  const publicNotes: Note[] = await getPublicNotes(userId, 'filter');
+  const publicNotes: Note[] = await getPublicNotes(userId, '');
 
   return (
     <>

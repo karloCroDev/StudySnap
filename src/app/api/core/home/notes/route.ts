@@ -127,7 +127,10 @@ export async function PATCH(req: NextRequest) {
     const content = formData.get('content') as string;
     const image = formData.get('file');
 
-    if (!noteId || SQLSyntaxCheck([noteName, details, noteId, content])) {
+    if (
+      !noteId
+      // || SQLSyntaxCheck([noteName, details, noteId, content])
+    ) {
       return NextResponse.json({ status: 400, statusText: 'Bad request' });
     }
 

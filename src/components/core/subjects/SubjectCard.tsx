@@ -56,7 +56,7 @@ export const SubjectCard: React.FC<{
           <h3 className="w-3/5 break-words text-xl font-semibold">
             {cardTitle}
           </h3>
-          {description && (
+          {cardDescription && (
             <p
               className={twJoin(
                 'text-xs font-medium',
