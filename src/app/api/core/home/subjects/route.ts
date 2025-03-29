@@ -8,24 +8,21 @@ import { WriteImage } from '@/db/imageHandler';
 
 // Models
 import { Subject, SubjectClass } from '@/models/subject';
-import { SQLSyntaxCheck } from '@/db/algorithms/stringVerification';
+import { SQLSyntaxCheck } from '@/lib/algorithms/stringVerification';
 
 const secret = process.env.NEXTAUTH_SECRET;
+
 //Function gets all users subjects
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const userId = searchParams.get('userId');
-    const filter = searchParams.get('filter');
 
-    if (SQLSyntaxCheck([userId, filter])) {
+    if (SQLSyntaxCheck([userId])) {
       return NextResponse.json({ messasge: 'Bad request' }, { status: 400 });
     }
 
-    let subjects: Subject[] = await GetSubjectByCreatorId(
-      userId as string,
-      filter ?? ''
-    );
+    let subjects: Subject[] = await GetSubjectByCreatorId(userId as string);
 
     if (!subjects) {
       return NextResponse.json(

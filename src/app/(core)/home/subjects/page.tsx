@@ -1,6 +1,6 @@
 // External packages
 import { type Metadata } from 'next';
-import { getServerSession } from 'next-auth';
+import { getServerSession, Session } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
 
@@ -19,10 +19,9 @@ export const metadata: Metadata = {
   description: 'See all your desired subjects in one place',
 };
 
-export async function getSubjects(session: any, filter: string) {
-  console.log(filter);
+export async function getSubjects(session: Session) {
   const response = await fetch(
-    `http://localhost:3000/api/core/home/subjects?userId=${session.user.id}&filter=${filter}`
+    `http://localhost:3000/api/core/home/subjects?userId=${session.user.id}`
     // {
     //   method: 'GET',
     //   headers: {
@@ -38,12 +37,12 @@ export async function getSubjects(session: any, filter: string) {
 }
 
 export default async function Subjects() {
-  const session: any = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
   if (!session) {
     redirect('/login');
   }
   //Karlo: Provide me with filter string here, discover and in notes
-  const subjects: Subject[] = await getSubjects(session, '');
+  const subjects: Subject[] = await getSubjects(session);
 
   return (
     <>

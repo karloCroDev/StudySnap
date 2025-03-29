@@ -12,7 +12,7 @@ import { GetProfileImage, WriteImage } from '@/db/imageHandler';
 
 // Models
 import { UserClass } from '@/models/user';
-import { SQLSyntaxCheck } from '@/db/algorithms/stringVerification';
+import { SQLSyntaxCheck } from '@/lib/algorithms/stringVerification';
 
 // Function to handle all liked posts from user
 export async function GET(req: NextRequest) {

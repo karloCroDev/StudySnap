@@ -1,6 +1,6 @@
 // Database
 import { getPool } from '@/db/db';
-import { noteCache } from '@/db/algorithms/caching';
+import { noteCache } from '@/lib/algorithms/caching';
 import { DeleteImage } from '@/db/imageHandler';
 
 export interface Note {

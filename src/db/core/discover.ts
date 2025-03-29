@@ -8,7 +8,7 @@ import { type Note } from '@/models/note';
 import { GetImage, GetProfileImage } from '@/db/imageHandler';
 
 // Database (algorithm)
-import { rankNotes } from '@/db/algorithms/alogirthm';
+import { rankNotes } from '@/lib/algorithms/alogirthm';
 
 // Gets all public notes for discover section
 export async function GetPublicNotes(

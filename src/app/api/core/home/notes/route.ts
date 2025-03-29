@@ -7,7 +7,7 @@ import { GetNoteById, GetNotesBySubjectId } from '@/db/core/home/note';
 
 // Models
 import { NoteClass } from '@/models/note';
-import { SQLSyntaxCheck } from '@/db/algorithms/stringVerification';
+import { SQLSyntaxCheck } from '@/lib/algorithms/stringVerification';
 
 // Luka: I removed the filters because it is better to implement client search instead of server search on note pages *There is not many of them, while on discover page I am going to optmise it for server search*
 

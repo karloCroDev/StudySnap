@@ -6,7 +6,7 @@ import { GetNoteById } from '@/db/core/home/noteEditor';
 
 // Models
 import { Note } from '@/models/note';
-import { SQLSyntaxCheck } from '@/db/algorithms/stringVerification';
+import { SQLSyntaxCheck } from '@/lib/algorithms/stringVerification';
 
 //Function gets the note
 export async function POST(req: NextRequest) {

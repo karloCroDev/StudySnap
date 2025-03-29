@@ -3,7 +3,7 @@ import { NextResponse, NextRequest } from 'next/server';
 
 // Database
 import { GetPublicNotes } from '@/db/core/discover';
-import { SQLSyntaxCheck } from '@/db/algorithms/stringVerification';
+import { SQLSyntaxCheck } from '@/lib/algorithms/stringVerification';
 
 //Function that gets all of the notes that are avalible to the public
 export async function POST(req: NextRequest) {
