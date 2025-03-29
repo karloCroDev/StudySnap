@@ -1,3 +1,4 @@
+// External packages
 import { Plus_Jakarta_Sans, Poppins } from 'next/font/google';
 
 const plus_jakarta_sans = Plus_Jakarta_Sans({

@@ -3,8 +3,6 @@
 // External packagess
 import * as React from 'react';
 import { type Editor as EditorType } from '@tiptap/react';
-import { useSession } from 'next-auth/react';
-
 import { Pencil2Icon, FileTextIcon } from '@radix-ui/react-icons';
 
 // Components
@@ -19,14 +17,16 @@ import { DialogAskAI } from '@/components/note-editor/DialogAskAI';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
+// Hooks
+import { useSaveDocument } from '@/hooks/note-editor/useSaveDocument';
+
 // Footer of the document for features, especially on mobile
 export const ActionBar: React.FC<{
-  noteId: string;
+  noteId: number;
   isLiked: number;
   likeCount: number;
   isEditing: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-  saveDocument: () => void;
   editor: EditorType;
   completionLoading: boolean;
   allowEditing: boolean;
@@ -37,13 +37,16 @@ export const ActionBar: React.FC<{
   isEditing,
   setIsEditing,
   editor,
-  saveDocument,
+
   completionLoading,
   allowEditing,
 }) => {
-  const user = useSession();
   const toast = useToastStore((state) => state.setToast);
-  console.log(noteId);
+  const { saveDocument, loadingSaveDocument } = useSaveDocument({
+    noteId,
+    editor,
+    setIsEditing,
+  });
   return (
     <div className="flex items-center justify-between gap-4 overflow-scroll py-2">
       {!isEditing ? (
@@ -86,6 +89,7 @@ export const ActionBar: React.FC<{
             rounded="full"
             iconLeft={<FileTextIcon className="size-5" />}
             onPress={saveDocument}
+            iconRight={loadingSaveDocument && <Spinner />}
             className="min-w-fit md:hidden"
           >
             Save

@@ -18,6 +18,10 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Spinner } from '@/components/ui/Spinner';
 
+// Hooks
+import { useUploadImage } from '@/hooks/note-editor/useUploadImage';
+import { useClientImage } from '@/hooks/useClientImage';
+
 // Dialog for uploading image to document, or putting the url!
 export const DialogUploadImage: React.FC<{
   children: React.ReactNode;
@@ -26,37 +30,13 @@ export const DialogUploadImage: React.FC<{
   const [isOpen, setIsOpen] = React.useState(false);
   const [imageUrl, setImageUrl] = React.useState('');
   const [image, setImage] = React.useState<null | File>(null);
-  const clientImage = React.useMemo(
-    () => image && URL.createObjectURL(image),
-    [image]
-  );
+  const clientImage = useClientImage(image!);
 
-  const [loading, setLoading] = React.useState(false);
-
-  const uploadUsersImage = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      if (image) formData.append('file', image); // Karlo: Add better insight while checking
-      const response = await fetch(
-        'http://localhost:3000/api/core/home/notes/editor-image-upload',
-        {
-          method: 'POST',
-          body: formData,
-        }
-      );
-
-      const data = await response.json();
-      editor.chain().focus().setImage({ src: data }).run();
-      setIsOpen(false);
-    } catch (error) {
-      console.error('Failed to complete sentence:', error);
-    } finally {
-      setLoading(false);
-      setIsOpen(false);
-    }
-  };
+  const { loading, uploadUsersImage } = useUploadImage({
+    editor,
+    image: image!,
+    setIsOpen,
+  });
 
   return (
     <Dialog

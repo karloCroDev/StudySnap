@@ -1,14 +1,14 @@
-// Lib
-import { getPool } from '@/lib/db/db';
+// Database
+import { getPool } from '@/db/db';
 
 //Models
 import { type Note } from '@/models/note';
 
 // Database (handling the images)
-import { GetImage, GetProfileImage } from '@/lib/db/imageHandler';
+import { GetImage, GetProfileImage } from '@/db/imageHandler';
 
-// Lib (algorithm)
-import { rankNotes } from '@/lib/db/algorithms/alogirthm';
+// Database (algorithm)
+import { rankNotes } from '@/lib/algorithms/alogirthm';
 
 // Gets all public notes for discover section
 export async function GetPublicNotes(
@@ -17,7 +17,7 @@ export async function GetPublicNotes(
   userId: string,
   filter: string
 ): Promise<Array<Note>> {
-  filter = "%%"//`%${filter}%`
+  filter = '%%'; //`%${filter}%`
   const result: [any[], any] = await getPool().query(
     `
         SELECT
@@ -54,7 +54,7 @@ export async function GetPublicNotes(
         LIMIT ?
         OFFSET ?
     `,
-    [userId, filter, filter, limit, offset, ]
+    [userId, filter, filter, limit, offset]
   );
   const notesWithImages = await Promise.all(
     result[0].map(async (note) => {

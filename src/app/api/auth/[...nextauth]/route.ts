@@ -2,13 +2,14 @@
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
-import GoogleProvider from "next-auth/providers/google";
-
-// Lib
-import { GetUserByEmail } from '@/lib/db/auth/login';
+import GoogleProvider from 'next-auth/providers/google';
 import { Account, Profile, User } from 'next-auth';
-import { UserClass } from '@/models/user';
 
+// db
+import { GetUserByEmail } from '@/db/auth/login';
+
+// Models
+import { UserClass } from '@/models/user';
 
 export const authOptions = {
   providers: [
@@ -37,12 +38,12 @@ export const authOptions = {
         }
       },
     }),
-    
+
     //Provides google/email login to the website
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!
-    })
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
   ],
 
   callbacks: {
@@ -56,11 +57,11 @@ export const authOptions = {
         token.image = session.image;
       }
       if (user) {
-        let myUser = await GetUserByEmail(user.email)
+        let myUser = await GetUserByEmail(user.email);
         token.uid = myUser!.id;
         token.sub = myUser!.id;
         token.image = myUser!.encoded_image || '';
-        token.name = myUser!.username
+        token.name = myUser!.username;
         token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24; // Token expires in 24 hours
       }
 
@@ -79,33 +80,37 @@ export const authOptions = {
     },
 
     //Handles sign in and sign up for authentication via gmail
-    async signIn({ user, account, profile, credentials }: { 
-      user: User;  
-      account: Account | null; 
-      profile?: Profile | null; 
+    async signIn({
+      user,
+      account,
+      profile,
+      credentials,
+    }: {
+      user: User;
+      account: Account | null;
+      profile?: Profile | null;
       credentials?: Record<string, any> | null;
     }) {
       //Account must be provided to continue
       if (!account) return false;
 
       //Logic for creating a user if he does not exist
-      if (account.provider === "google") {
-        const existingUser = await GetUserByEmail(user.email!)
+      if (account.provider === 'google') {
+        const existingUser = await GetUserByEmail(user.email!);
         if (!existingUser) {
-          await UserClass.Insert(user.name!, user.email!, "SignedUpViaGoogle")
+          await UserClass.Insert(user.name!, user.email!, 'SignedUpViaGoogle');
         }
-        return true
-      }
-
-      if (account.provider === "credentials") {
         return true;
       }
 
-      return false;  
-      },
+      if (account.provider === 'credentials') {
+        return true;
+      }
+
+      return false;
+    },
   },
 
-  
   session: {
     strategy: 'jwt' as 'jwt', // Use JWT strategy for sessions
   },
@@ -122,4 +127,3 @@ const handler = NextAuth(authOptions);
 
 // Export the handler for GET and POST requests
 export { handler as GET, handler as POST };
-

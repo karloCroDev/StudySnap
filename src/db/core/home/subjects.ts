@@ -1,23 +1,21 @@
-// Lib
-import { getPool } from '@/lib/db/db';
+// Database
+import { getPool } from '@/db/db';
 
 //Models
 import { Subject } from '@/models/subject';
 
 // Database (handling the images)
-import { GetImage } from '@/lib/db/imageHandler';
+import { GetImage } from '@/db/imageHandler';
 
 // Gets all subjects for the current user
 export async function GetSubjectByCreatorId(
-  creatorId: string,
-  filter: string
+  creatorId: string
 ): Promise<Array<Subject>> {
-  filter = `%${filter}%`
   const result: [any[], any] = await getPool().query(
     `
-        SELECT * FROM subject WHERE creator_id = ? AND (name LIKE ? OR details LIKE ?)
+        SELECT * FROM subject WHERE creator_id = ?
     `,
-    [creatorId, filter, filter]
+    [creatorId]
   );
   const subjectsWithImages = await Promise.all(
     result[0].map(async (subject) => {

@@ -16,17 +16,17 @@ import { LikeComponent } from '@/components/ui/LikeComponent';
 
 // Note card that links to desired document
 export const NoteCard: React.FC<{
-  noteId: string;
+  noteId: number;
   title: string;
   description: string;
   author: string;
   isPublic: boolean;
   encodedImage?: string | null;
-  imageUrl:string|null;
+  imageUrl: string | null;
   encodedUserImage?: string;
   numberOfLikes: number;
   liked: number;
-  creatorId: string;
+  creatorId: number;
 }> = ({
   noteId,
   title,
@@ -41,17 +41,17 @@ export const NoteCard: React.FC<{
   creatorId,
 }) => {
   const user = useSession();
-
+  console.log(user);
   const [noteName, setNoteName] = React.useState(title);
   const [noteDetails, setNoteDetails] = React.useState(description);
   const [noteImage, setNoteImage] = React.useState('');
 
   // Real time updating if user chnages his name (instead of refreshing)
   const authorCheck =
-    creatorId.toString() === user.data?.user.id ? user.data.user.name : author;
+    creatorId === user.data?.user.id ? user.data.user.name : author;
 
   const pfpCheck =
-    creatorId.toString() === user.data?.user.id
+    creatorId === user.data?.user.id
       ? `data:image/jpeg;base64,${user.data?.user.image}`
       : `data:image/jpeg;base64,${encodedUserImage}`;
 
@@ -105,7 +105,7 @@ export const NoteCard: React.FC<{
           />
         </div>
       </div>
-      {user.data?.user.id === creatorId.toString() && (
+      {user.data?.user.id === creatorId && (
         <ul className="absolute right-5 top-8 z-10 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
           <li>
             <DialogChangeDetails
@@ -128,7 +128,11 @@ export const NoteCard: React.FC<{
             </DialogChangeDetails>
           </li>
           <li>
-            <DialogDelete noteId={noteId} noteName={noteName} imageUrl= {imageUrl}>
+            <DialogDelete
+              noteId={noteId}
+              noteName={noteName}
+              imageUrl={imageUrl}
+            >
               <TrashIcon
                 className={twJoin(
                   'size-9 transition-colors lg:size-7',

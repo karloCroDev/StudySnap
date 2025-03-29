@@ -1,12 +1,12 @@
-// Lib
-import { getPool } from '@/lib/db/db';
-import { noteCache } from '@/lib/db/algorithms/caching';
+// Database
+import { getPool } from '@/db/db';
+import { noteCache } from '@/lib/algorithms/caching';
 
 //Models
 import { type Note } from '@/models/note';
 
 // Database (handling the images)
-import { GetImage, GetProfileImage } from '@/lib/db/imageHandler';
+import { GetImage, GetProfileImage } from '@/db/imageHandler';
 
 export async function GetNoteById(
   note_id: string,
@@ -55,11 +55,8 @@ export async function GetNoteById(
 }
 
 export async function GetNotesBySubjectId(
-  subject_id: string,
-  filter: string
+  subject_id: string
 ): Promise<Array<Note>> {
-  filter = `%${filter}%`
-
   //Trying to find notes in cache
   const cacheKey = `GetNotesBySubjectId_${subject_id}`;
   const cachedNotes = await noteCache.get(cacheKey);
@@ -88,7 +85,7 @@ export async function GetNotesBySubjectId(
             user u ON s.creator_id = u.id
         LEFT JOIN
             likes l ON n.id = l.note_id
-        WHERE s.id = ? AND (n.title LIKE ? OR n.content LIKE ?)
+        WHERE s.id = ?
         GROUP BY
             n.id,
             n.title,
@@ -97,7 +94,7 @@ export async function GetNotesBySubjectId(
             n.subject_id,
             u.username
     `,
-    [subject_id, filter, filter]
+    [subject_id]
   );
   const notesWithImages = await Promise.all(
     result[0].map(async (note) => {

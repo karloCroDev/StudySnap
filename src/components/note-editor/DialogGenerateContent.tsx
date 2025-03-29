@@ -12,56 +12,20 @@ import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Spinner } from '@/components/ui/Spinner';
 
-// Store
-import { useToastStore } from '@/store/useToastStore';
+// Hooks
+import { useGenerateContent } from '@/hooks/note-editor/useGenerateContent';
 
 // Dialog that adapts the text based on users input using AI
 export const DialogGenerateContent: React.FC<{
   editor: EditorType;
 }> = ({ editor }) => {
-  const toast = useToastStore((state) => state.setToast);
-
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const [prompt, setPrompt] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
+  const { generateText, loading, setPrompt, prompt } = useGenerateContent({
+    setIsOpen,
+    editor,
+  });
 
-  const generateText = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const context = editor?.getText();
-      const response = await fetch(
-        'http://localhost:3000/api/ai/completion-context',
-        {
-          method: 'POST',
-          body: JSON.stringify({ prompt, context }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      const data = await response.json();
-      if (response.ok) {
-        editor?.commands.setContent(data);
-        toast({
-          title: 'Generated successfully',
-          content: 'Your text has been generated successfully',
-          variant: 'success',
-        });
-      }
-    } catch (error) {
-      console.error('Failed to complete sentence:', error);
-      toast({
-        title: 'Failed to generate',
-        content: 'Please try again later',
-        variant: 'error',
-      });
-    } finally {
-      setLoading(false);
-      setIsOpen(false);
-    }
-  };
   return (
     <Dialog
       open={isOpen}

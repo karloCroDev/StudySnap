@@ -2,49 +2,44 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
-// Lib
-import {
-  GetSubjectByCreatorId,
-  GetSubjectById,
-} from '@/lib/db/core/home/subjects';
-import { WriteImage } from '@/lib/db/imageHandler';
+// Database
+import { GetSubjectByCreatorId, GetSubjectById } from '@/db/core/home/subjects';
+import { WriteImage } from '@/db/imageHandler';
 
 // Models
 import { Subject, SubjectClass } from '@/models/subject';
-import { SQLSyntaxCheck } from '@/lib/db/algorithms/string verification';
+import { SQLSyntaxCheck } from '@/lib/algorithms/stringVerification';
 
 const secret = process.env.NEXTAUTH_SECRET;
+
 //Function gets all users subjects
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const userId = searchParams.get('userId');
-    const filter = searchParams.get('filter')
 
-    if (SQLSyntaxCheck([userId,filter])) {
-      return NextResponse.json({ status: 400, statusText: 'Bad request' });
+    if (SQLSyntaxCheck([userId])) {
+      return NextResponse.json({ messasge: 'Bad request' }, { status: 400 });
     }
-    
-    let subjects: Subject[] = await GetSubjectByCreatorId(userId as string,  filter ?? "");
+
+    let subjects: Subject[] = await GetSubjectByCreatorId(userId as string);
 
     if (!subjects) {
-      return NextResponse.json({
-        status: 404,
-        statusText: 'Subjects not found',
-      });
+      return NextResponse.json(
+        { message: 'Subjects not found' },
+        { status: 404 }
+      );
     }
 
-
-    return NextResponse.json(subjects, {
-      status: 200,
-      statusText: 'Fetched successfully',
-    });
+    return NextResponse.json(subjects, { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({
-      status: 500,
-      statusText: 'Failed to get subjects',
-    });
+    return NextResponse.json(
+      {
+        message: 'Failed to get subjects',
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -55,7 +50,10 @@ export async function POST(req: NextRequest) {
     const token = await getToken({ req, secret });
 
     if (!token) {
-      return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
+      return NextResponse.json(
+        { message: 'Unauthorized' },
+        { status: 401, statusText: 'Unauthorized' }
+      );
     }
 
     const formData = await req.formData();
@@ -65,7 +63,7 @@ export async function POST(req: NextRequest) {
     const file = formData.get('file');
 
     if (!subjectName || !creator || SQLSyntaxCheck([subjectName, details])) {
-      return NextResponse.json({ status: 400, statusText: 'Bad request' });
+      return NextResponse.json({ message: 'Bad request' }, { status: 400 });
     }
 
     const imagePath = await WriteImage(file);
@@ -79,24 +77,24 @@ export async function POST(req: NextRequest) {
 
     if (id === null) {
       console.error('Creating Subject in database did not return id');
-      return NextResponse.json({
-        status: 500,
-        statusText: 'Creating Subject in database did not return id',
-      });
+      return NextResponse.json(
+        { message: 'Creating Subject in database did not return id' },
+        { status: 500 }
+      );
     }
 
     const subject = await GetSubjectById(id);
 
-    return NextResponse.json(subject, {
-      status: 201,
-      statusText: `You have succesfully updated ${subject.name}`,
-    });
+    return NextResponse.json(
+      { ...subject, message: `You have succesfully updated ${subject.name}` },
+      { status: 201 }
+    );
   } catch (error) {
     console.error(error);
-    return NextResponse.json({
-      status: 500,
-      statusText: 'Failed to create subject',
-    });
+    return NextResponse.json(
+      { message: 'Failed to create subject' },
+      { status: 500 }
+    );
   }
 }
 
@@ -105,28 +103,28 @@ export async function DELETE(req: NextRequest) {
   try {
     const token = await getToken({ req, secret });
     if (!token) {
-      return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
     const { id, imageUrl } = await req.json();
     if (!id) {
-      return NextResponse.json({
-        status: 400,
-        statusText: 'Missing required fields',
-      });
+      return NextResponse.json(
+        { message: 'Missing required fields' },
+        { status: 400 }
+      );
     }
 
     await SubjectClass.Delete(id, imageUrl);
-    return NextResponse.json({
-      status: 200,
-      statusText: 'Subject deleted successfully',
-    });
+    return NextResponse.json(
+      { message: 'Subject deleted successfully' },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
-    return NextResponse.json({
-      status: 500,
-      statusText: 'Failed to delete subject',
-    });
+    return NextResponse.json(
+      { message: 'Failed to delete subject' },
+      { status: 500 }
+    );
   }
 }
 
@@ -136,7 +134,10 @@ export async function PATCH(req: NextRequest) {
     // Extract and verify the JWT
     const token = await getToken({ req, secret });
     if (!token) {
-      return NextResponse.json({ status: 401, statusText: 'Unauthorized' });
+      return NextResponse.json(
+        { message: 'Unauthorized' },
+        { status: 401, statusText: 'Unauthorized' }
+      );
     }
 
     const formData = await req.formData();
@@ -164,15 +165,15 @@ export async function PATCH(req: NextRequest) {
 
     await SubjectClass.Update(subjectId, updates);
 
-    return NextResponse.json({
-      status: 200,
-      statusText: 'Subject updated successfully',
-    });
+    return NextResponse.json(
+      { message: 'Subject updated successfully' },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
-    return NextResponse.json({
-      status: 500,
-      statusText: 'Failed to update subject',
-    });
+    return NextResponse.json(
+      { message: 'Failed to update subject' },
+      { status: 500 }
+    );
   }
 }

@@ -2,15 +2,19 @@
 import { Note } from '@/models/note';
 
 // Database
-import { GetNoteById } from '@/lib/db/core/home/note';
+import { GetNoteById } from '@/db/core/home/note';
 
 export class cache<K, V extends { id: string }> {
   //number of values which this object will store
+
   private capacity: number;
+
   //Stores key of the search and id of the objects that were returned as a response
   private cache: Map<K, string[]>;
+
   //Stores values that were read from database
   private values: Map<string, V>;
+
   //Finds elements that are not stored
   private getById: (id: string) => Promise<V>;
 
@@ -74,6 +78,7 @@ export class cache<K, V extends { id: string }> {
   }
 }
 
+// @ts-ignore
 export const noteCache = new cache<string, Note>(100, async (id) =>
   GetNoteById(id, '0')
 );

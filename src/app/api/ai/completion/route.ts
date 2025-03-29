@@ -1,7 +1,7 @@
 // External packages
 import { NextResponse } from 'next/server';
 
-// Config
+// Lib
 import { modelFlash } from '@/lib/ai';
 
 // API that completes the sentence when user is out of ideas (complete sentence)

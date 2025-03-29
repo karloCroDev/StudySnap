@@ -1,9 +1,9 @@
-// Lib
-import { getPool } from '@/lib/db/db';
-import { DeleteImage } from '@/lib/db/imageHandler';
+// Database
+import { getPool } from '@/db/db';
+import { DeleteImage } from '@/db/imageHandler';
 
 export interface Subject {
-  id: string;
+  id: number;
   name: string;
   date_created: Date;
   date_modified: Date;
@@ -20,7 +20,7 @@ export class SubjectClass {
     creator: string,
     image: string | null
   ): Promise<string | null> {
-    console.log(name,details,creator,image)
+    console.log(name, details, creator, image);
     try {
       console.log(creator);
       const [result]: any = await getPool().execute(
@@ -67,7 +67,7 @@ export class SubjectClass {
     }
   }
 
-  static async Delete(id: string, imageUrl : string | null): Promise<void> {
+  static async Delete(id: string, imageUrl: string | null): Promise<void> {
     try {
       await getPool().execute(
         `
@@ -75,7 +75,7 @@ export class SubjectClass {
       `,
         [id]
       );
-      await DeleteImage(imageUrl)
+      await DeleteImage(imageUrl);
     } catch (err) {
       console.error('Error deleting subject:', err);
     }

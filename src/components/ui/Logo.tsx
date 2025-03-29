@@ -2,7 +2,7 @@
 import Link, { LinkProps } from 'next/link';
 import { twMerge } from 'tailwind-merge';
 
-// Libs
+// Databases
 import { plus_jakarta_sans } from '@/lib/fonts';
 
 export const Logo: React.FC<

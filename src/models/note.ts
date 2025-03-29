@@ -1,10 +1,10 @@
-// Lib
-import { getPool } from '@/lib/db/db';
-import { noteCache } from '@/lib/db/algorithms/caching';
-import { DeleteImage } from '@/lib/db/imageHandler';
+// Database
+import { getPool } from '@/db/db';
+import { noteCache } from '@/lib/algorithms/caching';
+import { DeleteImage } from '@/db/imageHandler';
 
 export interface Note {
-  id: string;
+  id: number;
   title: string;
   details: string | null;
   content: string | null;
@@ -16,7 +16,7 @@ export interface Note {
   likes: number;
   liked: number;
   creator_name: string;
-  creator_id: string;
+  creator_id: number;
 
   image_url: string | null;
   encoded_image: string | null;
@@ -85,7 +85,7 @@ export class NoteClass {
     }
   }
 
-  static async Delete(id: string, imageUrl: string|null): Promise<void> {
+  static async Delete(id: string, imageUrl: string | null): Promise<void> {
     try {
       await getPool().execute(
         `
@@ -93,7 +93,7 @@ export class NoteClass {
       `,
         [id]
       );
-      await DeleteImage(imageUrl)
+      await DeleteImage(imageUrl);
       noteCache.clear();
     } catch (err) {
       console.error('Error deleting note:', err);

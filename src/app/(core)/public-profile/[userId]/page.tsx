@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   },
 };
 
-async function getAllLikedUsersPosts(creatorId: string) {
+async function getAllLikedUsersPosts(creatorId: number) {
   const response = await fetch(
     `http://localhost:3000/api/core/public-profile?creatorId=${creatorId}`
   );
@@ -34,7 +34,7 @@ async function getAllLikedUsersPosts(creatorId: string) {
   return await response.json();
 }
 
-async function getPublicProfileNotes(creatorId: string, userId: string) {
+async function getPublicProfileNotes(creatorId: number, userId: number) {
   const response = await fetch(
     `http://localhost:3000/api/core/public-profile`,
     {
@@ -54,7 +54,7 @@ async function getPublicProfileNotes(creatorId: string, userId: string) {
 export default async function PublicProfile({
   params, // Params for accessing the creatorId
 }: {
-  params: { userId: string };
+  params: { userId: number };
 }) {
   const creatorId = params.userId;
   const session = await getServerSession(authOptions);

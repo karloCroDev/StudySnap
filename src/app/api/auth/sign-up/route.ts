@@ -2,8 +2,8 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 
-// Lib
-import { IsUsernameOrEmailTaken } from '@/lib/db/auth/signup';
+// Database
+import { IsUsernameOrEmailTaken } from '@/db/auth/signup';
 
 // Models
 import { UserClass } from '@/models/user';
@@ -14,28 +14,40 @@ export async function POST(req: Request) {
     const { username, email, password } = await req.json();
 
     if (!username || !email || !password) {
-      return NextResponse.json({
-        status: 400,
-        statusText: 'Insufficient data provided',
-      });
+      return NextResponse.json(
+        {
+          message: 'Insufficient data provided',
+        },
+        {
+          status: 400,
+        }
+      );
     }
     if (await IsUsernameOrEmailTaken(username, email)) {
-      return NextResponse.json({
-        status: 400,
-        statusText: 'Email already in use',
-      });
+      return NextResponse.json(
+        {
+          message: 'Email already in use',
+        },
+        {
+          status: 400,
+        }
+      );
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await UserClass.Insert(username, email, hashedPassword);
 
-    return NextResponse.json({ status: 201, statusText: 'User registred' });
+    return NextResponse.json({ message: 'User registred' }, { status: 201 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({
-      status: 500,
-      statusText: 'Error occoured on server',
-    });
+    return NextResponse.json(
+      {
+        message: 'Error occoured on server',
+      },
+      {
+        status: 500,
+      }
+    );
   }
 }

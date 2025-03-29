@@ -10,74 +10,27 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Spinner } from '@/components/ui/Spinner';
 
-// Store
-import { useToastStore } from '@/store/useToastStore';
-import { useGeneralInfo } from '@/store/useGeneralInfo';
-
-// Models (types)
-import { Subject } from '@/models/subject';
+// Hooks
+import { useCreateSubject } from '@/hooks/core/home/subjects/useCreateSubject';
 
 export const DialogCreate: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
 
   const [subjectName, setSubjectName] = React.useState('');
   const [details, setDetails] = React.useState('');
   const [image, setImage] = React.useState<File | null>(null);
 
-  const toast = useToastStore((state) => state.setToast);
-  const addSubject = useGeneralInfo((state) => state.addSubject);
-
-  const createSubject = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    if (subjectName) formData.append('subjectName', subjectName);
-    if (details) formData.append('details', details);
-    if (image) formData.append('file', image);
-
-    try {
-      setLoading(true);
-      const response = await fetch(
-        'http://localhost:3000/api/core/home/subjects',
-        {
-          method: 'POST',
-          body: formData,
-        }
-      );
-      const data = await response.json();
-      if (!response.ok) {
-        toast({
-          title: 'Missing required fields',
-          content:
-            'Please make sure you have entered all the credentials correctly and try again',
-          variant: 'error',
-        });
-        return;
-      }
-      addSubject(data as Subject);
-      toast({
-        title: `${subjectName} subject created`,
-        content: `You have succesfully created ${subjectName}`,
-        variant: 'success',
-      });
-      setSubjectName('');
-      setDetails('');
-      setImage(null);
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: 'Uhoh, something went wrong',
-        content: 'Failed to create subject',
-        variant: 'error',
-      });
-    } finally {
-      setIsOpen(false);
-      setLoading(false);
-    }
-  };
+  const { createSubjectReq, loading } = useCreateSubject({
+    details,
+    image,
+    setDetails,
+    setImage,
+    setIsOpen,
+    setSubjectName,
+    subjectName,
+  });
 
   return (
     <Dialog
@@ -89,7 +42,7 @@ export const DialogCreate: React.FC<{
         asChild: true,
       }}
     >
-      <Form className="flex flex-col gap-5" onSubmit={createSubject}>
+      <Form className="flex flex-col gap-5" onSubmit={createSubjectReq}>
         <Input
           isRequired
           type="text"

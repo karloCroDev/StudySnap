@@ -11,7 +11,7 @@ import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import Superscript from '@tiptap/extension-superscript';
 import Subscript from '@tiptap/extension-subscript';
 import ImageResize from 'tiptap-extension-resize-image';
-
+import { useNavigationGuard } from 'next-navigation-guard';
 import Image from '@tiptap/extension-image';
 import { Pencil2Icon, FileTextIcon } from '@radix-ui/react-icons';
 import { twJoin } from 'tailwind-merge';
@@ -23,39 +23,31 @@ import { Button } from '@/components/ui/Button';
 import { Header } from '@/components/note-editor/Header';
 import { Spinner } from '@/components/ui/Spinner';
 
+// Hooks
+import { useCompleteSentence } from '@/hooks/note-editor/useCompleteSentence';
+import { useSaveDocument } from '@/hooks/note-editor/useSaveDocument';
+
 // Store
 import { useToastStore } from '@/store/useToastStore';
 import { ActionBar } from './ActionBar';
-import { useNavigationGuard } from 'next-navigation-guard';
 
 export const TipTapEditor: React.FC<{
   title: string;
   content: string | null;
   author: string;
-  creatorId: string;
-  noteId: string;
-  documentId: string;
+  creatorId: number;
+  noteId: number;
   isLiked: number; // Boolean from db is represented in 0 or 1
   likeCount: number;
-}> = ({
-  title,
-  content,
-  author,
-  creatorId,
-  noteId,
-  documentId,
-  isLiked,
-  likeCount,
-}) => {
+}> = ({ title, content, author, creatorId, noteId, isLiked, likeCount }) => {
   const user = useSession();
 
   const allowEditing = React.useMemo(
-    () => user.data?.user.id!.toString() === creatorId.toString(),
+    () => user.data?.user.id! === creatorId,
     [user, creatorId]
   );
 
   const toast = useToastStore((state) => state.setToast);
-
   const [isEditing, setIsEditing] = React.useState(false);
 
   // Editor config
@@ -78,94 +70,14 @@ export const TipTapEditor: React.FC<{
   });
 
   // Sentence completion
-  const [completionLoading, setCompletionLoading] = React.useState(false);
-  const completeSentence = async () => {
-    const context = editor?.getText();
-
-    try {
-      setCompletionLoading(true);
-      const response = await fetch('http://localhost:3000/api/ai/completion', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ context }),
-      });
-
-      const data = await response.json();
-      if (response.ok) editor?.commands.insertContent(data);
-    } catch (error) {
-      console.error('Failed to complete sentence:', error);
-    } finally {
-      setCompletionLoading(false);
-    }
-  };
-
-  // Autocompletion AI feature
-  React.useEffect(() => {
-    const handleKeyDown = async (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.key === '/') {
-        e.preventDefault();
-        await completeSentence();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [editor]);
-
-  // Setting the editor to be editable
-  React.useEffect(() => {
-    if (editor) {
-      editor.setEditable(isEditing);
-    }
-  }, [isEditing, editor]);
+  const completionLoading = useCompleteSentence({ isEditing, editor: editor! });
 
   // Saving document
-  const [loadingSaveDocument, setLoadingSaveDocument] = React.useState(false);
-  console.log(content);
-
-  const saveDocument = async () => {
-    try {
-      setLoadingSaveDocument(true);
-      const formData = new FormData();
-      formData.append('content', editor!.getHTML());
-      formData.append('noteId', documentId);
-      const response = await fetch(
-        'http://localhost:3000/api/core/home/notes',
-        {
-          method: 'PATCH',
-          body: formData,
-        }
-      );
-      if (!response.ok) {
-        toast({
-          title: 'Problem with getting data',
-          content: 'Problem with getting data, please try again!',
-          variant: 'error',
-        });
-        return;
-      }
-      toast({
-        title: 'Saved 🥳',
-        content: 'Your notes have been saved',
-        variant: 'success',
-      });
-      setIsEditing(false);
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: 'Problem with getting data',
-        content: 'Problem with getting data, please try again!',
-        variant: 'error',
-      });
-    } finally {
-      setLoadingSaveDocument(false);
-    }
-  };
+  const { loadingSaveDocument, saveDocument } = useSaveDocument({
+    noteId,
+    setIsEditing,
+    editor,
+  });
 
   // Protection from not saving the note, only active when editor is setted to true. Look in page.tsx file in note-editor/[note-id]
   const navGuard = useNavigationGuard({
@@ -240,7 +152,6 @@ export const TipTapEditor: React.FC<{
           editor={editor}
           isEditing={isEditing}
           setIsEditing={setIsEditing}
-          saveDocument={saveDocument}
           completionLoading={completionLoading}
           allowEditing={allowEditing}
         />

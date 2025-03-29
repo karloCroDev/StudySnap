@@ -1,7 +1,7 @@
 // External packages
 import { NextResponse } from 'next/server';
 
-// Config
+// Lib
 import { modelFlash } from '@/lib/ai';
 
 // API that returns data based on users prompts (ask ai)
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       {
         authorOfMessage: 'ai',
         content: completedSentence.response.text(),
-        statusText: 'Successfully completed the users prompt',
+        message: 'Successfully completed the users prompt',
       },
       {
         status: 200,
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     );
   } catch (error) {
     return NextResponse.json(
-      { statusText: 'Failed to get the response from ai' },
+      { message: 'Failed to get the response from ai' },
       { status: 500 }
     );
   }

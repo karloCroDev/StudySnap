@@ -1,6 +1,5 @@
 // External packages
 import { type Metadata } from 'next';
-import { redirect } from 'next/navigation';
 import { NavigationGuardProvider } from 'next-navigation-guard';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { getServerSession } from 'next-auth';
@@ -9,7 +8,7 @@ import { getServerSession } from 'next-auth';
 import { Layout, LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { TipTapEditor } from '@/components/note-editor/TipTapEditor';
 import { Header } from '@/components/ui/header/Header';
-import { Note } from '@/models/note';
+import { type Note } from '@/models/note';
 
 // Metadata
 export const metadata: Metadata = {
@@ -26,7 +25,7 @@ export const metadata: Metadata = {
     },
   },
 };
-async function fetchNote(noteId: string, userId: string) {
+async function fetchNote(noteId: number, userId: number) {
   try {
     const response = await fetch(
       `http://localhost:3000/api/core/home/notes/editor`,
@@ -49,7 +48,7 @@ async function fetchNote(noteId: string, userId: string) {
 export default async function NoteEditor({
   params,
 }: {
-  params: { noteId: string };
+  params: { noteId: number };
 }) {
   const session = await getServerSession(authOptions);
 
@@ -70,7 +69,6 @@ export default async function NoteEditor({
               author={noteData.creator_name}
               creatorId={noteData.creator_id}
               noteId={noteData.id}
-              documentId={noteData.id}
               isLiked={noteData.liked}
               likeCount={noteData.likes}
             />

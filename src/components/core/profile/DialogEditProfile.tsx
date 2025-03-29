@@ -13,8 +13,9 @@ import { Avatar } from '@/components/ui/Avatar';
 import { DialogDeleteProfile } from '@/components/core/profile/DialogDeleteProfile';
 import { Spinner } from '@/components/ui/Spinner';
 
-// Store
-import { useToastStore } from '@/store/useToastStore';
+// Hooks
+import { useClientImage } from '@/hooks/useClientImage';
+import { useDialogEditProfile } from '@/hooks/core/home/profile/useDialogEditProfile';
 
 // Edit dialog for users profile
 export const DialogEditProfile: React.FC<{
@@ -24,70 +25,22 @@ export const DialogEditProfile: React.FC<{
   const user = useSession();
 
   const [isOpen, setIsOpen] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
-
-  const toast = useToastStore((state) => state.setToast);
 
   React.useEffect(() => {
     setIsDialogOpen && setIsDialogOpen(isOpen);
   }, [isOpen]);
 
-  const [image, setImage] = React.useState<File | null>(null);
-  const clientImage = React.useMemo(
-    () => image && URL.createObjectURL(image),
-    [image]
-  );
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [image, setImage] = React.useState<File | null>(null);
+  const clientImage = useClientImage(image!);
 
-  const saveChanges = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-
-      const formData = new FormData();
-      formData.append('userId', user.data!.user.id);
-      if (username) formData.append('username', username);
-      if (password) formData.append('password', password);
-      if (image) formData.append('file', image);
-
-      const response = await fetch(
-        'http://localhost:3000/api/core/public-profile',
-        {
-          method: 'PATCH',
-          body: formData,
-        }
-      );
-      const data = await response.json();
-
-      if (!response.ok) {
-        toast({
-          title: 'Missing required fields',
-          content: data.statusText,
-          variant: 'error',
-        });
-        return;
-      }
-      if (username) await user.update({ name: username });
-      if (data.pfpEncoded) await user.update({ image: data.pfpEncoded });
-
-      toast({
-        title: 'Profile updated',
-        content: data.statusText,
-        variant: 'success',
-      });
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: 'Uhoh, something went wrong',
-        content: 'Failed to update profile',
-        variant: 'error',
-      });
-    } finally {
-      setLoading(false);
-      setIsOpen(false);
-    }
-  };
+  const { loading, saveChanges } = useDialogEditProfile({
+    image,
+    password,
+    setIsOpen,
+    username,
+  });
   return (
     <Dialog
       open={isOpen}

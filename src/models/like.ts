@@ -1,5 +1,5 @@
-// Lib
-import { getPool } from '@/lib/db/db';
+// Database
+import { getPool } from '@/db/db';
 
 export class LikeClass {
   static async Insert(user_id: string, note_id: string): Promise<void> {

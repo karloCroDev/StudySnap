@@ -26,65 +26,28 @@ import { Button } from '@/components/ui/Button';
 import { useToastStore } from '@/store/useToastStore';
 import { Spinner } from '@/components/ui/Spinner';
 
+// Hooks
+import { useUploadImage } from '@/hooks/note-editor/useUploadImage';
+import { useClientImage } from '@/hooks/useClientImage';
+import { useImageOcr } from '@/hooks/note-editor/useImageOcr';
+
 // Dialog for asking AI information about the image, and also ability to deteect text from image and then analyse it
 export const DialogImageOcr: React.FC<{
   editor: EditorType;
 }> = ({ editor }) => {
-  const toast = useToastStore((state) => state.setToast);
-
   const [isOpen, setIsOpen] = React.useState(false);
 
   const [prompt, setPrompt] = React.useState('');
+
   const [image, setImage] = React.useState<null | File>(null);
-  const clientImage = React.useMemo(
-    () => image && URL.createObjectURL(image),
-    [image]
-  );
+  const clientImage = useClientImage(image!);
 
-  const [loading, setLoading] = React.useState(false);
-
-  // Getting data from AI after analysis of an image
-  const getNotesFromImage = async () => {
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append('prompt', prompt);
-      formData.append('file', image!);
-      const response = await fetch('http://localhost:3000/api/ai/image-note', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        toast({
-          title: 'Failed to get notes',
-          content: data, // This data is status text
-          variant: 'error',
-        });
-        return;
-      }
-      editor?.commands.insertContent(data);
-      toast({
-        title: 'Notes genearted',
-        content: 'Notes generated successfully from your image',
-        variant: 'success',
-      });
-      setPrompt('');
-      setImage(null);
-    } catch (error) {
-      console.error('Upload failed:', error);
-      toast({
-        title: 'Failed to get notes',
-        content: 'Please try again later, problem with server',
-        variant: 'error',
-      });
-    } finally {
-      setLoading(false);
-      setIsOpen(false);
-    }
-  };
-
+  const { getNotesFromImage, loading } = useImageOcr({
+    setImage,
+    image,
+    editor,
+    setIsOpen,
+  });
   return (
     <Dialog
       open={isOpen}

@@ -1,11 +1,11 @@
-// Lib
-import { getPool } from '@/lib/db/db';
+// Database
+import { getPool } from '@/db/db';
 
 //Models
 import { Note } from '@/models/note';
 
 // Database (handling the images)
-import { GetImage, GetProfileImage } from '@/lib/db/imageHandler';
+import { GetImage, GetProfileImage } from '@/db/imageHandler';
 
 // Gets data for document
 export async function GetNoteById(

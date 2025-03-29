@@ -1,5 +1,5 @@
-// Lib
-import { getPool } from '@/lib/db/db';
+// Database
+import { getPool } from '@/db/db';
 
 export async function IsUsernameOrEmailTaken(
   username: string,

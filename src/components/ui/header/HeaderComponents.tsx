@@ -16,7 +16,7 @@ import {
 } from 'react-aria-components';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 // Components
 import { LinkAsButton } from '@/components/ui/LinkAsButton';
@@ -24,9 +24,8 @@ import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
 import { DialogEditProfile } from '@/components/core/profile/DialogEditProfile';
 
-// Store
-import { useToastStore } from '@/store/useToastStore';
-import { useRouter } from 'next/navigation';
+// Hooks
+import { useLogout } from '@/hooks/core/useLogout';
 
 export const Menu: React.FC<{
   // Better to have this from server, looks much better when rendered on frontend (in this scenario)
@@ -35,28 +34,8 @@ export const Menu: React.FC<{
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
   const user = useSession();
-  const router = useRouter();
-  const toast = useToastStore((state) => state.setToast);
 
-  const logOut = async () => {
-    try {
-      toast({
-        title: 'Signed out',
-        content: 'Nooo, please come back 😢',
-        variant: 'success',
-      });
-      await signOut({ redirect: false }); // Refreshes the page (with redirect:true)
-      router.push('/login');
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: 'Signed out',
-        content: 'Nooo, please come back 😢',
-        variant: 'error',
-      });
-    }
-  };
-
+  const logout = useLogout();
   if (!user.data?.user.id)
     return (
       <MenuTrigger>
@@ -148,7 +127,7 @@ export const Menu: React.FC<{
           </MenuItem>
           <MenuItem
             className="flex cursor-pointer items-center gap-2 bg-red-400 p-2 text-gray-100 outline-none hover:brightness-90"
-            onAction={logOut}
+            onAction={logout}
           >
             <ExitIcon /> Log out
           </MenuItem>
