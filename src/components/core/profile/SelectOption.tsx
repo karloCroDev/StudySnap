@@ -16,7 +16,7 @@ import {
   Select,
 } from 'react-aria-components';
 
-// Libs
+// Databases
 import { plus_jakarta_sans } from '@/lib/fonts';
 
 // Components

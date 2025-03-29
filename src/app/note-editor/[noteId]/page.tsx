@@ -8,7 +8,7 @@ import { getServerSession } from 'next-auth';
 import { Layout, LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { TipTapEditor } from '@/components/note-editor/TipTapEditor';
 import { Header } from '@/components/ui/header/Header';
-import { Note } from '@/models/note';
+import { type Note } from '@/models/note';
 
 // Metadata
 export const metadata: Metadata = {
@@ -69,7 +69,6 @@ export default async function NoteEditor({
               author={noteData.creator_name}
               creatorId={noteData.creator_id}
               noteId={noteData.id}
-              documentId={noteData.id}
               isLiked={noteData.liked}
               likeCount={noteData.likes}
             />

@@ -8,7 +8,7 @@ import { twJoin } from 'tailwind-merge';
 // Components
 import { HeaderEditText } from '@/components/note-editor/HeaderEditText';
 
-// Libs
+// Databases
 import { plus_jakarta_sans } from '@/lib/fonts';
 
 // Header for showing who is author and title of document (viewing mode of document - not header from core layout!)

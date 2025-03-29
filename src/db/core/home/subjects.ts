@@ -1,4 +1,4 @@
-// Lib
+// Database
 import { getPool } from '@/db/db';
 
 //Models
@@ -12,7 +12,7 @@ export async function GetSubjectByCreatorId(
   creatorId: string,
   filter: string
 ): Promise<Array<Subject>> {
-  filter = `%${filter}%`
+  filter = `%${filter}%`;
   const result: [any[], any] = await getPool().query(
     `
         SELECT * FROM subject WHERE creator_id = ? AND (name LIKE ? OR details LIKE ?)

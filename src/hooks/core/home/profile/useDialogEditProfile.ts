@@ -27,7 +27,7 @@ export const useDialogEditProfile = ({
       setLoading(true);
 
       const formData = new FormData();
-      formData.append('userId', user.data!.user.id);
+      formData.append('userId', user.data!.user.id.toString());
       if (username) formData.append('username', username);
       if (password) formData.append('password', password);
       if (image) formData.append('file', image);
@@ -44,7 +44,7 @@ export const useDialogEditProfile = ({
       if (!response.ok) {
         toast({
           title: 'Missing required fields',
-          content: data.statusText,
+          content: data.message,
           variant: 'error',
         });
         return;
@@ -54,7 +54,7 @@ export const useDialogEditProfile = ({
 
       toast({
         title: 'Profile updated',
-        content: data.statusText,
+        content: data.message,
         variant: 'success',
       });
     } catch (error) {

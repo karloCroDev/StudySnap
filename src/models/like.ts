@@ -1,4 +1,4 @@
-// Lib
+// Database
 import { getPool } from '@/db/db';
 
 export class LikeClass {

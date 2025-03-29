@@ -1,7 +1,7 @@
 // External packages
 import { NextResponse } from 'next/server';
 
-// Config
+// Lib
 import { modelPro } from '@/lib/ai';
 
 // API that analyses the image and can understand text.Also user gives him his own parameters on how he wants things to be done (Analyse image)

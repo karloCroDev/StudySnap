@@ -39,7 +39,7 @@ export const useDeleteSubject = ({
       if (!response.ok) {
         toast({
           title: `Uhoh couldn't delete ${name}`,
-          content: data.statusText,
+          content: data.message,
           variant: 'error',
         });
         return;
@@ -49,7 +49,7 @@ export const useDeleteSubject = ({
         deleteSubject(id); // Client deletion
         toast({
           title: `${name} subject deleted`,
-          content: data.statusText,
+          content: data.message,
           variant: 'success',
         });
       }, 500);

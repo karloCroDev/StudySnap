@@ -9,23 +9,22 @@ import { useToastStore } from '@/store/useToastStore';
 
 // Saving document
 export const useSaveDocument = ({
-  documentId,
+  noteId,
   setIsEditing,
   editor,
 }: {
-  documentId: number;
+  noteId: number;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-  editor: EditorType;
+  editor: EditorType | null;
 }) => {
   const [loadingSaveDocument, setLoadingSaveDocument] = React.useState(false);
   const toast = useToastStore((state) => state.setToast);
-  console.log(documentId);
   const saveDocument = async () => {
     try {
       setLoadingSaveDocument(true);
       const formData = new FormData();
       formData.append('content', editor!.getHTML());
-      formData.append('noteId', documentId.toString());
+      formData.append('noteId', noteId.toString());
       const response = await fetch(
         'http://localhost:3000/api/core/home/notes',
         {
@@ -33,17 +32,18 @@ export const useSaveDocument = ({
           body: formData,
         }
       );
+      const data = await response.json();
       if (!response.ok) {
         toast({
           title: 'Problem with getting data',
-          content: 'Problem with getting data, please try again!',
+          content: data.message,
           variant: 'error',
         });
         return;
       }
       toast({
         title: 'Saved 🥳',
-        content: 'Your notes have been saved',
+        content: data.message,
         variant: 'success',
       });
       setIsEditing(false);

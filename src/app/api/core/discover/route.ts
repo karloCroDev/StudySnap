@@ -1,7 +1,7 @@
 // External packages
 import { NextResponse, NextRequest } from 'next/server';
 
-// Lib
+// Database
 import { GetPublicNotes } from '@/db/core/discover';
 import { SQLSyntaxCheck } from '@/db/algorithms/stringVerification';
 
@@ -13,14 +13,19 @@ export async function POST(req: NextRequest) {
     let notes = await GetPublicNotes(200, 0, userId, filter ?? '');
 
     if (!notes || SQLSyntaxCheck([userId, filter])) {
-      return NextResponse.json({ status: 400, statusText: 'Bad request' });
+      return NextResponse.json({ message: 'Bad request' }, { status: 400 });
     }
+
     return NextResponse.json(notes, { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({
-      status: 500,
-      statusText: 'Failed to get notes',
-    });
+    return NextResponse.json(
+      {
+        message: 'Failed to get notes',
+      },
+      {
+        status: 500,
+      }
+    );
   }
 }

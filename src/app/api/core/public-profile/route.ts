@@ -2,7 +2,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import bcrypt from 'bcryptjs';
 
-// Lib
+// Database
 import {
   GetNotesByCreatorId,
   GetUserById,
@@ -26,7 +26,6 @@ export async function GET(req: NextRequest) {
   const likedNotes = await GetLikedNotes(userId);
   return NextResponse.json(likedNotes, {
     status: 201,
-    statusText: 'Success',
   });
 }
 
@@ -74,10 +73,15 @@ export async function PATCH(req: NextRequest) {
     if (file) updates.profile_picture_url = await WriteImage(file);
 
     if (Object.keys(updates).length === 0) {
-      return NextResponse.json({
-        status: 400,
-        statusText: 'No fields to update',
-      });
+      return NextResponse.json(
+        {
+          message: 'No fields to update',
+        },
+        {
+          status: 400,
+          statusText: 'No fields to update',
+        }
+      );
     }
 
     await UserClass.Update(userId, updates);
@@ -88,7 +92,7 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json(
       {
         pfpEncoded,
-        statusText: 'User updated successfully',
+        message: 'User updated successfully',
       },
       {
         status: 200,
@@ -96,10 +100,14 @@ export async function PATCH(req: NextRequest) {
     );
   } catch (error) {
     console.error(error);
-    return NextResponse.json({
-      status: 500,
-      statusText: 'Failed to update user',
-    });
+    return NextResponse.json(
+      {
+        message: 'Failed to update user',
+      },
+      {
+        status: 500,
+      }
+    );
   }
 }
 
@@ -109,23 +117,27 @@ export async function DELETE(req: NextRequest) {
     const { userId } = await req.json();
 
     if (!userId) {
-      return NextResponse.json({
-        status: 400,
-        statusText: 'Missing required fields',
-      });
+      return NextResponse.json(
+        { message: 'Missing required fields' },
+        { status: 400 }
+      );
     }
 
     await UserClass.Delete(userId);
 
-    return NextResponse.json({
-      status: 200,
-      statusText: 'You have succesfully deleted your profile',
-    });
+    return NextResponse.json(
+      { message: 'You have succesfully deleted your profile' },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
-    return NextResponse.json({
-      status: 500,
-      statusText: 'Failed to delete user',
-    });
+    return NextResponse.json(
+      {
+        message: 'Failed to delete user',
+      },
+      {
+        status: 500,
+      }
+    );
   }
 }

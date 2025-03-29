@@ -1,7 +1,7 @@
 // External packages
 import { NextResponse } from 'next/server';
 
-// Config
+// Lib
 import { modelFlash } from '@/lib/ai';
 
 // API that generates content based on users preferences (generate content)
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       status: 200,
     });
   } catch (error) {
-    console.error(error)
+    console.error(error);
     return NextResponse.json('An error occured trying to modify text', {
       status: 500,
     });

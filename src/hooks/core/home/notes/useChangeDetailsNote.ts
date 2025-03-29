@@ -52,7 +52,7 @@ export const useChangeDetailsNote = ({
       if (!response.ok) {
         toast({
           title: 'Missing required fields',
-          content: data.statusText,
+          content: data.message,
           variant: 'error',
         });
         return;
@@ -60,7 +60,7 @@ export const useChangeDetailsNote = ({
 
       toast({
         title: `${name} note updated`,
-        content: data.statusText,
+        content: data.message,
         variant: 'success',
       });
 

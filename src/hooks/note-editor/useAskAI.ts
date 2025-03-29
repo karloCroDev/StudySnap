@@ -44,7 +44,7 @@ export const useAskAI = ({
       if (!response.ok) {
         toast({
           title: 'Failed to get response',
-          content: data.statusText, // This data is status text
+          content: data.message, // This data is status text
           variant: 'error',
         });
         setIsOpen(false);

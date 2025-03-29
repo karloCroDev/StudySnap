@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge';
 import { MagnifyingGlassIcon, Cross2Icon } from '@radix-ui/react-icons';
 import { Button as AriaButton } from 'react-aria-components';
 
-// Libs
+// Databases
 import { plus_jakarta_sans } from '@/lib/fonts';
 
 // Hooks

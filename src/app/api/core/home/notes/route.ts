@@ -1,7 +1,7 @@
 // External packages
 import { NextResponse, NextRequest } from 'next/server';
 
-// Lib
+// Database
 import { WriteImage } from '@/db/imageHandler';
 import { GetNoteById, GetNotesBySubjectId } from '@/db/core/home/note';
 
@@ -16,7 +16,6 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const subjectId = searchParams.get('subjectId');
-    const filter = searchParams.get('filter');
 
     // Luka: This is a potential SQL injection vulnerability (I am getting error of bad request) on almost all request here, please investigate what is wrong with it.
 
@@ -26,7 +25,10 @@ export async function GET(req: NextRequest) {
     const notes = await GetNotesBySubjectId(subjectId as string);
 
     if (!notes) {
-      return NextResponse.json({ status: 400, statusText: 'Bad request' });
+      return NextResponse.json(
+        { message: 'Bad request' },
+        { status: 400, statusText: 'Bad request' }
+      );
     }
     return NextResponse.json(notes, {
       status: 200,
@@ -139,15 +141,15 @@ export async function PATCH(req: NextRequest) {
 
     await NoteClass.Update(noteId, updates);
 
-    return NextResponse.json({
-      status: 201,
-      statusText: 'Note updated successfully',
-    });
+    return NextResponse.json(
+      { message: 'Note updated successfully' },
+      { status: 201 }
+    );
   } catch (error) {
     console.error(error);
-    return NextResponse.json({
-      status: 500,
-      statusText: 'Failed to update note',
-    });
+    return NextResponse.json(
+      { message: 'Failed to update note' },
+      { status: 500 }
+    );
   }
 }

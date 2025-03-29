@@ -37,19 +37,9 @@ export const TipTapEditor: React.FC<{
   author: string;
   creatorId: number;
   noteId: number;
-  documentId: number;
   isLiked: number; // Boolean from db is represented in 0 or 1
   likeCount: number;
-}> = ({
-  title,
-  content,
-  author,
-  creatorId,
-  noteId,
-  documentId,
-  isLiked,
-  likeCount,
-}) => {
+}> = ({ title, content, author, creatorId, noteId, isLiked, likeCount }) => {
   const user = useSession();
 
   const allowEditing = React.useMemo(
@@ -58,7 +48,6 @@ export const TipTapEditor: React.FC<{
   );
 
   const toast = useToastStore((state) => state.setToast);
-
   const [isEditing, setIsEditing] = React.useState(false);
 
   // Editor config
@@ -85,9 +74,9 @@ export const TipTapEditor: React.FC<{
 
   // Saving document
   const { loadingSaveDocument, saveDocument } = useSaveDocument({
-    documentId,
+    noteId,
     setIsEditing,
-    editor: editor!,
+    editor,
   });
 
   // Protection from not saving the note, only active when editor is setted to true. Look in page.tsx file in note-editor/[note-id]

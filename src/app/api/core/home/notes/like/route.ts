@@ -17,9 +17,9 @@ export async function POST(req: NextRequest) {
     } else {
       await LikeClass.Insert(userId, noteId);
     }
-    return NextResponse.json({ status: 201 });
+    return NextResponse.json({}, { status: 201 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ status: 500 });
+    return NextResponse.json({}, { status: 500 });
   }
 }

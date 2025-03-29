@@ -27,7 +27,6 @@ export const ActionBar: React.FC<{
   likeCount: number;
   isEditing: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-
   editor: EditorType;
   completionLoading: boolean;
   allowEditing: boolean;
@@ -44,7 +43,7 @@ export const ActionBar: React.FC<{
 }) => {
   const toast = useToastStore((state) => state.setToast);
   const { saveDocument, loadingSaveDocument } = useSaveDocument({
-    documentId: noteId,
+    noteId,
     editor,
     setIsEditing,
   });

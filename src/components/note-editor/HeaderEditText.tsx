@@ -36,7 +36,7 @@ import { LuSuperscript } from 'react-icons/lu';
 // Components
 import { DialogUploadImage } from '@/components/note-editor/DialogUploadImage';
 
-// Libs
+// Databases
 import { plus_jakarta_sans } from '@/lib/fonts';
 
 // Header that has duty to edit text to the page

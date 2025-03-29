@@ -40,7 +40,7 @@ export const useDeleteNotes = ({
       if (!response.ok) {
         toast({
           title: `Uhoh couldn't delete ${noteName}`,
-          content: data.statusText,
+          content: data.message,
           variant: 'error',
         });
         return;
@@ -51,7 +51,7 @@ export const useDeleteNotes = ({
         deleteNote(noteId); // Client deletion
         toast({
           title: `${noteName} subject deleted`,
-          content: data.statusText,
+          content: data.message,
           variant: 'success',
         });
         // Animation duration

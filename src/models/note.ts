@@ -1,4 +1,4 @@
-// Lib
+// Database
 import { getPool } from '@/db/db';
 import { noteCache } from '@/db/algorithms/caching';
 import { DeleteImage } from '@/db/imageHandler';

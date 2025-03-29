@@ -28,12 +28,11 @@ export const useProfileDelete = (
       );
 
       const data = await response.json();
-      console.log(data);
 
       if (!response.ok) {
         toast({
           title: 'Uhoh',
-          content: data.statusText,
+          content: data.message,
           variant: 'error',
         });
         return;
@@ -42,7 +41,7 @@ export const useProfileDelete = (
       router.push('/login');
       toast({
         title: 'Profile deleted',
-        content: data.statusText,
+        content: data.message,
         variant: 'success',
       });
     } catch (error) {

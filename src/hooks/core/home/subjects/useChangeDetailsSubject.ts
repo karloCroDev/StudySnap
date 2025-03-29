@@ -48,7 +48,7 @@ export const useChangeDetailsSubject = ({
       if (!response.ok) {
         toast({
           title: 'Missing required fields',
-          content: data.statusText,
+          content: data.message,
           variant: 'error',
         });
         return;
@@ -56,7 +56,7 @@ export const useChangeDetailsSubject = ({
 
       toast({
         title: `${subjectName} subject updated`,
-        content: data.statusText,
+        content: data.message,
         variant: 'success',
       });
 
