@@ -6,7 +6,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { SearchableHeader } from '@/components/ui/SearchableHeader';
-import { NoteMapping } from '@/components/core/NoteMapping';
+import { DisocverMapping } from '@/components/core/discover/DiscoverMapping';
 
 // Models (types)
 import { type Note } from '@/models/note';
@@ -51,9 +51,7 @@ export default async function Disover() {
       <SearchableHeader title="Discover" />
       <LayoutRow className="mt-8 justify-center xl:mt-12">
         <LayoutColumn xs={11} lg={10}>
-          <LayoutRow className="sm:-mr-4">
-            <NoteMapping notesData={publicNotes} />
-          </LayoutRow>
+          <DisocverMapping userId={userId} notesData={publicNotes} />
         </LayoutColumn>
       </LayoutRow>
     </>
