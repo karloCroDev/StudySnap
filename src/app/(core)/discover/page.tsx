@@ -27,13 +27,13 @@ export const metadata: Metadata = {
   },
 };
 
-async function getPublicNotes(userId: number, filter: string) {
+async function getPublicNotes(userId: number) {
   const response = await fetch(`http://localhost:3000/api/core/discover`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ userId, filter }),
+    body: JSON.stringify({ userId }),
   });
   if (!response.ok) throw new Error('Failed to fetch data');
 
@@ -44,7 +44,7 @@ export default async function Disover() {
   const session = await getServerSession(authOptions);
   // Handling the anonymous user inside the application
   const userId: number = session?.user.id || null;
-  const publicNotes: Note[] = await getPublicNotes(userId, '');
+  const publicNotes: Note[] = await getPublicNotes(userId);
 
   return (
     <>

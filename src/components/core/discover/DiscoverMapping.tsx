@@ -13,6 +13,7 @@ import { Spinner } from '@/components/ui/Spinner';
 
 // Hooks
 import { useDebounce } from '@/hooks/useDebounce';
+import { useSearchNotes } from '@/hooks/core/discover/useSearchNotes';
 
 // Store
 import { useGeneralInfo } from '@/store/useGeneralInfo';
@@ -20,6 +21,7 @@ import { useDiscoverStore } from '@/store/useDiscoverStore';
 
 // Models (types)
 import { type Note } from '@/models/note';
+import { useExploreNotes } from '@/hooks/core/discover/useExploreNotes';
 
 // Component that is responsible for mapping and searching all the notes
 export const DisocverMapping: React.FC<{
@@ -38,51 +40,23 @@ export const DisocverMapping: React.FC<{
   }, [notesData]);
 
   // Server side search logic
-  const search = useGeneralInfo((state) => state.search);
+  const search = useGeneralInfo((state) => state.search); // Try to make this inside the component
   const debouncedSearch = useDebounce(search);
 
-  const [loading, setLoading] = React.useState(false);
-  const [notesQuery, setNotesQuery] = React.useState<Note[]>([]);
+  const { loadingSearchNotes, notesQuery } = useSearchNotes({
+    debouncedSearch,
+    search,
+    userId,
+  });
 
-  React.useEffect(() => {
-    const noteQuery = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/api/core/discover`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userId, filter: debouncedSearch }),
-          }
-        );
-        if (!response.ok) throw new Error('Failed to fetch data');
-        const data = await response.json();
-        setNotesQuery(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    if (debouncedSearch) noteQuery();
-  }, [debouncedSearch]);
+  const { loadingExplore, exploreNotes } = useExploreNotes({
+    addFetchedNotes,
+    userId,
+  });
 
-  React.useEffect(() => {
-    if (search !== debouncedSearch) setLoading(true);
-    if (!debouncedSearch && !search) {
-      setLoading(false);
-      setNotesQuery([]);
-    }
-  }, [search, debouncedSearch]);
-
-  // Explore more
-  const [loadingExploreMore, setLoadingExploreMore] = React.useState(false);
-
-  if (loading) {
+  if (loadingSearchNotes) {
     return (
-      <LayoutRow className="animate-card-apperance sm:-mr-4">
+      <LayoutRow className="sm:-mr-4">
         {[...Array(4)].map((_, index) => (
           <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
             <LoadingSkeletonNote key={index} />
@@ -94,7 +68,7 @@ export const DisocverMapping: React.FC<{
 
   if (notesQuery.length) {
     return (
-      <LayoutRow className="animate-card-apperance sm:-mr-4">
+      <LayoutRow className="sm:-mr-4">
         {notesQuery.map((note) => (
           <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
             <NoteCard
@@ -150,34 +124,9 @@ export const DisocverMapping: React.FC<{
       <Button
         rounded="full"
         colorScheme="light-blue"
-        className="mx-auto mb-16"
-        iconRight={loadingExploreMore && <Spinner />}
-        onPress={async () => {
-          const moreNotes = async () => {
-            try {
-              setLoadingExploreMore(true);
-              const response = await fetch(
-                `http://localhost:3000/api/core/discover`,
-                {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({ userId, filter: '' }),
-                }
-              );
-              if (!response.ok) throw new Error('Failed to fetch data');
-              const data = await response.json();
-              addFetchedNotes(data);
-            } catch (error) {
-              console.error(error);
-            } finally {
-              setLoadingExploreMore(false);
-            }
-          };
-
-          moreNotes();
-        }}
+        className="mx-auto mb-16 animate-card-apperance"
+        iconRight={loadingExplore && <Spinner />}
+        onPress={exploreNotes}
       >
         Explore more
       </Button>
