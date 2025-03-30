@@ -165,7 +165,7 @@ export const DialogAnalyseAI: React.FC<{
               )}
               {!pdf && !clientImage && (
                 <div className="flex items-center gap-4 text-gray-400">
-                  <p className="text-lg">Add image </p>
+                  <p className="text-lg">Add Image or PDF </p>
                   <UploadIcon className="size-8" />
                 </div>
               )}
