@@ -106,9 +106,9 @@ export const DialogAskAI: React.FC<{
               <div className="flex flex-col gap-2">
                 {[...Array(3)].map((_, i) => (
                   <div
-                    className="min-h-4 w-[75%] animate-pulse rounded bg-gray-700 text-gray-100"
+                    className="min-h-4 w-[75%] animate-pulse rounded bg-gray-700"
                     key={i}
-                  ></div>
+                  />
                 ))}
               </div>
             )}

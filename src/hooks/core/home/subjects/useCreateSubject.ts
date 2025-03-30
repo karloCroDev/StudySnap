@@ -5,7 +5,7 @@ import * as React from 'react';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
-import { useGeneralInfo } from '@/store/useGeneralInfo';
+import { useSubjectStore } from '@/store/useSubjectStore';
 
 // Models (types)
 import { type Subject } from '@/models/subject';
@@ -30,7 +30,7 @@ export const useCreateSubject = ({
   const [loading, setLoading] = React.useState(false);
 
   const toast = useToastStore((state) => state.setToast);
-  const addSubject = useGeneralInfo((state) => state.addSubject);
+  const addSubject = useSubjectStore((state) => state.addSubject);
 
   const createSubjectReq = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

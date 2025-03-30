@@ -33,8 +33,8 @@ export const useChangeDetailsSubject = ({
     try {
       const formData = new FormData();
       formData.append('subjectId', id.toString());
-      if (subjectName) formData.append('subjectName', subjectName);
-      if (details) formData.append('details', details);
+      formData.append('subjectName', subjectName);
+      formData.append('details', details);
       if (image) formData.append('file', image);
       setLoading(true);
       const response = await fetch(

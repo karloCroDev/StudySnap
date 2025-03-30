@@ -7,9 +7,11 @@ import { useShallow } from 'zustand/shallow';
 // Components
 import { LayoutColumn } from '@/components/ui/Layout';
 import { NoteCard } from '@/components/core/NoteCard';
+import { LoadingSkeletonNote } from './discover/LoadingSkeletonNote';
 
 // Store
 import { useGeneralInfo } from '@/store/useGeneralInfo';
+import { useNoteStore } from '@/store/useNoteStore';
 
 // Models (types)
 import { type Note } from '@/models/note';
@@ -18,13 +20,14 @@ import { type Note } from '@/models/note';
 export const NoteMapping: React.FC<{
   notesData: Note[];
 }> = ({ notesData }) => {
-  const { search, notes, setNotes } = useGeneralInfo(
+  const { notes, setNotes } = useNoteStore(
     useShallow((state) => ({
-      search: state.search,
       notes: state.notes,
       setNotes: state.setNotes,
     }))
   );
+  const search = useGeneralInfo((state) => state.search);
+
   React.useEffect(() => {
     setNotes(notesData);
   }, []);

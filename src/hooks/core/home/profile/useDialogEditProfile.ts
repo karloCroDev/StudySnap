@@ -28,8 +28,8 @@ export const useDialogEditProfile = ({
 
       const formData = new FormData();
       formData.append('userId', user.data!.user.id.toString());
-      if (username) formData.append('username', username);
-      if (password) formData.append('password', password);
+      formData.append('username', username);
+      formData.append('password', password);
       if (image) formData.append('file', image);
 
       const response = await fetch(

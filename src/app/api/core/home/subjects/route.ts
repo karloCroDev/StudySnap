@@ -62,7 +62,11 @@ export async function POST(req: NextRequest) {
     const details = formData.get('details') as string | null;
     const file = formData.get('file');
 
-    if (!subjectName || !creator || SQLSyntaxCheck([subjectName, details])) {
+    if (
+      !subjectName ||
+      !creator
+      // || SQLSyntaxCheck([subjectName, details])
+    ) {
       return NextResponse.json({ message: 'Bad request' }, { status: 400 });
     }
 
@@ -147,7 +151,10 @@ export async function PATCH(req: NextRequest) {
     const details = formData.get('details') as string;
     const file = formData.get('file');
 
-    if (!subjectId || SQLSyntaxCheck([subjectId, subjectName, details])) {
+    if (
+      !subjectId
+      //  || SQLSyntaxCheck([subjectId, subjectName, details])
+    ) {
       return NextResponse.json({ status: 400, statusText: 'Bad request' });
     }
 

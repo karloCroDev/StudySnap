@@ -15,6 +15,7 @@ import {
   Popover,
   Select,
 } from 'react-aria-components';
+import { useShallow } from 'zustand/shallow';
 
 // Databases
 import { plus_jakarta_sans } from '@/lib/fonts';
@@ -29,26 +30,18 @@ import { type Note } from '@/models/note';
 
 // Hooks
 import { useToggleSearch } from '@/hooks/core/home/useToggleSearch';
+
 // Store
 import { useGeneralInfo } from '@/store/useGeneralInfo';
-import { useShallow } from 'zustand/shallow';
+import { useNoteStore } from '@/store/useNoteStore';
 
 export const SelectOption: React.FC<{
   username: string;
   likedNotes: Note[];
   publicNotes: Note[];
 }> = ({ username, likedNotes, publicNotes }) => {
-  const { setSearch, setNotes } = useGeneralInfo(
-    useShallow((state) => ({
-      setSearch: state.setSerach,
-      notes: state.notes,
-      setNotes: state.setNotes,
-    }))
-  );
-
-  React.useEffect(() => {
-    setSearch('');
-  }, []);
+  const setNotes = useNoteStore((state) => state.setNotes);
+  const setSearch = useGeneralInfo((state) => state.setSearch);
 
   const { infoHeader, toggleSearch } = useToggleSearch();
 
