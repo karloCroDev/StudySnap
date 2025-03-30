@@ -11,7 +11,7 @@ import { DialogQuizz } from '@/components/note-editor/DialogQuizz';
 import { DialogGenerateContent } from './DialogGenerateContent';
 import { Spinner } from '@/components/ui/Spinner';
 import { LikeComponent } from '@/components/ui/LikeComponent';
-import { DialogImageOcr } from '@/components/note-editor/DialogImageOcr';
+import { DialogAnalyseAI } from '@/components/note-editor/DialogAnalyseAI';
 import { DialogAskAI } from '@/components/note-editor/DialogAskAI';
 
 // Store
@@ -94,7 +94,7 @@ export const ActionBar: React.FC<{
           >
             Save
           </Button>
-          <DialogImageOcr editor={editor} />
+          <DialogAnalyseAI editor={editor} />
           <div className="hidden items-center gap-4 text-balance text-md text-gray-500 lg:flex">
             <p className="italic">Sentence complete:</p>
             {completionLoading ? (

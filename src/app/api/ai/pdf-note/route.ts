@@ -28,7 +28,6 @@ export async function POST(req: Request) {
       If the prompt is not understandable then analyze the pdf and generate concise summary notes based on the text it contains. Please ensure that response that use MARKDOWN FORMAT and NATIVE LANGUAGE of the text without any prefaces but only the content itself.`,
     ]);
 
-    console.log(result.response);
     return NextResponse.json(result.response.text(), { status: 200 });
   } catch (error) {
     console.error(error);

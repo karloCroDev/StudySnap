@@ -4,27 +4,31 @@
 import * as React from 'react';
 import { type Editor as EditorType } from '@tiptap/react';
 
-// Hooks
-import { useClientImage } from '@/hooks/useClientImage';
-
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
 // Dialog logic to enable user to adapt their application with power of AI
-export const useImageOcr = ({
+export const useAnalyseAI = ({
   editor,
   setIsOpen,
+  image,
+  pdf,
+  prompt,
+  setImage,
+  setPdf,
+  setPrompt,
 }: {
   editor: EditorType;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  image: File | null;
+  pdf: File | null;
+  prompt: string;
+  setImage: React.Dispatch<React.SetStateAction<File | null>>;
+  setPdf: React.Dispatch<React.SetStateAction<File | null>>;
+  setPrompt: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const toast = useToastStore((state) => state.setToast);
   const [loading, setLoading] = React.useState(false);
-
-  const [prompt, setPrompt] = React.useState('');
-
-  const [image, setImage] = React.useState<null | File>(null);
-  const [pdf, setPdf] = React.useState<null | File>(null);
 
   const getNotesFromImage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
