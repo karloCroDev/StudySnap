@@ -37,22 +37,28 @@ export const DialogImageOcr: React.FC<{
 }> = ({ editor }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const [prompt, setPrompt] = React.useState('');
-
-  const [image, setImage] = React.useState<null | File>(null);
-  const clientImage = useClientImage(image!);
-
-  const { getNotesFromImage, loading } = useImageOcr({
-    setImage,
+  // Karlo: Dogovori se sa sobom kako cemo passati u custom componente poadatke, i koliko cemo ih trebati
+  const {
+    getNotesFromImage,
+    loading,
     image,
+    pdf,
+    prompt,
+    setImage,
+    setPdf,
+    setPrompt,
+  } = useImageOcr({
     editor,
     setIsOpen,
   });
+  const clientImage = useClientImage(image!);
+
+  console.log(pdf);
   return (
     <Dialog
       open={isOpen}
       onOpenChange={setIsOpen}
-      title="Image OCR"
+      title="Analyse Image or PDF"
       triggerProps={{
         children: (
           <>
@@ -64,20 +70,14 @@ export const DialogImageOcr: React.FC<{
               iconRight={loading && <Spinner />}
               onPress={() => setIsOpen(true)}
             >
-              Analyse Image
+              Analyse Image or PDF
             </Button>
           </>
         ),
         asChild: true,
       }}
     >
-      <Form
-        className="flex flex-col gap-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          getNotesFromImage();
-        }}
-      >
+      <Form className="flex flex-col gap-4" onSubmit={getNotesFromImage}>
         <TextField
           isRequired
           minLength={5}
@@ -94,41 +94,62 @@ export const DialogImageOcr: React.FC<{
         <DropZone
           className="relative"
           getDropOperation={(types) =>
-            types.has('image/png') || types.has('image/jpeg')
+            types.has('image/png') ||
+            types.has('image/jpeg') ||
+            types.has('image/jpg')
               ? 'copy'
               : 'cancel'
           }
           onDrop={async (e) => {
             e.items.find(async (item) => {
-              if (
-                item.kind === 'file' &&
-                (item.type === 'image/jpeg' ||
+              if (item.kind === 'file') {
+                if (
+                  item.type === 'image/jpeg' ||
                   item.type === 'image/png' ||
-                  item.type === 'image/jpg')
-              )
-                setImage(await item.getFile());
+                  item.type === 'image/jpg'
+                ) {
+                  setImage(await item.getFile());
+                  setPdf(null);
+                }
+                if (item.type === 'application/pdf') {
+                  setPdf(await item.getFile());
+                  setImage(null);
+                }
+              }
             });
           }}
         >
           {clientImage && (
             <AriaButton
               className="absolute right-4 top-4 z-[999999] text-gray-50"
-              onPress={() => setImage(null)}
+              onPress={() => {
+                setImage(null);
+                setPdf(null);
+              }}
             >
               <CrossCircledIcon className="size-8" />
             </AriaButton>
           )}
 
           <FileTrigger
-            acceptedFileTypes={['.jpg,', '.jpeg', '.png']} // Users can access camera snapshot or select images from their phone, it is already built into this component
+            acceptedFileTypes={['.jpg,', '.jpeg', '.png', '.pdf']} // Users can access camera snapshot or select images from their phone, it is already built into this component
             onSelect={(event) => {
-              event && setImage(Array.from(event)[0]);
+              if (!event) return;
+              const file = Array.from(event)[0];
+
+              if (file.type === 'application/pdf') {
+                setPdf(file); // Set the file as PDF
+                setImage(null);
+              } else {
+                setImage(file); // Set the file as an image
+                setPdf(null);
+              }
             }}
           >
             <AriaButton className="flex h-64 w-full cursor-pointer items-center justify-center overflow-hidden rounded border-2 border-dashed border-blue-400">
               {clientImage ? (
                 <Image
-                  className="h-full w-full object-cover"
+                  className="h-full w-full rounded object-cover"
                   alt="Image to analyse"
                   src={clientImage}
                   fill
@@ -144,7 +165,7 @@ export const DialogImageOcr: React.FC<{
         </DropZone>
         <Button
           type="submit"
-          isDisabled={!prompt || !image} // User is not able to send request if he hasn't wrote anything and hasn't created a prompt
+          isDisabled={!prompt || (!image && !pdf)} // User is not able to send request if he hasn't wrote anything and hasn't created a prompt
           iconLeft={<CameraIcon className="size-5" />}
           iconRight={loading && <Spinner />}
           className="mt-2 self-end"
