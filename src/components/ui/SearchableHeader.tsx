@@ -22,7 +22,7 @@ import { useGeneralInfo } from '@/store/useGeneralInfo';
 export const SearchableHeader: React.FC<{
   title: string;
 }> = ({ title }) => {
-  const setSearch = useGeneralInfo((state) => state.setSerach);
+  const setSearch = useGeneralInfo((state) => state.setSearch);
   React.useEffect(() => {
     setSearch('');
   }, []);

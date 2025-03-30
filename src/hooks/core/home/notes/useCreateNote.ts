@@ -5,10 +5,10 @@ import * as React from 'react';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
-import { useGeneralInfo } from '@/store/useGeneralInfo';
 
 // Models (types)
 import { type Note } from '@/models/note';
+import { useNoteStore } from '@/store/useNoteStore';
 
 export const useCreateNote = ({
   subjectId,
@@ -33,7 +33,7 @@ export const useCreateNote = ({
 }) => {
   const [loading, setLoading] = React.useState(false);
   const toast = useToastStore((state) => state.setToast);
-  const addNote = useGeneralInfo((state) => state.addNote);
+  const addNote = useNoteStore((state) => state.addNote);
 
   const createNoteReq = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

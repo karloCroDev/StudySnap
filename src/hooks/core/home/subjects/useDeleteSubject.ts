@@ -5,7 +5,7 @@ import * as React from 'react';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
-import { useGeneralInfo } from '@/store/useGeneralInfo';
+import { useSubjectStore } from '@/store/useSubjectStore';
 
 export const useDeleteSubject = ({
   id,
@@ -20,7 +20,7 @@ export const useDeleteSubject = ({
 }) => {
   const [loading, setLoading] = React.useState(false);
   const toast = useToastStore((state) => state.setToast);
-  const deleteSubject = useGeneralInfo((state) => state.deleteSubject);
+  const deleteSubject = useSubjectStore((state) => state.deleteSubject);
 
   const deleteSubjectReq = async () => {
     try {

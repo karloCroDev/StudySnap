@@ -11,10 +11,10 @@ import { type Note } from '@/models/note';
 
 export const useExploreNotes = ({
   userId,
-  addFetchedNotes,
+  setNotes,
 }: {
   userId: number;
-  addFetchedNotes: (val: Note[]) => void;
+  setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
 }) => {
   const [loadingExplore, setLoadingExplore] = React.useState(false);
 
@@ -37,7 +37,7 @@ export const useExploreNotes = ({
           variant: 'error',
         });
       const data = await response.json();
-      addFetchedNotes(data);
+      setNotes((prev) => [...prev, ...data]);
     } catch (error) {
       console.error(error);
     } finally {

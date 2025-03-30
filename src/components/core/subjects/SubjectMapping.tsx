@@ -10,6 +10,7 @@ import { SubjectCard } from '@/components/core/subjects/SubjectCard';
 
 // Store
 import { useGeneralInfo } from '@/store/useGeneralInfo';
+import { useSubjectStore } from '@/store/useSubjectStore';
 
 // Models (types)
 import { type Subject } from '@/models/subject';
@@ -18,15 +19,14 @@ import { type Subject } from '@/models/subject';
 export const SubjectMapping: React.FC<{
   subjectsData: Subject[];
 }> = ({ subjectsData }) => {
-  const { search, subjects, setSubjects } = useGeneralInfo(
+  const { subjects, setSubjects } = useSubjectStore(
     useShallow((state) => ({
-      search: state.search,
       subjects: state.subjects,
       setSubjects: state.setSubjects,
     }))
   );
-
-  React.useEffect(() =>  {
+  const search = useGeneralInfo((state) => state.search);
+  React.useEffect(() => {
     setSubjects(subjectsData);
   }, []);
 

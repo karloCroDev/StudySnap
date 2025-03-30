@@ -17,7 +17,6 @@ import { useSearchNotes } from '@/hooks/core/discover/useSearchNotes';
 
 // Store
 import { useGeneralInfo } from '@/store/useGeneralInfo';
-import { useDiscoverStore } from '@/store/useDiscoverStore';
 
 // Models (types)
 import { type Note } from '@/models/note';
@@ -28,16 +27,7 @@ export const DisocverMapping: React.FC<{
   userId: number;
   notesData: Note[];
 }> = ({ userId, notesData }) => {
-  const { addFetchedNotes, notes, setNotes } = useDiscoverStore(
-    useShallow((state) => ({
-      notes: state.notes,
-      setNotes: state.setNotes,
-      addFetchedNotes: state.addFetchedNotes,
-    }))
-  );
-  React.useEffect(() => {
-    setNotes(notesData);
-  }, [notesData]);
+  const [notes, setNotes] = React.useState<Note[]>(notesData);
 
   // Server side search logic
   const search = useGeneralInfo((state) => state.search); // Try to make this inside the component
@@ -50,7 +40,7 @@ export const DisocverMapping: React.FC<{
   });
 
   const { loadingExplore, exploreNotes } = useExploreNotes({
-    addFetchedNotes,
+    setNotes,
     userId,
   });
 

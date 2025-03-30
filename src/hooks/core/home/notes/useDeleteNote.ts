@@ -5,7 +5,7 @@ import * as React from 'react';
 
 // Store
 import { useToastStore } from '@/store/useToastStore';
-import { useGeneralInfo } from '@/store/useGeneralInfo';
+import { useNoteStore } from '@/store/useNoteStore';
 
 export const useDeleteNotes = ({
   noteName,
@@ -21,7 +21,7 @@ export const useDeleteNotes = ({
   const [loading, setLoading] = React.useState(false);
 
   const toast = useToastStore((state) => state.setToast);
-  const deleteNote = useGeneralInfo((state) => state.deleteNote);
+  const deleteNote = useNoteStore((state) => state.deleteNote);
 
   const deleteNoteReq = async () => {
     try {
