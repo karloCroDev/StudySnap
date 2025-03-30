@@ -4,38 +4,51 @@
 import * as React from 'react';
 import { type Editor as EditorType } from '@tiptap/react';
 
-// Hooks
-import { useClientImage } from '@/hooks/useClientImage';
-
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
 // Dialog logic to enable user to adapt their application with power of AI
-export const useImageOcr = ({
-  image,
-  setImage,
+export const useAnalyseAI = ({
   editor,
   setIsOpen,
+  image,
+  pdf,
+  prompt,
+  setImage,
+  setPdf,
+  setPrompt,
 }: {
-  image: File | null;
-  setImage: React.Dispatch<React.SetStateAction<File | null>>;
   editor: EditorType;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  image: File | null;
+  pdf: File | null;
+  prompt: string;
+  setImage: React.Dispatch<React.SetStateAction<File | null>>;
+  setPdf: React.Dispatch<React.SetStateAction<File | null>>;
+  setPrompt: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const toast = useToastStore((state) => state.setToast);
   const [loading, setLoading] = React.useState(false);
-  const [prompt, setPrompt] = React.useState('');
 
-  const getNotesFromImage = async () => {
+  const getNotesFromImage = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       setLoading(true);
       const formData = new FormData();
       formData.append('prompt', prompt);
-      formData.append('file', image!);
-      const response = await fetch('http://localhost:3000/api/ai/image-note', {
-        method: 'POST',
-        body: formData,
-      });
+
+      if (image) formData.append('file', image);
+      if (pdf) formData.append('file', pdf);
+
+      const response = await fetch(
+        image
+          ? 'http://localhost:3000/api/ai/image-note'
+          : 'http://localhost:3000/api/ai/pdf-note',
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       if (!response.ok) {
@@ -53,6 +66,7 @@ export const useImageOcr = ({
         variant: 'success',
       });
       setPrompt('');
+      setPdf(null);
       setImage(null);
     } catch (error) {
       console.error('Upload failed:', error);
@@ -69,5 +83,11 @@ export const useImageOcr = ({
   return {
     getNotesFromImage,
     loading,
+    prompt,
+    image,
+    pdf,
+    setPrompt,
+    setImage,
+    setPdf,
   };
 };
