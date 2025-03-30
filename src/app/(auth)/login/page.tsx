@@ -46,7 +46,7 @@ export default function Login() {
             <LoginForm />
             <AuthWithGoogle type="login" />
             <p className="mt-4 text-gray-400 xl:mt-12">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link
                 href="/sign-up"
                 className="font-semibold text-gray-900 underline"

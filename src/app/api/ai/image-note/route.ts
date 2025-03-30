@@ -31,6 +31,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(result.response.text(), { status: 200 });
   } catch (error) {
+    console.error(error)
     return NextResponse.json('An error occurred while processing the image', {
       status: 500,
     });

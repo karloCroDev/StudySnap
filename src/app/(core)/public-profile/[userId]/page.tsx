@@ -6,7 +6,6 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { Avatar } from '@/components/ui/Avatar';
-import { SearchableHeader } from '@/components/ui/SearchableHeader';
 import { NoteMapping } from '@/components/core/NoteMapping';
 import { SelectOption } from '@/components/core/profile/SelectOption';
 

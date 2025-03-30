@@ -27,7 +27,7 @@ export const DialogEditProfile: React.FC<{
   const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
-    setIsDialogOpen && setIsDialogOpen(isOpen);
+    if(setIsDialogOpen != undefined) setIsDialogOpen(isOpen);
   }, [isOpen]);
 
   const [username, setUsername] = React.useState('');

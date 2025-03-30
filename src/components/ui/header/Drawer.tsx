@@ -10,8 +10,6 @@ import {
   HomeIcon,
   FrameIcon,
   ExitIcon,
-  ArrowRightIcon,
-  ArrowLeftIcon,
   ExternalLinkIcon,
 } from '@radix-ui/react-icons';
 import { useSession } from 'next-auth/react';

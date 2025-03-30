@@ -104,7 +104,7 @@ export const DialogUploadImage: React.FC<{
           <FileTrigger
             acceptedFileTypes={['.jpg,', '.jpeg', '.png']} // Users can access camera snapshot or select images from their phone
             onSelect={(event) => {
-              event && setImage(Array.from(event)[0]);
+              if(event!=undefined) setImage(Array.from(event)[0]);
             }}
           >
             <AriaButton className="relative flex h-64 w-full cursor-pointer items-center justify-center overflow-hidden rounded border-2 border-dashed border-blue-400">

@@ -37,7 +37,7 @@ export default function Signup() {
         >
           <div className="mt-12 w-full pb-6 2xl:mt-0">
             <h1 className="text-2xl font-bold sm:text-3xl xl:text-4xl">
-              Let's get started!
+              Let&apos;s get started!
             </h1>
             <p className="mt-4 text-sm text-gray-400 xl:text-base">
               The faster you fill up, the closer you will be to a revolutionary

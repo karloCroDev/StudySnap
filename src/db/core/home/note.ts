@@ -59,7 +59,7 @@ export async function GetNotesBySubjectId(
 ): Promise<Array<Note>> {
   //Trying to find notes in cache
   const cacheKey = `GetNotesBySubjectId_${subject_id}`;
-  const cachedNotes = await noteCache.get(cacheKey);
+  //const cachedNotes = await noteCache.get(cacheKey);
   // if (cachedNotes){return cachedNotes as Note[]}
 
   const result: [any[], any] = await getPool().query(

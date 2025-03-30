@@ -4,21 +4,21 @@ import { Note } from '@/models/note';
 // Database
 import { GetNoteById } from '@/db/core/home/note';
 
-export class cache<K, V extends { id: string }> {
+export class cache<K, V extends { id: number }> {
   //number of values which this object will store
 
   private capacity: number;
 
   //Stores key of the search and id of the objects that were returned as a response
-  private cache: Map<K, string[]>;
+  private cache: Map<K, number[]>;
 
   //Stores values that were read from database
-  private values: Map<string, V>;
+  private values: Map<number, V>;
 
   //Finds elements that are not stored
-  private getById: (id: string) => Promise<V>;
+  private getById: (id: number) => Promise<V>;
 
-  constructor(capacity: number, getById: (id: string) => Promise<V>) {
+  constructor(capacity: number, getById: (id: number) => Promise<V>) {
     this.capacity = capacity;
     this.cache = new Map();
     this.values = new Map();
@@ -26,8 +26,8 @@ export class cache<K, V extends { id: string }> {
   }
 
   //Gets the values either from values map or gets them from database
-  private async _getValues(ids: string[]): Promise<V[]> {
-    let result: V[] = [];
+  private async _getValues(ids: number[]): Promise<V[]> {
+    const result: V[] = [];
     ids.forEach(async (id) => {
       let value = this.values.get(id);
       if (!value) {
@@ -61,7 +61,7 @@ export class cache<K, V extends { id: string }> {
       this.cache.delete(oldestKey!);
     }
     //Populates values attribute
-    let ids = values.map((value) => {
+    const ids = values.map((value) => {
       if (this.values.has(value.id)) {
         this.values.delete(value.id);
       }
@@ -78,7 +78,6 @@ export class cache<K, V extends { id: string }> {
   }
 }
 
-// @ts-ignore
 export const noteCache = new cache<string, Note>(100, async (id) =>
-  GetNoteById(id, '0')
+  GetNoteById(id.toString(), '0')
 );

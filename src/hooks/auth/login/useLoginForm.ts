@@ -47,6 +47,7 @@ export const useLoginForm = ({
 
       router.replace('/home/subjects');
     } catch (error) {
+      console.error(error)
       toast({
         title: 'Error',
         content: 'Something went wrong. Please try again.',

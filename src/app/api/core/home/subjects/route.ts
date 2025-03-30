@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ messasge: 'Bad request' }, { status: 400 });
     }
 
-    let subjects: Subject[] = await GetSubjectByCreatorId(userId as string);
+    const subjects: Subject[] = await GetSubjectByCreatorId(userId as string);
 
     if (!subjects) {
       return NextResponse.json(

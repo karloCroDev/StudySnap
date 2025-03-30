@@ -54,6 +54,7 @@ export const useDeleteSubject = ({
         });
       }, 500);
     } catch (error) {
+      console.error(error)
       toast({
         title: 'Uhoh, something went wrong',
         content: 'Failed to delete subject',

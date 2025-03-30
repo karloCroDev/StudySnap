@@ -11,7 +11,6 @@ import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import Superscript from '@tiptap/extension-superscript';
 import Subscript from '@tiptap/extension-subscript';
 import ImageResize from 'tiptap-extension-resize-image';
-import { useNavigationGuard } from 'next-navigation-guard';
 import Image from '@tiptap/extension-image';
 import { Pencil2Icon, FileTextIcon } from '@radix-ui/react-icons';
 import { twJoin } from 'tailwind-merge';
@@ -43,7 +42,7 @@ export const TipTapEditor: React.FC<{
   const user = useSession();
 
   const allowEditing = React.useMemo(
-    () => user.data?.user.id! === creatorId,
+    () =>  user.data?.user.id === creatorId,
     [user, creatorId]
   );
 
@@ -80,13 +79,13 @@ export const TipTapEditor: React.FC<{
   });
 
   // Protection from not saving the note, only active when editor is setted to true. Look in page.tsx file in note-editor/[note-id]
-  const navGuard = useNavigationGuard({
+  /*const navGuard = useNavigationGuard({
     enabled: isEditing,
     confirm: () =>
       window.confirm(
         'You have unsaved changes that will be lost. Do you really want to exit?'
       ),
-  });
+  });*/
 
   if (editor === null) return;
   return (

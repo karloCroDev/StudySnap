@@ -4,7 +4,6 @@
 import * as React from 'react';
 import { Button as ReactAriaButton } from 'react-aria-components';
 import { type Editor as EditorType } from '@tiptap/react';
-import Link from 'next/link';
 import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,

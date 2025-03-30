@@ -17,7 +17,7 @@ export async function GetNotesByCreatorId(
   user_id: string
 ): Promise<Array<Note>> {
   const cacheKey = `GetNotesByCreatorId_${creator_id}_${user_id}`;
-  const cachedNotes = await noteCache.get(cacheKey);
+  //const cachedNotes = await noteCache.get(cacheKey);
   //if (cachedNotes){return cachedNotes as Note[]}
 
   const result: [any[], any] = await getPool().query(
@@ -90,7 +90,7 @@ export async function GetUserById(id: string): Promise<User | null> {
 // Retrieve all notes that a user has liked, but only if they are currently public. If a note was previously public but has since been made private, it's no longer be included
 export async function GetLikedNotes(user_id: string): Promise<Array<Note>> {
   const cacheKey = `GetLikedNotes_${user_id}`;
-  const cachedNotes = await noteCache.get(cacheKey);
+  //const cachedNotes = await noteCache.get(cacheKey);
   //if (cachedNotes){return cachedNotes as Note[]}
 
   const result: [any[], any] = await getPool().query(

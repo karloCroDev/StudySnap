@@ -33,7 +33,7 @@ export class NoteClass {
     imagePath: string | null = null
   ): Promise<string | null> {
     try {
-      const [result]: any = await getPool().execute(
+      const [result] = await getPool().execute(
         `
         INSERT INTO note (title, details, is_public, subject_id, image_url)
         VALUES (?, ?, ?, ?, ?);
@@ -56,8 +56,8 @@ export class NoteClass {
   ): Promise<void> {
     try {
       // Updating all values in DB using paramters
-      let setClauses: string[] = [];
-      let values: any[] = [];
+      const setClauses: string[] = [];
+      const values: any[] = [];
 
       for (const [key, value] of Object.entries(updates)) {
         setClauses.push(`${key} = ?`);

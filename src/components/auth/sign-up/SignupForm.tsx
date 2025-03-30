@@ -11,7 +11,6 @@ import { Spinner } from '@/components/ui/Spinner';
 
 // Hooks
 import { useSignupWithCredentials } from '@/hooks/auth/sign-up/useSignupWithCredentials';
-import { FaGoogle } from 'react-icons/fa';
 
 export const SignupForm = () => {
   const [username, setUsername] = React.useState('');

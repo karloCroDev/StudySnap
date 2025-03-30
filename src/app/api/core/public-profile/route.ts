@@ -38,8 +38,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Bad request' }, { status: 400 });
     }
 
-    let notes = await GetNotesByCreatorId(creatorId, userId);
-    let user = await GetUserById(creatorId);
+    const notes = await GetNotesByCreatorId(creatorId, userId);
+    const user = await GetUserById(creatorId);
 
     return NextResponse.json([notes, user], {
       status: 201,

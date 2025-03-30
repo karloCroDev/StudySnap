@@ -40,8 +40,8 @@ export class UserClass {
   ): Promise<void> {
     try {
       // Updating all values in DB using paramters
-      let setClauses: string[] = [];
-      let values: any[] = [];
+      const setClauses: string[] = [];
+      const values: any[] = [];
 
       for (const [key, value] of Object.entries(updates)) {
         setClauses.push(`${key} = ?`);

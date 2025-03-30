@@ -18,6 +18,7 @@ export async function POST(req: Request) {
       status: 200,
     });
   } catch (error) {
+    console.error(error)
     return NextResponse.json(
       'An error occured trying to complete the sentecne',
       { status: 500 }

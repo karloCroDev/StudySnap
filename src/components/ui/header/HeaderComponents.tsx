@@ -27,9 +27,7 @@ import { DialogEditProfile } from '@/components/core/profile/DialogEditProfile';
 // Hooks
 import { useLogout } from '@/hooks/core/useLogout';
 
-export const Menu: React.FC<{
-  // Better to have this from server, looks much better when rendered on frontend (in this scenario)
-}> = ({}) => {
+export const Menu: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 

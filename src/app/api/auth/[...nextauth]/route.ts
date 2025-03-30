@@ -57,7 +57,7 @@ export const authOptions = {
         token.image = session.image;
       }
       if (user) {
-        let myUser = await GetUserByEmail(user.email);
+        const myUser = await GetUserByEmail(user.email);
         token.uid = myUser!.id;
         token.sub = myUser!.id;
         token.image = myUser!.encoded_image || '';
@@ -83,8 +83,6 @@ export const authOptions = {
     async signIn({
       user,
       account,
-      profile,
-      credentials,
     }: {
       user: User;
       account: Account | null;
@@ -112,6 +110,7 @@ export const authOptions = {
   },
 
   session: {
+    // eslint-disable-next-line @typescript-eslint/prefer-as-const
     strategy: 'jwt' as 'jwt', // Use JWT strategy for sessions
   },
 
