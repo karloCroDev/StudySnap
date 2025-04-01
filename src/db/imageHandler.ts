@@ -10,7 +10,7 @@ export async function WriteImage(
   cropImage: boolean = true
 ): Promise<string | null> {
   try {
-    let imageUrl = null;
+    let imageUrl: string|null = null;
 
     if (image && typeof image !== 'string') {
       // Creates a buffer from the image and resizes it to 312x312 pixels
@@ -46,14 +46,13 @@ export async function WriteImage(
 // Function to read an image from the file system and return it as a base64 encoded string
 export async function GetImage(
   imageUrl: string | null
-): Promise<string | null> {
+): Promise<Buffer | null> {
   if (imageUrl) {
     try {
       // Reads the image file from the specified path
       const imageBuffer = await readFile(imageUrl);
       // Converts the image buffer to a base64 encoded string
-      const base64Image = imageBuffer.toString('base64');
-      return base64Image;
+      return imageBuffer;
     } catch (error) {
       console.error('Error reading image:', error);
       return null;

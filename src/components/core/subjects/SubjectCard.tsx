@@ -14,6 +14,7 @@ import { twJoin } from 'tailwind-merge';
 // Components
 import { DialogDelete } from '@/components/core/subjects/DialogDelete';
 import { DialogChangeDetails } from '@/components/core/subjects/DialogChangeDetails';
+import { fetchImage } from '@/utils/fetch-image';
 
 // Subject card that links to belonging notes
 export const SubjectCard: React.FC<{
@@ -26,7 +27,11 @@ export const SubjectCard: React.FC<{
   const [cardTitle, setCardTitle] = React.useState(title);
   const [cardDescription, setCardDescription] = React.useState(description);
   const [cardImage, setCardImage] = React.useState<string>('');
-
+  React.useEffect(() => {
+    if (imageUrl) {
+      fetchImage(`http://localhost:3000/api/images?imageUrl=${imageUrl}`, setCardImage);
+    }
+  }, [imageUrl]);
   return (
     <div
       className={twJoin(
@@ -41,11 +46,7 @@ export const SubjectCard: React.FC<{
         {(encodedImage || cardImage) && (
           <div className="absolute left-0 top-0 -z-10 h-full w-full">
             <Image
-              src={
-                cardImage ||
-                (encodedImage && `data:image/jpeg;base64,${encodedImage}`) ||
-                ''
-              }
+            src={cardImage }
               alt="Informative image about subject"
               className="h-full object-cover brightness-50"
               fill

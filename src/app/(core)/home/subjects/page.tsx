@@ -34,7 +34,7 @@ export default async function Subjects() {
   if (!session) {
     redirect('/login');
   }
-  //Karlo: Provide me with filter string here, discover and in notes
+
   const subjects: Subject[] = await getSubjects(session);
 
   return (
