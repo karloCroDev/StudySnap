@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={twJoin(poppins.className, 'bg-gray-100')}>
+      <body className={twJoin(poppins.className, 'scroll-smooth bg-gray-100')}>
         <AuthProvider>{children}</AuthProvider>
         <Toast />
       </body>

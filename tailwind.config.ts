@@ -25,6 +25,7 @@ const config: Config = {
       screens: {
         '2xl': '1800px',
       },
+
       fontSize: {
         xs: '12px',
         sm: '14px',
@@ -96,6 +97,11 @@ const config: Config = {
           to: {
             opacity: '1',
           },
+        },
+
+        'infinite-scroll': {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-50%)' },
         },
         // auth
         'auth-page': {
@@ -355,6 +361,7 @@ const config: Config = {
         // General animation
         show: 'show 500ms ease-in-out',
         hide: 'hide 500ms ease-in-out',
+        'infinite-scroll': 'infinite-scroll 10s linear infinite',
 
         // Auth animation
         'auth-page': 'auth-page 500ms ease-in-out',
