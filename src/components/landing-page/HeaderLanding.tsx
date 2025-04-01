@@ -5,7 +5,7 @@ import { LinkAsButton } from '@/components/ui/LinkAsButton';
 
 export const HeaderLanding = () => {
   return (
-    <div className="fixed left-0 top-0 w-full bg-gray-100">
+    <div className="fixed left-0 top-0 z-20 w-full bg-gray-100">
       <Layout>
         <nav className="flex h-24 items-center justify-between">
           <Logo className="flex-1" />
@@ -13,11 +13,11 @@ export const HeaderLanding = () => {
             <a href="#home">
               <li>Home</li>
             </a>
+            <a href="#FAQ">
+              <li>FAQ</li>
+            </a>
             <a href="#docs">
               <li>Docs</li>
-            </a>
-            <a href="#pricing">
-              <li>Pricing</li>
             </a>
             <a href="#why-us">
               <li> Why us</li>

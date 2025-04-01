@@ -103,6 +103,16 @@ const config: Config = {
           from: { transform: 'translateX(0)' },
           to: { transform: 'translateX(-50%)' },
         },
+
+        // landig page
+        'slide-down-accordion': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
+        },
+        'slide-up-accordion': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
+        },
         // auth
         'auth-page': {
           from: {
@@ -362,6 +372,10 @@ const config: Config = {
         show: 'show 500ms ease-in-out',
         hide: 'hide 500ms ease-in-out',
         'infinite-scroll': 'infinite-scroll 10s linear infinite',
+
+        // Landing animation
+        'slide-down-accordion': 'slide-down-accordion 0.3s ease-out',
+        'slide-up-accordion': 'slide-up-accordion 0.3s ease-out',
 
         // Auth animation
         'auth-page': 'auth-page 500ms ease-in-out',

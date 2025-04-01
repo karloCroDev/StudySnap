@@ -17,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={twJoin(poppins.className, 'scroll-smooth bg-gray-100')}>
+    <html lang="en" className="!scroll-smooth">
+      <body className={twJoin(poppins.className, 'bg-gray-100')}>
         <AuthProvider>{children}</AuthProvider>
         <Toast />
       </body>
