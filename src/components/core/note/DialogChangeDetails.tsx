@@ -28,7 +28,7 @@ export const DialogChangeDetails: React.FC<{
   noteDetails: string;
   setNoteDetails: React.Dispatch<React.SetStateAction<string>>;
   isNotePublic: boolean;
-  setNoteImage: React.Dispatch<React.SetStateAction<string>>;
+  setNoteImage: React.Dispatch<React.SetStateAction<string | null>>;
   children: React.ReactNode;
 }> = ({
   children,

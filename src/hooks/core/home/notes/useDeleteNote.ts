@@ -50,7 +50,7 @@ export const useDeleteNotes = ({
         // This is inside the set timeout because the dialog needs to complete the animation, and I am completly removing the subject from the list which means that it doesn't exist anymore --> dialog immediatelly closes without animation
         deleteNote(noteId); // Client deletion
         toast({
-          title: `${noteName} subject deleted`,
+          title: `${noteName} note is deleted`,
           content: data.message,
           variant: 'success',
         });

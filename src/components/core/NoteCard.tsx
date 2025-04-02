@@ -13,7 +13,6 @@ import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails'
 import { DialogDelete } from '@/components/core/note/DialogDelete';
 import { Avatar } from '@/components/ui/Avatar';
 import { LikeComponent } from '@/components/ui/LikeComponent';
-import { fetchImage } from '@/utils/fetch-image';
 
 // Note card that links to desired document
 export const NoteCard: React.FC<{
@@ -43,21 +42,7 @@ export const NoteCard: React.FC<{
   console.log(user);
   const [noteName, setNoteName] = React.useState(title);
   const [noteDetails, setNoteDetails] = React.useState(description);
-  const [noteImage, setNoteImage] = React.useState('');
-  const [profileImage, setProfileImage] = React.useState('');
-
-  //Karlo add set user image like you did with note image
-
-  React.useEffect(() => {
-    if (imageUrl) {
-      fetchImage(`http://localhost:3000/api/images?imageUrl=${imageUrl}`, setNoteImage);
-    }
-  }, [imageUrl]);
-  React.useEffect(() => {
-    if (profileImageUrl) {
-      fetchImage(`http://localhost:3000/api/images?imageUrl=${profileImageUrl}`, setProfileImage);
-    }
-  }, [profileImageUrl]);
+  const [noteImage, setNoteImage] = React.useState(imageUrl);
 
   // Real time updating if user chnages his name (instead of refreshing)
   const authorCheck =
@@ -90,7 +75,7 @@ export const NoteCard: React.FC<{
           <div className="flex items-center gap-2">
             <Avatar
               imageProps={{
-                src: profileImage,
+                src: profileImageUrl || '',
                 alt: '',
               }}
             >
@@ -128,9 +113,7 @@ export const NoteCard: React.FC<{
               <Pencil1Icon
                 className={twJoin(
                   'size-9 transition-colors lg:size-7',
-                  noteImage
-                    ? 'hover:text-gray-200'
-                    : 'hover:text-blue-400'
+                  noteImage ? 'hover:text-gray-200' : 'hover:text-blue-400'
                 )}
               />
             </DialogChangeDetails>
@@ -144,9 +127,7 @@ export const NoteCard: React.FC<{
               <TrashIcon
                 className={twJoin(
                   'size-9 transition-colors lg:size-7',
-                  noteImage
-                    ? 'hover:text-gray-200'
-                    : 'hover:text-blue-400'
+                  noteImage ? 'hover:text-gray-200' : 'hover:text-blue-400'
                 )}
               />
             </DialogDelete>
@@ -154,12 +135,10 @@ export const NoteCard: React.FC<{
         </ul>
       )}
       <Link href={`/note-editor/${noteId}`} className="absolute inset-0">
-        {(noteImage) && (
+        {noteImage && (
           <div className="absolute left-0 top-0 -z-10 h-full w-full">
             <Image
-              src={
-                noteImage || ""
-              }
+              src={noteImage || ''}
               alt="Informative image about subject"
               className="h-full object-cover brightness-[45%]"
               fill

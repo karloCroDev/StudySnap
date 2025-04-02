@@ -50,7 +50,7 @@ export const useDialogEditProfile = ({
         return;
       }
       if (username) await user.update({ name: username });
-      if (data.pfpEncoded) await user.update({ image: data.pfpEncoded });
+      if (data.pfpImage) await user.update({ image: data.pfpImage });
 
       toast({
         title: 'Profile updated',

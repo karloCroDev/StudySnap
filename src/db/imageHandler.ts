@@ -10,19 +10,18 @@ export async function WriteImage(
   cropImage: boolean = true
 ): Promise<string | null> {
   try {
-    let imageUrl: string|null = null;
+    let imageUrl: string | null = null;
 
     if (image && typeof image !== 'string') {
       // Creates a buffer from the image and resizes it to 312x312 pixels
-      let buffer
-      if (cropImage){
+      let buffer;
+      if (cropImage) {
         buffer = await sharp(Buffer.from(await image.arrayBuffer()))
           .resize(312, 312)
-          .jpeg({quality: 70})
+          .jpeg({ quality: 70 })
           .toBuffer();
-      }
-      else{
-        buffer = Buffer.from(await image.arrayBuffer())
+      } else {
+        buffer = Buffer.from(await image.arrayBuffer());
       }
       // Generates a unique filename using the current timestamp and the original image name
       const filename = Date.now() + image.name.replaceAll(' ', '_');
@@ -33,7 +32,7 @@ export async function WriteImage(
       await writeFile(filePath, buffer);
 
       // Stores the relative path to the image
-      imageUrl = `public/uploads/${filename}`;
+      imageUrl = `/uploads/${filename}`;
       return imageUrl;
     }
     return null;
@@ -82,16 +81,16 @@ export async function GetProfileImage(
   return null;
 }
 
-export async function DeleteImage(
-  imageUrl: string | null
-){
-  console.log(imageUrl)
-  if (!imageUrl){return}
+export async function DeleteImage(imageUrl: string | null) {
+  console.log(imageUrl);
+  if (!imageUrl) {
+    return;
+  }
   try {
-    unlink(imageUrl, (error)=>{
-          console.error('Error deleting file:', error);
-    })
-  }catch (error) {
+    unlink('public' + imageUrl, (error) => {
+      console.error('Error deleting file:', error);
+    });
+  } catch (error) {
     console.error('Error deleting file:', error);
     return;
   }

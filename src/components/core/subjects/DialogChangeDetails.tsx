@@ -22,7 +22,7 @@ export const DialogChangeDetails: React.FC<{
   setCardTitle: React.Dispatch<React.SetStateAction<string>>;
   cardDescription: string;
   setCardDescripton: React.Dispatch<React.SetStateAction<string>>;
-  setCardImage: React.Dispatch<React.SetStateAction<string>>;
+  setCardImage: React.Dispatch<React.SetStateAction<string | null>>;
 }> = ({
   cardTitle,
   setCardTitle,
