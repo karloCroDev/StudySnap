@@ -69,8 +69,6 @@ export async function PATCH(req: NextRequest) {
     if (
       !userId
       // || SQLSyntaxCheck([userId, username, password])
-
-      // Luka: I think the issue is when I try to set the password, username or anything simmilar that includes some keyword for example to be adminusr, addMath => Then it extracts the IN or ADD which is common patter which means its my sql syntax. This is not only on this example but on every single one
     ) {
       return NextResponse.json({ message: 'Bad request' }, { status: 400 });
     }
@@ -95,7 +93,7 @@ export async function PATCH(req: NextRequest) {
     await UserClass.Update(userId, updates);
 
     let pfpEncoded;
-    if (file) pfpEncoded = updates.profile_picture_url.split('/').slice(1).join('/');
+    if (file) pfpEncoded = "/" + updates.profile_picture_url.split('/').slice(1).join('/');
 
     return NextResponse.json(
       {
