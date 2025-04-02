@@ -26,12 +26,19 @@ import { DialogEditProfile } from '@/components/core/profile/DialogEditProfile';
 
 // Hooks
 import { useLogout } from '@/hooks/core/useLogout';
+import { fetchImage } from '@/utils/fetch-image';
 
 export const Menu: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-
+  const [profileImage, setProfileImage] = React.useState("")
   const user = useSession();
+
+  React.useEffect(() => {
+    if (user.data?.user.image) {
+      fetchImage(`http://localhost:3000/api/images?imageUrl=${user.data?.user.image}`, setProfileImage);
+    }
+  });
 
   const logout = useLogout();
   if (!user.data?.user.id)
@@ -79,7 +86,7 @@ export const Menu: React.FC = () => {
         iconLeft={
           <Avatar
             imageProps={{
-              src: `data:image/jpeg;base64,${user?.data?.user.image}` || '',
+              src: profileImage,
               alt: '',
             }}
             size="md"

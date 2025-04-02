@@ -60,7 +60,7 @@ export const authOptions = {
         const myUser = await GetUserByEmail(user.email);
         token.uid = myUser!.id;
         token.sub = myUser!.id;
-        token.image = myUser!.encoded_image || '';
+        token.image = myUser!.profile_picture_url || '';
         token.name = myUser!.username;
         token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24; // Token expires in 24 hours
       }

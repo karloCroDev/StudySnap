@@ -19,9 +19,7 @@ export interface Note {
   creator_id: number;
 
   image_url: string | null;
-  encoded_image: string | null;
   profile_image_url: string | null;
-  encoded_profile_image: string | null;
 }
 
 export class NoteClass {

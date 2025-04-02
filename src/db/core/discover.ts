@@ -56,19 +56,7 @@ export async function GetPublicNotes(
     `,
     [userId, filter, filter, filter, limit, offset]
   );
-  const notesWithImages = await Promise.all(
-    result[0].map(async (note) => {
-      const image = await GetImage(note.image_url);
-      const encoded_profile_image = await GetProfileImage(
-        note.profile_image_url
-      );
-      return {
-        ...note,
-        encoded_image: image,
-        encoded_profile_image: encoded_profile_image,
-      };
-    })
-  );
-  const algorithmValue = rankNotes(notesWithImages);
+
+  const algorithmValue = rankNotes(result[0]);
   return algorithmValue;
 }

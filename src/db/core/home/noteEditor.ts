@@ -47,9 +47,6 @@ export async function GetNoteById(
     `,
     [user_id, note_id]
   );
-  result[0][0].encoded_image = await GetImage(result[0][0].image_url);
-  result[0][0].encoded_profile_image = await GetProfileImage(
-    result[0][0].profile_image_url
-  );
+
   return result[0][0] as Note;
 }

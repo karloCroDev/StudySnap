@@ -54,23 +54,8 @@ export async function GetNotesByCreatorId(
     `,
     [user_id, creator_id]
   );
-  const notesWithImages = await Promise.all(
-    result[0].map(async (note) => {
-      const image = await GetImage(note.image_url);
-      const encoded_profile_image = await GetProfileImage(
-        note.profile_image_url
-      );
-      return {
-        ...note,
-        encoded_image: image,
-        encoded_profile_image: encoded_profile_image,
-      };
-    })
-  );
-
-  noteCache?.put(cacheKey, notesWithImages);
-
-  return notesWithImages as Note[];
+  
+  return result[0] as Note[];
 }
 
 // Gets data for wanted user by using the id
@@ -83,7 +68,6 @@ export async function GetUserById(id: string): Promise<User | null> {
   );
   if (!result[0]) return null;
 
-  result[0][0].encoded_image = await GetImage(result[0][0].profile_picture_url);
   return result[0][0] as User;
 }
 
@@ -126,21 +110,6 @@ export async function GetLikedNotes(user_id: string): Promise<Array<Note>> {
     `,
     [user_id]
   );
-  const notesWithImages = await Promise.all(
-    result[0].map(async (note) => {
-      const image = await GetImage(note.image_url);
-      const encoded_profile_image = await GetProfileImage(
-        note.profile_image_url
-      );
-      return {
-        ...note,
-        encoded_image: image,
-        encoded_profile_image: encoded_profile_image,
-      };
-    })
-  );
 
-  noteCache?.put(cacheKey, notesWithImages);
-
-  return notesWithImages as Note[];
+  return result[0] as Note[];
 }
