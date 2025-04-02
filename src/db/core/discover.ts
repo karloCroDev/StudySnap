@@ -60,3 +60,50 @@ export async function GetPublicNotes(
   const algorithmValue = rankNotes(result[0]);
   return algorithmValue;
 }
+
+export async function GetRandomNotes(
+    limit: number,
+    userId: string,
+  ): Promise<Array<Note>> {
+    const result: [any[], any] = await getPool().query(
+      `
+          SELECT
+              n.id,
+              n.title,
+              n.details,
+              n.content,
+              n.is_public,
+              n.subject_id,
+              n.image_url,
+              n.date_created,
+              n.date_modified,
+              COUNT(DISTINCT l.user_id) AS likes,
+              MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked,
+              u.username AS creator_name,
+              u.id AS creator_id,
+              u.profile_picture_url as profile_image_url
+          FROM
+              note n
+          JOIN
+              subject s ON n.subject_id = s.id
+          JOIN
+              user u ON s.creator_id = u.id
+          LEFT JOIN
+              likes l ON n.id = l.note_id
+          WHERE n.is_public = 1 
+          GROUP BY
+              n.id,
+              n.title,
+              n.details,
+              n.is_public,
+              n.subject_id,
+              u.username 
+          ORDER BY RAND()
+          LIMIT ?
+      `,
+      [userId, limit]
+    );
+  
+    const algorithmValue = rankNotes(result[0]);
+    return algorithmValue;
+  }

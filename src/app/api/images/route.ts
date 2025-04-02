@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams;
     const imageUrl = searchParams.get('imageUrl');
 
-    if (!imageUrl) {
+    if (!imageUrl || imageUrl == "undefined") {
       return new Response(JSON.stringify({ error: 'Missing image url' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
