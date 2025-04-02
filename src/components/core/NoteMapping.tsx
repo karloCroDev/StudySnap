@@ -57,8 +57,7 @@ export const NoteMapping: React.FC<{
           author={note.creator_name}
           liked={note.liked}
           creatorId={note.creator_id}
-          encodedUserImage={note.encoded_profile_image ?? undefined}
-          encodedImage={note.encoded_image}
+          profileImageUrl={note.profile_image_url}
           imageUrl={note.image_url}
           key={note.id}
         />

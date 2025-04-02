@@ -70,9 +70,8 @@ export const DisocverMapping: React.FC<{
               author={note.creator_name}
               liked={note.liked}
               creatorId={note.creator_id}
-              encodedUserImage={note.encoded_profile_image ?? undefined}
-              encodedImage={note.encoded_image}
               imageUrl={note.image_url}
+              profileImageUrl={note.profile_image_url}
               key={note.id}
             />
           </LayoutColumn>
@@ -103,9 +102,8 @@ export const DisocverMapping: React.FC<{
               author={note.creator_name}
               liked={note.liked}
               creatorId={note.creator_id}
-              encodedUserImage={note.encoded_profile_image ?? undefined}
-              encodedImage={note.encoded_image}
               imageUrl={note.image_url}
+              profileImageUrl={note.profile_image_url}
               key={note.id}
             />
           </LayoutColumn>

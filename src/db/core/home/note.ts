@@ -47,10 +47,6 @@ export async function GetNoteById(
     `,
     [user_id, note_id]
   );
-  result[0][0].encoded_image = await GetImage(result[0][0].image_url);
-  result[0][0].encoded_profile_image = await GetProfileImage(
-    result[0][0].profile_image_url
-  );
   return result[0][0] as Note;
 }
 
@@ -96,21 +92,7 @@ export async function GetNotesBySubjectId(
     `,
     [subject_id]
   );
-  const notesWithImages = await Promise.all(
-    result[0].map(async (note) => {
-      const image = await GetImage(note.image_url);
-      const encoded_profile_image = await GetProfileImage(
-        note.profile_image_url
-      );
-      return {
-        ...note,
-        encoded_image: image,
-        encoded_profile_image: encoded_profile_image,
-      };
-    })
-  );
-  //Adding notes ot cache
-  noteCache?.put(cacheKey, notesWithImages);
 
-  return notesWithImages as Note[];
+  //Adding notes ot cache
+  return result[0] as Note[];
 }

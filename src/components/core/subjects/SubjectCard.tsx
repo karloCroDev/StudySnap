@@ -27,11 +27,13 @@ export const SubjectCard: React.FC<{
   const [cardTitle, setCardTitle] = React.useState(title);
   const [cardDescription, setCardDescription] = React.useState(description);
   const [cardImage, setCardImage] = React.useState<string>('');
+  
   React.useEffect(() => {
     if (imageUrl) {
       fetchImage(`http://localhost:3000/api/images?imageUrl=${imageUrl}`, setCardImage);
     }
   }, [imageUrl]);
+
   return (
     <div
       className={twJoin(

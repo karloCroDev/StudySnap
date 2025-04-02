@@ -23,6 +23,8 @@ import { Avatar } from '@/components/ui/Avatar';
 
 // Hooks
 import { useLogout } from '@/hooks/core/useLogout';
+import { fetchImage } from '@/utils/fetch-image';
+import { profile } from 'console';
 
 export const Drawer = () => {
   const pathname = usePathname();
@@ -31,6 +33,13 @@ export const Drawer = () => {
 
   const logout = useLogout();
 
+  const [profileImage, setProfileImage] = React.useState("")
+  React.useEffect(() => {
+    if (!user.data?.user.image) {
+      console.log("AAAAAAAAAAAAAAAAA", user.data?.user.image)
+      fetchImage(`http://localhost:3000/api/images?imageUrl=${user.data?.user.image}`, setProfileImage);
+    }
+  });
   return (
     <RadixDialog.Root>
       <RadixDialog.Trigger asChild className="cursor-pointer">
@@ -42,7 +51,7 @@ export const Drawer = () => {
           <Avatar
             size="lg"
             imageProps={{
-              src: `data:image/jpeg;base64,${user?.data?.user.image}` || '',
+              src: profileImage,
               alt: '',
             }}
           >

@@ -13,6 +13,7 @@ import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails'
 import { DialogDelete } from '@/components/core/note/DialogDelete';
 import { Avatar } from '@/components/ui/Avatar';
 import { LikeComponent } from '@/components/ui/LikeComponent';
+import { fetchImage } from '@/utils/fetch-image';
 
 // Note card that links to desired document
 export const NoteCard: React.FC<{
@@ -21,9 +22,8 @@ export const NoteCard: React.FC<{
   description: string;
   author: string;
   isPublic: boolean;
-  encodedImage?: string | null;
   imageUrl: string | null;
-  encodedUserImage?: string;
+  profileImageUrl: string | null;
   numberOfLikes: number;
   liked: number;
   creatorId: number;
@@ -31,8 +31,7 @@ export const NoteCard: React.FC<{
   noteId,
   title,
   description,
-  encodedImage,
-  encodedUserImage,
+  profileImageUrl,
   imageUrl,
   author,
   isPublic,
@@ -45,21 +44,30 @@ export const NoteCard: React.FC<{
   const [noteName, setNoteName] = React.useState(title);
   const [noteDetails, setNoteDetails] = React.useState(description);
   const [noteImage, setNoteImage] = React.useState('');
+  const [profileImage, setProfileImage] = React.useState('');
+
+  //Karlo add set user image like you did with note image
+
+  React.useEffect(() => {
+    if (imageUrl) {
+      fetchImage(`http://localhost:3000/api/images?imageUrl=${imageUrl}`, setNoteImage);
+    }
+  }, [imageUrl]);
+  React.useEffect(() => {
+    if (profileImageUrl) {
+      fetchImage(`http://localhost:3000/api/images?imageUrl=${profileImageUrl}`, setProfileImage);
+    }
+  }, [profileImageUrl]);
 
   // Real time updating if user chnages his name (instead of refreshing)
   const authorCheck =
     creatorId === user.data?.user.id ? user.data.user.name : author;
 
-  const pfpCheck =
-    creatorId === user.data?.user.id
-      ? `data:image/jpeg;base64,${user.data?.user.image}`
-      : `data:image/jpeg;base64,${encodedUserImage}`;
-
   return (
     <div
       className={twJoin(
         'group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400',
-        noteImage || encodedImage ? 'text-gray-100' : 'text-blue-900'
+        noteImage ? 'text-gray-100' : 'text-blue-900'
       )}
     >
       <div className="flex aspect-square flex-col p-6 pb-4">
@@ -71,7 +79,7 @@ export const NoteCard: React.FC<{
             <p
               className={twJoin(
                 'text-xs font-medium',
-                noteImage || encodedImage ? 'text-gray-200' : 'text-gray-400'
+                noteImage ? 'text-gray-200' : 'text-gray-400'
               )}
             >
               {noteDetails}
@@ -82,7 +90,7 @@ export const NoteCard: React.FC<{
           <div className="flex items-center gap-2">
             <Avatar
               imageProps={{
-                src: pfpCheck,
+                src: profileImage,
                 alt: '',
               }}
             >
@@ -120,7 +128,7 @@ export const NoteCard: React.FC<{
               <Pencil1Icon
                 className={twJoin(
                   'size-9 transition-colors lg:size-7',
-                  noteImage || encodedImage
+                  noteImage
                     ? 'hover:text-gray-200'
                     : 'hover:text-blue-400'
                 )}
@@ -136,7 +144,7 @@ export const NoteCard: React.FC<{
               <TrashIcon
                 className={twJoin(
                   'size-9 transition-colors lg:size-7',
-                  noteImage || encodedImage
+                  noteImage
                     ? 'hover:text-gray-200'
                     : 'hover:text-blue-400'
                 )}
@@ -146,13 +154,11 @@ export const NoteCard: React.FC<{
         </ul>
       )}
       <Link href={`/note-editor/${noteId}`} className="absolute inset-0">
-        {(noteImage || encodedImage) && (
+        {(noteImage) && (
           <div className="absolute left-0 top-0 -z-10 h-full w-full">
             <Image
               src={
-                noteImage ||
-                (encodedImage && `data:image/jpeg;base64,${encodedImage}`) ||
-                ''
+                noteImage || ""
               }
               alt="Informative image about subject"
               className="h-full object-cover brightness-[45%]"

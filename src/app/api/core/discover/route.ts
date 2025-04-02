@@ -12,13 +12,6 @@ export async function POST(req: NextRequest) {
 
     let notes = await GetPublicNotes(limit, offset, userId, filter ?? '');
 
-    if (
-      !notes
-      //  || SQLSyntaxCheck([userId, filter])
-    ) {
-      return NextResponse.json({ message: 'Bad request' }, { status: 400 });
-    }
-
     return NextResponse.json(notes, { status: 200 });
   } catch (error) {
     console.error(error);

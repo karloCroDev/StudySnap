@@ -4,9 +4,6 @@ import { getPool } from '@/db/db';
 //Models
 import { Subject } from '@/models/subject';
 
-// Database (handling the images)
-import { GetImage } from '@/db/imageHandler';
-
 // Gets all subjects for the current user
 export async function GetSubjectByCreatorId(
   creatorId: string
@@ -17,16 +14,7 @@ export async function GetSubjectByCreatorId(
     `,
     [creatorId]
   );
-  const subjectsWithImages = await Promise.all(
-    result[0].map(async (subject) => {
-      const image = await GetImage(subject.image_url);
-      return {
-        ...subject,
-        encoded_image: image,
-      };
-    })
-  );
-  return subjectsWithImages as Subject[];
+  return result[0] as Subject[];
 }
 
 export async function GetSubjectById(id: string): Promise<Subject> {
@@ -36,6 +24,5 @@ export async function GetSubjectById(id: string): Promise<Subject> {
     `,
     [id]
   );
-  result[0][0].encoded_image = await GetImage(result[0][0].image_url);
   return result[0][0] as Subject;
 }

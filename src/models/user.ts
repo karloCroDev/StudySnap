@@ -10,7 +10,6 @@ export interface User {
   password: string;
   email: string;
   profile_picture_url: string | null;
-  encoded_image: string;
 }
 
 export class UserClass {
