@@ -72,44 +72,52 @@ export async function GetUserById(id: string): Promise<User | null> {
 }
 
 // Retrieve all notes that a user has liked, but only if they are currently public. If a note was previously public but has since been made private, it's no longer be included
-export async function GetLikedNotes(user_id: string): Promise<Array<Note>> {
+export async function GetLikedNotes(user_id: string, target_user_id: string): Promise<Array<Note>> {
   const cacheKey = `GetLikedNotes_${user_id}`;
   //const cachedNotes = await noteCache.get(cacheKey);
   //if (cachedNotes){return cachedNotes as Note[]}
 
   const result: [any[], any] = await getPool().query(
     `
-      SELECT
-          n.id,
-          n.title,
-          n.details,
-          n.content,
-          n.is_public,
-          n.subject_id,
-          n.image_url,
-          COUNT(DISTINCT l.user_id) AS likes,
-          1 AS liked,
-          u.username AS creator_name,
-          u.id AS creator_id,
-          u.profile_picture_url as profile_image_url
-      FROM
-          note n
-      JOIN
-          subject s ON n.subject_id = s.id
-      JOIN
-          user u ON s.creator_id = u.id
-      JOIN
-          likes l ON n.id = l.note_id
-      WHERE
-          l.user_id = ?  -- MySQL placeholder
-          AND n.is_public = TRUE
-      GROUP BY
-          n.id, n.title, n.details, n.content, n.is_public, n.subject_id, n.image_url, 
-          u.username, u.id, u.profile_picture_url;
-
-    `,
-    [user_id]
+    SELECT
+        n.id,
+        n.title,
+        n.details,
+        n.content,
+        n.is_public,
+        n.subject_id,
+        n.image_url,
+        COUNT(DISTINCT l.user_id) AS likes, -- Count all likes for the note
+        MAX(CASE WHEN l.user_id = ? THEN 1 ELSE 0 END) AS liked, -- Check if the current user liked the note
+        u.username AS creator_name,
+        u.id AS creator_id,
+        u.profile_picture_url as profile_image_url
+    FROM
+        note n
+    JOIN
+        subject s ON n.subject_id = s.id
+    JOIN
+        user u ON s.creator_id = u.id
+    LEFT JOIN
+        likes l ON n.id = l.note_id -- Use LEFT JOIN to include notes with no likes
+    WHERE
+        n.is_public = true -- Only include public notes
+        AND EXISTS ( -- Ensure the target user has liked the note
+            SELECT 1
+            FROM likes l2
+            WHERE l2.note_id = n.id
+              AND l2.user_id = ?
+        )
+    GROUP BY
+        n.id,
+        n.title,
+        n.details,
+        n.is_public,
+        n.subject_id,
+        u.username
+  `,
+    [user_id, target_user_id]
   );
-
+  
   return result[0] as Note[];
 }

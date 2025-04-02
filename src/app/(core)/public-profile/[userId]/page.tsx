@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   },
 };
 
-async function getAllLikedUsersPosts(creatorId: number) {
+async function getAllLikedUsersPosts(creatorId: number, userId: number) {
   const response = await fetch(
-    `http://localhost:3000/api/core/public-profile?creatorId=${creatorId}`
+    `http://localhost:3000/api/core/public-profile?creatorId=${creatorId}&userId=${userId}`
   );
 
   if (!response.ok) throw new Error('Error with fetching');
@@ -59,7 +59,7 @@ export default async function PublicProfile({
   const session = await getServerSession(authOptions);
   const userId = session?.user.id || null;
 
-  const likedNotes = await getAllLikedUsersPosts(creatorId);
+  const likedNotes = await getAllLikedUsersPosts(creatorId, userId);
   const [notes, user] = await getPublicProfileNotes(creatorId, userId);
   console.log(user);
   return (
