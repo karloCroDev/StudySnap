@@ -23,7 +23,7 @@ export const useUploadImage = ({
       const formData = new FormData();
       if (image) formData.append('file', image); // Karlo: Add better insight while checking
       const response = await fetch(
-        'http://localhost:3000/api/core/home/notes/editor-image-upload',
+        'http://localhost:3000/api/core/home/notes/editor',
         {
           method: 'POST',
           body: formData,
@@ -32,7 +32,6 @@ export const useUploadImage = ({
 
       const data = await response.json();
       editor.chain().focus().setImage({ src: data }).run();
-      setIsOpen(false);
     } catch (error) {
       console.error('Failed to complete sentence:', error);
     } finally {

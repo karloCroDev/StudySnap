@@ -25,17 +25,12 @@ export const metadata: Metadata = {
     },
   },
 };
-async function fetchNote(noteId: number, userId: number) {
+
+async function fetchNote(noteId: number | null, userId: number) {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/core/home/notes/editor`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ noteId, userId }),
-      }
+      `http://localhost:3000/api/core/home/notes/editor?noteId=${noteId}&userId=${userId}`,
+      { cache: 'no-cache' }
     );
     if (!response.ok) throw new Error('Failed to fetch data');
 
@@ -51,10 +46,11 @@ export default async function NoteEditor({
   params: { noteId: number };
 }) {
   const session = await getServerSession(authOptions);
-
-  const userId = session?.user.id || null;
-  const noteData: Note = await fetchNote(params.noteId, userId);
-
+  const userId = session?.user.id || null; // Null for handling the anonymous user
+  const noteData: Note = await fetchNote(+params.noteId, userId);
+  console.log(+params.noteId);
+  console.log(userId);
+  console.log(noteData);
   return (
     /* To improve document retrieval while editing, we developed a separate page featuring the same header. This minimizes fetches to just one, instead of relying on debounce or throttle methods. We implemented a navigation guard to notify users if they attempt to leave editing mode without saving, warning them that unsaved changes will be lost if they close the tab, browser, or navigate to another page within the app. We had to cover all exists of leaving the page, which is why the header appears here as well.
      */

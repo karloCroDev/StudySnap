@@ -2,7 +2,6 @@
 
 // External packages
 import * as React from 'react';
-import { useShallow } from 'zustand/shallow';
 
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
@@ -30,7 +29,8 @@ export const DisocverMapping: React.FC<{
   const [notes, setNotes] = React.useState<Note[]>(notesData);
 
   // Server side search logic
-  const search = useGeneralInfo((state) => state.search); // Try to make this inside the component
+  const search = useGeneralInfo((state) => state.search);
+
   const debouncedSearch = useDebounce(search);
 
   const { loadingSearchNotes, notesQuery } = useSearchNotes({

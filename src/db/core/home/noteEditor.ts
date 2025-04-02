@@ -10,7 +10,7 @@ import { GetImage, GetProfileImage } from '@/db/imageHandler';
 // Gets data for document
 export async function GetNoteById(
   note_id: string,
-  user_id: string
+  user_id: string | null
 ): Promise<Note> {
   const result: [any, any] = await getPool().query(
     `
