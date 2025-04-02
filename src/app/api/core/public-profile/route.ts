@@ -95,7 +95,7 @@ export async function PATCH(req: NextRequest) {
     await UserClass.Update(userId, updates);
 
     let pfpEncoded;
-    if (file) pfpEncoded = await GetProfileImage(updates.profile_picture_url);
+    if (file) pfpEncoded = updates.profile_picture_url.split('/').slice(1).join('/');
 
     return NextResponse.json(
       {

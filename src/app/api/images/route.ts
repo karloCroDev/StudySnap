@@ -29,12 +29,12 @@ export async function GET(req: NextRequest) {
         ? 'image/gif'
         : 'application/octet-stream'; // Default to binary stream if unknown
 
-    // Serve the image
+        // Serve the image
     return new Response(imageBuffer, {
       status: 200,
       headers: {
         'Content-Type': contentType,
-        'Content-Length': imageBuffer!.length.toString(),
+        'Content-Length' :`${imageBuffer?.length.toString() ?? 0}`,
       },
     });
   } catch (error) {

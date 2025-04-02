@@ -56,11 +56,13 @@ export const authOptions = {
       if (trigger === 'update' && session?.image) {
         token.image = session.image;
       }
+
       if (user) {
         const myUser = await GetUserByEmail(user.email);
         token.uid = myUser!.id;
         token.sub = myUser!.id;
-        token.image = myUser!.profile_picture_url || '';
+        token.image = "/"+myUser!.profile_picture_url?.split('/').slice(1).join('/') || '';
+
         token.name = myUser!.username;
         token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24; // Token expires in 24 hours
       }

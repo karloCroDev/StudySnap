@@ -29,14 +29,14 @@ import { useLogout } from '@/hooks/core/useLogout';
 import { fetchImage } from '@/utils/fetch-image';
 
 export const Menu: React.FC = () => {
+  const user = useSession();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-  const [profileImage, setProfileImage] = React.useState("")
-  const user = useSession();
+  const [profileImage, setProfileImage] = React.useState(user.data?.user.image)
 
   React.useEffect(() => {
     if (user.data?.user.image) {
-      fetchImage(`http://localhost:3000/api/images?imageUrl=${user.data?.user.image}`, setProfileImage);
+      //fetchImage(`http://localhost:3000/api/images?imageUrl=${user.data?.user.image}`, setProfileImage);
     }
   });
 

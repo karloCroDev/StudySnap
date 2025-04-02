@@ -67,7 +67,7 @@ export default async function PublicProfile({
       <div className="mb-12 animate-public-profile-initial-apperance lg:mb-16">
         <Avatar
           imageProps={{
-            src: `data:image/jpeg;base64,${user.encoded_image}`,
+            src: `${session?.user.image}`,
             alt: '',
           }}
           size="xl"

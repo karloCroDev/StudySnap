@@ -10,6 +10,7 @@ export async function POST(req: NextRequest) {
   try {
     const { userId, filter, offset = 0, limit = 4 } = await req.json();
 
+    console.log(offset, limit)
     let notes = await GetPublicNotes(limit, offset, userId, filter ?? '');
 
     return NextResponse.json(notes, { status: 200 });

@@ -5,7 +5,7 @@ export function SQLSyntaxCheck(texts: (string | null)[]): boolean {
     'WHERE', 'LIKE', 'TABLE', 'DATABASE', 'CASE', 'WHEN', 'THEN', 'END', 'AS', 'INTO', 'VALUES', 'SET', 'HAVING',
     'GROUP', 'ORDER', 'LIMIT', 'ADD', 'ASC', 'BETWEEN', 'BY', 'CHECK', 'COLUMN', 'CONSTRAINT', 'CREATE', 'DEFAULT',
     'DESC', 'DISTINCT', 'EXISTS', 'FOREIGN', 'FROM', 'IN', 'INDEX', 'IS', 'KEY', 'NOT', 'ON', 'PRIMARY', 'PROCEDURE',
-    'REFERENCES', 'TOP', 'UNIQUE', 'VIEW', 'WITH', 'NULL' , "*/", "*", "/*"
+    'REFERENCES', 'TOP', 'UNIQUE', 'VIEW', 'WITH', 'NULL'
   ];
 
   // Convert text to uppercase for case-insensitive matching
@@ -13,19 +13,15 @@ export function SQLSyntaxCheck(texts: (string | null)[]): boolean {
     .filter((text) => text !== null && typeof text === 'string')
     .map((text) => text!.toUpperCase());
 
-  //No SQL keyword can make damage to the databse
- let keywordCount = 0;
-  for (const keyword of sqlKeywords) {
-    for (const text of upperTexts) {
-      if (text.includes(keyword)) {
-        keywordCount++;
-        if (keywordCount >= 2) {
-          console.log('FOUND SQL SYNTAX');
-          return true;
+  const keywordSet = new Set(sqlKeywords); // For fast lookup
+
+  for (const text of upperTexts) {
+    const words = text!.split(" ");
+    for (let i = 0; i < words.length - 1; i++) {
+        if (keywordSet.has(words[i]) && keywordSet.has(words[i + 1])) {
+            return true; // Found a match
         }
-      }
     }
   }
-
-  return false;
+  return false; // No match found
 }
