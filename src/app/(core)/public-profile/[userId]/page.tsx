@@ -61,13 +61,13 @@ export default async function PublicProfile({
 
   const likedNotes = await getAllLikedUsersPosts(creatorId);
   const [notes, user] = await getPublicProfileNotes(creatorId, userId);
-
+  console.log(user);
   return (
     <>
       <div className="mb-12 animate-public-profile-initial-apperance lg:mb-16">
         <Avatar
           imageProps={{
-            src: `${session?.user.image}`,
+            src: `${user.profile_picture_url}`,
             alt: '',
           }}
           size="xl"

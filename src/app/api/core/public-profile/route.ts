@@ -94,12 +94,9 @@ export async function PATCH(req: NextRequest) {
 
     await UserClass.Update(userId, updates);
 
-    let pfpEncoded;
-    if (file) pfpEncoded = updates.profile_picture_url.split('/').slice(1).join('/');
-
     return NextResponse.json(
       {
-        pfpEncoded,
+        pfpImage: updates.profile_picture_url,
         message: 'User updated successfully',
       },
       {

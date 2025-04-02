@@ -24,7 +24,7 @@ export const useChangeDetailsNote = ({
   image: File | null;
   setNoteName: React.Dispatch<React.SetStateAction<string>>;
   setNoteDetails: React.Dispatch<React.SetStateAction<string>>;
-  setNoteImage: React.Dispatch<React.SetStateAction<string>>;
+  setNoteImage: React.Dispatch<React.SetStateAction<string | null>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [loading, setLoading] = React.useState(false);

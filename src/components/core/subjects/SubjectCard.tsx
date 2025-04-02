@@ -14,41 +14,33 @@ import { twJoin } from 'tailwind-merge';
 // Components
 import { DialogDelete } from '@/components/core/subjects/DialogDelete';
 import { DialogChangeDetails } from '@/components/core/subjects/DialogChangeDetails';
-import { fetchImage } from '@/utils/fetch-image';
 
 // Subject card that links to belonging notes
 export const SubjectCard: React.FC<{
   id: number;
   title: string;
   description?: string;
-  encodedImage?: string | null;
   imageUrl: string | null;
-}> = ({ id, title, description = '', encodedImage, imageUrl }) => {
+}> = ({ id, title, description = '', imageUrl }) => {
   const [cardTitle, setCardTitle] = React.useState(title);
   const [cardDescription, setCardDescription] = React.useState(description);
-  const [cardImage, setCardImage] = React.useState<string>('');
-  
-  React.useEffect(() => {
-    if (imageUrl) {
-      fetchImage(`http://localhost:3000/api/images?imageUrl=${imageUrl}`, setCardImage);
-    }
-  }, [imageUrl]);
+  const [cardImage, setCardImage] = React.useState(imageUrl);
 
   return (
     <div
       className={twJoin(
         'group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 border-blue-400',
-        cardImage || encodedImage ? 'text-gray-100' : 'text-blue-900'
+        cardImage ? 'text-gray-100' : 'text-blue-900'
       )}
     >
       <Link
         href={`/home/notes/${id}`}
         className="flex aspect-square flex-col p-6 pb-4"
       >
-        {(encodedImage || cardImage) && (
+        {cardImage && (
           <div className="absolute left-0 top-0 -z-10 h-full w-full">
             <Image
-            src={cardImage }
+              src={cardImage}
               alt="Informative image about subject"
               className="h-full object-cover brightness-50"
               fill
@@ -63,7 +55,7 @@ export const SubjectCard: React.FC<{
             <p
               className={twJoin(
                 'text-xs font-medium',
-                cardImage || encodedImage ? 'text-gray-200' : 'text-gray-400'
+                cardImage ? 'text-gray-200' : 'text-gray-400'
               )}
             >
               {cardDescription}
@@ -89,9 +81,7 @@ export const SubjectCard: React.FC<{
             <Pencil1Icon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',
-                cardImage || encodedImage
-                  ? 'hover:text-gray-200'
-                  : 'hover:text-blue-400'
+                cardImage ? 'hover:text-gray-200' : 'hover:text-blue-400'
               )}
             />
           </DialogChangeDetails>
@@ -101,9 +91,7 @@ export const SubjectCard: React.FC<{
             <TrashIcon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',
-                cardImage || encodedImage
-                  ? 'hover:text-gray-200'
-                  : 'hover:text-blue-400'
+                cardImage ? 'hover:text-gray-200' : 'hover:text-blue-400'
               )}
             />
           </DialogDelete>

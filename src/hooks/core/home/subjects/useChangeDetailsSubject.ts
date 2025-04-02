@@ -22,7 +22,7 @@ export const useChangeDetailsSubject = ({
   image: File | null;
   setCardTitle: React.Dispatch<React.SetStateAction<string>>;
   setCardDescripton: React.Dispatch<React.SetStateAction<string>>;
-  setCardImage: React.Dispatch<React.SetStateAction<string>>;
+  setCardImage: React.Dispatch<React.SetStateAction<string | null>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [loading, setLoading] = React.useState(false);
