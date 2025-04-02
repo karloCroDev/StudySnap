@@ -13,20 +13,34 @@ import { GetProfileImage, WriteImage } from '@/db/imageHandler';
 // Models
 import { UserClass } from '@/models/user';
 import { SQLSyntaxCheck } from '@/lib/algorithms/stringVerification';
+import { getToken } from 'next-auth/jwt';
 
 // Function to handle all liked posts from user
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const userId = searchParams.get('creatorId');
+  try{
+    const { searchParams } = new URL(req.url);
+    const targetUserId = searchParams.get('creatorId');
+    const userId = searchParams.get('userId')
+    
+    if (!targetUserId || !userId || SQLSyntaxCheck([targetUserId, userId])) {
+      return NextResponse.json({ message: 'Bad request' }, { status: 400 });
+    }
 
-  if (!userId || SQLSyntaxCheck([userId])) {
-    return NextResponse.json({ message: 'Bad request' }, { status: 400 });
+    const likedNotes = await GetLikedNotes(userId, targetUserId);
+    return NextResponse.json(likedNotes, {
+      status: 201,
+    });
+  }catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      {
+        message: 'Failed to load notes',
+      },
+      {
+        status: 500,
+      }
+    );
   }
-
-  const likedNotes = await GetLikedNotes(userId);
-  return NextResponse.json(likedNotes, {
-    status: 201,
-  });
 }
 
 // Function to handle POST requests for retrieving public profile data
