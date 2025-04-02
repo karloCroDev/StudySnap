@@ -4,6 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import GoogleProvider from 'next-auth/providers/google';
 import { Account, Profile, User } from 'next-auth';
+import { randomBytes } from 'crypto';
 
 // db
 import { GetUserByEmail } from '@/db/auth/login';
@@ -61,8 +62,7 @@ export const authOptions = {
         const myUser = await GetUserByEmail(user.email);
         token.uid = myUser!.id;
         token.sub = myUser!.id;
-        token.image = "/"+myUser!.profile_picture_url?.split('/').slice(1).join('/') || '';
-
+        token.image = myUser?.profile_picture_url || '';
         token.name = myUser!.username;
         token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24; // Token expires in 24 hours
       }
@@ -96,9 +96,12 @@ export const authOptions = {
 
       //Logic for creating a user if he does not exist
       if (account.provider === 'google') {
+        const securePassword = randomBytes(8).toString('hex'); // Generating secure password with lenght of 16
+
+        const hashedPassword = await bcrypt.hash(securePassword, 10);
         const existingUser = await GetUserByEmail(user.email!);
         if (!existingUser) {
-          await UserClass.Insert(user.name!, user.email!, 'SignedUpViaGoogle');
+          await UserClass.Insert(user.name!, user.email!, hashedPassword);
         }
         return true;
       }

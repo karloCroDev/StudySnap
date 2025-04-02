@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
       // ||
       // !SQLSyntaxCheck([subjectId, noteName, details])
     ) {
-      return NextResponse.json({ status: 400, statusText: 'Bad request' });
+      return NextResponse.json({ message: 'Bad request' }, { status: 400 });
     }
 
     const imagePath = await WriteImage(file);
@@ -73,10 +73,12 @@ export async function POST(req: NextRequest) {
 
     if (!id) {
       console.error('Failed to get id from inserted note');
-      return NextResponse.json({
-        status: 500,
-        statusText: 'Failed to get id from inserted note',
-      });
+      return NextResponse.json(
+        { message: 'Failed to get id from inserted note' },
+        {
+          status: 500,
+        }
+      );
     }
 
     const note = await GetNoteById(id, '0');
@@ -99,16 +101,22 @@ export async function DELETE(req: NextRequest) {
   try {
     const { noteId, imageUrl } = await req.json();
     if (!noteId) {
-      return NextResponse.json({
-        status: 400,
-        statusText: 'Missing required fields',
-      });
+      return NextResponse.json(
+        {
+          message: 'Missing required fields',
+        },
+        {
+          status: 400,
+        }
+      );
     }
     await NoteClass.Delete(noteId, imageUrl);
-    return NextResponse.json({
-      status: 200,
-      statusText: 'Deleted successfully',
-    });
+    return NextResponse.json(
+      { message: 'Deleted successfully' },
+      {
+        status: 200,
+      }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json({ status: 500, statusText: 'Failed to delete' });

@@ -27,7 +27,7 @@ export const DialogEditProfile: React.FC<{
   const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
-    if(setIsDialogOpen != undefined) setIsDialogOpen(isOpen);
+    if (setIsDialogOpen != undefined) setIsDialogOpen(isOpen);
   }, [isOpen]);
 
   const [username, setUsername] = React.useState('');
@@ -61,10 +61,7 @@ export const DialogEditProfile: React.FC<{
               className="cursor-pointer"
               size="lg"
               imageProps={{
-                src:
-                  clientImage ||
-                  `data:image/jpeg;base64,${user.data?.user?.image}` ||
-                  '',
+                src: clientImage || `${user.data?.user?.image}` || '',
                 alt: 'Your pfp',
               }}
             >
