@@ -51,6 +51,7 @@ export async function GetPublicNotes(
             n.is_public,
             n.subject_id,
             u.username 
+        ORDER BY likes DESC
         LIMIT ?
         OFFSET ?
     `,
@@ -62,11 +63,11 @@ export async function GetPublicNotes(
 }
 
 export async function GetRandomNotes(
-    limit: number,
-    userId: string,
-  ): Promise<Array<Note>> {
-    const result: [any[], any] = await getPool().query(
-      `
+  limit: number,
+  userId: string
+): Promise<Array<Note>> {
+  const result: [any[], any] = await getPool().query(
+    `
           SELECT
               n.id,
               n.title,
@@ -101,9 +102,19 @@ export async function GetRandomNotes(
           ORDER BY RAND()
           LIMIT ?
       `,
-      [userId, limit]
-    );
-  
-    const algorithmValue = rankNotes(result[0]);
-    return algorithmValue;
-  }
+    [userId, limit]
+  );
+
+  const algorithmValue = rankNotes(result[0]);
+  return algorithmValue;
+}
+
+export async function GetNumberOfPublicNotes() {
+  const result: [any[], any] = await getPool().query(
+    `
+            SELECT COUNT(*)
+            WHERE n.is_public = 1 
+        `
+  );
+  return result[0][0];
+}
