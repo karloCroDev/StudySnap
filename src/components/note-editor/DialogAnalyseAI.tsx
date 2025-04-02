@@ -27,7 +27,7 @@ import { Spinner } from '@/components/ui/Spinner';
 
 // Hooks
 import { useClientImage } from '@/hooks/useClientImage';
-import { useAnalyseAI } from '@/hooks/note-editor/useImageOcr';
+import { useAnalyseAI } from '@/hooks/note-editor/useAnalyseAI';
 
 // Dialog for asking AI information about the image, and also ability to deteect text from image and then analyse it
 export const DialogAnalyseAI: React.FC<{

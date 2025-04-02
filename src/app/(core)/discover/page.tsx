@@ -28,13 +28,12 @@ export const metadata: Metadata = {
 };
 
 async function getPublicNotes(userId: number) {
-  const response = await fetch(`http://localhost:3000/api/core/discover`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ userId }),
-  });
+  const response = await fetch(
+    `http://localhost:3000/api/core/discover?userId=${userId}`,
+    {
+      // cache: 'no-cache',
+    }
+  );
   if (!response.ok) throw new Error('Failed to fetch data');
 
   return await response.json();

@@ -29,13 +29,9 @@ export const useExploreNotes = ({
   const exploreNotes = async () => {
     try {
       setLoadingExplore(true);
-      const response = await fetch(`http://localhost:3000/api/core/discover`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, offset, limit: 1 }),
-      });
+      const response = await fetch(
+        `http://localhost:3000/api/core/discover?userId=${userId}&offset=${offset}&limit=${1}`
+      );
       if (!response.ok)
         toast({
           title: 'Error',
