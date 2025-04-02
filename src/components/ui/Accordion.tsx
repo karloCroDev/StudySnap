@@ -9,7 +9,7 @@ export const Accordion: React.FC<
   RadixAccordion.AccordionItemProps & React.ComponentPropsWithoutRef<'div'>
 > = ({ title, children, ...rest }) => (
   <RadixAccordion.Item {...rest}>
-    <RadixAccordion.Trigger className="data-[state=open]:text-grayscale-900; group flex h-20 w-full items-center justify-between border-b border-t-gray-400 px-4 text-md font-bold">
+    <RadixAccordion.Trigger className="group flex h-20 w-full items-center justify-between border-b border-t-gray-400 px-4 !text-start text-md font-bold data-[state=open]:text-gray-600">
       {title}
       <ChevronDownIcon
         name="chevron"

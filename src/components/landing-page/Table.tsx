@@ -16,7 +16,7 @@ const data = [
   {
     feature: 'AI-Powered Q&A',
     studySnap: '✅ Yes',
-    notion: '❌ No',
+    notion: '✅ Yes',
     evernote: '❌ No',
     quizlet: '❌ No',
     googleDocs: '❌ No',
@@ -25,6 +25,14 @@ const data = [
     feature: 'AI-Generated Quizzes',
     studySnap: '✅ Yes',
     notion: '❌ No',
+    evernote: '❌ No',
+    quizlet: '✅ Yes',
+    googleDocs: '❌ No',
+  },
+  {
+    feature: 'AI-Autocompletion',
+    studySnap: '✅ Yes',
+    notion: '✅ Yes',
     evernote: '❌ No',
     quizlet: '✅ Yes',
     googleDocs: '❌ No',
@@ -46,14 +54,6 @@ const data = [
     googleDocs: '❌ No',
   },
   {
-    feature: 'Multi-Format Uploads (PDFs, Images, etc.)',
-    studySnap: '✅ Yes',
-    notion: '✅ Yes',
-    evernote: '✅ Yes',
-    quizlet: '❌ No',
-    googleDocs: '✅ Yes',
-  },
-  {
     feature: 'Context-Based AI Assistance',
     studySnap: '✅ Yes',
     notion: '❌ No',
@@ -64,7 +64,7 @@ const data = [
 ];
 
 export const Table = () => (
-  <div className="min-w-full !rounded-lg border border-blue-900 shadow">
+  <div className="min-w-full overflow-x-scroll !rounded-lg border border-blue-900 shadow">
     <AriaTable aria-label="Feature Comparison Table" className="w-full">
       <TableHeader>
         <Column className="px-4 py-3" isRowHeader>

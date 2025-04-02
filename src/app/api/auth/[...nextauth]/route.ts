@@ -60,7 +60,7 @@ export const authOptions = {
         const myUser = await GetUserByEmail(user.email);
         token.uid = myUser!.id;
         token.sub = myUser!.id;
-        token.image = myUser!.encoded_image || '';
+        // token.image = myUser!.encoded_image || '';
         token.name = myUser!.username;
         token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24; // Token expires in 24 hours
       }
@@ -73,7 +73,7 @@ export const authOptions = {
       // Update session with token details
       if (session?.user) {
         session.user.id = token.sub;
-        session.user.image = token.image || '';
+        // session.user.image = token.image || '';
         session.user.name = token.name;
       }
       return session;

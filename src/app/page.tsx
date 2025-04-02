@@ -14,16 +14,24 @@ import { Table } from '@/components/landing-page/Table';
 import { plus_jakarta_sans } from '@/lib/fonts';
 
 export default async function LandingPage() {
+  const imageShowroom = [
+    '/images/public-profile-mobile.png',
+    '/images/notes-mobile.png',
+    '/images/subjects-mobile.png',
+    '/images/discover-mobile.png',
+    '/images/note-editor-mobile.png',
+    '/images/note-editor-quizz.png',
+  ];
   return (
     <>
       <HeaderLanding />
-      <Layout className="mt-20 scroll-smooth lg:mt-36 2xl:mt-44" id="home">
+      <Layout className="mt-28 animate-show lg:mt-36 2xl:mt-44" id="home">
         <LayoutColumn
           xs={12}
           lg={8}
           className="mx-auto flex flex-col items-center text-center"
         >
-          <h1 className="text-balance text-9xl font-semibold">
+          <h1 className="text-balance text-4xl font-semibold lg:text-7xl xl:text-9xl">
             Take your studies to the next level with{' '}
             <span
               className={twMerge(
@@ -34,7 +42,7 @@ export default async function LandingPage() {
               StudySnap
             </span>
           </h1>
-          <p className="mt-8 text-balance text-md text-gray-400">
+          <p className="mt-8 text-balance text-sm text-gray-400 md:text-md xl:text-md">
             A student-focused note-taking app powered by AI. Whether you're in
             class, at the library, or studying from home, our app helps you
             effortlessly capture and organize study materials.
@@ -58,12 +66,12 @@ export default async function LandingPage() {
             />
           </div>
         </LayoutColumn>
-        <LayoutRow className="mt-16 flex flex-col justify-between lg:flex-row xl:mt-24">
+        <LayoutRow className="mt-12 flex flex-col justify-between lg:flex-row xl:mt-24">
           <LayoutColumn xs={12} lg={5}>
-            <h2 className="text-xl font-medium lg:text-3xl">
+            <h3 className="text-xl font-medium lg:text-3xl">
               We believe that ineractive learning from your notes is a{' '}
               <strong>must</strong>
-            </h2>
+            </h3>
           </LayoutColumn>
           <LayoutColumn xs={12} lg={6} className="mt-6 lg:mt-16">
             <p>
@@ -79,16 +87,19 @@ export default async function LandingPage() {
             </p>
           </LayoutColumn>
         </LayoutRow>
-        <div className="relative mt-8 flex items-center justify-center gap-16 overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-200px),transparent_100%)]">
-          <div className="absolute -top-8 left-0 z-10 h-20 w-full rounded-[50%] bg-gray-100" />
+        <div className="relative mt-8 flex items-center justify-center gap-16 overflow-hidden lg:[mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-200px),transparent_100%)]">
+          <div className="absolute -top-8 left-0 z-10 hidden h-20 w-full rounded-[50%] bg-gray-100 lg:block" />
 
           <div className="flex animate-infinite-scroll gap-16">
-            {[...Array(6)].map((_, i) => (
-              <div className="relative aspect-[9/16] h-96" key={i}>
+            {imageShowroom.map((localImagePath, i) => (
+              <div
+                className="relative aspect-[9/16] h-96 rounded bg-gray-900"
+                key={i}
+              >
                 <Image
-                  src="/images/login-image.png"
+                  src={localImagePath}
                   alt="Representation of our application"
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain"
                   fill
                 />
               </div>
@@ -96,19 +107,22 @@ export default async function LandingPage() {
           </div>
 
           <div className="flex animate-infinite-scroll gap-16">
-            {[...Array(6)].map((_, i) => (
-              <div className="relative aspect-[9/16] h-96" key={i}>
+            {imageShowroom.map((localImagePath, i) => (
+              <div
+                className="relative aspect-[9/16] h-96 rounded bg-gray-900"
+                key={i}
+              >
                 <Image
-                  src="/images/login-image.png"
+                  src={localImagePath}
                   alt="Representation of our application"
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain"
                   fill
                 />
               </div>
             ))}
           </div>
 
-          <div className="absolute -bottom-8 left-0 z-10 h-20 w-full rounded-[50%] bg-gray-100" />
+          <div className="absolute -bottom-8 left-0 z-10 hidden h-20 w-full rounded-[50%] bg-gray-100 lg:block" />
         </div>
         <p className="mt-4 text-center text-md text-gray-400">
           Explore more from the StudySnap ecosystem
@@ -118,22 +132,19 @@ export default async function LandingPage() {
             'mt-12 text-2xl font-semibold !italic underline underline-offset-4',
             plus_jakarta_sans.className
           )}
-          id="FAQ"
+          id="why-us"
         >
-          FAQ
+          Why us
         </h2>
-        <LayoutColumn lg={6} xs={12} id="FAQ" className="mx-auto mt-4">
-          <FAQAccordion />
-        </LayoutColumn>
 
-        <LayoutRow className="mt-16 flex flex-col justify-between lg:flex-row lg:items-center xl:mt-24">
+        <LayoutRow className="flex flex-col justify-between lg:flex-row lg:items-center">
           <LayoutColumn xs={12} lg={5}>
-            <h2 className="text-xl font-medium lg:text-3xl" id="docs">
+            <h3 className="text-xl font-medium lg:text-3xl" id="docs">
               The key of undertanding the application is the{' '}
               <strong>documentation</strong>
-            </h2>
+            </h3>
           </LayoutColumn>
-          <LayoutColumn xs={12} lg={6}>
+          <LayoutColumn xs={12} lg={6} className="mt-8 lg:mt-0">
             {/* Karlo: dodaj link na dokumentaciju */}
             <a
               href=""
@@ -156,11 +167,22 @@ export default async function LandingPage() {
         >
           Why us
         </h2>
-        <LayoutColumn lg={6} xs={12} className="mx-auto mt-20">
+        <LayoutColumn lg={8} xl2={6} xs={12} className="mx-auto mt-8 lg:mt-16">
           <Table />
         </LayoutColumn>
+        <h2
+          className={twMerge(
+            'mt-12 text-2xl font-semibold !italic underline underline-offset-4',
+            plus_jakarta_sans.className
+          )}
+          id="FAQ"
+        >
+          FAQ
+        </h2>
+        <LayoutColumn lg={6} xs={12} id="FAQ" className="mx-auto mt-8 lg:mt-16">
+          <FAQAccordion />
+        </LayoutColumn>
       </Layout>
-      <div className="mt-20"></div>
     </>
   );
 }
