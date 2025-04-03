@@ -26,7 +26,7 @@ export async function POST(req: Request) {
       },
       `
       Your given users prompt: ${prompt} 
-      If the prompt is not understandable then analyze the image and generate concise summary notes based on the text it contains. If the image does not include any text, provide a brief and accurate description of its content instead. Please ensure that response that use MARKDOWN FORMAT and NATIVE LANGUAGE of the text without any prefaces but only the content itself.`,
+      If the prompt is not understandable then analyze the image and generate concise summary notes based on the text it contains. If the image does not include any text, provide a brief and accurate description of its content instead. Please ensure that response that use MARKDOWN FORMAT of the text without any prefaces but only the content itself.`,
     ]);
 
     return NextResponse.json(result.response.text(), { status: 200 });
