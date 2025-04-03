@@ -27,7 +27,7 @@ export const DisocverMapping: React.FC<
   DiscoverResopnses & {
     userId: number;
   }
-> = ({ userId, publicNotes, isBiggerThanHalf, offsetPosition }) => {
+> = ({ userId, publicNotes, offsetPosition }) => {
   const [notes, setNotes] = React.useState<Note[]>(publicNotes);
 
   // Server side search logic
@@ -44,7 +44,7 @@ export const DisocverMapping: React.FC<
   const { loadingExplore, exploreNotes } = useExploreNotes({
     setNotes,
     userId,
-    isBiggerThanHalf,
+
     offsetPosition,
   });
 

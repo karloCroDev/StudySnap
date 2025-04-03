@@ -33,6 +33,7 @@ async function getPublicNotes(userId: number) {
     `http://localhost:3000/api/core/discover?userId=${userId}`,
     {
       next: { revalidate: 10 },
+      // cache: 'no-cache',
     }
   );
 
@@ -45,7 +46,7 @@ export default async function Disover() {
   const session = await getServerSession(authOptions);
   // Handling the anonymous user inside the application
   const userId: number = session?.user.id || null;
-  const { publicNotes, isBiggerThanHalf, offsetPosition }: DiscoverResopnses =
+  const { publicNotes, offsetPosition }: DiscoverResopnses =
     await getPublicNotes(userId);
 
   return (
@@ -56,7 +57,6 @@ export default async function Disover() {
           <DisocverMapping
             userId={userId}
             publicNotes={publicNotes}
-            isBiggerThanHalf={isBiggerThanHalf}
             offsetPosition={offsetPosition}
           />
         </LayoutColumn>

@@ -13,7 +13,7 @@ import { Note } from '@/models/note';
 
 export interface DiscoverResopnses {
   offsetPosition: number;
-  isBiggerThanHalf: boolean;
+
   publicNotes: Note[];
 }
 
@@ -41,24 +41,16 @@ export async function GET(req: NextRequest) {
       return NextResponse.json(publicNotes, { status: 200 });
     }
 
-    const totalNumberOfPublicNotes = await GetNumberOfPublicNotes();
-    const offsetPosition = Math.round(
-      Math.random() * (totalNumberOfPublicNotes - limit)
-    );
-
-    console.log('Offset position', offsetPosition);
-
-    const isBiggerThanHalf = offsetPosition >= totalNumberOfPublicNotes / 2;
+    const randomOffset = Math.round(Math.random() * 10); // Little bit of variety at first notes
     const publicNotes: Note[] = await GetPublicNotes(
       limit,
-      offsetPosition,
+      randomOffset,
       userId,
       filter
     );
     return NextResponse.json(
       {
-        offsetPosition: offsetPosition + (isBiggerThanHalf ? -limit : 0),
-        isBiggerThanHalf,
+        offsetPosition: randomOffset + limit,
         publicNotes,
       },
       { status: 200 }
@@ -89,6 +81,15 @@ export async function POST(req: NextRequest) {
           status: 400,
         }
       );
+    }
+
+    const totalPublicNotes = await GetNumberOfPublicNotes();
+
+    if (offset + limit > totalPublicNotes) {
+      const randomPublicNotes = await GetRandomNotes(limit, userId);
+      return NextResponse.json(randomPublicNotes, {
+        status: 200,
+      });
     }
 
     const notes: Note[] = await GetPublicNotes(limit, offset, userId, '');
