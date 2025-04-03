@@ -32,7 +32,7 @@ async function getPublicNotes(userId: number) {
   const response = await fetch(
     `http://localhost:3000/api/core/discover?userId=${userId}`,
     {
-      // cache: 'force-cache',
+      next: { revalidate: 10 },
     }
   );
 

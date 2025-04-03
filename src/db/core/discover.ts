@@ -48,7 +48,7 @@ export async function GetPublicNotes(
             n.is_public,
             n.subject_id,
             u.username 
-        ORDER BY likes DESC
+        ORDER BY likes ASC
         LIMIT ?
         OFFSET ?
     `,

@@ -35,14 +35,29 @@ export async function GET(req: NextRequest) {
       );
     }
 
+    // Handling the search
+    if (filter) {
+      const publicNotes = await GetPublicNotes(limit, 0, userId, filter);
+      return NextResponse.json(publicNotes, { status: 200 });
+    }
+
     const totalNumberOfPublicNotes = await GetNumberOfPublicNotes();
-    const offsetPosition = Math.round(Math.random() * totalNumberOfPublicNotes);
+    const offsetPosition = Math.round(
+      Math.random() * (totalNumberOfPublicNotes - limit)
+    );
+
+    console.log('Offset position', offsetPosition);
 
     const isBiggerThanHalf = offsetPosition >= totalNumberOfPublicNotes / 2;
-    const publicNotes: Note[] = await GetPublicNotes(limit, 0, userId, filter);
+    const publicNotes: Note[] = await GetPublicNotes(
+      limit,
+      offsetPosition,
+      userId,
+      filter
+    );
     return NextResponse.json(
       {
-        offsetPosition,
+        offsetPosition: offsetPosition + (isBiggerThanHalf ? -limit : 0),
         isBiggerThanHalf,
         publicNotes,
       },

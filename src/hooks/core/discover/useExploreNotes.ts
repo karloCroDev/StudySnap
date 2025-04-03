@@ -21,37 +21,56 @@ export const useExploreNotes = ({
   isBiggerThanHalf: boolean;
   offsetPosition: number;
 }) => {
-  const { getItem, setItem } = useLocalStorage('offset'); // Making sure that when explore more is clicked, even when refreshed new unseen values will be displayed
+  const { getItem, setItem, removeItem } = useLocalStorage('offset'); // Use removeItem to clear storage
   const [loadingExplore, setLoadingExplore] = React.useState(false);
 
-  // Karlo: Put 6 when more notes come
-  const [offset, setOffset] = React.useState(getItem() || offsetPosition);
+  // Retrieve offset and check if expired
+  React.useEffect(() => {
+    const EXPIRY_TIME = 100 * 60; // 10 sec (set to producytion to be a bigger number  )
 
-  console.log(offset);
+    const storedData = getItem();
+    if (storedData) {
+      const { value, timestamp } = storedData;
+      const now = Date.now();
+
+      if (now - timestamp > EXPIRY_TIME) {
+        removeItem();
+        setOffset(offsetPosition);
+      } else {
+        setOffset(value);
+      }
+    }
+  }, []);
+
+  const [offset, setOffset] = React.useState(offsetPosition);
   const toast = useToastStore((state) => state.setToast);
 
   const exploreNotes = async () => {
     try {
       setLoadingExplore(true);
-      const limit = isBiggerThanHalf ? -1 : 1;
+      const limit = 1;
       const response = await fetch(`http://localhost:3000/api/core/discover?`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, offset, limit }),
       });
+
       const data = await response.json();
-      if (!response.ok)
+      if (!response.ok) {
         toast({
           title: 'Error',
           content: data.message,
           variant: 'error',
         });
-      console.log(data);
+      }
+
       setNotes((prev) => [...prev, ...data]);
-      // Karlo: Put 6 when more notes come
-      const updatedOffset = offset + limit;
+
+      // Update offset and timestamp
+      console.log(isBiggerThanHalf);
+      const updatedOffset = offset + (isBiggerThanHalf ? -1 : 1);
       setOffset(updatedOffset);
-      setItem(updatedOffset);
+      setItem({ value: updatedOffset, timestamp: Date.now() });
     } catch (error) {
       console.error(error);
     } finally {
