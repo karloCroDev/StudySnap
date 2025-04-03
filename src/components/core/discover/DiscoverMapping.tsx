@@ -13,23 +13,25 @@ import { Spinner } from '@/components/ui/Spinner';
 // Hooks
 import { useDebounce } from '@/hooks/useDebounce';
 import { useSearchNotes } from '@/hooks/core/discover/useSearchNotes';
-
-// Store
-import { useGeneralInfo } from '@/store/useGeneralInfo';
-
-// Models (types)
-import { type Note } from '@/models/note';
 import { useExploreNotes } from '@/hooks/core/discover/useExploreNotes';
 
+// Store
+import { useGeneralStore } from '@/store/useGeneralStore';
+
+// Types
+import { type Note } from '@/models/note';
+import { type DiscoverResopnses } from '@/app/api/core/discover/route';
+
 // Component that is responsible for mapping and searching all the notes
-export const DisocverMapping: React.FC<{
-  userId: number;
-  notesData: Note[];
-}> = ({ userId, notesData }) => {
-  const [notes, setNotes] = React.useState<Note[]>(notesData);
+export const DisocverMapping: React.FC<
+  DiscoverResopnses & {
+    userId: number;
+  }
+> = ({ userId, publicNotes, isBiggerThanHalf, offsetPosition }) => {
+  const [notes, setNotes] = React.useState<Note[]>(publicNotes);
 
   // Server side search logic
-  const search = useGeneralInfo((state) => state.search);
+  const search = useGeneralStore((state) => state.search);
 
   const debouncedSearch = useDebounce(search);
 
@@ -42,6 +44,8 @@ export const DisocverMapping: React.FC<{
   const { loadingExplore, exploreNotes } = useExploreNotes({
     setNotes,
     userId,
+    isBiggerThanHalf,
+    offsetPosition,
   });
 
   if (loadingSearchNotes) {
@@ -60,7 +64,13 @@ export const DisocverMapping: React.FC<{
     return (
       <LayoutRow className="sm:-mr-4">
         {notesQuery.map((note) => (
-          <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
+          <LayoutColumn
+            sm={6}
+            lg={4}
+            xl2={3}
+            className="mb-8 sm:pr-4"
+            key={note.id}
+          >
             <NoteCard
               noteId={note.id}
               title={note.title}
@@ -72,7 +82,6 @@ export const DisocverMapping: React.FC<{
               creatorId={note.creator_id}
               imageUrl={note.image_url}
               profileImageUrl={note.profile_image_url}
-              key={note.id}
             />
           </LayoutColumn>
         ))}
@@ -92,7 +101,13 @@ export const DisocverMapping: React.FC<{
     <>
       <LayoutRow className="animate-card-apperance sm:-mr-4">
         {notes.map((note) => (
-          <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
+          <LayoutColumn
+            sm={6}
+            lg={4}
+            xl2={3}
+            className="mb-8 sm:pr-4"
+            key={note.id}
+          >
             <NoteCard
               noteId={note.id}
               title={note.title}
@@ -104,7 +119,6 @@ export const DisocverMapping: React.FC<{
               creatorId={note.creator_id}
               imageUrl={note.image_url}
               profileImageUrl={note.profile_image_url}
-              key={note.id}
             />
           </LayoutColumn>
         ))}

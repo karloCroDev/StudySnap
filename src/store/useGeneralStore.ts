@@ -1,9 +1,8 @@
 // External packages
 import { create } from 'zustand';
 
-// General state mnangment between components, mostly used to add, delete, or update subject or note on frontend.
-export const useGeneralInfo = create<{
-  // Karlo: Procjeni za search
+// General state mnangment between components. Currently only used in search values
+export const useGeneralStore = create<{
   search: string;
   setSearch: (val: string) => void;
 }>((set) => ({

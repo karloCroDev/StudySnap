@@ -33,16 +33,16 @@ export const useSignupWithCredentials = ({
         },
         body: JSON.stringify({ username, email, password }),
       });
-
+      const data = await response.json();
       if (!response.ok) {
         toast({
           title: 'Uhoh something went wrong',
-          content: response.statusText,
+          content: data.message,
           variant: 'error',
         });
         return;
       }
-      console.log(response.ok);
+      console.log(data.ok);
       // Immediatelly signning in, after sign up
       await signIn('credentials', {
         email,
@@ -51,7 +51,7 @@ export const useSignupWithCredentials = ({
       });
       toast({
         title: `Welcome ${username} to StudySnap`,
-        content: response.statusText,
+        content: data.message,
         variant: 'success',
       });
       router.push('/home/subjects');

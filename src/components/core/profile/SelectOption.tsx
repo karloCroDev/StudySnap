@@ -32,7 +32,7 @@ import { type Note } from '@/models/note';
 import { useToggleSearch } from '@/hooks/core/home/useToggleSearch';
 
 // Store
-import { useGeneralInfo } from '@/store/useGeneralInfo';
+import { useGeneralStore } from '@/store/useGeneralStore';
 import { useNoteStore } from '@/store/useNoteStore';
 
 export const SelectOption: React.FC<{
@@ -41,7 +41,7 @@ export const SelectOption: React.FC<{
   publicNotes: Note[];
 }> = ({ username, likedNotes, publicNotes }) => {
   const setNotes = useNoteStore((state) => state.setNotes);
-  const setSearch = useGeneralInfo((state) => state.setSearch);
+  const setSearch = useGeneralStore((state) => state.setSearch);
 
   const { infoHeader, toggleSearch } = useToggleSearch();
 

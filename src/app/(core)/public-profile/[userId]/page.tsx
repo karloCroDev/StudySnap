@@ -23,26 +23,9 @@ export const metadata: Metadata = {
   },
 };
 
-async function getAllLikedUsersPosts(creatorId: number, userId: number) {
+async function getAllNotes(creatorId: number, userId: number) {
   const response = await fetch(
     `http://localhost:3000/api/core/public-profile?creatorId=${creatorId}&userId=${userId}`
-  );
-
-  if (!response.ok) throw new Error('Error with fetching');
-
-  return await response.json();
-}
-
-async function getPublicProfileNotes(creatorId: number, userId: number) {
-  const response = await fetch(
-    `http://localhost:3000/api/core/public-profile`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ creatorId, userId }),
-    }
   );
 
   if (!response.ok) throw new Error('Error with fetching');
@@ -59,9 +42,10 @@ export default async function PublicProfile({
   const session = await getServerSession(authOptions);
   const userId = session?.user.id || null;
 
-  const likedNotes = await getAllLikedUsersPosts(creatorId, userId);
-  const [notes, user] = await getPublicProfileNotes(creatorId, userId);
-  console.log(user);
+  const { likedNotes, creatorNotes, user } = await getAllNotes(
+    creatorId,
+    userId
+  );
   return (
     <>
       <div className="mb-12 animate-public-profile-initial-apperance lg:mb-16">
@@ -83,12 +67,12 @@ export default async function PublicProfile({
       <SelectOption
         username={user.username}
         likedNotes={likedNotes}
-        publicNotes={notes}
+        publicNotes={creatorNotes}
       />
       <LayoutRow className="mt-8 justify-center xl:mt-12">
         <LayoutColumn xs={11} lg={10}>
           <LayoutRow className="pr-0 sm:-mr-4">
-            <NoteMapping notesData={notes} />
+            <NoteMapping notesData={creatorNotes} />
           </LayoutRow>
         </LayoutColumn>
       </LayoutRow>

@@ -13,15 +13,19 @@ import { useLocalStorage } from '@/hooks/useLocalStorage';
 export const useExploreNotes = ({
   userId,
   setNotes,
+  isBiggerThanHalf,
+  offsetPosition,
 }: {
   userId: number;
   setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
+  isBiggerThanHalf: boolean;
+  offsetPosition: number;
 }) => {
   const { getItem, setItem } = useLocalStorage('offset'); // Making sure that when explore more is clicked, even when refreshed new unseen values will be displayed
   const [loadingExplore, setLoadingExplore] = React.useState(false);
 
   // Karlo: Put 6 when more notes come
-  const [offset, setOffset] = React.useState(getItem() || 0);
+  const [offset, setOffset] = React.useState(getItem() || offsetPosition);
 
   console.log(offset);
   const toast = useToastStore((state) => state.setToast);
@@ -29,19 +33,23 @@ export const useExploreNotes = ({
   const exploreNotes = async () => {
     try {
       setLoadingExplore(true);
-      const response = await fetch(
-        `http://localhost:3000/api/core/discover?userId=${userId}&offset=${offset}&limit=${1}`
-      );
+      const limit = isBiggerThanHalf ? -1 : 1;
+      const response = await fetch(`http://localhost:3000/api/core/discover?`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, offset, limit }),
+      });
+      const data = await response.json();
       if (!response.ok)
         toast({
           title: 'Error',
-          content: 'Error while getting the data, please try again',
+          content: data.message,
           variant: 'error',
         });
-      const data = await response.json();
+      console.log(data);
       setNotes((prev) => [...prev, ...data]);
       // Karlo: Put 6 when more notes come
-      const updatedOffset = offset + 1;
+      const updatedOffset = offset + limit;
       setOffset(updatedOffset);
       setItem(updatedOffset);
     } catch (error) {

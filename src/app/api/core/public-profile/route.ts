@@ -13,51 +13,33 @@ import { WriteImage } from '@/db/imageHandler';
 // Models
 import { UserClass } from '@/models/user';
 import { SQLSyntaxCheck } from '@/lib/algorithms/stringVerification';
-import { getToken } from 'next-auth/jwt';
 
 // Function to handle all liked posts from user
 export async function GET(req: NextRequest) {
-  try{
-    const { searchParams } = new URL(req.url);
-    const targetUserId = searchParams.get('creatorId');
-    const userId = searchParams.get('userId')
-    
-    if (!targetUserId || !userId || SQLSyntaxCheck([targetUserId, userId])) {
-      return NextResponse.json({ message: 'Bad request' }, { status: 400 });
-    }
-
-    const likedNotes = await GetLikedNotes(userId, targetUserId);
-    return NextResponse.json(likedNotes, {
-      status: 201,
-    });
-  }catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      {
-        message: 'Failed to load notes',
-      },
-      {
-        status: 500,
-      }
-    );
-  }
-}
-
-// Function to handle POST requests for retrieving public profile data
-export async function POST(req: NextRequest) {
   try {
-    const { creatorId, userId } = await req.json();
+    const { searchParams } = new URL(req.url);
+    const creatorId = searchParams.get('creatorId');
+    const userId = searchParams.get('userId');
 
-    if (!creatorId || SQLSyntaxCheck([userId, creatorId])) {
+    if (!creatorId || !userId || SQLSyntaxCheck([creatorId, userId])) {
       return NextResponse.json({ message: 'Bad request' }, { status: 400 });
     }
 
-    const notes = await GetNotesByCreatorId(creatorId, userId);
+    const likedNotes = await GetLikedNotes(userId, creatorId);
+
+    const creatorNotes = await GetNotesByCreatorId(creatorId, userId);
     const user = await GetUserById(creatorId);
 
-    return NextResponse.json([notes, user], {
-      status: 201,
-    });
+    return NextResponse.json(
+      {
+        likedNotes,
+        creatorNotes,
+        user,
+      },
+      {
+        status: 201,
+      }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -80,10 +62,7 @@ export async function PATCH(req: NextRequest) {
     const password = formData.get('password') as string | null;
     const file = formData.get('file');
 
-    if (
-      !userId
-      // || SQLSyntaxCheck([userId, username, password])
-    ) {
+    if (!userId || SQLSyntaxCheck([userId, username, password])) {
       return NextResponse.json({ message: 'Bad request' }, { status: 400 });
     }
 

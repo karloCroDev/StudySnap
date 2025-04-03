@@ -4,9 +4,6 @@ import { getPool } from '@/db/db';
 //Models
 import { type Note } from '@/models/note';
 
-// Database (handling the images)
-import { GetImage, GetProfileImage } from '@/db/imageHandler';
-
 // Database (algorithm)
 import { rankNotes } from '@/lib/algorithms/alogirthm';
 
@@ -113,8 +110,9 @@ export async function GetNumberOfPublicNotes() {
   const result: [any[], any] = await getPool().query(
     `
             SELECT COUNT(*)
+            FROM note n
             WHERE n.is_public = 1 
         `
   );
-  return result[0][0];
+  return Object.values(result[0][0])[0] as number;
 }

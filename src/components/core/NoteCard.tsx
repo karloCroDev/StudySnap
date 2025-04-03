@@ -39,7 +39,7 @@ export const NoteCard: React.FC<{
   creatorId,
 }) => {
   const user = useSession();
-  console.log(user);
+
   const [noteName, setNoteName] = React.useState(title);
   const [noteDetails, setNoteDetails] = React.useState(description);
   const [noteImage, setNoteImage] = React.useState(imageUrl);

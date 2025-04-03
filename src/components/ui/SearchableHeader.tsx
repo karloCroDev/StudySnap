@@ -17,12 +17,12 @@ import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { Search } from '@/components/ui/Search';
 
 // Store
-import { useGeneralInfo } from '@/store/useGeneralInfo';
+import { useGeneralStore } from '@/store/useGeneralStore';
 
 export const SearchableHeader: React.FC<{
   title: string;
 }> = ({ title }) => {
-  const setSearch = useGeneralInfo((state) => state.setSearch);
+  const setSearch = useGeneralStore((state) => state.setSearch);
   React.useEffect(() => {
     setSearch('');
   }, []);
