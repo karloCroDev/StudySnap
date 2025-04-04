@@ -15,9 +15,6 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const subjectId = searchParams.get('subjectId');
 
-    if (!SQLSyntaxCheck([subjectId])) {
-      return NextResponse.json({ status: 400, statusText: 'Bad request' });
-    }
     const notes = await GetNotesBySubjectId(subjectId as string);
 
     if (!notes) {
@@ -28,11 +25,12 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ status: 500, statusText: 'Error occoured' });
+    return NextResponse.json({ message: 'Error occoured' }, { status: 500 });
   }
 }
 
 // Creating a new note and retrieving the info on frontend
+//Function creates a new note
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -46,8 +44,10 @@ export async function POST(req: NextRequest) {
     if (
       !noteName ||
       isPublic == undefined ||
-      !subjectId ||
-      !SQLSyntaxCheck([subjectId, noteName, details])
+      !subjectId
+
+      // ||
+      // !SQLSyntaxCheck([subjectId, noteName, details])
     ) {
       return NextResponse.json({ message: 'Bad request' }, { status: 400 });
     }

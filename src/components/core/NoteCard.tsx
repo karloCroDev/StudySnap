@@ -9,8 +9,8 @@ import Image from 'next/image';
 import { Pencil1Icon, TrashIcon } from '@radix-ui/react-icons';
 
 // Components
-import { DialogChangeDetails } from '@/components/core/note/DialogChangeDetails';
-import { DialogDelete } from '@/components/core/note/DialogDelete';
+import { DialogChangeDetailsNote } from '@/components/core/note/DialogChangeDetailsNote';
+import { DialogDeleteNote } from '@/components/core/note/DialogDeleteNote';
 import { Avatar } from '@/components/ui/Avatar';
 import { LikeComponent } from '@/components/ui/LikeComponent';
 
@@ -101,7 +101,8 @@ export const NoteCard: React.FC<{
       {user.data?.user.id === creatorId && (
         <ul className="absolute right-5 top-8 z-10 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:transition-opacity md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
           <li>
-            <DialogChangeDetails
+            <DialogChangeDetailsNote
+              // Props that will be need to be passed to the dialog to update data simultaneously on frontend and backend
               noteName={noteName}
               setNoteName={setNoteName}
               noteDetails={noteDetails}
@@ -116,10 +117,10 @@ export const NoteCard: React.FC<{
                   noteImage ? 'hover:text-gray-200' : 'hover:text-blue-400'
                 )}
               />
-            </DialogChangeDetails>
+            </DialogChangeDetailsNote>
           </li>
           <li>
-            <DialogDelete
+            <DialogDeleteNote
               noteId={noteId}
               noteName={noteName}
               imageUrl={imageUrl}
@@ -130,7 +131,7 @@ export const NoteCard: React.FC<{
                   noteImage ? 'hover:text-gray-200' : 'hover:text-blue-400'
                 )}
               />
-            </DialogDelete>
+            </DialogDeleteNote>
           </li>
         </ul>
       )}

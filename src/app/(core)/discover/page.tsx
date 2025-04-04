@@ -5,7 +5,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
-import { SearchableHeader } from '@/components/ui/SearchableHeader';
+import { SearchableHeader } from '@/components/core/SearchableHeader';
 import { DisocverMapping } from '@/components/core/discover/DiscoverMapping';
 
 // Models (types)

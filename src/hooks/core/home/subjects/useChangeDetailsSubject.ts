@@ -12,18 +12,14 @@ export const useChangeDetailsSubject = ({
   subjectName,
   details,
   image,
-  setCardTitle,
-  setCardDescripton,
-  setCardImage,
+  updateFields,
   setIsOpen,
 }: {
   id: number;
   subjectName: string;
   details: string;
   image: File | null;
-  setCardTitle: React.Dispatch<React.SetStateAction<string>>;
-  setCardDescripton: React.Dispatch<React.SetStateAction<string>>;
-  setCardImage: React.Dispatch<React.SetStateAction<string | null>>;
+  updateFields: () => void;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [loading, setLoading] = React.useState(false);
@@ -60,10 +56,8 @@ export const useChangeDetailsSubject = ({
         content: data.message,
         variant: 'success',
       });
-      // Reseting the form fields in dialog (after successful chanigng the details)
-      if (subjectName) setCardTitle(subjectName);
-      if (details) setCardDescripton(details);
-      if (image) setCardImage(URL.createObjectURL(image));
+
+      updateFields();
     } catch (error) {
       console.error(error);
       toast({

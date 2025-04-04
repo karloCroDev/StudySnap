@@ -20,7 +20,7 @@ import { Spinner } from '@/components/ui/Spinner';
 import { useCreateNote } from '@/hooks/core/home/notes/useCreateNote';
 
 // Dialog that activates after pressing the Create new Toast card. Enables user to create their new subject note inside the suvbject
-export const DialogCreate: React.FC<{
+export const DialogCreateNote: React.FC<{
   children: React.ReactNode;
   subjectId: number;
 }> = ({ children, subjectId }) => {
@@ -31,16 +31,20 @@ export const DialogCreate: React.FC<{
   const [details, setDetails] = React.useState('');
   const [image, setImage] = React.useState<File | null>(null);
 
+  const resetFields = () => {
+    // Reseting the form fields in dialog (after successful creation)
+    setNoteName('');
+    setDetails('');
+    setImage(null);
+  };
   const { createNoteReq, loading } = useCreateNote({
     details,
     image,
     isPublic,
     noteName,
-    setDetails,
-    setImage,
-    setIsOpen,
     subjectId,
-    setNoteName,
+    resetFields,
+    setIsOpen,
   });
   return (
     <Dialog

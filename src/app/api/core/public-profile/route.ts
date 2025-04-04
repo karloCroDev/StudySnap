@@ -28,9 +28,9 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const creatorId = searchParams.get('creatorId');
-    const userId = searchParams.get('userId');
+    const userId = searchParams.get('userId') as unknown as string;
 
-    if (!creatorId || !userId || SQLSyntaxCheck([creatorId, userId])) {
+    if (!creatorId || SQLSyntaxCheck([creatorId, userId])) {
       return NextResponse.json({ message: 'Bad request' }, { status: 400 });
     }
 

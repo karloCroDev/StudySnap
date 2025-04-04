@@ -12,8 +12,8 @@ import Image from 'next/image';
 import { twJoin } from 'tailwind-merge';
 
 // Components
-import { DialogDelete } from '@/components/core/subjects/DialogDelete';
-import { DialogChangeDetails } from '@/components/core/subjects/DialogChangeDetails';
+import { DialogDeleteSubject } from '@/components/core/subjects/DialogDeleteSubject';
+import { DialogChangeDetailsSubject } from '@/components/core/subjects/DialogChangeDetailsSubject';
 
 // Subject card that links to belonging notes
 export const SubjectCard: React.FC<{
@@ -70,7 +70,8 @@ export const SubjectCard: React.FC<{
 
       <ul className="md:ity absolute right-5 top-8 flex gap-4 duration-200 group-hover:opacity-100 md:pointer-events-none md:animate-card-options-unhovered md:opacity-0 md:group-hover:pointer-events-auto md:group-hover:animate-card-options-hover">
         <li>
-          <DialogChangeDetails
+          <DialogChangeDetailsSubject
+            // Props that will be need to be passed to the dialog to update data simultaneously on frontend and backend
             id={id}
             cardTitle={cardTitle}
             cardDescription={cardDescription}
@@ -84,17 +85,17 @@ export const SubjectCard: React.FC<{
                 cardImage ? 'hover:text-gray-200' : 'hover:text-blue-400'
               )}
             />
-          </DialogChangeDetails>
+          </DialogChangeDetailsSubject>
         </li>
         <li>
-          <DialogDelete id={id} name={cardTitle} imageUrl={imageUrl}>
+          <DialogDeleteSubject id={id} name={cardTitle} imageUrl={imageUrl}>
             <TrashIcon
               className={twJoin(
                 'size-9 transition-colors lg:size-7',
                 cardImage ? 'hover:text-gray-200' : 'hover:text-blue-400'
               )}
             />
-          </DialogDelete>
+          </DialogDeleteSubject>
         </li>
       </ul>
     </div>

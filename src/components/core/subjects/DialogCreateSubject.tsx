@@ -11,40 +11,27 @@ import { Input } from '@/components/ui/Input';
 import { Spinner } from '@/components/ui/Spinner';
 
 // Hooks
-import { useChangeDetailsSubject } from '@/hooks/core/home/subjects/useChangeDetailsSubject';
+import { useCreateSubject } from '@/hooks/core/home/subjects/useCreateSubject';
 
-// Dialog for chaging details for subjects
-export const DialogChangeDetails: React.FC<{
-  id: number;
+export const DialogCreateSubject: React.FC<{
   children: React.ReactNode;
-  // These are props (from subject card) that are needed in order to update the Subject card on frontend, and to display current details (title, desc...) etc.
-  cardTitle: string;
-  setCardTitle: React.Dispatch<React.SetStateAction<string>>;
-  cardDescription: string;
-  setCardDescripton: React.Dispatch<React.SetStateAction<string>>;
-  setCardImage: React.Dispatch<React.SetStateAction<string | null>>;
-}> = ({
-  cardTitle,
-  setCardTitle,
-  cardDescription,
-  setCardDescripton,
-  setCardImage,
-  id,
-  children,
-}) => {
+}> = ({ children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const [subjectName, setSubjectName] = React.useState(cardTitle);
-  const [details, setDetails] = React.useState(cardDescription);
+  const [subjectName, setSubjectName] = React.useState('');
+  const [details, setDetails] = React.useState('');
   const [image, setImage] = React.useState<File | null>(null);
 
-  const { loading, updateSubjectReq } = useChangeDetailsSubject({
+  const resetFields = () => {
+    // Reseting the fields (for the new use of dialog)
+    setSubjectName('');
+    setDetails('');
+    setImage(null);
+  };
+  const { createSubjectReq, loading } = useCreateSubject({
     details,
-    id,
     image,
-    setCardDescripton,
-    setCardImage,
-    setCardTitle,
+    resetFields,
     setIsOpen,
     subjectName,
   });
@@ -53,13 +40,15 @@ export const DialogChangeDetails: React.FC<{
     <Dialog
       open={isOpen}
       onOpenChange={setIsOpen}
-      title="Change subject's details"
+      title="Create subject"
       triggerProps={{
         children,
+        asChild: true,
       }}
     >
-      <Form className="flex flex-col gap-5" onSubmit={updateSubjectReq}>
+      <Form className="flex flex-col gap-5" onSubmit={createSubjectReq}>
         <Input
+          isRequired
           type="text"
           label="Subject name"
           minLength={3}
@@ -67,19 +56,19 @@ export const DialogChangeDetails: React.FC<{
           isMdHorizontal
           value={subjectName}
           inputProps={{
-            placeholder: 'Enter new subject name',
+            placeholder: 'Enter subject name',
           }}
           onChange={(val) => setSubjectName(val.toString())}
         />
         <Input
           type="text"
-          label="Details"
+          label="Details (optional)"
           minLength={5}
           maxLength={40}
           isMdHorizontal
           value={details}
           inputProps={{
-            placeholder: 'Enter new subject details',
+            placeholder: 'Enter your subject’s details (optional)',
           }}
           onChange={(val) => setDetails(val.toString())}
         />
@@ -89,11 +78,11 @@ export const DialogChangeDetails: React.FC<{
         >
           <AriaButton className="outline-none">
             <Input
-              label="Image"
+              label="Image (optional)"
               isMdHorizontal
               isReadOnly
               inputProps={{
-                placeholder: 'Enter thumbnail image',
+                placeholder: 'Enter thumbnail image (optional)',
                 value: image ? image?.name.toString() : '',
               }}
               className="text-start"
@@ -103,12 +92,10 @@ export const DialogChangeDetails: React.FC<{
         <Button
           className="self-end"
           type="submit"
-          isDisabled={
-            subjectName === cardTitle && details === cardDescription && !image
-          }
+          isDisabled={!subjectName}
           iconRight={loading && <Spinner />}
         >
-          Save
+          Add new subject
         </Button>
       </Form>
     </Dialog>

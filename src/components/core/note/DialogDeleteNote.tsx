@@ -12,7 +12,7 @@ import { Spinner } from '@/components/ui/Spinner';
 import { useDeleteNotes } from '@/hooks/core/home/notes/useDeleteNote';
 
 // Confirmation dialog for removing a note
-export const DialogDelete: React.FC<{
+export const DialogDeleteNote: React.FC<{
   children: React.ReactNode;
   noteName: string;
   noteId: number;

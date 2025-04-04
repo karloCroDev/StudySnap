@@ -15,17 +15,13 @@ export const useCreateSubject = ({
   subjectName,
   details,
   image,
-  setSubjectName,
-  setDetails,
-  setImage,
+  resetFields,
   setIsOpen,
 }: {
   subjectName: string;
   details: string;
   image: File | null;
-  setSubjectName: React.Dispatch<React.SetStateAction<string>>;
-  setDetails: React.Dispatch<React.SetStateAction<string>>;
-  setImage: React.Dispatch<React.SetStateAction<File | null>>;
+  resetFields: () => void;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [loading, setLoading] = React.useState(false);
@@ -66,9 +62,8 @@ export const useCreateSubject = ({
         content: `You have succesfully created ${subjectName}`,
         variant: 'success',
       });
-      setSubjectName('');
-      setDetails('');
-      setImage(null);
+      // Reseting the fields (for the new use of dialog)
+      resetFields();
     } catch (error) {
       console.error(error);
       toast({
