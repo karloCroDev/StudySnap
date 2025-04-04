@@ -84,7 +84,7 @@ export const DialogAnalyseAI: React.FC<{
         >
           <Input
             className="h-12 w-full rounded border-2 border-blue-900 p-2 focus:border-blue-900"
-            placeholder="Enter a prompt for image.."
+            placeholder="Enter a prompt for image or pdf.."
           />
           <FieldError className="!mt-2 text-red-400" />
         </TextField>

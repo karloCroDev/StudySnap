@@ -12,14 +12,14 @@ export const HeaderLanding = () => (
           <a href="#home">
             <li>Home</li>
           </a>
-          <a href="#FAQ">
-            <li>FAQ</li>
-          </a>
           <a href="#docs">
             <li>Docs</li>
           </a>
           <a href="#why-us">
             <li> Why us</li>
+          </a>
+          <a href="#FAQ">
+            <li>FAQ</li>
           </a>
         </ul>
         <div className="flex gap-4 lg:flex-1 lg:justify-end">

@@ -149,9 +149,9 @@ export default async function LandingPage() {
             'mt-12 text-2xl font-semibold !italic underline underline-offset-4',
             plus_jakarta_sans.className
           )}
-          id="why-us"
+          id="docs"
         >
-          Why us
+          Docs
         </h2>
 
         <LayoutRow className="flex flex-col justify-between lg:flex-row lg:items-center">
@@ -196,7 +196,12 @@ export default async function LandingPage() {
         >
           FAQ
         </h2>
-        <LayoutColumn lg={6} xs={12} id="FAQ" className="mx-auto mt-8 lg:mt-16">
+        <LayoutColumn
+          lg={6}
+          xs={12}
+          id="FAQ"
+          className="mx-auto mt-8 pb-20 lg:mt-16"
+        >
           <FAQAccordion />
         </LayoutColumn>
       </Layout>

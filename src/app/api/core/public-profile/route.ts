@@ -62,7 +62,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// Function to handle PATCH requests for updating user profile data
+// Handling updates the user profile (username, password, profile picture)
 export async function PATCH(req: NextRequest) {
   try {
     const formData = await req.formData();

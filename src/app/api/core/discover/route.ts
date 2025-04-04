@@ -29,21 +29,31 @@ export async function GET(req: NextRequest) {
       return NextResponse.json(publicNotes, { status: 200 });
     }
 
-    // Random offset for the first 10 notes (most popular ones), we replad
-    const randomOffset = Math.round(Math.random() * 10);
+    // Random offset for the first 10 notes (most popular ones), so that user doesn't always get the same most popular order
+    const randomOffset = Math.floor(Math.random() * 10);
+    console.log(randomOffset);
     const publicNotes: Note[] = await GetPublicNotes(
       limit,
       randomOffset,
       userId!,
       filter
     );
-    return NextResponse.json(
-      {
-        offsetPosition: randomOffset + limit, // Passing the next offset position to the client (so that user knows what to fetch)
-        publicNotes,
-      },
-      { status: 200 }
-    );
+
+    const totalNotes = await GetNumberOfPublicNotes();
+
+    const minOffset = randomOffset + limit; // Minimum offset to get the next notes (so that user doesn't get the same notes again)
+
+    // const maxOffset = Math.floor(totalNotes / 2); // Scales better notes when there will be a bigger amount of notes
+
+    const nextOffset =
+      Math.floor(Math.random() * (totalNotes - minOffset + 1)) + minOffset; // Random number between minumum offset and the length of public notes in db --> interval: [minOffset, maxOffset]
+
+    const dataToSend: DiscoverResopnses = {
+      offsetPosition: nextOffset, // Passing the next offset position to the client (so that user knows what to fetch)
+      publicNotes,
+    };
+
+    return NextResponse.json(dataToSend, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
