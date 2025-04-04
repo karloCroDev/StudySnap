@@ -1,6 +1,7 @@
 // External packages
 import Image from 'next/image';
 
+// loading page (while the data is being fetched from the server)
 export default function NotFound() {
   return (
     <div className="flex h-[100vh] w-full flex-col items-center justify-center gap-8">

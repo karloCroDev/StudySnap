@@ -4,9 +4,6 @@ import { getPool } from '@/db/db';
 //Models
 import { type Note } from '@/models/note';
 
-// Database (algorithm)
-import { rankNotes } from '@/lib/algorithms/alogirthm';
-
 // Gets all public notes for discover section
 export async function GetPublicNotes(
   limit: number,
@@ -107,8 +104,7 @@ export async function GetRandomNotes(
     [userId, limit]
   );
 
-  const algorithmValue = rankNotes(result[0]);
-  return algorithmValue;
+  return result[0];
 }
 
 export async function GetNumberOfPublicNotes() {

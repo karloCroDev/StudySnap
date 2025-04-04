@@ -1,6 +1,7 @@
 // External packages
 import { NextResponse, NextRequest } from 'next/server';
 import bcrypt from 'bcryptjs';
+import { Note } from '@/models/note';
 
 // Database
 import {
@@ -11,10 +12,18 @@ import {
 import { WriteImage } from '@/db/imageHandler';
 
 // Models
-import { UserClass } from '@/models/user';
+import { type User, UserClass } from '@/models/user';
 import { SQLSyntaxCheck } from '@/lib/algorithms/stringVerification';
 
 // Function to handle all liked posts from user
+
+export interface PublicProfileGetResponse {
+  likedNotes: Note[];
+  creatorNotes: Note[];
+  user: User;
+}
+
+// Getting all of the notes and user detals (public-profile page)
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -107,7 +116,7 @@ export async function PATCH(req: NextRequest) {
   }
 }
 
-// Function to handle DELETE requests for deleting a user
+// Deleting the user completely from the application and db
 export async function DELETE(req: NextRequest) {
   try {
     const { userId } = await req.json();

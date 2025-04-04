@@ -6,13 +6,16 @@ import GoogleProvider from 'next-auth/providers/google';
 import { Account, Profile, User } from 'next-auth';
 import { randomBytes } from 'crypto';
 
+import { NextAuthOptions } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
+
 // db
 import { GetUserByEmail } from '@/db/auth/login';
 
 // Models
 import { UserClass } from '@/models/user';
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     // Credentials provider for authentication
     CredentialsProvider({
@@ -71,7 +74,7 @@ export const authOptions = {
     },
 
     // Callback to create session from token
-    session: async ({ session, token }: any) => {
+    session: async ({ session, token }: { session: any; token: JWT }) => {
       // Update session with token details
       if (session?.user) {
         session.user.id = token.sub;

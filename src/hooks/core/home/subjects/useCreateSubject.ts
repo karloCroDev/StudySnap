@@ -10,6 +10,7 @@ import { useSubjectStore } from '@/store/useSubjectStore';
 // Models (types)
 import { type Subject } from '@/models/subject';
 
+// Logic after creating a new subject
 export const useCreateSubject = ({
   subjectName,
   details,

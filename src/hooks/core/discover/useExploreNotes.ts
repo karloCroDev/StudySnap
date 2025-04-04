@@ -12,23 +12,24 @@ import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 export const useExploreNotes = ({
   userId,
-  setNotes,
-
+  publicNotes,
   offsetPosition,
 }: {
-  userId: number;
-  setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
-
+  userId: number | null;
+  publicNotes: Note[];
   offsetPosition: number;
 }) => {
-  const { getItem, setItem, removeItem } = useLocalStorage('offset'); // Use removeItem to clear storage
+  const [notes, setNotes] = React.useState(publicNotes);
+
+  const { getItem, setItem, removeItem } = useLocalStorage('offset');
+
   const [loadingExplore, setLoadingExplore] = React.useState(false);
 
   const [offset, setOffset] = React.useState(offsetPosition);
 
   // Retrieve offset and check if expired
   React.useEffect(() => {
-    const EXPIRY_TIME = 100 * 60; // 10 sec (set to producytion to be a bigger number  )
+    const EXPIRY_TIME = 100 * 60; // time to delete the offset in local storage, same time used as caching the notes
 
     const storedData = getItem();
     if (storedData) {
@@ -46,11 +47,12 @@ export const useExploreNotes = ({
 
   const toast = useToastStore((state) => state.setToast);
 
+  // Fetching additional notes from server
   const exploreNotes = async () => {
     try {
       setLoadingExplore(true);
       const limit = 4;
-      const response = await fetch(`http://localhost:3000/api/core/discover?`, {
+      const response = await fetch(`http://localhost:3000/api/core/discover`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, offset, limit }),
@@ -64,11 +66,10 @@ export const useExploreNotes = ({
           variant: 'error',
         });
       }
-
+      console.log(data);
       setNotes((prev) => [...prev, ...data]);
 
       // Update offset and timestamp
-
       const updatedOffset = offset + limit;
       setOffset(updatedOffset);
       setItem({ value: updatedOffset, timestamp: Date.now() });
@@ -79,5 +80,5 @@ export const useExploreNotes = ({
     }
   };
 
-  return { exploreNotes, loadingExplore };
+  return { notes, exploreNotes, loadingExplore };
 };

@@ -63,13 +63,14 @@ export const useCreateNote = ({
         });
         return;
       }
-      console.log(data);
-      addNote(data as Note);
+
+      addNote(data as Note); // Adding the note to the client
       toast({
         title: `${noteName} note created`,
         content: `You have succesfully created ${noteName}`,
         variant: 'success',
       });
+      // Reseting the form fields in dialog (after successful creation)
       setNoteName('');
       setDetails('');
       setImage(null);

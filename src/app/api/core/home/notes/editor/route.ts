@@ -9,7 +9,7 @@ import { WriteImage } from '@/db/imageHandler';
 import { Note } from '@/models/note';
 import { SQLSyntaxCheck } from '@/lib/algorithms/stringVerification';
 
-//Function gets the note
+// Getting info for the document editor (note editor page)
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-//Function that writes the image
+// Uploading image to server and returning the path to the image (used in the editor, not AI features)
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const image = formData.get('file');

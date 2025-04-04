@@ -12,7 +12,7 @@ import { SQLSyntaxCheck } from '@/lib/algorithms/stringVerification';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
-//Function gets all users subjects
+// Gets all of the subjects under a user
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-//Function creates a new subject
+// Creating a new subject and retrieving the info on frontend
 export async function POST(req: NextRequest) {
   try {
     // Extract and verify the JWT
@@ -62,11 +62,7 @@ export async function POST(req: NextRequest) {
     const details = formData.get('details') as string | null;
     const file = formData.get('file');
 
-    if (
-      !subjectName ||
-      !creator
-      // || SQLSyntaxCheck([subjectName, details])
-    ) {
+    if (!subjectName || !creator || SQLSyntaxCheck([subjectName, details])) {
       return NextResponse.json({ message: 'Bad request' }, { status: 400 });
     }
 
@@ -102,7 +98,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-//Function deletes subjetcs
+// Deleting the subject and its notes (that are linked to him) in the database
 export async function DELETE(req: NextRequest) {
   try {
     const token = await getToken({ req, secret });
@@ -132,7 +128,7 @@ export async function DELETE(req: NextRequest) {
   }
 }
 
-//Function chenges subjects
+// Updates the subject details
 export async function PATCH(req: NextRequest) {
   try {
     // Extract and verify the JWT
@@ -151,10 +147,7 @@ export async function PATCH(req: NextRequest) {
     const details = formData.get('details') as string;
     const file = formData.get('file');
 
-    if (
-      !subjectId
-      //  || SQLSyntaxCheck([subjectId, subjectName, details])
-    ) {
+    if (!subjectId || SQLSyntaxCheck([subjectId, subjectName, details])) {
       return NextResponse.json({ status: 400, statusText: 'Bad request' });
     }
 
@@ -164,10 +157,14 @@ export async function PATCH(req: NextRequest) {
     if (file) updates.image_url = await WriteImage(file);
 
     if (Object.keys(updates).length === 0) {
-      return NextResponse.json({
-        status: 400,
-        statusText: 'No fields to update',
-      });
+      return NextResponse.json(
+        {
+          message: 'No fields to update',
+        },
+        {
+          status: 400,
+        }
+      );
     }
 
     await SubjectClass.Update(subjectId, updates);

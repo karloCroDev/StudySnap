@@ -13,44 +13,33 @@ import { Note } from '@/models/note';
 
 export interface DiscoverResopnses {
   offsetPosition: number;
-
   publicNotes: Note[];
 }
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const userId = searchParams.get('userId');
+    const userId = searchParams.get('userId') as unknown as string;
     const filter = searchParams.get('filter') ?? '';
-    const limit = Number(searchParams.get('limit')) || 4;
+    const limit = Number(searchParams.get('limit')) || 8;
 
-    if (!userId) {
-      return NextResponse.json(
-        {
-          message: 'Please enter the valid ID!',
-        },
-        {
-          status: 400,
-        }
-      );
-    }
-
-    // Handling the search
+    // Handling the search option inside the dicscover page
     if (filter) {
       const publicNotes = await GetPublicNotes(limit, 0, userId, filter);
       return NextResponse.json(publicNotes, { status: 200 });
     }
 
-    const randomOffset = Math.round(Math.random() * 10); // Little bit of variety at first notes
+    // Random offset for the first 10 notes (most popular ones), we replad
+    const randomOffset = Math.round(Math.random() * 10);
     const publicNotes: Note[] = await GetPublicNotes(
       limit,
       randomOffset,
-      userId,
+      userId!,
       filter
     );
     return NextResponse.json(
       {
-        offsetPosition: randomOffset + limit,
+        offsetPosition: randomOffset + limit, // Passing the next offset position to the client (so that user knows what to fetch)
         publicNotes,
       },
       { status: 200 }
@@ -72,17 +61,7 @@ export async function POST(req: NextRequest) {
   try {
     const { userId, offset, limit } = await req.json();
 
-    if (!userId) {
-      return NextResponse.json(
-        {
-          message: 'Please enter the valid ID!',
-        },
-        {
-          status: 400,
-        }
-      );
-    }
-
+    // Handling the count of the offset so that if it goes over the limit of the notes, it will get random notes from the database, instead of returning nothing
     const totalPublicNotes = await GetNumberOfPublicNotes();
 
     if (offset + limit > totalPublicNotes) {
@@ -106,5 +85,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-// 100 biljeski --> prepolovi na pola --> ako je manje od pola +8 biljeski vrti --> ako je vise od pola -8 biljeski (biljeske s manjim brojem likeova)
-// Cachaaj na 8h, stavi test za prezu na 3h

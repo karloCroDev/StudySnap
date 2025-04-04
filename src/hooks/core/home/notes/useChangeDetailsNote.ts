@@ -6,6 +6,7 @@ import * as React from 'react';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
+// Changing the note details logic
 export const useChangeDetailsNote = ({
   noteId,
   isPublic,
@@ -63,7 +64,7 @@ export const useChangeDetailsNote = ({
         content: data.message,
         variant: 'success',
       });
-
+      // Reseting the form fields in dialog (after successful chanigng the details)
       if (name) setNoteName(name);
       if (details) setNoteDetails(details);
       if (image) setNoteImage(URL.createObjectURL(image));

@@ -14,7 +14,7 @@ export const useSearchNotes = ({
   search,
   userId,
 }: {
-  userId: number;
+  userId: number | null;
   search: string;
   debouncedSearch: string;
 }) => {

@@ -9,6 +9,9 @@ import { Avatar } from '@/components/ui/Avatar';
 import { NoteMapping } from '@/components/core/NoteMapping';
 import { SelectOption } from '@/components/core/profile/SelectOption';
 
+// Types
+import { type PublicProfileGetResponse } from '@/app/api/core/public-profile/route';
+
 // Metadata
 export const metadata: Metadata = {
   title: 'Public profile',
@@ -23,7 +26,7 @@ export const metadata: Metadata = {
   },
 };
 
-async function getAllNotes(creatorId: number, userId: number) {
+async function getAllNotes(creatorId: number, userId: number | null) {
   const response = await fetch(
     `http://localhost:3000/api/core/public-profile?creatorId=${creatorId}&userId=${userId}`
   );
@@ -42,10 +45,8 @@ export default async function PublicProfile({
   const session = await getServerSession(authOptions);
   const userId = session?.user.id || null;
 
-  const { likedNotes, creatorNotes, user } = await getAllNotes(
-    creatorId,
-    userId
-  );
+  const { likedNotes, creatorNotes, user }: PublicProfileGetResponse =
+    await getAllNotes(creatorId, userId);
   return (
     <>
       <div className="mb-12 animate-public-profile-initial-apperance lg:mb-16">
@@ -63,7 +64,6 @@ export default async function PublicProfile({
           {user.username}
         </h1>
       </div>
-      {/* <SearchableHeader title="All notes" /> */}
       <SelectOption
         username={user.username}
         likedNotes={likedNotes}

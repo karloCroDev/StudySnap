@@ -4,6 +4,7 @@ import Link from 'next/link';
 // Components
 import { Logo } from '@/components/ui/Logo';
 
+// Not found page (if the user tries to access a page that does not exist, e.g wrong url)
 export default function NotFound() {
   return (
     <>

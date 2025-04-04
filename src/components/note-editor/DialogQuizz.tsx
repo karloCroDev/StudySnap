@@ -14,19 +14,17 @@ import { Spinner } from '@/components/ui/Spinner';
 
 // Hooks
 import { useGenerateQuizz } from '@/hooks/note-editor/useGenerateQuizz';
+import { useQuizzLogic } from '@/hooks/note-editor/useQuizzLogic';
 
 export const DialogQuizz: React.FC<{
   editor: EditorType;
 }> = ({ editor }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  // Retrieving the data from the quizz
+  const { isLoading, quizzData, isOpen, setIsOpen } = useGenerateQuizz(editor);
 
-  const [questionCount, setQuestionCount] = React.useState(0);
-  const [correctAnswers, setCorrectAnswers] = React.useState(0);
-  const { isLoading, quizzData } = useGenerateQuizz({
-    isOpen,
-    editor,
-    setIsOpen,
-  });
+  // Handling the logic of the quizz
+  const { correctAnswerCheck, correctAnswers, questionCount } =
+    useQuizzLogic(quizzData);
 
   return (
     <Dialog
@@ -81,22 +79,7 @@ export const DialogQuizz: React.FC<{
                   <LayoutColumn xs={12} md={6} className="p-2" key={index}>
                     <ReactAriaButton
                       className="min-h-16 w-full text-balance rounded border border-blue-400 text-md text-blue-900 outline-none"
-                      onPress={(e) => {
-                        e.target.classList.add('text-gray-100');
-                        if (index === quizzData[questionCount]?.correct - 1) {
-                          setCorrectAnswers((prev) => prev + 1);
-                          e.target.classList.add('bg-green-400');
-                        } else {
-                          e.target.classList.add('bg-red-400');
-                        }
-                        setTimeout(() => {
-                          setQuestionCount(questionCount + 1);
-                          // Waiting for two seconds to display feedback to user
-                          e.target.classList.remove('bg-green-400');
-                          e.target.classList.remove('bg-red-400');
-                          e.target.classList.remove('text-gray-100');
-                        }, 2000);
-                      }}
+                      onPress={(e) => correctAnswerCheck(e, index)}
                     >
                       {answer}
                     </ReactAriaButton>

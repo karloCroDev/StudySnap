@@ -6,6 +6,7 @@ import * as React from 'react';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
+// Logic behind chaning the subject details
 export const useChangeDetailsSubject = ({
   id,
   subjectName,
@@ -59,7 +60,7 @@ export const useChangeDetailsSubject = ({
         content: data.message,
         variant: 'success',
       });
-
+      // Reseting the form fields in dialog (after successful chanigng the details)
       if (subjectName) setCardTitle(subjectName);
       if (details) setCardDescripton(details);
       if (image) setCardImage(URL.createObjectURL(image));
