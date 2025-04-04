@@ -82,16 +82,14 @@ export async function GetProfileImage(
 }
 
 export async function DeleteImage(imageUrl: string | null) {
-  console.log(imageUrl);
   if (!imageUrl) {
     return;
   }
   try {
     unlink('public' + imageUrl, (error) => {
-      console.error('Error deleting file:', error);
+      if (error) console.error('Error deleting file:', error);
     });
   } catch (error) {
     console.error('Error deleting file:', error);
-    return;
   }
 }

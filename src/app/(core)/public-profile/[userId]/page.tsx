@@ -9,6 +9,9 @@ import { Avatar } from '@/components/ui/Avatar';
 import { NoteMapping } from '@/components/core/NoteMapping';
 import { SelectOption } from '@/components/core/profile/SelectOption';
 
+// Types
+import { type PublicProfileGetResponse } from '@/app/api/core/public-profile/route';
+
 // Metadata
 export const metadata: Metadata = {
   title: 'Public profile',
@@ -23,26 +26,9 @@ export const metadata: Metadata = {
   },
 };
 
-async function getAllLikedUsersPosts(creatorId: number, userId: number) {
+async function getAllNotes(creatorId: number, userId: number | null) {
   const response = await fetch(
     `http://localhost:3000/api/core/public-profile?creatorId=${creatorId}&userId=${userId}`
-  );
-
-  if (!response.ok) throw new Error('Error with fetching');
-
-  return await response.json();
-}
-
-async function getPublicProfileNotes(creatorId: number, userId: number) {
-  const response = await fetch(
-    `http://localhost:3000/api/core/public-profile`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ creatorId, userId }),
-    }
   );
 
   if (!response.ok) throw new Error('Error with fetching');
@@ -59,15 +45,14 @@ export default async function PublicProfile({
   const session = await getServerSession(authOptions);
   const userId = session?.user.id || null;
 
-  const likedNotes = await getAllLikedUsersPosts(creatorId, userId);
-  const [notes, user] = await getPublicProfileNotes(creatorId, userId);
-  console.log(user);
+  const { likedNotes, creatorNotes, user }: PublicProfileGetResponse =
+    await getAllNotes(creatorId, userId);
   return (
     <>
       <div className="mb-12 animate-public-profile-initial-apperance lg:mb-16">
         <Avatar
           imageProps={{
-            src: `${user.profile_picture_url}`,
+            src: user.profile_picture_url || '',
             alt: '',
           }}
           size="xl"
@@ -79,16 +64,15 @@ export default async function PublicProfile({
           {user.username}
         </h1>
       </div>
-      {/* <SearchableHeader title="All notes" /> */}
       <SelectOption
         username={user.username}
         likedNotes={likedNotes}
-        publicNotes={notes}
+        publicNotes={creatorNotes}
       />
       <LayoutRow className="mt-8 justify-center xl:mt-12">
         <LayoutColumn xs={11} lg={10}>
           <LayoutRow className="pr-0 sm:-mr-4">
-            <NoteMapping notesData={notes} />
+            <NoteMapping notesData={creatorNotes} />
           </LayoutRow>
         </LayoutColumn>
       </LayoutRow>

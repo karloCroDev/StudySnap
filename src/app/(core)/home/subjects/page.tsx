@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
-import { SearchableHeader } from '@/components/ui/SearchableHeader';
+import { SearchableHeader } from '@/components/core/SearchableHeader';
 import { CreateSubjectCard } from '@/components/core/subjects/CreateSubjectCard';
 import { SubjectMapping } from '@/components/core/subjects/SubjectMapping';
 

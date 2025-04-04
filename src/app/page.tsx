@@ -2,6 +2,7 @@
 import { twMerge } from 'tailwind-merge';
 import Image from 'next/image';
 import { FilePlusIcon } from '@radix-ui/react-icons';
+import { type Metadata } from 'next';
 
 // Components
 import { HeaderLanding } from '@/components/landing-page/HeaderLanding';
@@ -12,6 +13,22 @@ import { Table } from '@/components/landing-page/Table';
 
 // Lib
 import { plus_jakarta_sans } from '@/lib/fonts';
+
+// Metadata
+export const metadata: Metadata = {
+  title: 'StudySnap',
+  description:
+    'Explore the wonderlands of users notes, that will boost your studies to the sky 🚀',
+  openGraph: {
+    title: 'StudySnap welcome page',
+    description:
+      'Explore the wonderlands of users notes, that will boost your studies to the sky 🚀',
+    siteName: 'StudySnap',
+    images: {
+      url: '/images/favicon-logo.png',
+    },
+  },
+};
 
 export default async function LandingPage() {
   const imageShowroom = [

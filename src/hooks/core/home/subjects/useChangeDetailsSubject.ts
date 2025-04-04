@@ -6,23 +6,20 @@ import * as React from 'react';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
+// Logic behind chaning the subject details
 export const useChangeDetailsSubject = ({
   id,
   subjectName,
   details,
   image,
-  setCardTitle,
-  setCardDescripton,
-  setCardImage,
+  updateFields,
   setIsOpen,
 }: {
   id: number;
   subjectName: string;
   details: string;
   image: File | null;
-  setCardTitle: React.Dispatch<React.SetStateAction<string>>;
-  setCardDescripton: React.Dispatch<React.SetStateAction<string>>;
-  setCardImage: React.Dispatch<React.SetStateAction<string | null>>;
+  updateFields: () => void;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [loading, setLoading] = React.useState(false);
@@ -60,9 +57,7 @@ export const useChangeDetailsSubject = ({
         variant: 'success',
       });
 
-      if (subjectName) setCardTitle(subjectName);
-      if (details) setCardDescripton(details);
-      if (image) setCardImage(URL.createObjectURL(image));
+      updateFields();
     } catch (error) {
       console.error(error);
       toast({

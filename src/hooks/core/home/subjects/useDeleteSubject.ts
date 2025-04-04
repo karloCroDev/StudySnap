@@ -7,6 +7,7 @@ import * as React from 'react';
 import { useToastStore } from '@/store/useToastStore';
 import { useSubjectStore } from '@/store/useSubjectStore';
 
+// Logic for handeling the deletion of the subject
 export const useDeleteSubject = ({
   id,
   name,
@@ -54,7 +55,7 @@ export const useDeleteSubject = ({
         });
       }, 500);
     } catch (error) {
-      console.error(error)
+      console.error(error);
       toast({
         title: 'Uhoh, something went wrong',
         content: 'Failed to delete subject',

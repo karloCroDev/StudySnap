@@ -10,7 +10,7 @@ import { NoteCard } from '@/components/core/NoteCard';
 import { LoadingSkeletonNote } from './discover/LoadingSkeletonNote';
 
 // Store
-import { useGeneralInfo } from '@/store/useGeneralInfo';
+import { useGeneralStore } from '@/store/useGeneralStore';
 import { useNoteStore } from '@/store/useNoteStore';
 
 // Models (types)
@@ -26,7 +26,7 @@ export const NoteMapping: React.FC<{
       setNotes: state.setNotes,
     }))
   );
-  const search = useGeneralInfo((state) => state.search);
+  const search = useGeneralStore((state) => state.search);
 
   React.useEffect(() => {
     setNotes(notesData);
@@ -47,6 +47,7 @@ export const NoteMapping: React.FC<{
         lg={4}
         xl2={3}
         className="mb-8 animate-card-apperance sm:pr-4"
+        key={note.id}
       >
         <NoteCard
           noteId={note.id}
@@ -59,7 +60,6 @@ export const NoteMapping: React.FC<{
           creatorId={note.creator_id}
           profileImageUrl={note.profile_image_url}
           imageUrl={note.image_url}
-          key={note.id}
         />
       </LayoutColumn>
     ));

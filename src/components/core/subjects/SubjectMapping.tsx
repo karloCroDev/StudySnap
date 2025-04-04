@@ -9,7 +9,7 @@ import { LayoutColumn } from '@/components/ui/Layout';
 import { SubjectCard } from '@/components/core/subjects/SubjectCard';
 
 // Store
-import { useGeneralInfo } from '@/store/useGeneralInfo';
+import { useGeneralStore } from '@/store/useGeneralStore';
 import { useSubjectStore } from '@/store/useSubjectStore';
 
 // Models (types)
@@ -25,7 +25,7 @@ export const SubjectMapping: React.FC<{
       setSubjects: state.setSubjects,
     }))
   );
-  const search = useGeneralInfo((state) => state.search);
+  const search = useGeneralStore((state) => state.search);
   React.useEffect(() => {
     setSubjects(subjectsData);
   }, []);
@@ -45,14 +45,13 @@ export const SubjectMapping: React.FC<{
         lg={4}
         xl2={3}
         className="mb-8 animate-card-apperance sm:pr-4"
+        key={subject.id}
       >
         <SubjectCard
           id={subject.id}
           title={subject.name}
           description={subject.details}
-          encodedImage={subject.encoded_image}
           imageUrl={subject.image_url}
-          key={subject.id}
         />
       </LayoutColumn>
     ));

@@ -8,7 +8,7 @@ import { Dialog } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 
 // Hooks
-import { useProfileDelete } from '@/hooks/core/home/profile/useDialogDeleteProfile';
+import { useProfileDelete } from '@/hooks/core/profile/useDialogDeleteProfile';
 
 // Confirmation dialog for deleting the profile
 export const DialogDeleteProfile = () => {

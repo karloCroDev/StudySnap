@@ -13,37 +13,42 @@ import { Spinner } from '@/components/ui/Spinner';
 // Hooks
 import { useDebounce } from '@/hooks/useDebounce';
 import { useSearchNotes } from '@/hooks/core/discover/useSearchNotes';
-
-// Store
-import { useGeneralInfo } from '@/store/useGeneralInfo';
-
-// Models (types)
-import { type Note } from '@/models/note';
 import { useExploreNotes } from '@/hooks/core/discover/useExploreNotes';
 
-// Component that is responsible for mapping and searching all the notes
-export const DisocverMapping: React.FC<{
-  userId: number;
-  notesData: Note[];
-}> = ({ userId, notesData }) => {
-  const [notes, setNotes] = React.useState<Note[]>(notesData);
+// Store
+import { useGeneralStore } from '@/store/useGeneralStore';
 
+// Models (types)
+import { type DiscoverResopnses } from '@/app/api/core/discover/route';
+
+// Component that is responsible for mapping and searching all the notes
+export const DisocverMapping: React.FC<
+  DiscoverResopnses & {
+    userId: number | null;
+  }
+> = ({ userId, publicNotes, offsetPosition }) => {
   // Server side search logic
-  const search = useGeneralInfo((state) => state.search);
+  const search = useGeneralStore((state) => state.search);
 
   const debouncedSearch = useDebounce(search);
 
+  // Search notes (functuonality)
   const { loadingSearchNotes, notesQuery } = useSearchNotes({
     debouncedSearch,
     search,
     userId,
   });
 
-  const { loadingExplore, exploreNotes } = useExploreNotes({
-    setNotes,
+  // Explore notes (functionality)
+  const { loadingExplore, exploreNotes, notes } = useExploreNotes({
+    publicNotes,
     userId,
+    offsetPosition,
   });
 
+  // Handling each case on what to render
+
+  // Loading skeleton when the user is searching for notes
   if (loadingSearchNotes) {
     return (
       <LayoutRow className="sm:-mr-4">
@@ -56,11 +61,18 @@ export const DisocverMapping: React.FC<{
     );
   }
 
+  //
   if (notesQuery.length) {
     return (
       <LayoutRow className="sm:-mr-4">
         {notesQuery.map((note) => (
-          <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
+          <LayoutColumn
+            sm={6}
+            lg={4}
+            xl2={3}
+            className="mb-8 sm:pr-4"
+            key={note.id}
+          >
             <NoteCard
               noteId={note.id}
               title={note.title}
@@ -72,13 +84,13 @@ export const DisocverMapping: React.FC<{
               creatorId={note.creator_id}
               imageUrl={note.image_url}
               profileImageUrl={note.profile_image_url}
-              key={note.id}
             />
           </LayoutColumn>
         ))}
       </LayoutRow>
     );
   }
+  // Returning the page if there are no notes that user have been searching for
   if (!notesQuery.length && debouncedSearch) {
     return (
       <h1 className="mt-40 text-center text-xl">
@@ -92,7 +104,13 @@ export const DisocverMapping: React.FC<{
     <>
       <LayoutRow className="animate-card-apperance sm:-mr-4">
         {notes.map((note) => (
-          <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
+          <LayoutColumn
+            sm={6}
+            lg={4}
+            xl2={3}
+            className="mb-8 sm:pr-4"
+            key={note.id}
+          >
             <NoteCard
               noteId={note.id}
               title={note.title}
@@ -104,7 +122,6 @@ export const DisocverMapping: React.FC<{
               creatorId={note.creator_id}
               imageUrl={note.image_url}
               profileImageUrl={note.profile_image_url}
-              key={note.id}
             />
           </LayoutColumn>
         ))}

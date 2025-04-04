@@ -23,6 +23,7 @@ export async function POST(req: Request) {
         }
       );
     }
+    // Check if the username or email is already taken
     if (await IsUsernameOrEmailTaken(username, email)) {
       return NextResponse.json(
         {
@@ -33,7 +34,7 @@ export async function POST(req: Request) {
         }
       );
     }
-
+    // Hashing and salting the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await UserClass.Insert(username, email, hashedPassword);

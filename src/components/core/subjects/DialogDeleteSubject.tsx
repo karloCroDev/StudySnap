@@ -13,7 +13,7 @@ import { useDeleteSubject } from '@/hooks/core/home/subjects/useDeleteSubject';
 
 // Confirmation dialog for removing a subject
 
-export const DialogDelete: React.FC<{
+export const DialogDeleteSubject: React.FC<{
   name: string;
   id: number;
   imageUrl: string | null;

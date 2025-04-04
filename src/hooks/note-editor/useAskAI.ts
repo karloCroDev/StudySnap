@@ -7,6 +7,7 @@ import { type Editor as EditorType } from '@tiptap/react';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
+// Chat with AI about the document context
 export const useAskAI = ({
   editor,
   setIsOpen,

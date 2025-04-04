@@ -15,7 +15,7 @@ import { Spinner } from '@/components/ui/Spinner';
 
 // Hooks
 import { useClientImage } from '@/hooks/useClientImage';
-import { useDialogEditProfile } from '@/hooks/core/home/profile/useDialogEditProfile';
+import { useDialogEditProfile } from '@/hooks/core/profile/useDialogEditProfile';
 
 // Edit dialog for users profile
 export const DialogEditProfile: React.FC<{

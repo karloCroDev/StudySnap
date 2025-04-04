@@ -6,25 +6,23 @@ import * as React from 'react';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
+// Changing the note details logic
 export const useChangeDetailsNote = ({
   noteId,
   isPublic,
   name,
   details,
   image,
-  setNoteName,
-  setNoteDetails,
-  setNoteImage,
+  updateFields,
   setIsOpen,
 }: {
   noteId: number;
   isPublic: boolean;
   name: string;
   details: string;
+  updateFields: () => void;
   image: File | null;
-  setNoteName: React.Dispatch<React.SetStateAction<string>>;
-  setNoteDetails: React.Dispatch<React.SetStateAction<string>>;
-  setNoteImage: React.Dispatch<React.SetStateAction<string | null>>;
+
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [loading, setLoading] = React.useState(false);
@@ -57,16 +55,12 @@ export const useChangeDetailsNote = ({
         });
         return;
       }
-
+      updateFields();
       toast({
         title: `${name} note updated`,
         content: data.message,
         variant: 'success',
       });
-
-      if (name) setNoteName(name);
-      if (details) setNoteDetails(details);
-      if (image) setNoteImage(URL.createObjectURL(image));
     } catch (error) {
       console.error(error);
       toast({

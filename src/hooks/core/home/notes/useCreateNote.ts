@@ -16,9 +16,7 @@ export const useCreateNote = ({
   noteName,
   details,
   image,
-  setNoteName,
-  setDetails,
-  setImage,
+  resetFields,
   setIsOpen,
 }: {
   subjectId: number;
@@ -26,9 +24,7 @@ export const useCreateNote = ({
   noteName: string;
   details: string;
   image: File | null;
-  setNoteName: React.Dispatch<React.SetStateAction<string>>;
-  setDetails: React.Dispatch<React.SetStateAction<string>>;
-  setImage: React.Dispatch<React.SetStateAction<File | null>>;
+  resetFields: () => void;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [loading, setLoading] = React.useState(false);
@@ -41,8 +37,8 @@ export const useCreateNote = ({
       setLoading(true);
       const formData = new FormData();
       formData.append('subjectId', subjectId.toString());
-      if (noteName) formData.append('noteName', noteName);
-      if (details) formData.append('details', details);
+      formData.append('noteName', noteName);
+      formData.append('details', details);
       formData.append('isPublic', isPublic.toString());
       if (image) formData.append('file', image);
 
@@ -54,6 +50,7 @@ export const useCreateNote = ({
         }
       );
       const data = await response.json();
+      console.log(data);
       if (!response.ok) {
         toast({
           title: 'Missing required fields',
@@ -64,15 +61,13 @@ export const useCreateNote = ({
         return;
       }
       console.log(data);
-      addNote(data as Note);
+      addNote(data as Note); // Adding the note to the store (upadting the frontend)
+      resetFields();
       toast({
         title: `${noteName} note created`,
         content: `You have succesfully created ${noteName}`,
         variant: 'success',
       });
-      setNoteName('');
-      setDetails('');
-      setImage(null);
     } catch (error) {
       console.error(error);
       toast({

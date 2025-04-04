@@ -12,38 +12,67 @@ import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 export const useExploreNotes = ({
   userId,
-  setNotes,
+  publicNotes,
+  offsetPosition,
 }: {
-  userId: number;
-  setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
+  userId: number | null;
+  publicNotes: Note[];
+  offsetPosition: number;
 }) => {
-  const { getItem, setItem } = useLocalStorage('offset'); // Making sure that when explore more is clicked, even when refreshed new unseen values will be displayed
+  const [notes, setNotes] = React.useState(publicNotes);
+
+  const { getItem, setItem, removeItem } = useLocalStorage('offset');
+
   const [loadingExplore, setLoadingExplore] = React.useState(false);
 
-  // Karlo: Put 6 when more notes come
-  const [offset, setOffset] = React.useState(getItem() || 0);
+  const [offset, setOffset] = React.useState(offsetPosition);
 
-  console.log(offset);
+  // Retrieve offset and check if expired
+  React.useEffect(() => {
+    const EXPIRY_TIME = 100 * 60; // time to delete the offset in local storage, same time used as caching the notes
+
+    const storedData = getItem();
+    if (storedData) {
+      const { value, timestamp } = storedData;
+      const now = Date.now();
+
+      if (now - timestamp > EXPIRY_TIME) {
+        removeItem();
+        setOffset(offsetPosition);
+      } else {
+        setOffset(value);
+      }
+    }
+  }, []);
+
   const toast = useToastStore((state) => state.setToast);
 
+  // Fetching additional notes from server
   const exploreNotes = async () => {
     try {
       setLoadingExplore(true);
-      const response = await fetch(
-        `http://localhost:3000/api/core/discover?userId=${userId}&offset=${offset}&limit=${1}`
-      );
-      if (!response.ok)
+      const limit = 4;
+      const response = await fetch(`http://localhost:3000/api/core/discover`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, offset, limit }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
         toast({
           title: 'Error',
-          content: 'Error while getting the data, please try again',
+          content: data.message,
           variant: 'error',
         });
-      const data = await response.json();
+      }
+      console.log(data);
       setNotes((prev) => [...prev, ...data]);
-      // Karlo: Put 6 when more notes come
-      const updatedOffset = offset + 1;
+
+      // Update offset and timestamp
+      const updatedOffset = offset + limit;
       setOffset(updatedOffset);
-      setItem(updatedOffset);
+      setItem({ value: updatedOffset, timestamp: Date.now() });
     } catch (error) {
       console.error(error);
     } finally {
@@ -51,5 +80,5 @@ export const useExploreNotes = ({
     }
   };
 
-  return { exploreNotes, loadingExplore };
+  return { notes, exploreNotes, loadingExplore };
 };

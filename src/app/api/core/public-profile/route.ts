@@ -1,6 +1,7 @@
 // External packages
 import { NextResponse, NextRequest } from 'next/server';
 import bcrypt from 'bcryptjs';
+import { Note } from '@/models/note';
 
 // Database
 import {
@@ -11,53 +12,43 @@ import {
 import { WriteImage } from '@/db/imageHandler';
 
 // Models
-import { UserClass } from '@/models/user';
+import { type User, UserClass } from '@/models/user';
 import { SQLSyntaxCheck } from '@/lib/algorithms/stringVerification';
-import { getToken } from 'next-auth/jwt';
 
 // Function to handle all liked posts from user
-export async function GET(req: NextRequest) {
-  try{
-    const { searchParams } = new URL(req.url);
-    const targetUserId = searchParams.get('creatorId');
-    const userId = searchParams.get('userId')
-    
-    if (!targetUserId || !userId || SQLSyntaxCheck([targetUserId, userId])) {
-      return NextResponse.json({ message: 'Bad request' }, { status: 400 });
-    }
 
-    const likedNotes = await GetLikedNotes(userId, targetUserId);
-    return NextResponse.json(likedNotes, {
-      status: 201,
-    });
-  }catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      {
-        message: 'Failed to load notes',
-      },
-      {
-        status: 500,
-      }
-    );
-  }
+export interface PublicProfileGetResponse {
+  likedNotes: Note[];
+  creatorNotes: Note[];
+  user: User;
 }
 
-// Function to handle POST requests for retrieving public profile data
-export async function POST(req: NextRequest) {
+// Getting all of the notes and user detals (public-profile page)
+export async function GET(req: NextRequest) {
   try {
-    const { creatorId, userId } = await req.json();
+    const { searchParams } = new URL(req.url);
+    const creatorId = searchParams.get('creatorId');
+    const userId = searchParams.get('userId') as unknown as string;
 
-    if (!creatorId || SQLSyntaxCheck([userId, creatorId])) {
+    if (!creatorId || SQLSyntaxCheck([creatorId, userId])) {
       return NextResponse.json({ message: 'Bad request' }, { status: 400 });
     }
 
-    const notes = await GetNotesByCreatorId(creatorId, userId);
+    const likedNotes = await GetLikedNotes(userId, creatorId);
+
+    const creatorNotes = await GetNotesByCreatorId(creatorId, userId);
     const user = await GetUserById(creatorId);
 
-    return NextResponse.json([notes, user], {
-      status: 201,
-    });
+    return NextResponse.json(
+      {
+        likedNotes,
+        creatorNotes,
+        user,
+      },
+      {
+        status: 201,
+      }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -80,10 +71,7 @@ export async function PATCH(req: NextRequest) {
     const password = formData.get('password') as string | null;
     const file = formData.get('file');
 
-    if (
-      !userId
-      // || SQLSyntaxCheck([userId, username, password])
-    ) {
+    if (!userId || SQLSyntaxCheck([userId, username, password])) {
       return NextResponse.json({ message: 'Bad request' }, { status: 400 });
     }
 
@@ -128,7 +116,7 @@ export async function PATCH(req: NextRequest) {
   }
 }
 
-// Function to handle DELETE requests for deleting a user
+// Deleting the user completely from the application and db
 export async function DELETE(req: NextRequest) {
   try {
     const { userId } = await req.json();

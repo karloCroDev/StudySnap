@@ -20,7 +20,7 @@ import { Spinner } from '@/components/ui/Spinner';
 import { useChangeDetailsNote } from '@/hooks/core/home/notes/useChangeDetailsNote';
 
 // Dialog that changes details for each individual note card on frontend
-export const DialogChangeDetails: React.FC<{
+export const DialogChangeDetailsNote: React.FC<{
   noteId: number;
   // These are props (from note card) that are needed in order to update the Note card on frontend, and to display current details (title, desc...) in input fields etc.
   noteName: string;
@@ -47,16 +47,21 @@ export const DialogChangeDetails: React.FC<{
   const [details, setDetails] = React.useState(noteDetails);
   const [image, setImage] = React.useState<File | null>(null);
 
-  // Since this is a dialog that changes details for each individual note card, we need to pass these props to the useChangeDetails hook in order to update the Note card on frontend, and to display current details (title, desc...) in input fields etc. That is the reason why this hook is robust and couldn't be more simplified
+  // Since this is a dialog that changes details for each individual note card, we need to pass these props to the useChangeDetails hook in order to update the Note card on frontend, and to display current details (title, desc...) in input fields etc.
+
+  const updateFields = () => {
+    // Updating fields in the note card
+    if (name) setNoteName(name);
+    if (details) setNoteDetails(details);
+    if (image) setNoteImage(URL.createObjectURL(image));
+  };
   const { updateDetailsReq, loading } = useChangeDetailsNote({
     details,
     image,
     isPublic,
     name,
     noteId,
-    setNoteDetails,
-    setNoteImage,
-    setNoteName,
+    updateFields,
     setIsOpen,
   });
   return (

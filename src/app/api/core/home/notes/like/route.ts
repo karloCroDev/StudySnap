@@ -4,7 +4,7 @@ import { NextResponse, NextRequest } from 'next/server';
 // Models
 import { LikeClass } from '@/models/like';
 
-//Function for liking and disliking the notes
+// Ability to like and dislike a not
 export async function POST(req: NextRequest) {
   try {
     const { noteId, userId, exists } = await req.json();

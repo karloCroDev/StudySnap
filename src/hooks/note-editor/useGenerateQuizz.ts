@@ -7,28 +7,22 @@ import { type Editor as EditorType } from '@tiptap/react';
 // Store
 import { useToastStore } from '@/store/useToastStore';
 
+export type QuizzData = {
+  question: string;
+  content: string[];
+  correct: number;
+}[];
+
 // Dialog logic to enable user to adapt their application with power of AI
-export const useGenerateQuizz = ({
-  editor,
-  isOpen,
-  setIsOpen,
-}: {
-  editor: EditorType;
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+export const useGenerateQuizz = (editor: EditorType) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
   const toast = useToastStore((state) => state.setToast);
   const [isLoading, setIsLoading] = React.useState(false);
 
   // Handling the activation of creating a quizz when user enters the dialog, creating only one, if he tries again Quizz himself!
   const [hasBeenActivated, setHasBeenActivated] = React.useState(false);
-  const [quizzData, setQuizzData] = React.useState<
-    {
-      question: string;
-      content: string[];
-      correct: number;
-    }[]
-  >([]);
+  const [quizzData, setQuizzData] = React.useState<QuizzData>([]);
 
   console.log(quizzData);
   React.useEffect(() => {
@@ -71,5 +65,7 @@ export const useGenerateQuizz = ({
   return {
     quizzData,
     isLoading,
+    setIsOpen,
+    isOpen,
   };
 };

@@ -51,7 +51,6 @@ export const DialogAnalyseAI: React.FC<{
   });
   const clientImage = useClientImage(image!);
 
-  console.log(pdf);
   return (
     <Dialog
       open={isOpen}
