@@ -164,7 +164,7 @@ export default async function LandingPage() {
           <LayoutColumn xs={12} lg={6} className="mt-8 lg:mt-0">
             {/* Karlo: dodaj link na dokumentaciju */}
             <a
-              href=""
+              href="https://drive.google.com/file/d/121F8_3EkzVVeyA1B5lQ2RA0Ik1YZHsSr/view?usp=drive_link"
               target="_blank"
               className="mt-6 text-center text-blue-400 lg:mt-0"
             >

@@ -16,6 +16,7 @@ import { Pencil2Icon, FileTextIcon } from '@radix-ui/react-icons';
 import { twJoin } from 'tailwind-merge';
 import { Markdown } from 'tiptap-markdown';
 import { useSession } from 'next-auth/react';
+import { useNavigationGuard } from 'next-navigation-guard';
 
 // Components
 import { Button } from '@/components/ui/Button';
@@ -42,7 +43,7 @@ export const TipTapEditor: React.FC<{
   const user = useSession();
 
   const allowEditing = React.useMemo(
-    () =>  user.data?.user.id === creatorId,
+    () => user.data?.user.id === creatorId,
     [user, creatorId]
   );
 
@@ -79,13 +80,13 @@ export const TipTapEditor: React.FC<{
   });
 
   // Protection from not saving the note, only active when editor is setted to true. Look in page.tsx file in note-editor/[note-id]
-  /*const navGuard = useNavigationGuard({
+  const navGuard = useNavigationGuard({
     enabled: isEditing,
     confirm: () =>
       window.confirm(
         'You have unsaved changes that will be lost. Do you really want to exit?'
       ),
-  });*/
+  });
 
   if (editor === null) return;
   return (

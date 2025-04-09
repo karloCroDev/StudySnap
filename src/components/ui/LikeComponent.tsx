@@ -24,19 +24,10 @@ export const LikeComponent: React.FC<{
   size = 'sm',
 }) => {
   const user = useSession();
-
   const toast = useToastStore((state) => state.setToast);
+
   const [isLiked, setIsLiked] = React.useState(hasBeenLiked);
   const [likeCount, setLikeCount] = React.useState(numberOfLikes);
-
-  // Optimistically updating the state
-  const [optimisticState, updateOptimisticState] = React.useOptimistic(
-    { isLiked, likeCount },
-    (state, action: boolean) => ({
-      isLiked: action,
-      likeCount: action ? state.likeCount + 1 : state.likeCount - 1,
-    })
-  );
 
   const likeAction = async () => {
     if (!user.data) {
@@ -47,8 +38,14 @@ export const LikeComponent: React.FC<{
       });
       return;
     }
-    const nextLikedState = !optimisticState.isLiked; // This is updating async, so this is work around --> that is why you will see in catch or !response.ok that I am calling the same state (which is not but the inital one before the update)
-    updateOptimisticState(nextLikedState);
+
+    const previousLikedState = isLiked;
+    const previousLikeCount = likeCount;
+
+    // Optimistic update
+    const nextLikedState = !isLiked;
+    setIsLiked(nextLikedState);
+    setLikeCount(nextLikedState ? likeCount + 1 : likeCount - 1);
 
     try {
       const response = await fetch(
@@ -61,20 +58,21 @@ export const LikeComponent: React.FC<{
           body: JSON.stringify({
             noteId,
             userId: user.data?.user.id,
-            exists: isLiked, // Send real state before update
+            exists: previousLikedState, // send the real state before update
           }),
         }
       );
 
       if (!response.ok) {
-        updateOptimisticState(optimisticState.isLiked);
+        // Rollback on error
+        setIsLiked(previousLikedState);
+        setLikeCount(previousLikeCount);
       }
-
-      setIsLiked(nextLikedState);
-      setLikeCount(nextLikedState ? likeCount + 1 : likeCount - 1);
     } catch (error) {
       console.error(error);
-      updateOptimisticState(optimisticState.isLiked);
+      // Rollback on error
+      setIsLiked(previousLikedState);
+      setLikeCount(previousLikeCount);
     }
   };
 
@@ -90,7 +88,7 @@ export const LikeComponent: React.FC<{
         className="outline-none transition-transform duration-75 active:scale-75"
         onPress={likeAction}
       >
-        {optimisticState.isLiked ? (
+        {isLiked ? (
           <HeartFilledIcon
             className={twJoin(
               'text-red-400',
@@ -114,7 +112,7 @@ export const LikeComponent: React.FC<{
           size === 'lg' && 'text-md font-bold'
         )}
       >
-        {optimisticState.likeCount}
+        {likeCount}
       </p>
     </div>
   );

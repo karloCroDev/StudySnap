@@ -29,7 +29,7 @@ export const useExploreNotes = ({
 
   // Retrieve offset and check if expired
   React.useEffect(() => {
-    const EXPIRY_TIME = 8 * 60 * 60 * 1000; // time to delete the offset in local storage, same time used as caching the notes (8 hourss)
+    const EXPIRY_TIME = 100 * 60; // time to delete the offset in local storage, same time used as caching the notes (8 hourss)
 
     const storedData = getItem();
     if (storedData) {

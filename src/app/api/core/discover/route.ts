@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
     // const maxOffset = Math.floor(totalNotes / 2); // Scales better notes when there will be a bigger amount of notes
 
     const nextOffset =
-      Math.floor(Math.random() * (totalNotes - minOffset + 1)) + minOffset; // Random number between minumum offset and the length of public notes in db --> interval: [minOffset, maxOffset]
+      Math.floor(Math.random() * (totalNotes - 4 - minOffset + 1)) + minOffset; // Random number between minumum offset and the length of public notes in db --> interval: [minOffset, maxOffset]
 
     const dataToSend: DiscoverResopnses = {
       offsetPosition: nextOffset, // Passing the next offset position to the client (so that user knows what to fetch)

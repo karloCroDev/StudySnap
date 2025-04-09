@@ -95,7 +95,7 @@ export const ActionBar: React.FC<{
             Save
           </Button>
           <DialogAnalyseAI editor={editor} />
-          <div className="hidden items-center gap-4 text-balance text-md text-gray-500 lg:flex">
+          <div className="hidden items-center gap-4 text-balance text-gray-500 lg:flex 2xl:text-md">
             <p className="italic">Sentence complete:</p>
             {completionLoading ? (
               <Spinner />

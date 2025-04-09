@@ -37,7 +37,7 @@ export const useGenerateContent = ({
       );
       const data = await response.json();
       if (response.ok) {
-        editor?.commands.setContent(data);
+        editor?.commands.insertContent(data);
         toast({
           title: 'Generated successfully',
           content: 'Your text has been generated successfully',

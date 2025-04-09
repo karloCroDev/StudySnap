@@ -41,14 +41,7 @@ export async function POST(req: NextRequest) {
     const isPublic = formData.get('isPublic') == 'true';
     const file = formData.get('file');
 
-    if (
-      !noteName ||
-      isPublic == undefined ||
-      !subjectId
-
-      // ||
-      // !SQLSyntaxCheck([subjectId, noteName, details])
-    ) {
+    if (!noteName || isPublic == undefined || !subjectId) {
       return NextResponse.json({ message: 'Bad request' }, { status: 400 });
     }
 
@@ -98,7 +91,7 @@ export async function PATCH(req: NextRequest) {
     const content = formData.get('content') as string;
     const image = formData.get('file');
 
-    if (!noteId || SQLSyntaxCheck([noteName, details, noteId, content])) {
+    if (!noteId) {
       return NextResponse.json({ message: 'Bad request' }, { status: 400 });
     }
 
