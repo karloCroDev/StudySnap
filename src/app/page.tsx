@@ -60,8 +60,8 @@ export default async function LandingPage() {
             </span>
           </h1>
           <p className="mt-8 text-balance text-sm text-gray-400 md:text-md xl:text-md">
-            A student-focused note-taking app powered by AI. Whether you're in
-            class, at the library, or studying from home, our app helps you
+            A student-focused note-taking app powered by AI. Whether you&apos;re
+            in class, at the library, or studying from home, our app helps you
             effortlessly capture and organize study materials.
           </p>
           <LinkAsButton
@@ -98,9 +98,10 @@ export default async function LandingPage() {
               AI.
             </p>
             <p className="mt-6">
-              Also if you don't feel like writing notes or registering, you can
-              always discover the notes from others, while in the same time make
-              sure to learn from them, while fully understanding the subject
+              Also if you don&apos;t feel like writing notes or registering, you
+              can always discover the notes from others, while in the same time
+              make sure to learn from them, while fully understanding the
+              subject
             </p>
           </LayoutColumn>
         </LayoutRow>

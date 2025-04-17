@@ -9,7 +9,6 @@ import { SearchableHeader } from '@/components/core/SearchableHeader';
 import { DisocverMapping } from '@/components/core/discover/DiscoverMapping';
 
 // Models (types)
-import { type Note } from '@/models/note';
 import { type DiscoverResopnses } from '@/app/api/core/discover/route';
 
 // Metadata

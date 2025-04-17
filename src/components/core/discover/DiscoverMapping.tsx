@@ -53,8 +53,14 @@ export const DisocverMapping: React.FC<
     return (
       <LayoutRow className="sm:-mr-4">
         {[...Array(4)].map((_, index) => (
-          <LayoutColumn sm={6} lg={4} xl2={3} className="mb-8 sm:pr-4">
-            <LoadingSkeletonNote key={index} />
+          <LayoutColumn
+            sm={6}
+            lg={4}
+            xl2={3}
+            className="mb-8 sm:pr-4"
+            key={index}
+          >
+            <LoadingSkeletonNote />
           </LayoutColumn>
         ))}
       </LayoutRow>
@@ -94,8 +100,8 @@ export const DisocverMapping: React.FC<
   if (!notesQuery.length && debouncedSearch) {
     return (
       <h1 className="mt-40 text-center text-xl">
-        Uhoh 😑, we couldn't find anything simmilar to{' '}
-        <strong>"{debouncedSearch}"</strong>
+        Uhoh 😑, we couldn&apos;t find anything simmilar to{' '}
+        <strong>&quot;{debouncedSearch}&quot;</strong>
       </h1>
     );
   }
@@ -103,13 +109,13 @@ export const DisocverMapping: React.FC<
   return (
     <>
       <LayoutRow className="animate-card-apperance sm:-mr-4">
-        {notes.map((note) => (
+        {notes.map((note, index) => (
           <LayoutColumn
             sm={6}
             lg={4}
             xl2={3}
             className="mb-8 sm:pr-4"
-            key={note.id}
+            key={index}
           >
             <NoteCard
               noteId={note.id}

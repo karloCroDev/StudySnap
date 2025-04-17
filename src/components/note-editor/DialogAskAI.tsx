@@ -86,13 +86,19 @@ export const DialogAskAI: React.FC<{
           {/* Was having render issues with font, so I need to do like this overflow scroll */}
           <div className="relative flex h-80 flex-col gap-4 rounded p-4">
             {chatHistory.length
-              ? chatHistory.map((message) =>
+              ? chatHistory.map((message, index) =>
                   message.authorOfMessage === 'ai' ? (
-                    <div className="z-[99999] max-w-[75%] rounded bg-blue-400 p-2 text-gray-100">
+                    <div
+                      className="z-[99999] max-w-[75%] rounded bg-blue-400 p-2 text-gray-100"
+                      key={index}
+                    >
                       <ReactMarkdown>{message.content}</ReactMarkdown>
                     </div>
                   ) : (
-                    <div className="max-w-[75%] self-end rounded bg-blue-900 p-2 text-gray-100">
+                    <div
+                      className="max-w-[75%] self-end rounded bg-blue-900 p-2 text-gray-100"
+                      key={index}
+                    >
                       {message.content}
                     </div>
                   )
