@@ -39,6 +39,3 @@ next-env.d.ts
 # secret variables
 /Secrets.ts
 
-# Ignore all files in the public/uploads directory
-src/public/uploads/*
-public/uploads/*
