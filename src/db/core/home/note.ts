@@ -1,12 +1,8 @@
 // Database
 import { getPool } from '@/db/db';
-import { noteCache } from '@/lib/algorithms/caching';
 
 //Models
 import { type Note } from '@/models/note';
-
-// Database (handling the images)
-import { GetImage, GetProfileImage } from '@/db/imageHandler';
 
 export async function GetNoteById(
   note_id: string,

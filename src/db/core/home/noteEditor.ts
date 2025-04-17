@@ -4,9 +4,6 @@ import { getPool } from '@/db/db';
 //Models
 import { Note } from '@/models/note';
 
-// Database (handling the images)
-import { GetImage, GetProfileImage } from '@/db/imageHandler';
-
 // Gets data for document
 export async function GetNoteById(
   note_id: string,
