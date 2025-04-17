@@ -1,7 +1,7 @@
 // External packages
 import { type Metadata } from 'next';
 import { NavigationGuardProvider } from 'next-navigation-guard';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 import { getServerSession } from 'next-auth';
 
 // Components

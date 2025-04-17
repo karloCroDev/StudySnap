@@ -1,7 +1,7 @@
 // Etxenral packages
 import { type Metadata } from 'next';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
