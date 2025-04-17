@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     }
 
     // Random offset for the first 10 notes (most popular ones), so that user doesn't always get the same most popular order
-    const randomOffset = Math.floor(Math.random() * 10);
+    const randomOffset = Math.floor(Math.random() * 6);
     console.log(randomOffset);
     const publicNotes: Note[] = await GetPublicNotes(
       limit,
