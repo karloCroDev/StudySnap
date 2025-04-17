@@ -26,6 +26,7 @@
     "@tiptap/react": "^2.10.4",
     "@tiptap/starter-kit": "^2.10.4",
     "@types/bcrypt": "^5.0.2",
+    "@vercel/blob": "^1.0.0",
     "bcryptjs": "^2.4.3",
     "material-icons": "^1.13.12",
     "mongoose": "^8.9.2",
