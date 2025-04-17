@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description: 'See all your desired subjects in one place',
 };
 
-export async function getSubjects(session: Session) {
+async function getSubjects(session: Session) {
   const response = await fetch(
     `${process.env.BASE_URL}/api/core/home/subjects?userId=${session.user.id}`
   );
