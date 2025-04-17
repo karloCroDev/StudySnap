@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
 async function getPublicNotes(userId: number | null) {
   const response = await fetch(
-    `http://localhost:3000/api/core/discover?userId=${userId}`,
+    `${process.env.BASE_URL}/api/core/discover?userId=${userId}`,
     {
       next: { revalidate: 10 }, // 8 hours revalidating cache
     }

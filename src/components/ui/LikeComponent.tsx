@@ -48,20 +48,17 @@ export const LikeComponent: React.FC<{
     setLikeCount(nextLikedState ? likeCount + 1 : likeCount - 1);
 
     try {
-      const response = await fetch(
-        'http://localhost:3000/api/core/home/notes/like',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            noteId,
-            userId: user.data?.user.id,
-            exists: previousLikedState, // send the real state before update
-          }),
-        }
-      );
+      const response = await fetch('/api/core/home/notes/like', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          noteId,
+          userId: user.data?.user.id,
+          exists: previousLikedState, // send the real state before update
+        }),
+      });
 
       if (!response.ok) {
         // Rollback on error

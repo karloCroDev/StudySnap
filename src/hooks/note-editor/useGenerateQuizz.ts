@@ -29,7 +29,7 @@ export const useGenerateQuizz = (editor: EditorType) => {
     const generateQuizzData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('http://localhost:3000/api/ai/quizz', {
+        const response = await fetch('/api/ai/quizz', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -26,16 +26,13 @@ export const useDeleteNotes = ({
   const deleteNoteReq = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        'http://localhost:3000/api/core/home/notes',
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ noteId, imageUrl }),
-        }
-      );
+      const response = await fetch('/api/core/home/notes', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ noteId, imageUrl }),
+      });
       const data = await response.json();
       if (!response.ok) {
         toast({

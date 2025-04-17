@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 export async function getSubjects(session: Session) {
   const response = await fetch(
-    `http://localhost:3000/api/core/home/subjects?userId=${session.user.id}`
+    `${process.env.BASE_URL}/api/core/home/subjects?userId=${session.user.id}`
   );
 
   if (!response.ok) throw new Error('Failed to fetch data');

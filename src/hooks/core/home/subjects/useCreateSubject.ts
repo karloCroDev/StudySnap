@@ -39,13 +39,10 @@ export const useCreateSubject = ({
 
     try {
       setLoading(true);
-      const response = await fetch(
-        'http://localhost:3000/api/core/home/subjects',
-        {
-          method: 'POST',
-          body: formData,
-        }
-      );
+      const response = await fetch('/api/core/home/subjects', {
+        method: 'POST',
+        body: formData,
+      });
       const data = await response.json();
       if (!response.ok) {
         toast({

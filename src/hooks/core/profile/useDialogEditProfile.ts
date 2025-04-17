@@ -32,13 +32,10 @@ export const useDialogEditProfile = ({
       formData.append('password', password);
       if (image) formData.append('file', image);
 
-      const response = await fetch(
-        'http://localhost:3000/api/core/public-profile',
-        {
-          method: 'PATCH',
-          body: formData,
-        }
-      );
+      const response = await fetch('/api/core/public-profile', {
+        method: 'PATCH',
+        body: formData,
+      });
       const data = await response.json();
 
       if (!response.ok) {

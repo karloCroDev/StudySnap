@@ -42,13 +42,10 @@ export const useCreateNote = ({
       formData.append('isPublic', isPublic.toString());
       if (image) formData.append('file', image);
 
-      const response = await fetch(
-        'http://localhost:3000/api/core/home/notes',
-        {
-          method: 'POST',
-          body: formData,
-        }
-      );
+      const response = await fetch('/api/core/home/notes', {
+        method: 'POST',
+        body: formData,
+      });
       const data = await response.json();
       console.log(data);
       if (!response.ok) {

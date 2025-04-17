@@ -41,9 +41,7 @@ export const useAnalyseAI = ({
       if (pdf) formData.append('file', pdf);
 
       const response = await fetch(
-        image
-          ? 'http://localhost:3000/api/ai/image-note'
-          : 'http://localhost:3000/api/ai/pdf-note',
+        image ? '/api/ai/image-note' : '/api/ai/pdf-note',
         {
           method: 'POST',
           body: formData,

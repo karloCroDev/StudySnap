@@ -25,13 +25,10 @@ export const useSaveDocument = ({
       const formData = new FormData();
       formData.append('content', editor!.getHTML());
       formData.append('noteId', noteId.toString());
-      const response = await fetch(
-        'http://localhost:3000/api/core/home/notes',
-        {
-          method: 'PATCH',
-          body: formData,
-        }
-      );
+      const response = await fetch('/api/core/home/notes', {
+        method: 'PATCH',
+        body: formData,
+      });
       const data = await response.json();
       if (!response.ok) {
         toast({

@@ -29,7 +29,7 @@ export const useAskAI = ({
   const getAskAiResponse = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3000/api/ai/ask-ai', {
+      const response = await fetch('/api/ai/ask-ai', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

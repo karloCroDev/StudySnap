@@ -39,13 +39,10 @@ export const useChangeDetailsNote = ({
       formData.append('noteId', noteId.toString());
       if (image) formData.append('file', image);
 
-      const response = await fetch(
-        'http://localhost:3000/api/core/home/notes',
-        {
-          method: 'PATCH',
-          body: formData,
-        }
-      );
+      const response = await fetch('/api/core/home/notes', {
+        method: 'PATCH',
+        body: formData,
+      });
       const data = await response.json();
       if (!response.ok) {
         toast({

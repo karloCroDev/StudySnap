@@ -18,7 +18,7 @@ export const useCompleteSentence = ({
 
     try {
       setCompletionLoading(true);
-      const response = await fetch('http://localhost:3000/api/ai/completion', {
+      const response = await fetch('/api/ai/completion', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

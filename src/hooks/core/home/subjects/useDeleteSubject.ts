@@ -26,16 +26,13 @@ export const useDeleteSubject = ({
   const deleteSubjectReq = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        'http://localhost:3000/api/core/home/subjects',
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ id, imageUrl }),
-        }
-      );
+      const response = await fetch('/api/core/home/subjects', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id, imageUrl }),
+      });
       const data = await response.json();
       if (!response.ok) {
         toast({

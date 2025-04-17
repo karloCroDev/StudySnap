@@ -22,13 +22,10 @@ export const useUploadImage = ({
       setLoading(true);
       const formData = new FormData();
       if (image) formData.append('file', image);
-      const response = await fetch(
-        'http://localhost:3000/api/core/home/notes/editor',
-        {
-          method: 'POST',
-          body: formData,
-        }
-      );
+      const response = await fetch('/api/core/home/notes/editor', {
+        method: 'POST',
+        body: formData,
+      });
 
       const data = await response.json();
       editor.chain().focus().setImage({ src: data }).run();

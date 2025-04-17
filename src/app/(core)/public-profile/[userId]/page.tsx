@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 
 async function getAllNotes(creatorId: number, userId: number | null) {
   const response = await fetch(
-    `http://localhost:3000/api/core/public-profile?creatorId=${creatorId}&userId=${userId}`
+    `${process.env.BASE_URL}/api/core/public-profile?creatorId=${creatorId}&userId=${userId}`
   );
 
   if (!response.ok) throw new Error('Error with fetching');

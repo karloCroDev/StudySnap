@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 async function fetchNote(noteId: number, userId: number | null) {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/core/home/notes/editor?noteId=${noteId}&userId=${userId}`,
+      `${process.env.BASE_URL}/api/core/home/notes/editor?noteId=${noteId}&userId=${userId}`,
       { cache: 'no-cache' }
     );
     if (!response.ok) throw new Error('Failed to fetch data');

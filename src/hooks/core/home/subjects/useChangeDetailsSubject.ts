@@ -34,13 +34,10 @@ export const useChangeDetailsSubject = ({
       formData.append('details', details);
       if (image) formData.append('file', image);
       setLoading(true);
-      const response = await fetch(
-        'http://localhost:3000/api/core/home/subjects',
-        {
-          method: 'PATCH',
-          body: formData,
-        }
-      );
+      const response = await fetch('/api/core/home/subjects', {
+        method: 'PATCH',
+        body: formData,
+      });
       const data = await response.json();
       if (!response.ok) {
         toast({

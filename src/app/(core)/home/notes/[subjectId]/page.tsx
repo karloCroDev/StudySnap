@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 async function getNotes(subjectId: number) {
   const response = await fetch(
-    `http://localhost:3000/api/core/home/notes?subjectId=${subjectId}`
+    `${process.env.BASE_URL}/api/core/home/notes?subjectId=${subjectId}`
   );
 
   if (!response.ok) throw new Error('Failed to fetch data');
