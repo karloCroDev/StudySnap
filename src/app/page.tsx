@@ -30,15 +30,16 @@ export const metadata: Metadata = {
   },
 };
 
+const imageShowroom = [
+  '/images/public-profile-mobile.png',
+  '/images/notes-mobile.png',
+  '/images/subjects-mobile.png',
+  '/images/discover-mobile.png',
+  '/images/note-editor-mobile.png',
+  '/images/note-editor-quizz.png',
+];
+
 export default async function LandingPage() {
-  const imageShowroom = [
-    '/images/public-profile-mobile.png',
-    '/images/notes-mobile.png',
-    '/images/subjects-mobile.png',
-    '/images/discover-mobile.png',
-    '/images/note-editor-mobile.png',
-    '/images/note-editor-quizz.png',
-  ];
   return (
     <>
       <HeaderLanding />
@@ -65,7 +66,7 @@ export default async function LandingPage() {
             effortlessly capture and organize study materials.
           </p>
           <LinkAsButton
-            href="login"
+            href="/sign-up"
             rounded="full"
             size="lg"
             className="mx-auto mt-6 w-fit"
@@ -86,7 +87,7 @@ export default async function LandingPage() {
         <LayoutRow className="mt-12 flex flex-col justify-between lg:flex-row xl:mt-24">
           <LayoutColumn xs={12} lg={5}>
             <h3 className="text-xl font-medium lg:text-3xl">
-              We believe that ineractive learning from your notes is a{' '}
+              We believe that interactive learning from your notes is a{' '}
               <strong>must</strong>
             </h3>
           </LayoutColumn>
@@ -94,14 +95,13 @@ export default async function LandingPage() {
             <p>
               Welcome to StudySnap, where we believe that writing the note
               should be effortlessly intertwined. Our mission is to help you
-              create faser, more beautful and more concise notes with power of
+              create faster, more beautiful and more concise notes with power of
               AI.
             </p>
             <p className="mt-6">
-              Also if you don&apos;t feel like writing notes or registering, you
-              can always discover the notes from others, while in the same time
-              make sure to learn from them, while fully understanding the
-              subject
+              Also if you don&apos;t feel like writing notes, you can always
+              discover the notes from others, while in the same time making sure
+              to learn from them, while fully understanding the subject
             </p>
           </LayoutColumn>
         </LayoutRow>
@@ -155,7 +155,7 @@ export default async function LandingPage() {
           Docs
         </h2>
 
-        <LayoutRow className="flex flex-col justify-between lg:flex-row lg:items-center">
+        <LayoutRow className="mt-8 flex flex-col justify-between lg:mt-16 lg:flex-row lg:items-center">
           <LayoutColumn xs={12} lg={5}>
             <h3 className="text-xl font-medium lg:text-3xl" id="docs">
               The key of undertanding the application is the{' '}

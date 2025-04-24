@@ -29,7 +29,7 @@ export default function Login() {
   return (
     <Layout>
       <LayoutRow className="h-screen flex-col flex-nowrap">
-        <Logo className="mt-5 2xl:mt-10" href="/login" />
+        <Logo className="mt-5 2xl:mt-10" href="/" />
         <LayoutColumn
           lgOffset={1}
           lg={4}

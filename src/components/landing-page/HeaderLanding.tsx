@@ -30,6 +30,7 @@ export const HeaderLanding = () => (
             href="/sign-up"
             colorScheme="light-blue"
             variant="outline"
+            className="hidden sm:flex"
           >
             Sign up
           </LinkAsButton>

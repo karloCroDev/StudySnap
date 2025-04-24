@@ -4,9 +4,8 @@
 import * as React from 'react';
 import { twMerge } from 'tailwind-merge';
 import { MagnifyingGlassIcon, Cross2Icon } from '@radix-ui/react-icons';
-import { Button as AriaButton } from 'react-aria-components';
 
-// Databases
+// Lib
 import { plus_jakarta_sans } from '@/lib/fonts';
 
 // Hooks
@@ -15,6 +14,7 @@ import { useToggleSearch } from '@/hooks/core/home/useToggleSearch';
 // Components
 import { LayoutColumn, LayoutRow } from '@/components/ui/Layout';
 import { Search } from '@/components/ui/Search';
+import { Button as AriaButton } from 'react-aria-components';
 
 // Store
 import { useGeneralStore } from '@/store/useGeneralStore';
@@ -45,7 +45,7 @@ export const SearchableHeader: React.FC<{
 
           <Search
             placeholderLabel="Search"
-            className="fixed opacity-0 group-data-[search-visible=true]:pointer-events-auto group-data-[search-visible=true]:relative group-data-[search-visible=false]:-z-10 group-data-[search-visible=false]:animate-search-closed group-data-[search-visible=true]:animate-search-open group-data-[search-visible=true]:opacity-100 md:pointer-events-auto md:relative md:animate-search-initial-apperance md:opacity-100"
+            className="fixed -z-10 opacity-0 group-data-[search-visible=true]:pointer-events-auto group-data-[search-visible=true]:relative group-data-[search-visible=false]:w-[calc(100%-48px-108px)] group-data-[search-visible=false]:animate-search-closed group-data-[search-visible=true]:animate-search-open group-data-[search-visible=true]:opacity-100 md:pointer-events-auto md:relative md:animate-search-initial-apperance md:opacity-100"
             // data-search-visible="true"
             onChange={(val) => setSearch(val.toString())}
           />
