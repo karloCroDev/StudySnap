@@ -104,7 +104,8 @@ export const SelectOption: React.FC<{
           </Select>
           <Search
             placeholderLabel="Search"
-            className="fixed opacity-0 group-data-[search-visible=true]:pointer-events-auto group-data-[search-visible=true]:relative group-data-[search-visible=false]:-z-10 group-data-[search-visible=false]:animate-search-closed group-data-[search-visible=true]:animate-search-open group-data-[search-visible=true]:opacity-100 md:pointer-events-auto md:relative md:animate-search-initial-apperance md:opacity-100"
+            className="fixed -z-10 w-full opacity-0 group-data-[search-visible=true]:pointer-events-auto group-data-[search-visible=true]:relative group-data-[search-visible=true]:z-10 group-data-[search-visible=false]:w-[calc(100%-48px-108px)] group-data-[search-visible=false]:animate-search-closed group-data-[search-visible=true]:animate-search-open group-data-[search-visible=true]:opacity-100 md:pointer-events-auto md:relative md:animate-search-initial-apperance md:opacity-100 lg:z-0"
+            // data-search-visible="true"
             onChange={(val) => setSearch(val.toString())}
           />
           <AriaButton
